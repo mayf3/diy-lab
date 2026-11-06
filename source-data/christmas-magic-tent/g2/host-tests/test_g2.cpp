@@ -64,7 +64,11 @@ int main() {
     e.update(true, 100); e.update(true, 130);              // 恰好 30ms -> 生效
     e.update(false, 200); e.update(false, 235);
     CHECK(e.mode() == Mode::Warm);
-    printf("S4  去抖+边界(29/30/31ms,毛刺): PASS\n"); }
+    StarController f; f.begin(0, false);
+    f.update(true, 100); f.update(true, 131);              // 31ms > 阈值 -> 同样生效
+    f.update(false, 200); f.update(false, 235);
+    CHECK(f.mode() == Mode::Warm);
+    printf("S4  去抖+边界(29拒绝/30生效/31生效,毛刺): PASS\n"); }
 
   // ---- S5 上电按住（不得误点亮）----
   { StarController c; c.begin(0, true); c.update(true, 2000);

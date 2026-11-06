@@ -4,7 +4,7 @@
   "editor": "wokwi",
   "parts": [
     { "type": "wokwi-arduino-uno", "id": "uno", "top": 20, "left": 20, "attrs": {} },
-    { "type": "wokwi-pushbutton", "id": "btn", "top": 60, "left": 380, "attrs": { "color": "red", "label": "MODE" } },
+    { "type": "wokwi-pushbutton", "id": "btn", "top": 60, "left": 380, "attrs": { "color": "red", "label": "MODE", "key": "Q" } },
     { "type": "wokwi-neopixel", "id": "np1", "top": 200, "left": 400, "attrs": {} },
     { "type": "wokwi-neopixel", "id": "np2", "top": 200, "left": 460, "attrs": {} },
     { "type": "wokwi-neopixel", "id": "np3", "top": 200, "left": 520, "attrs": {} },
