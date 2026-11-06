@@ -1,0 +1,164 @@
+{
+  "meta": {
+    "generated_by": "uncertainty_sim.py (G1b)",
+    "engine": "tent_generator.derive() — 与 G0 同一几何公式",
+    "date": "2026-11-06",
+    "grid": {
+      "E_core_cm": [
+        70.0,
+        75.0,
+        80.0,
+        85.0
+      ],
+      "door_w_cm": [
+        60.0,
+        65.0,
+        70.0
+      ],
+      "door_h_cm": [
+        80.0,
+        85.0,
+        90.0
+      ],
+      "ridge_delta_cm": [
+        0.0,
+        5.0
+      ]
+    },
+    "note": "理想几何模型上的不确定性分析；不是实物验证，不是安全认证。"
+  },
+  "candidates": [
+    {
+      "id": "HK_160x100x130",
+      "name": "HelloKitty 游戏屋·加长版",
+      "shape": "B 宽门面",
+      "status": "G1a 待锁定 SKU（加长版杆径待核实）",
+      "core_grid_combos": 72,
+      "checks": {
+        "door_clear": {
+          "label": "门洞顶角净空≥5cm",
+          "verdict": "DETERMINISTIC_PASS",
+          "pass_rate": "72/72"
+        },
+        "door_margin": {
+          "label": "门侧净宽≥10cm",
+          "verdict": "DETERMINISTIC_PASS",
+          "pass_rate": "72/72"
+        },
+        "ridge_headroom": {
+          "label": "屋脊-115cm儿童≥10cm",
+          "verdict": "DETERMINISTIC_PASS",
+          "pass_rate": "72/72"
+        },
+        "floor_area": {
+          "label": "帐内面积≥1.0㎡",
+          "verdict": "DETERMINISTIC_PASS",
+          "pass_rate": "72/72"
+        }
+      },
+      "standing_strip_110_cm_range": [
+        14,
+        36
+      ],
+      "frontier_door_clear_cm": {
+        "premise": "门净宽70cm、屋脊高=总高-5cm（最不利解释）",
+        "door_h_80cm": 50.0,
+        "door_h_85cm": 50.0,
+        "door_h_90cm": 56.5,
+        "door_h_95cm": 68.0
+      },
+      "brief_compliant_subset": {
+        "combos": 54,
+        "all_pass": true
+      }
+    },
+    {
+      "id": "HJG_135x105x135",
+      "name": "何佳功 曲奇熊小屋",
+      "shape": "A 窄门面",
+      "status": "G1a 待锁定 SKU",
+      "core_grid_combos": 72,
+      "checks": {
+        "door_clear": {
+          "label": "门洞顶角净空≥5cm",
+          "verdict": "DETERMINISTIC_PASS",
+          "pass_rate": "72/72"
+        },
+        "door_margin": {
+          "label": "门侧净宽≥10cm",
+          "verdict": "DETERMINISTIC_PASS",
+          "pass_rate": "72/72"
+        },
+        "ridge_headroom": {
+          "label": "屋脊-115cm儿童≥10cm",
+          "verdict": "DETERMINISTIC_PASS",
+          "pass_rate": "72/72"
+        },
+        "floor_area": {
+          "label": "帐内面积≥1.0㎡",
+          "verdict": "DETERMINISTIC_PASS",
+          "pass_rate": "72/72"
+        }
+      },
+      "standing_strip_110_cm_range": [
+        22,
+        40
+      ],
+      "frontier_door_clear_cm": {
+        "premise": "门净宽70cm、屋脊高=总高-5cm（最不利解释）",
+        "door_h_80cm": 50.0,
+        "door_h_85cm": 53.0,
+        "door_h_90cm": 62.5,
+        "door_h_95cm": 72.5
+      },
+      "brief_compliant_subset": {
+        "combos": 54,
+        "all_pass": true
+      }
+    },
+    {
+      "id": "HOVLIG_120x120x164",
+      "name": "宜家 HÖVLIG（仅参考）",
+      "shape": "近似方",
+      "status": "官方禁止悬挂灯串/装饰 → 非采购目标，仅结构参考",
+      "core_grid_combos": 72,
+      "checks": {
+        "door_clear": {
+          "label": "门洞顶角净空≥5cm",
+          "verdict": "DETERMINISTIC_PASS",
+          "pass_rate": "72/72"
+        },
+        "door_margin": {
+          "label": "门侧净宽≥10cm",
+          "verdict": "DETERMINISTIC_PASS",
+          "pass_rate": "72/72"
+        },
+        "ridge_headroom": {
+          "label": "屋脊-115cm儿童≥10cm",
+          "verdict": "DETERMINISTIC_PASS",
+          "pass_rate": "72/72"
+        },
+        "floor_area": {
+          "label": "帐内面积≥1.0㎡",
+          "verdict": "DETERMINISTIC_PASS",
+          "pass_rate": "72/72"
+        }
+      },
+      "standing_strip_110_cm_range": [
+        53,
+        67
+      ],
+      "frontier_door_clear_cm": {
+        "premise": "门净宽70cm、屋脊高=总高-5cm（最不利解释）",
+        "door_h_80cm": 50.0,
+        "door_h_85cm": 50.0,
+        "door_h_90cm": 50.0,
+        "door_h_95cm": 58.0
+      },
+      "brief_compliant_subset": {
+        "combos": 54,
+        "all_pass": true
+      }
+    }
+  ]
+}

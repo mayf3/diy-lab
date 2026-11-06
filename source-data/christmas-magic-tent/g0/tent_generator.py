@@ -20,14 +20,20 @@ Project Christmas Magic Tent — G0 parametric geometry generator (Blender, head
 所有 3D 文字标注使用 ASCII（Blender 内置字体不含 CJK）。
 """
 
-import bpy
 import sys
 import os
 import csv
 import json
 import math
 import argparse
-from mathutils import Vector, Matrix
+
+try:
+    import bpy
+    from mathutils import Vector, Matrix
+    HAS_BPY = True
+except ImportError:
+    bpy = None          # 允许纯 Python 导入（如 G1b 不确定性模拟）
+    HAS_BPY = False
 
 # ----------------------------------------------------------------------------
 # CLI
@@ -41,6 +47,12 @@ def parse_args():
     ap.add_argument("--blend-name", default=None)
     ap.add_argument("--room-w", type=float, default=None, help="房间宽(米)，覆盖默认 10m")
     ap.add_argument("--room-d", type=float, default=None, help="房间进深(米)，覆盖默认 10m")
+    ap.add_argument("--F", type=float, default=None, help="覆盖正面宽(米)——回填真实商品尺寸用")
+    ap.add_argument("--D", type=float, default=None, help="覆盖进深(米)")
+    ap.add_argument("--E", type=float, default=None, help="覆盖檐口高(米)")
+    ap.add_argument("--H", type=float, default=None, help="覆盖屋脊高(米)")
+    ap.add_argument("--door-w", type=float, default=None, help="覆盖门净宽(米)")
+    ap.add_argument("--door-h", type=float, default=None, help="覆盖门净高(米)")
     ap.add_argument("--tag", default=None, help="渲染文件名前缀，默认取 variant")
     ap.add_argument("--only", default=None, help="只渲染指定视图，逗号分隔")
     ap.add_argument("--no-save", action="store_true")
@@ -348,7 +360,7 @@ def build_data():
                    "derived": dv,
                    "checks": build_checks(dv)}
     meta = {"generated_by": "tent_generator.py (G0)",
-            "blender": bpy.app.version_string,
+            "blender": bpy.app.version_string if HAS_BPY else "n/a (no bpy)",
             "note": "几何检查仅验证模型内几何关系，不是儿童产品安全认证。"}
     return {"meta": meta, "variants": data}
 
@@ -1106,6 +1118,13 @@ def render_all(v, out, tag, only):
 
 def main():
     args = ARGS
+    # 真实商品尺寸回填覆盖（先于一切几何推导）
+    if args.F: CFG["variants"][args.variant]["F"] = args.F
+    if args.D: CFG["variants"][args.variant]["D"] = args.D
+    if args.E: CFG["E"] = args.E
+    if args.H: CFG["H"] = args.H
+    if args.door_w: CFG["door_w"] = args.door_w
+    if args.door_h: CFG["door_h"] = args.door_h
     out = os.path.abspath(args.out)
     os.makedirs(os.path.join(out, "renders"), exist_ok=True)
     tag = args.tag or args.variant
@@ -1153,4 +1172,5 @@ def main():
           f"fabric ~{dv['fabric']['total_estimate']} m2")
 
 
-main()
+if HAS_BPY:
+    main()          # Blender 下执行完整管线；纯 Python 导入时仅提供几何函数
