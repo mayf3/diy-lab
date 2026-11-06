@@ -1,0 +1,22 @@
+name: 新 DIY 选题
+about: 从一个想法发起项目
+labels: [idea]
+body:
+  - type: input
+    id: title
+    attributes:
+      label: 项目名称
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: 想做成什么？给谁用？
+  - type: textarea
+    id: constraints
+    attributes:
+      label: 预算、时间、设备、材料约束
+  - type: textarea
+    id: risks
+    attributes:
+      label: 最容易买错/失败的地方与验证计划

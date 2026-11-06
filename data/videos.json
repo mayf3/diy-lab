@@ -1,0 +1,34 @@
+[
+  {
+    "project": "hachimodock",
+    "title": "HachimoDock 从购物到 Agent 跟随",
+    "status": "planned",
+    "description": "第一期新手视频，已写分镜；尚未拍摄、剪辑或发布。",
+    "video_url": "",
+    "embed": ""
+  },
+  {
+    "project": "halloween-costume",
+    "title": "万圣节服装和 3D 打印配件制作复盘",
+    "status": "planned",
+    "description": "作品已完成，但真实视频素材与授权状态尚待整理。",
+    "video_url": "",
+    "embed": ""
+  },
+  {
+    "project": "halloween-door",
+    "title": "马丘比丘之家：门饰从设计到完成",
+    "status": "planned",
+    "description": "作品已完成，待整理自己的照片和过程视频。",
+    "video_url": "",
+    "embed": ""
+  },
+  {
+    "project": "christmas-magic-tent",
+    "title": "圣诞互动帐篷全过程",
+    "status": "planned",
+    "description": "方案阶段，尚未制作或拍摄。",
+    "video_url": "",
+    "embed": ""
+  }
+]
