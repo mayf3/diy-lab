@@ -350,8 +350,9 @@ def main():
     shutil.copytree(ROOT / "assets",DIST / "assets")
     shutil.copytree(ROOT / "public/media",DIST / "media")
     (DIST / "downloads").mkdir()
-    for src in (ROOT / 'source-data').glob('*/bom.csv'):
-        shutil.copy2(src, DIST / 'downloads' / (src.parent.name + '-bom.csv'))
+    for filename in ('bom.csv', 'blockers.csv', 'sources.csv'):
+        for src in (ROOT / 'source-data').glob(f'*/{filename}'):
+            shutil.copy2(src, DIST / 'downloads' / (src.parent.name + '-' + filename))
     (DIST / ".nojekyll").write_text("", encoding="utf-8")
     pages=[]
     for path in sorted(CONTENT.rglob("*.md")):

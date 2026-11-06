@@ -5,13 +5,26 @@ import csv
 import json
 import re
 import sys
+from datetime import date, datetime
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 CONTENT = ROOT / 'content'
 PROJECTS = json.loads((ROOT / 'data/projects.json').read_text(encoding='utf8'))
 ALLOWED = {'planning', 'preparing', 'building', 'verified', 'completed-unwritten', 'archived'}
+BLOCKER_STATUSES = {'open', 'asked', 'closed'}
+SOURCE_STATUSES = {'active', 'superseded'}
+SOURCE_STALE_DAYS = 90
+DOWNLOAD_FILES = {'-bom.csv': 'bom.csv', '-blockers.csv': 'blockers.csv', '-sources.csv': 'sources.csv'}
 errors: list[str] = []
+warnings: list[str] = []
+
+
+def parse_date(text: str) -> date | None:
+    try:
+        return datetime.strptime(str(text).strip(), '%Y-%m-%d').date()
+    except ValueError:
+        return None
 
 
 def error(message: str):
@@ -24,9 +37,9 @@ def path_for_site_url(path: str) -> Path | None:
         return CONTENT / 'index.md'
     if path.startswith('/downloads/'):
         item = path[len('/downloads/'):]
-        if item.endswith('-bom.csv'):
-            slug = item.removesuffix('-bom.csv')
-            return ROOT / 'source-data' / slug / 'bom.csv'
+        for suffix, filename in DOWNLOAD_FILES.items():
+            if item.endswith(suffix):
+                return ROOT / 'source-data' / item.removesuffix(suffix) / filename
         error(f'Unknown downloadable resource: {path}')
         return None
     if path.startswith('/media/'):
@@ -91,6 +104,8 @@ def validate():
             target = path_for_site_url(match.group(1))
             if target and not target.exists():
                 error(f'{doc.relative_to(ROOT)}: broken internal link {match.group(1)} -> {target}')
+        for match in re.finditer(r'\]\(([^)#:]+\.md)\)', txt):
+            error(f'{doc.relative_to(ROOT)}: relative markdown link {match.group(1)}; use an absolute site path like /projects/<slug>/<page>/')
         if re.search(r'(?:sk-[a-zA-Z0-9]{18,}|ghp_[a-zA-Z0-9]{20,})', txt):
             error(f'{doc.relative_to(ROOT)}: possible exposed secret')
     for table in (ROOT / 'source-data').glob('*/bom.csv'):
@@ -104,6 +119,55 @@ def validate():
                 error(f'{table.relative_to(ROOT)} row {r.get("id")}: invalid status')
             if not str(r.get('数量', '')).isdigit():
                 error(f'{table.relative_to(ROOT)} row {r.get("id")}: non-integer quantity')
+    project_status = {p.get('slug'): p.get('status') for p in PROJECTS}
+    blockers_by_slug: dict[str, list[dict]] = {}
+    for table in sorted((ROOT / 'source-data').glob('*/blockers.csv')):
+        slug = table.parent.name
+        with table.open(encoding='utf-8-sig', newline='') as f:
+            rows = list(csv.DictReader(f))
+        required = {'id', '疑点', '影响', '关闭所需证据', '证据来源', '状态', '核验日期', '结论'}
+        if not rows or not required.issubset(rows[0]):
+            error(f'{table.relative_to(ROOT)}: blockers register is empty or missing columns')
+            continue
+        blockers_by_slug[slug] = rows
+        for r in rows:
+            status = r.get('状态')
+            if status not in BLOCKER_STATUSES:
+                error(f'{table.relative_to(ROOT)} row {r.get("id")}: invalid blocker status')
+                continue
+            if status == 'closed':
+                if not r.get('证据来源') or not parse_date(r.get('核验日期', '')):
+                    error(f'{table.relative_to(ROOT)} row {r.get("id")}: closed blocker needs evidence source and YYYY-MM-DD date')
+            else:
+                if r.get('结论'):
+                    error(f'{table.relative_to(ROOT)} row {r.get("id")}: unresolved blocker must not record a conclusion')
+                checked = parse_date(r.get('核验日期', ''))
+                if checked and (date.today() - checked).days > SOURCE_STALE_DAYS:
+                    warnings.append(f'{table.relative_to(ROOT)} row {r.get("id")}: unresolved for {(date.today() - checked).days} days; follow up with the seller/author')
+    for table in sorted((ROOT / 'source-data').glob('*/sources.csv')):
+        with table.open(encoding='utf-8-sig', newline='') as f:
+            rows = list(csv.DictReader(f))
+        required = {'id', '名称', '类型', '网址', '版本或标识', '查看日期', '用途', '状态'}
+        if not rows or not required.issubset(rows[0]):
+            error(f'{table.relative_to(ROOT)}: source register is empty or missing columns')
+            continue
+        for r in rows:
+            if r.get('状态') not in SOURCE_STATUSES:
+                error(f'{table.relative_to(ROOT)} row {r.get("id")}: invalid source status')
+            if not str(r.get('网址', '')).startswith('https://'):
+                error(f'{table.relative_to(ROOT)} row {r.get("id")}: source URL must be https')
+            checked = parse_date(r.get('查看日期', ''))
+            if checked is None:
+                error(f'{table.relative_to(ROOT)} row {r.get("id")}: 查看日期 must be YYYY-MM-DD')
+            elif (date.today() - checked).days > SOURCE_STALE_DAYS:
+                warnings.append(f'{table.relative_to(ROOT)} row {r.get("id")}: checked {(date.today() - checked).days} days ago; re-verify version drift')
+    for slug, status in project_status.items():
+        if status == 'verified' and slug in blockers_by_slug:
+            open_ids = [r.get('id') for r in blockers_by_slug[slug] if r.get('状态') != 'closed']
+            if open_ids:
+                error(f'{slug}: verified status requires all blockers closed; still open: {", ".join(open_ids)}')
+    if 'hachimodock' in project_status and 'hachimodock' not in blockers_by_slug:
+        error('HachimoDock: missing blockers.csv doubt register')
     videos_file = ROOT / 'data/videos.json'
     if videos_file.exists():
         for v in json.loads(videos_file.read_text(encoding='utf-8')):
@@ -125,7 +189,11 @@ def validate():
         for e in errors:
             print('  -', e)
         return 1
-    print(f'Content validation passed: {len(PROJECTS)} projects, {len(list(CONTENT.rglob("*.md")))} pages, BOM CSV OK.')
+    print(f'Content validation passed: {len(PROJECTS)} projects, {len(list(CONTENT.rglob("*.md")))} pages, BOM/blockers/sources CSV OK.')
+    if warnings:
+        print(f'{len(warnings)} warning(s) (not failing):')
+        for w in warnings:
+            print('  -', w)
     return 0
 
 if __name__ == '__main__':

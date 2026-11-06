@@ -36,3 +36,5 @@
 ## HachimoDock 当前必留疑点
 
 `ESP32-P4 silicon v1/v3`、`2.8寸屏和 FFC 规格`、`PCB_V1.2 网表差异`、`BOX vs CPG135001D01 机械轴`。未有实测证据前，绝不可抹掉文档中的警示。
+
+四个疑点结构化登记在 `source-data/hachimodock/blockers.csv`（状态 `open → asked → closed`），权威来源及查看日期登记在 `source-data/hachimodock/sources.csv`。`scripts/check.py` 强制：`closed` 必须附证据链接和核验日期；疑点未全关不得把项目标为 `verified`；来源/疑点超过 90 天未复核会输出警告。

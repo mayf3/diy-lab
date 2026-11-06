@@ -1,0 +1,8 @@
+id,名称,类型,网址,版本或标识,查看日期,用途,状态
+S1,HachimoDock 官方仓库,官方文档,https://github.com/YizhengWw/HachimoDock,main 分支当日快照,2026-11-06,项目入口与权威说明,active
+S2,HachimoDock Releases,官方发布,https://github.com/YizhengWw/HachimoDock/releases/latest,客户端 0.1.199; 固件 0.7.103-p4-r179,2026-11-06,Mac 客户端与 v1/v3 固件包及 SHA256 校验,active
+S3,立创 OSHWHub 硬件复刻项目,官方硬件工程,https://oshwhub.com/eda_gqvzlprk/project_cnbmkbjc,PCB_V1.2,2026-11-06,PCB/BOM/STEP/装配视频权威来源,active
+S4,微雪 ESP32-P4-WIFI6 文档,官方文档,https://docs.waveshare.com/ESP32-P4-WIFI6,页面当日版,2026-11-06,开发板接口与固件说明,active
+S5,微雪产品页,商城页,https://www.waveshare.com/esp32-p4-wifi6.htm,M 版 SKU 31647,2026-11-06,询价入口与官方参考价,active
+S6,立创商城摇杆页,商城页,https://item.szlcsc.com/39051755.html,YA13S-L7.4-B10Ka(60)-0-DL01,2026-11-06,摇杆规格比对,active
+S7,LCSC 轴体页,商城页,https://www.lcsc.com/product-detail/Mechanical-Keyboard-Shaft_Kailh-CPG135001D01_C400229.html,CPG135001D01,2026-11-06,仅用于比对; 不作购买推荐,active
