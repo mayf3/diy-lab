@@ -73,6 +73,50 @@
       }
     },
     {
+      "id": "HK_narrow_door",
+      "name": "HelloKitty 同尺寸·门在100cm窄面（敏感性变体）",
+      "shape": "窄门面（F/D 交换）",
+      "status": "敏感性测试：门位改在 100cm 窄面，其余同 HK_160x100x130",
+      "core_grid_combos": 72,
+      "checks": {
+        "door_clear": {
+          "label": "门洞顶角净空≥5cm",
+          "verdict": "CONDITIONAL",
+          "pass_rate": "58/72"
+        },
+        "door_margin": {
+          "label": "门侧净宽≥10cm",
+          "verdict": "DETERMINISTIC_PASS",
+          "pass_rate": "72/72"
+        },
+        "ridge_headroom": {
+          "label": "屋脊-115cm儿童≥10cm",
+          "verdict": "DETERMINISTIC_PASS",
+          "pass_rate": "72/72"
+        },
+        "floor_area": {
+          "label": "帐内面积≥1.0㎡",
+          "verdict": "DETERMINISTIC_PASS",
+          "pass_rate": "72/72"
+        }
+      },
+      "standing_strip_110_cm_range": [
+        9,
+        22
+      ],
+      "frontier_door_clear_cm": {
+        "premise": "门净宽70cm、屋脊高=总高-5cm（最不利解释）",
+        "door_h_80cm": 68.0,
+        "door_h_85cm": 75.0,
+        "door_h_90cm": 82.5,
+        "door_h_95cm": 89.5
+      },
+      "brief_compliant_subset": {
+        "combos": 54,
+        "all_pass": false
+      }
+    },
+    {
       "id": "HJG_135x105x135",
       "name": "何佳功 曲奇熊小屋",
       "shape": "A 窄门面",
