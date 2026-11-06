@@ -1,5 +1,5 @@
 id,疑点,影响,关闭所需证据,证据来源,状态,核验日期,结论
 BK1,ESP32-P4 实际 silicon 版次未知（v1/v3 固件包不同）,B01 开发板与第 8 关固件选择,卖家提供芯片版次照片或书面确认,https://www.waveshare.com/esp32-p4-wifi6.htm,open,2026-11-06,
-BK2,2.8 寸屏模组与 FFC 规格未核对（Pin 数/间距/方向/长度/外框）,B02 屏幕 + B10 排线 + 第 4/7 关装配,卖家规格书或具体型号实测照片,https://oshwhub.com/eda_gqvzlprk/project_cnbmkbjc,open,2026-11-06,
-BK3,PCB_V1.2 网表差异与排母间距/板厚未核对,B07 PCB + B03 排母,立创 EDA 原工程核对记录 + 原作者确认以已发布 PCB 为准,https://oshwhub.com/eda_gqvzlprk/project_cnbmkbjc,open,2026-11-06,
-BK4,机械轴封装冲突（官方正文 BOX vs BOM CPG135001D01/C400229）,B05 轴体 + B11 键帽 + 外壳键孔,EDA 焊盘与 STEP 外壳配合核对 + 同版本实装证据,https://github.com/YizhengWw/HachimoDock,open,2026-11-06,
+BK2,2.8 寸屏模组与 FFC 规格未核对（Pin 数/间距/方向/长度/外框）,B02 屏幕 + B10 排线 + 第 4/7 关装配,卖家确认屏幕型号/尺寸图 + 22P 0.5mm 同向 FFC 方向与随屏附件（排线规格已由作者 2026-10-29 评论区答复锁定为 22pin）,https://oshwhub.com/eda_gqvzlprk/project_cnbmkbjc,open,2026-11-06,
+BK3,PCB_V1.2 网表差异与排母间距/板厚未核对,B07 PCB + B03 排母,立创 EDA 原工程核对记录 + 原作者确认以已发布 PCB 为准（原理图 SCH_V1.2 更新于 2026-10-30 需留意网表提示）,https://oshwhub.com/eda_gqvzlprk/project_cnbmkbjc,open,2026-11-06,
+BK4,机械轴封装冲突（官方正文 BOX vs BOM CPG135001D01/C400229）,B05 轴体 + B11 键帽 + 外壳键孔,键帽/轴体在外壳键孔的配合经 STEP 检查或同版实装证据（购买型号已定：按 PCB BOM + 原理图双证据取 CPG135001D01 ×3）,https://oshwhub.com/eda_gqvzlprk/project_cnbmkbjc,open,2026-11-06,
