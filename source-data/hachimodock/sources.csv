@@ -1,6 +1,8 @@
 id,名称,类型,网址,版本或标识,查看日期,用途,状态
 S1,HachimoDock 官方仓库,官方文档,https://github.com/YizhengWw/HachimoDock,main 分支当日快照,2026-11-06,项目入口与权威说明,active
-S2,HachimoDock Releases,官方发布,https://github.com/YizhengWw/HachimoDock/releases/latest,客户端 0.1.199; 固件 0.7.103-p4-r179,2026-11-06,Mac 客户端与 v1/v3 固件包及 SHA256 校验,active
+S2,HachimoDock Releases,官方发布,https://github.com/YizhengWw/HachimoDock/releases/latest,客户端 0.1.201; 固件 0.7.103-p4-r181（2026-11-06 晚复核发现版本漂移: 早间登记为 0.1.199/r179）,2026-11-06,Mac 客户端与 v1/v3 固件包及 SHA256 校验,active
+S8,Espressif ESP32-P4 芯片版次识别指南,官方文档,https://docs.espressif.com/projects/esp-chip-errata/en/latest/esp32p4/01-chip-identification/index.html,vM.X 命名: v0.x/v1.x/v3.x,2026-11-06,BK1 版次命名依据; v3.0 与之前为互斥构建目标,active
+S9,微雪 silicon-revisions 说明,官方文档,https://github.com/waveshareteam/ESP32-P4-WIFI6-Touch-LCD-X/blob/main/docs/silicon-revisions.md,rev1_3 与 rev3_x 两组; esptool chip_id 可读版次,2026-11-06,BK1 辨别方法: 收货后 esptool.py --chip esp32p4 chip_id 不写 flash 直接读版次,active
 S3,立创 OSHWHub 硬件复刻项目,官方硬件工程,https://oshwhub.com/eda_gqvzlprk/project_cnbmkbjc,PCB_V1.2 / SCH_V1.2（创建 2026-07-30; 更新 2026-10-30）,2026-11-06,PCB/BOM/STEP/装配视频权威来源; 2026-11-06 实查: 内嵌 BOM 确认 CPG135001D01×3 + 作者评论区确认 22pin FFC,active
 S4,微雪 ESP32-P4-WIFI6 文档,官方文档,https://docs.waveshare.com/ESP32-P4-WIFI6,页面当日版,2026-11-06,开发板接口与固件说明,active
 S5,微雪产品页,商城页,https://www.waveshare.com/esp32-p4-wifi6.htm,M 版 SKU 31647,2026-11-06,询价入口与官方参考价,active
