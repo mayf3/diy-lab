@@ -365,6 +365,11 @@ def main():
     search_data=[{"title":p["title"],"summary":p["summary"],"path":p["path"]} for p in pages]
     (DIST / "assets/search-index.js").write_text("window.MAKER_SEARCH_INDEX="+json.dumps(search_data,ensure_ascii=False,separators=(',',':'))+";window.MAKER_PROJECT_STEPS="+json.dumps({p['slug']:[s['id'] for s in p.get('steps',[])] for p in PROJECTS},ensure_ascii=False,separators=(',',':'))+";",encoding="utf-8")
     (DIST / "404.html").write_text('<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>页面未找到 · Maker Lab</title><p>页面不存在，<a href="./index.html">返回首页</a>。</p></html>',encoding="utf-8")
+    mirror = Path.home() / "Library" / "Application Support" / "MakerLabSite"
+    if mirror.is_dir():
+        shutil.rmtree(mirror)
+        shutil.copytree(DIST, mirror)
+        print(f"Synced local service mirror: {mirror}")
     print(f"Built {len(pages)} pages into {DIST} (builder {GENERATOR_VERSION})")
 
 if __name__=="__main__":

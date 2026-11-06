@@ -1,5 +1,9 @@
 # 版本记录
 
+## v0.2.1 — 2026-11-06
+
+- 本机常驻预览服务：`build.py` 在检测到镜像目录 `~/Library/Application Support/MakerLabSite/` 时自动同步 `dist/`；LaunchAgent（`com.mayf3.makerlab.site`）在 `http://127.0.0.1:8123/` 提供只绑定 127.0.0.1 的站点服务。镜像目录置于 TCC 非保护区，规避 launchd 进程无 `~/Documents` 访问权限的问题；README 增加说明。
+
 ## v0.2.0 — 2026-11-06
 
 - 圣诞互动帐篷 G0 数字模拟完成：Blender 参数化脚本（`--variant A/B` 一键重建）+ 18 项几何检查 0 FAIL；门洞×屋顶净空 A 10.0cm / B 20.9cm；站立净空条带（30/43.6cm）与 3.0×3.5m 小区域动线压力测试（门扇与帐篷角仅 5cm）列为采购前复核项。

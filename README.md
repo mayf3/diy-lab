@@ -51,6 +51,10 @@ python3 -m http.server 8000 --directory dist
 
 **已验证 Pages 地址**：<https://mayf3.github.io/diy-lab/>；如后续修改未出现，查看 [Actions](https://github.com/mayf3/diy-lab/actions) 的自动部署状态。
 
+## 本机常驻预览服务（可选）
+
+配置了本机 LaunchAgent（`com.mayf3.makerlab.site`）的 Mac 上，站点常驻在 <http://127.0.0.1:8123/>：`build.py` 检测到镜像目录 `~/Library/Application Support/MakerLabSite/` 存在时会自动同步 `dist/`，重新构建后刷新浏览器即可。服务只绑定 `127.0.0.1`，不暴露到局域网；镜像目录放在 TCC 非保护区，是因为 launchd 进程没有访问 `~/Documents` 的权限。
+
 ## 仓库结构
 
 ```text
