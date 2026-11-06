@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "author": "Project Christmas Magic Tent — G2-V1 (Wokwi baseline)",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "wokwi-arduino-uno", "id": "uno", "top": 20, "left": 20, "attrs": {} },
+    { "type": "wokwi-pushbutton", "id": "btn", "top": 60, "left": 380, "attrs": { "color": "red", "label": "MODE" } },
+    { "type": "wokwi-neopixel", "id": "np1", "top": 200, "left": 400, "attrs": {} },
+    { "type": "wokwi-neopixel", "id": "np2", "top": 200, "left": 460, "attrs": {} },
+    { "type": "wokwi-neopixel", "id": "np3", "top": 200, "left": 520, "attrs": {} },
+    { "type": "wokwi-neopixel", "id": "np4", "top": 200, "left": 580, "attrs": {} }
+  ],
+  "connections": [
+    [ "uno:2", "btn:1.l", "gold", [ "v0" ] ],
+    [ "btn:2.l", "uno:GND.1", "black", [ "v0" ] ],
+    [ "uno:6", "np1:DIN", "green", [ "v0" ] ],
+    [ "np1:DOUT", "np2:DIN", "green", [ "v0" ] ],
+    [ "np2:DOUT", "np3:DIN", "green", [ "v0" ] ],
+    [ "np3:DOUT", "np4:DIN", "green", [ "v0" ] ],
+    [ "uno:5V", "np1:VDD", "red", [ "v0" ] ],
+    [ "np1:VDD", "np2:VDD", "red", [ "v0" ] ],
+    [ "np2:VDD", "np3:VDD", "red", [ "v0" ] ],
+    [ "np3:VDD", "np4:VDD", "red", [ "v0" ] ],
+    [ "uno:GND.2", "np1:VSS", "black", [ "v0" ] ],
+    [ "np1:VSS", "np2:VSS", "black", [ "v0" ] ],
+    [ "np2:VSS", "np3:VSS", "black", [ "v0" ] ],
+    [ "np3:VSS", "np4:VSS", "black", [ "v0" ] ]
+  ]
+}

@@ -1,0 +1,10 @@
+S1  上电关闭: PASS
+S2  短按循环: PASS
+S3  长按关闭+边界(1199/1200): PASS
+S4  去抖+边界(29/30/31ms,毛刺): PASS
+S5  上电按住抑制: PASS
+S6  10分钟空闲超时+边界: PASS
+S7  快速连续按压+长按后恢复: PASS
+S8  millis 回绕: PASS
+
+ALL PASS: 8 类行为 / 11 个场景全部通过（主机逻辑层，复用 controller.h 未改动）

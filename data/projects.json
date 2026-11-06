@@ -140,6 +140,13 @@
         "title": "G0 数字模拟评审：Blender 参数化 A/B 对比",
         "minutes": "20 分钟",
         "phase": "数字模拟"
+      },
+      {
+        "id": "g2-v1",
+        "file": "g2-v1.md",
+        "title": "G2-V1：Wokwi 数字模拟（UNO+按钮+4×WS2812）",
+        "minutes": "20 分钟",
+        "phase": "数字模拟"
       }
     ]
   }
