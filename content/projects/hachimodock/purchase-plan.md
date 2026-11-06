@@ -2,6 +2,8 @@
 
 > **2026-11-06：全部尚未下单。** 本页是按上游资料整理的行动清单，参考价格不是实时商家成交价；卖家回复必须保存到你自己的采购日志。买之前先读[步骤 3：购物清单](/projects/hachimodock/03-bom/)和[步骤 4：结构模拟](/projects/hachimodock/04-simulation/)。
 
+**GitHub 进度追踪**：[采购门禁 Issue #1](https://github.com/mayf3/diy-lab/issues/1) · [结构模拟 Issue #2](https://github.com/mayf3/diy-lab/issues/2)。
+
 ## 目标
 
 把**想买什么、找谁核实、何时付款**拆成三个独立动作。你不需要先学完电子工程，也不必为了赶进度把所有东西一次下单。

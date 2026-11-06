@@ -25,7 +25,7 @@ HachimoDock 不是在小盒子里运行大语言模型：它通过 USB 与电脑
 5. **装配调试**：焊接 → 裸机检查 → 烧录 → 连接 Mac → 完整装壳。
 6. **出作品**：功能验收 → 拍照 → 视频 → 实际成本与失败记录。
 
-**当前正在执行：** [先完成采购执行单——当前不下单](/projects/hachimodock/purchase-plan/)；按清单询价、核对兼容与结构。
+**当前正在执行：** [采购执行单——当前不下单](/projects/hachimodock/purchase-plan/)。可在 [采购核对 Issue #1](https://github.com/mayf3/diy-lab/issues/1) 和 [结构模拟 Issue #2](https://github.com/mayf3/diy-lab/issues/2) 勾选进度。
 
 首次使用请直接从 [第 1 步：项目与关卡](/projects/hachimodock/01-start/) 开始，不要跳到购物环节。
 

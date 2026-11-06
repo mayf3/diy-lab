@@ -4,7 +4,7 @@
 
 **第一个完整案例**：[HachimoDock 哈基米机](content/projects/hachimodock/index.md)（2026-11-06，**准备中、未做实物验证**）。另外补录 2026 万圣节服装/门饰的制作参数与数字设计证据边界，以及圣诞互动帐篷的参数化模拟计划；历史项目的最终文件与实物验收证据尚待回填。
 
-**2026-11-06 更新**：已由用户 GitHub 账户创建公开仓库 <https://github.com/mayf3/diy-lab>。本站内容正在首次提交、部署校验；Pages 的公开访问地址以部署成功为准。
+**2026-11-06 更新**：已由用户 GitHub 账户创建公开仓库 <https://github.com/mayf3/diy-lab>。网站已经通过 GitHub Pages 自动部署，并验证可访问：<https://mayf3.github.io/diy-lab/>。
 
 ## 第 1 步：在自己的 Mac 上预览网站
 
@@ -49,7 +49,7 @@ python3 -m http.server 8000 --directory dist
 3. `git add . && git commit -m "Document DIY progress" && git push`。
 4. GitHub Actions 自动构建并发布到 Pages；首次可能需要仓库 Settings → Pages → Source 选择 **GitHub Actions**。
 
-**预期 Pages 地址**：<https://mayf3.github.io/diy-lab/>；如暂时无法访问，以 [Actions](https://github.com/mayf3/diy-lab/actions) 中的部署状态为准，不宣称未验证的部署成功。
+**已验证 Pages 地址**：<https://mayf3.github.io/diy-lab/>；如后续修改未出现，查看 [Actions](https://github.com/mayf3/diy-lab/actions) 的自动部署状态。
 
 ## 仓库结构
 
