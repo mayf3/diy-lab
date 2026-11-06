@@ -1,5 +1,17 @@
 # 版本记录
 
+## v0.2.0 — 2026-11-06
+
+- 圣诞互动帐篷 G0 数字模拟完成：Blender 参数化脚本（`--variant A/B` 一键重建）+ 18 项几何检查 0 FAIL；门洞×屋顶净空 A 10.0cm / B 20.9cm；站立净空条带（30/43.6cm）与 3.0×3.5m 小区域动线压力测试（门扇与帐篷角仅 5cm）列为采购前复核项。
+- 新增 G0 评审教程页（目标/验收/排错 + 可勾选关卡）、17 张渲染图（每张 ≤3MiB 门禁内）、两个 .blend 工程、尺寸 CSV 与检查 JSON（`source-data/christmas-magic-tent/g0/`、`public/media/christmas-magic-tent/g0/`）。
+- 项目页勾选前两关并标注"数字模拟证据，非实物验证"；结论边界：几何检查通过 ≠ 实物安全验证，仍不采购，下一步回填真实商品尺寸与真实房间数据重跑。
+
+## v0.1.2 — 2026-11-06
+
+- 新增 `source-data/hachimodock/blockers.csv`：把四个必留疑点（silicon 版次、屏幕 FFC、PCB 网表、机械轴封装）结构化为 `open → asked → closed` 登记行；`check.py` 强制 `closed` 必须附证据来源与核验日期，未全关不得标记项目为 `verified`。
+- 新增 `source-data/hachimodock/sources.csv`：权威来源登记（精确网址、版本标识、查看日期）；`check.py` 在超过 90 天未复核时输出非失败警告。
+- `build.py` 把两个新登记表随 BOM 一起复制到 `/downloads/`；采购执行单与第 2 关挂链说明。
+
 ## v0.1.0 — 2026-11-06
 
 - 建立 Maker Lab 中文静态教程站：适配桌面/手机、离线预览、搜索、可勾选进度和项目目录。

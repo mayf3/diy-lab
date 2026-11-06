@@ -2,7 +2,7 @@
 
 > 一个长期可维护的中文 DIY 教程网站。让新手按步骤复刻作品，把材料、购物、结构仿真、制作、验收、视频与失败记录留在同一个 GitHub 仓库。
 
-**第一个完整案例**：[HachimoDock 哈基米机](content/projects/hachimodock/index.md)（2026-11-06，**准备中、未做实物验证**）。另外补录 2026 万圣节服装/门饰的制作参数与数字设计证据边界，以及圣诞互动帐篷的参数化模拟计划；历史项目的最终文件与实物验收证据尚待回填。
+**第一个完整案例**：[HachimoDock 哈基米机](content/projects/hachimodock/index.md)（2026-11-06，**准备中、未做实物验证**）。另外补录 2026 万圣节服装/门饰的制作参数与数字设计证据边界，以及圣诞互动帐篷的 [G0 数字模拟评审](content/projects/christmas-magic-tent/g0-review.md)（A/B 几何对比完成，待真实商品尺寸回填）；历史项目的最终文件与实物验收证据尚待回填。
 
 **2026-11-06 更新**：已由用户 GitHub 账户创建公开仓库 <https://github.com/mayf3/diy-lab>。网站已经通过 GitHub Pages 自动部署，并验证可访问：<https://mayf3.github.io/diy-lab/>。
 

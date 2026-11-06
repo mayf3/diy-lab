@@ -1,0 +1,493 @@
+{
+  "meta": {
+    "generated_by": "tent_generator.py (G0)",
+    "blender": "5.2.0 LTS",
+    "note": "几何检查仅验证模型内几何关系，不是儿童产品安全认证。"
+  },
+  "variants": {
+    "A": {
+      "config": {
+        "room_w": 10.0,
+        "room_d": 10.0,
+        "E": 0.8,
+        "H": 1.35,
+        "door_w": 0.7,
+        "door_h": 0.9,
+        "win_w": 0.3,
+        "win_h": 0.4,
+        "win_z0": 0.3,
+        "post_r": 0.02,
+        "panel_t": 0.01,
+        "over": 0.05,
+        "path_len": 0.8,
+        "child_h_min": 1.0,
+        "child_h_max": 1.15,
+        "button_h": 0.8,
+        "req_door_clear": 0.05,
+        "headroom": 0.1
+      },
+      "variant_dims": {
+        "F": 1.1,
+        "D": 1.6
+      },
+      "derived": {
+        "variant": "A",
+        "F": 1.1,
+        "D": 1.6,
+        "E": 0.8,
+        "H": 1.35,
+        "rise": 0.55,
+        "half": 0.55,
+        "slope_angle_deg": 45.0,
+        "roof_slope_len": 0.7778,
+        "roofline_at_door_edge": 1.0,
+        "door_clear": 0.1,
+        "door_margin": 0.2,
+        "standing_strip_110": 0.3,
+        "standing_strip_115": 0.2,
+        "ridge_headroom_115": 0.2,
+        "ridge_headroom_110": 0.25,
+        "fabric": {
+          "front_gable_with_door": 0.553,
+          "back_gable": 1.183,
+          "side_walls_total": 2.32,
+          "roof_panels_total": 2.917,
+          "total_estimate": 6.972,
+          "curtain": 0.63,
+          "panel_slope_cut": 0.858,
+          "panel_width_cut": 1.7
+        },
+        "floor_inner": [
+          1.06,
+          1.56
+        ],
+        "floor_inner_area": 1.654,
+        "footprint_area": 1.76,
+        "window": {
+          "w": 0.3,
+          "h": 0.4,
+          "z0": 0.3,
+          "top_margin": 0.1,
+          "clr_to_post": 0.65
+        },
+        "room": {
+          "w": 10.0,
+          "d": 10.0,
+          "big_room": true,
+          "clr_x": 3.95,
+          "clr_y": 3.4,
+          "door_swing_to_tent": 4.528,
+          "door_swing_to_path": 4.14,
+          "furniture_min_dist": 3.45,
+          "elec_gap": 0.03
+        }
+      },
+      "checks": [
+        {
+          "id": "door_top_vs_roof",
+          "desc": "门洞顶角处屋面高度 - 门高（门顶已进入山墙区域，按实际屋面线检查）",
+          "value_cm": 10.0,
+          "threshold_cm": 5.0,
+          "status": "PASS",
+          "class": "GEOMETRY_VERIFIED",
+          "note": "净空最小点位于门洞两个上角 x=±35cm 处"
+        },
+        {
+          "id": "door_side_margin",
+          "desc": "门洞边到帐篷正面外缘净宽",
+          "value_cm": 20.0,
+          "threshold_cm": 10.0,
+          "status": "PASS",
+          "class": "GEOMETRY_VERIFIED",
+          "note": "A 方案每侧约 20cm，需确认真实商品门框/立柱不吃掉门口宽度"
+        },
+        {
+          "id": "window_top_margin",
+          "desc": "通风窗顶到檐口净空",
+          "value_cm": 10.0,
+          "threshold_cm": 5.0,
+          "status": "PASS",
+          "class": "GEOMETRY_VERIFIED",
+          "note": "避免与檐口横杆重叠"
+        },
+        {
+          "id": "window_to_post",
+          "desc": "通风窗边到前后立柱净宽",
+          "value_cm": 65.0,
+          "threshold_cm": 10.0,
+          "status": "PASS",
+          "class": "GEOMETRY_VERIFIED",
+          "note": "B 方案侧墙较短，富余较小但仍通过"
+        },
+        {
+          "id": "ridge_vs_child115",
+          "desc": "屋脊净高 - 儿童占位上限(115cm)",
+          "value_cm": 20.0,
+          "threshold_cm": 10.0,
+          "status": "PASS",
+          "class": "GEOMETRY_VERIFIED",
+          "note": "儿童占位高度为测试范围，非实测"
+        },
+        {
+          "id": "standing_strip_110",
+          "desc": "110cm 儿童可站立头顶净空的中央条带总宽",
+          "value_cm": 30.0,
+          "threshold_cm": null,
+          "status": "LIMIT",
+          "class": "GEOMETRY_VERIFIED",
+          "note": "仅在屋脊下方中央条带可直立，靠两侧需跪/坐——儿童帐篷常态"
+        },
+        {
+          "id": "standing_strip_115",
+          "desc": "115cm 儿童对应中央条带总宽",
+          "value_cm": 20.0,
+          "threshold_cm": null,
+          "status": "LIMIT",
+          "class": "GEOMETRY_VERIFIED",
+          "note": ""
+        },
+        {
+          "id": "door_height_vs_child",
+          "desc": "门高 90cm vs 儿童站立高度 100~115cm",
+          "value_cm": 90.0,
+          "threshold_cm": 100.0,
+          "status": "NOTE",
+          "class": "GEOMETRY_VERIFIED",
+          "note": "进入必须弯腰/爬行，属产品类型常态；如需成人直立进入须提高门高"
+        },
+        {
+          "id": "adult_entry",
+          "desc": "成人维护进入（门高 90cm、屋脊 135cm）",
+          "value_cm": 135.0,
+          "threshold_cm": 170.0,
+          "status": "NOTE",
+          "class": "GEOMETRY_VERIFIED",
+          "note": "成人无法直立进入，收拾/维护需从门口伸手或蹲入"
+        },
+        {
+          "id": "room_wall_clear_x",
+          "desc": "帐篷+装饰区外缘 到 左右墙净距（房间尺寸[INPUT]待复核）",
+          "value_cm": 395.0,
+          "threshold_cm": 30.0,
+          "status": "PASS",
+          "class": "ASSUMPTION_DEPENDENT",
+          "note": "房间 10m x 10m 为待复核输入"
+        },
+        {
+          "id": "room_wall_clear_y",
+          "desc": "帐篷+门前通道 到 前后墙净距",
+          "value_cm": 340.0,
+          "threshold_cm": 30.0,
+          "status": "PASS",
+          "class": "ASSUMPTION_DEPENDENT",
+          "note": ""
+        },
+        {
+          "id": "room_door_swing_vs_tent",
+          "desc": "房间门开启扇 旋转范围 与 帐篷本体最小距离",
+          "value_cm": 452.79999999999995,
+          "threshold_cm": 30.0,
+          "status": "PASS",
+          "class": "ASSUMPTION_DEPENDENT",
+          "note": "房间门位置为假设；小房间压力测试中该值仅 5cm，触发 WARN"
+        },
+        {
+          "id": "room_door_swing_vs_path",
+          "desc": "门扇旋转范围 与 门前通道重叠距离",
+          "value_cm": 413.99999999999994,
+          "threshold_cm": 15.0,
+          "status": "PASS",
+          "class": "ASSUMPTION_DEPENDENT",
+          "note": "小房间(3.0x3.5m)压力测试中通道与门扇范围重叠，进出会互相干扰"
+        },
+        {
+          "id": "furniture_min_dist",
+          "desc": "帐篷本体到（假设的）最近家具占位距离",
+          "value_cm": 345.0,
+          "threshold_cm": 30.0,
+          "status": "PASS",
+          "class": "ASSUMPTION_DEPENDENT",
+          "note": "家具位置纯假设，待真实房间照片校核"
+        },
+        {
+          "id": "elec_box_gap",
+          "desc": "电子盒(帐外)离侧墙间隙",
+          "value_cm": 3.0,
+          "threshold_cm": 3.0,
+          "status": "PASS",
+          "class": "DESIGN_ASSUMPTION",
+          "note": "控制盒/电源默认放帐外，帐内只留低压发光件（设计决策）"
+        },
+        {
+          "id": "button_height",
+          "desc": "按钮操作高度 80cm（儿童可达性）",
+          "value_cm": 80.0,
+          "threshold_cm": null,
+          "status": "INFO",
+          "class": "DESIGN_ASSUMPTION",
+          "note": "80cm 在常见 3~6 岁儿童可及范围内，属设计假设"
+        },
+        {
+          "id": "interior_floor",
+          "desc": "帐内可用地面（近似，扣除角柱占位）",
+          "value_cm": 16540.0,
+          "threshold_cm": null,
+          "status": "INFO",
+          "class": "DERIVED",
+          "note": "单位 cm^2"
+        },
+        {
+          "id": "roof_slope_len",
+          "desc": "屋面斜长 S=sqrt((F/2)^2+(H-E)^2)",
+          "value_cm": 77.78,
+          "threshold_cm": null,
+          "status": "INFO",
+          "class": "DERIVED",
+          "note": "屋顶面料斜向裁剪参考"
+        }
+      ]
+    },
+    "B": {
+      "config": {
+        "room_w": 10.0,
+        "room_d": 10.0,
+        "E": 0.8,
+        "H": 1.35,
+        "door_w": 0.7,
+        "door_h": 0.9,
+        "win_w": 0.3,
+        "win_h": 0.4,
+        "win_z0": 0.3,
+        "post_r": 0.02,
+        "panel_t": 0.01,
+        "over": 0.05,
+        "path_len": 0.8,
+        "child_h_min": 1.0,
+        "child_h_max": 1.15,
+        "button_h": 0.8,
+        "req_door_clear": 0.05,
+        "headroom": 0.1
+      },
+      "variant_dims": {
+        "F": 1.6,
+        "D": 1.1
+      },
+      "derived": {
+        "variant": "B",
+        "F": 1.6,
+        "D": 1.1,
+        "E": 0.8,
+        "H": 1.35,
+        "rise": 0.55,
+        "half": 0.8,
+        "slope_angle_deg": 34.5,
+        "roof_slope_len": 0.9708,
+        "roofline_at_door_edge": 1.1094,
+        "door_clear": 0.2094,
+        "door_margin": 0.45,
+        "standing_strip_110": 0.436,
+        "standing_strip_115": 0.291,
+        "ridge_headroom_115": 0.2,
+        "ridge_headroom_110": 0.25,
+        "fabric": {
+          "front_gable_with_door": 1.09,
+          "back_gable": 1.72,
+          "side_walls_total": 1.52,
+          "roof_panels_total": 2.522,
+          "total_estimate": 6.852,
+          "curtain": 0.63,
+          "panel_slope_cut": 1.051,
+          "panel_width_cut": 1.2
+        },
+        "floor_inner": [
+          1.56,
+          1.06
+        ],
+        "floor_inner_area": 1.654,
+        "footprint_area": 1.76,
+        "window": {
+          "w": 0.3,
+          "h": 0.4,
+          "z0": 0.3,
+          "top_margin": 0.1,
+          "clr_to_post": 0.4
+        },
+        "room": {
+          "w": 10.0,
+          "d": 10.0,
+          "big_room": true,
+          "clr_x": 3.7,
+          "clr_y": 3.65,
+          "door_swing_to_tent": 4.552,
+          "door_swing_to_path": 4.296,
+          "furniture_min_dist": 3.2,
+          "elec_gap": 0.03
+        }
+      },
+      "checks": [
+        {
+          "id": "door_top_vs_roof",
+          "desc": "门洞顶角处屋面高度 - 门高（门顶已进入山墙区域，按实际屋面线检查）",
+          "value_cm": 20.94,
+          "threshold_cm": 5.0,
+          "status": "PASS",
+          "class": "GEOMETRY_VERIFIED",
+          "note": "净空最小点位于门洞两个上角 x=±35cm 处"
+        },
+        {
+          "id": "door_side_margin",
+          "desc": "门洞边到帐篷正面外缘净宽",
+          "value_cm": 45.0,
+          "threshold_cm": 10.0,
+          "status": "PASS",
+          "class": "GEOMETRY_VERIFIED",
+          "note": "A 方案每侧约 20cm，需确认真实商品门框/立柱不吃掉门口宽度"
+        },
+        {
+          "id": "window_top_margin",
+          "desc": "通风窗顶到檐口净空",
+          "value_cm": 10.0,
+          "threshold_cm": 5.0,
+          "status": "PASS",
+          "class": "GEOMETRY_VERIFIED",
+          "note": "避免与檐口横杆重叠"
+        },
+        {
+          "id": "window_to_post",
+          "desc": "通风窗边到前后立柱净宽",
+          "value_cm": 40.0,
+          "threshold_cm": 10.0,
+          "status": "PASS",
+          "class": "GEOMETRY_VERIFIED",
+          "note": "B 方案侧墙较短，富余较小但仍通过"
+        },
+        {
+          "id": "ridge_vs_child115",
+          "desc": "屋脊净高 - 儿童占位上限(115cm)",
+          "value_cm": 20.0,
+          "threshold_cm": 10.0,
+          "status": "PASS",
+          "class": "GEOMETRY_VERIFIED",
+          "note": "儿童占位高度为测试范围，非实测"
+        },
+        {
+          "id": "standing_strip_110",
+          "desc": "110cm 儿童可站立头顶净空的中央条带总宽",
+          "value_cm": 43.6,
+          "threshold_cm": null,
+          "status": "LIMIT",
+          "class": "GEOMETRY_VERIFIED",
+          "note": "仅在屋脊下方中央条带可直立，靠两侧需跪/坐——儿童帐篷常态"
+        },
+        {
+          "id": "standing_strip_115",
+          "desc": "115cm 儿童对应中央条带总宽",
+          "value_cm": 29.099999999999998,
+          "threshold_cm": null,
+          "status": "LIMIT",
+          "class": "GEOMETRY_VERIFIED",
+          "note": ""
+        },
+        {
+          "id": "door_height_vs_child",
+          "desc": "门高 90cm vs 儿童站立高度 100~115cm",
+          "value_cm": 90.0,
+          "threshold_cm": 100.0,
+          "status": "NOTE",
+          "class": "GEOMETRY_VERIFIED",
+          "note": "进入必须弯腰/爬行，属产品类型常态；如需成人直立进入须提高门高"
+        },
+        {
+          "id": "adult_entry",
+          "desc": "成人维护进入（门高 90cm、屋脊 135cm）",
+          "value_cm": 135.0,
+          "threshold_cm": 170.0,
+          "status": "NOTE",
+          "class": "GEOMETRY_VERIFIED",
+          "note": "成人无法直立进入，收拾/维护需从门口伸手或蹲入"
+        },
+        {
+          "id": "room_wall_clear_x",
+          "desc": "帐篷+装饰区外缘 到 左右墙净距（房间尺寸[INPUT]待复核）",
+          "value_cm": 370.0,
+          "threshold_cm": 30.0,
+          "status": "PASS",
+          "class": "ASSUMPTION_DEPENDENT",
+          "note": "房间 10m x 10m 为待复核输入"
+        },
+        {
+          "id": "room_wall_clear_y",
+          "desc": "帐篷+门前通道 到 前后墙净距",
+          "value_cm": 365.0,
+          "threshold_cm": 30.0,
+          "status": "PASS",
+          "class": "ASSUMPTION_DEPENDENT",
+          "note": ""
+        },
+        {
+          "id": "room_door_swing_vs_tent",
+          "desc": "房间门开启扇 旋转范围 与 帐篷本体最小距离",
+          "value_cm": 455.19999999999993,
+          "threshold_cm": 30.0,
+          "status": "PASS",
+          "class": "ASSUMPTION_DEPENDENT",
+          "note": "房间门位置为假设；小房间压力测试中该值仅 5cm，触发 WARN"
+        },
+        {
+          "id": "room_door_swing_vs_path",
+          "desc": "门扇旋转范围 与 门前通道重叠距离",
+          "value_cm": 429.6,
+          "threshold_cm": 15.0,
+          "status": "PASS",
+          "class": "ASSUMPTION_DEPENDENT",
+          "note": "小房间(3.0x3.5m)压力测试中通道与门扇范围重叠，进出会互相干扰"
+        },
+        {
+          "id": "furniture_min_dist",
+          "desc": "帐篷本体到（假设的）最近家具占位距离",
+          "value_cm": 320.0,
+          "threshold_cm": 30.0,
+          "status": "PASS",
+          "class": "ASSUMPTION_DEPENDENT",
+          "note": "家具位置纯假设，待真实房间照片校核"
+        },
+        {
+          "id": "elec_box_gap",
+          "desc": "电子盒(帐外)离侧墙间隙",
+          "value_cm": 3.0,
+          "threshold_cm": 3.0,
+          "status": "PASS",
+          "class": "DESIGN_ASSUMPTION",
+          "note": "控制盒/电源默认放帐外，帐内只留低压发光件（设计决策）"
+        },
+        {
+          "id": "button_height",
+          "desc": "按钮操作高度 80cm（儿童可达性）",
+          "value_cm": 80.0,
+          "threshold_cm": null,
+          "status": "INFO",
+          "class": "DESIGN_ASSUMPTION",
+          "note": "80cm 在常见 3~6 岁儿童可及范围内，属设计假设"
+        },
+        {
+          "id": "interior_floor",
+          "desc": "帐内可用地面（近似，扣除角柱占位）",
+          "value_cm": 16540.0,
+          "threshold_cm": null,
+          "status": "INFO",
+          "class": "DERIVED",
+          "note": "单位 cm^2"
+        },
+        {
+          "id": "roof_slope_len",
+          "desc": "屋面斜长 S=sqrt((F/2)^2+(H-E)^2)",
+          "value_cm": 97.08,
+          "threshold_cm": null,
+          "status": "INFO",
+          "class": "DERIVED",
+          "note": "屋顶面料斜向裁剪参考"
+        }
+      ]
+    }
+  }
+}
