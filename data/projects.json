@@ -147,6 +147,20 @@
         "title": "G2-V1：Wokwi 数字模拟（UNO+按钮+4×WS2812）",
         "minutes": "20 分钟",
         "phase": "数字模拟"
+      },
+      {
+        "id": "g1a",
+        "file": "g1a-budget.md",
+        "title": "G1a：商品核实与完整预算收敛",
+        "minutes": "15 分钟",
+        "phase": "采购评审前"
+      },
+      {
+        "id": "g2-v2",
+        "file": "g2-v2.md",
+        "title": "G2-V2：PIR 迎宾与声音事件数字模拟",
+        "minutes": "15 分钟",
+        "phase": "数字模拟"
       }
     ]
   }

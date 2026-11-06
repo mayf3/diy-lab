@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "author": "Project Christmas Magic Tent - G2-V2 (PIR greeter, virtual UNO baseline)",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "wokwi-arduino-uno", "id": "uno", "top": 20, "left": 20, "attrs": {} },
+    { "type": "wokwi-pushbutton", "id": "btn", "top": 40, "left": 420, "attrs": { "color": "red", "label": "MODE", "key": "Q" } },
+    { "type": "wokwi-slide-switch", "id": "pir", "top": 140, "left": 420, "attrs": { "label": "PIR(sim)", "color": "green" } },
+    { "type": "wokwi-neopixel", "id": "np1", "top": 260, "left": 430, "attrs": {} },
+    { "type": "wokwi-neopixel", "id": "np2", "top": 260, "left": 490, "attrs": {} },
+    { "type": "wokwi-neopixel", "id": "np3", "top": 260, "left": 550, "attrs": {} },
+    { "type": "wokwi-neopixel", "id": "np4", "top": 260, "left": 610, "attrs": {} }
+  ],
+  "connections": [
+    [ "uno:2", "btn:1.l", "gold", [ "v0" ] ],
+    [ "btn:2.l", "uno:GND.1", "black", [ "v0" ] ],
+    [ "uno:3", "pir:2", "orange", [ "v0" ] ],
+    [ "pir:1", "uno:5V", "red", [ "v0" ] ],
+    [ "pir:3", "uno:GND.2", "black", [ "v0" ] ],
+    [ "uno:6", "np1:DIN", "green", [ "v0" ] ],
+    [ "np1:DOUT", "np2:DIN", "green", [ "v0" ] ],
+    [ "np2:DOUT", "np3:DIN", "green", [ "v0" ] ],
+    [ "np3:DOUT", "np4:DIN", "green", [ "v0" ] ],
+    [ "uno:5V", "np1:VDD", "red", [ "v0" ] ],
+    [ "np1:VDD", "np2:VDD", "red", [ "v0" ] ],
+    [ "np2:VDD", "np3:VDD", "red", [ "v0" ] ],
+    [ "np3:VDD", "np4:VDD", "red", [ "v0" ] ],
+    [ "uno:GND.2", "np1:VSS", "black", [ "v0" ] ],
+    [ "np1:VSS", "np2:VSS", "black", [ "v0" ] ],
+    [ "np2:VSS", "np3:VSS", "black", [ "v0" ] ],
+    [ "np3:VSS", "np4:VSS", "black", [ "v0" ] ]
+  ],
+  "dependencies": {}
+}
