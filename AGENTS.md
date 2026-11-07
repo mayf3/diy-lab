@@ -55,3 +55,8 @@ G0 示例用 source-data/christmas-magic-tent/video/g0-storyboard.json + scripts
 `ESP32-P4 silicon v1/v3`、`2.8寸屏和 FFC 规格`、`PCB_V1.2 网表差异`、`BOX vs CPG135001D01 机械轴`。未有实测证据前，绝不可抹掉文档中的警示。
 
 四个疑点结构化登记在 `source-data/hachimodock/blockers.csv`（状态 `open → asked → closed`），权威来源及查看日期登记在 `source-data/hachimodock/sources.csv`。`scripts/check.py` 强制：`closed` 必须附证据链接和核验日期；疑点未全关不得把项目标为 `verified`；来源/疑点超过 90 天未复核会输出警告。
+
+
+## Remotion 视频输出（作者端）
+
+有 Remotion 工作时：读取 `content/guide/remotion.md` 和 `video/remotion/README.md`，维护唯一真实分镜 `source-data/*/video/*.json`，用 `python3 scripts/prepare_remotion.py` 校验来源、复制授权媒体并生成 props，`npm ci` 后可运行 Studio / render。外部 DIY 读者不需要安装 Node。严禁将用 SVG/Blender 做的步骤示意伪称实物测量、购买、装配已成功。视频以 Release 等非 Git 历史方式发布，真实软件/实物操作需实录并标注来源。仓库已有其他会话 worktree 时不要修改其未提交文件。

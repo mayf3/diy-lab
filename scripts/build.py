@@ -228,6 +228,7 @@ def sidebar(slug: str, project: dict | None) -> str:
         links.append(nav_link(slug, "guide/agent-first", "有 AI 帮忙的 DIY"))
         links.append(nav_link(slug, "guide/diy-primitives", "DIY 原语与 Agent 分工"))
         links.append(nav_link(slug, "guide/video-production", "DIY 视频制作与工具"))
+        links.append(nav_link(slug, "guide/remotion", "Remotion 视频工作流"))
         links.append(nav_link(slug, "guide/new-project", "创建一个新项目"))
         links.append(nav_link(slug, "guide/media", "拍摄、照片与素材"))
         links.append(nav_link(slug, "guide/legal", "版权与事实声明"))
