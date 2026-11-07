@@ -2,7 +2,7 @@
 
 **Agent-first · 面向所有新手**。不假设读者有 Bambu P1S、Mac 或焊台：人类版只引导实际动手和授权，Agent 版负责 GitHub、EDA、CAD、BOM、兼容性、供应商查证。两种视图从同一份结构化工作流生成。
 
-[在线新手入口](https://mayf3.github.io/diy-lab/guide/agent-first/) · [HachimoDock 人类版](https://mayf3.github.io/diy-lab/projects/hachimodock/human-track/) · [Agent 版](https://mayf3.github.io/diy-lab/projects/hachimodock/agent-track/) · [DIY 原语](https://mayf3.github.io/diy-lab/guide/diy-primitives/) · [Agent 任务入口](AGENT_RUNBOOK.md)
+[在线新手入口](https://mayf3.github.io/diy-lab/guide/agent-first/) · [HachimoDock 人类版](https://mayf3.github.io/diy-lab/projects/hachimodock/human-track/) · [Agent 版](https://mayf3.github.io/diy-lab/projects/hachimodock/agent-track/) · [Robot Lab 人类版](https://mayf3.github.io/diy-lab/projects/robot-lab-draw-tree/human-track/) · [Robot Lab Agent 版](https://mayf3.github.io/diy-lab/projects/robot-lab-draw-tree/agent-track/) · [DIY 原语](https://mayf3.github.io/diy-lab/guide/diy-primitives/) · [Agent 任务入口](AGENT_RUNBOOK.md)
 
 
 
@@ -87,7 +87,8 @@ diy-lab/
 │       ├── christmas-magic-tent/ # 规划中
 │       └── robot-lab-draw-tree/ # SO-101 机械臂画树：准备中
 ├── source-data/
-│   └── hachimodock/bom.csv    # 可在 Excel/Numbers 中编辑的材料表
+│   ├── hachimodock/          # HachimoDock BOM、blockers 与 workflow
+│   └── robot-lab-draw-tree/  # SO-101 BOM、来源、blockers 与 DOAVR workflow
 ├── public/media/             # 仅放有授权的小照片与缩略图
 ├── templates/project/        # 以后每个新 DIY 都复用的模板
 ├── scripts/
