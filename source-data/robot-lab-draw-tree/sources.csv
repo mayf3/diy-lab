@@ -1,0 +1,6 @@
+id,名称,类型,网址,版本或标识,查看日期,用途,状态
+R1,TheRobotStudio SO101 开源硬件,上游官方仓库,https://github.com/TheRobotStudio/SO-ARM100,main 页面核查2026-11-07;打印前需锁定commit,2026-11-07,BOM/打印文件/国内购买来源/可选配件,active
+R2,Hugging Face LeRobot SO101 指南,官方文档,https://huggingface.co/docs/lerobot/so101,文档页面核查2026-11-07;实施时再校验API,2026-11-07,安装配置电机ID/装配/校准,active
+R3,Hugging Face LeRobot 模仿学习,官方文档,https://huggingface.co/docs/lerobot/il_robots,文档页面核查2026-11-07,后续示教/采集/训练路线,active
+R4,SO101 MuJoCo URDF 模拟,上游官方仓库,https://github.com/TheRobotStudio/SO-ARM100/tree/main/Simulation/SO101,main 页面核查2026-11-07;执行时固定版本,2026-11-07,工作区/运动学/模拟参考但不能代替实物检验,active
+R5,Hugging Face LeRobot 相机文档,官方文档,https://huggingface.co/docs/lerobot/cameras,文档页面核查2026-11-07,USB相机选型与测试入口,active
