@@ -1,5 +1,16 @@
 # 版本记录
 
+## v0.3.0（Agent-first 双版本与 DIY 原语提案）— 2026-11-07
+
+- 对公共新手教程取消“已有 Bambu P1S / Apple silicon Mac”的默认前提，增加自有打印、借用、代打印以及电脑平台与焊接资源分流。
+- 将 GitHub、立创 EDA、BOM、CAD、官方发布资料的获取与核实明确委托有相应权限的 Agent；真实焊接、付款、通电、测量和实物验收仍需人或服务商完成。
+- 提出 DOAVR 五原语（D/O/A/V/R），以 `source-data/hachimodock/workflow.json` 为单一流程事实源，自动生成 `human-track.md` 与 `agent-track.md` 两种阅读视图。
+- 新项目脚本自动创建原语模板与双视图；内容检查拒绝视图漂移和无证据的 observed 状态，增加回归测试（含新项目从零构建）。
+- 保留 HachimoDock 原有 13 关深入教程、BOM 与历史证据边界；不把未采购/未实物测试的项目标为完成。
+
+关联 [Issue #4](https://github.com/mayf3/diy-lab/issues/4)。
+
+
 ## v0.2.1 — 2026-11-06
 
 - 本机常驻预览服务：`build.py` 在检测到镜像目录 `~/Library/Application Support/MakerLabSite/` 时自动同步 `dist/`；LaunchAgent（`com.mayf3.makerlab.site`）在 `http://127.0.0.1:8123/` 提供只绑定 127.0.0.1 的站点服务。镜像目录置于 TCC 非保护区，规避 launchd 进程无 `~/Documents` 访问权限的问题；README 增加说明。

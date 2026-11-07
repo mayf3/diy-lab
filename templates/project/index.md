@@ -1,6 +1,15 @@
 # {{TITLE}}｜项目总览
 
+> **面向外部新手**：不能假定读者已有特定品牌 3D 打印机、电脑系统、焊接工具。先填写资源路线和可选代工方案，Agent 自主核对官方来源/零件规格；高风险实物操作由人确认。
+
+- [人类制作版](/projects/{{SLUG}}/human-track/)
+- [Agent 执行版](/projects/{{SLUG}}/agent-track/)
+
 > **状态：规划中，尚未采购/实测。** 请先用来源和实测证据替换模板句子。
+
+## 制作路线
+
+项目初始化时，Agent 版与人类版会从 `source-data/{{SLUG}}/workflow.json` 同时生成。请先更新工作流再运行 `python3 scripts/render_diy_ir.py`，不要直接修改生成的页面，避免两种版本漂移。
 
 ## 最终目标
 

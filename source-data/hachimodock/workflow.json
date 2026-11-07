@@ -1,0 +1,432 @@
+{
+  "schema_version": "0.1",
+  "project": "hachimodock",
+  "updated": "2026-11-07",
+  "direction": {
+    "goal": "复刻能通过电脑客户端显示真实 Agent 状态的 HachimoDock 桌面装置",
+    "audience": "没有专业电子基础的公众读者；不预设拥有任何品牌 3D 打印机、Mac 或焊接工具",
+    "non_goals": [
+      "首台不自研 PCB/驱动",
+      "不代替实物测试或售后保证",
+      "不自动付款或绕过供电安全",
+      "不未经许可再发布上游模型、PCB 与视频"
+    ],
+    "done_when": "实物完成结构、输入、显示、音频和 USB 重连测试，能看到一次真实 Agent 状态变化，并记录真实证据"
+  },
+  "resource_routes": [
+    {
+      "id": "computer",
+      "question": "你使用什么电脑？",
+      "options": [
+        "macOS（按官方当前下载与操作方式核查）",
+        "Windows（须在官方软件支持条件下采用）",
+        "Linux（须在官方软件支持条件下采用）",
+        "暂无电脑/不确定"
+      ],
+      "policy": "不因作者使用 Apple silicon Mac 就推定所有电脑可用"
+    },
+    {
+      "id": "printer",
+      "question": "你准备怎样得到打印件？",
+      "options": [
+        "有自己的 3D 打印机（不限品牌，按型号调切片）",
+        "借用朋友/学校/创客空间的打印机",
+        "找正规 3D 代打印服务",
+        "还没决定"
+      ],
+      "policy": "不要求购买 Bambu P1S；没有打印机也可以继续资料与采购前验证"
+    },
+    {
+      "id": "solder",
+      "question": "是否具备安全的焊接环境和能力？",
+      "options": [
+        "自己具备工具与经验",
+        "学习练习后自焊",
+        "请有能力的人或商家代焊",
+        "暂时不做硬件"
+      ],
+      "policy": "不能用 AI 推理取代真实的电气检查与安全操作"
+    }
+  ],
+  "references": [
+    {
+      "id": "upstream-code",
+      "url": "https://github.com/YizhengWw/HachimoDock",
+      "role": "上游软件与使用方法"
+    },
+    {
+      "id": "upstream-hardware",
+      "url": "https://oshwhub.com/eda_gqvzlprk/project_cnbmkbjc",
+      "role": "PCB、BOM、STEP 与装配资料"
+    },
+    {
+      "id": "board-guide",
+      "url": "https://docs.waveshare.com/ESP32-P4-WIFI6",
+      "role": "主控板连接器与版次"
+    },
+    {
+      "id": "releases",
+      "url": "https://github.com/YizhengWw/HachimoDock/releases/latest",
+      "role": "以执行当天确认的软件与固件版本"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "A01",
+      "title": "确定制作目标和现有资源",
+      "actor": "shared",
+      "requires": [],
+      "goal": "选好电脑与打印/焊接路径；先不购物",
+      "agent": [
+        "仅询问电脑系统、打印资源、焊接条件、预算上限、是否允许供应商联系；未知保留 unknown",
+        "依据选项列出自有打印、借用、代打印分支和本次最低额外购买需求",
+        "明确本阶段所有采购、软件烧录和通电都未执行"
+      ],
+      "human": [
+        "回答电脑系统、打印机/代打印计划、是否有焊接工具、预算；不懂型号可拍设备铭牌"
+      ],
+      "outputs": [
+        "资源路径记录",
+        "预算约束"
+      ],
+      "verify": {
+        "type": "human-confirmation",
+        "criteria": "路径、预算、未知项都有明确记录；不要求已有 P1S/Mac",
+        "status": "planned"
+      },
+      "block": "信息不全时使用待确认路线，不阻塞后续公开资料检索",
+      "deep": "/projects/hachimodock/01-start/",
+      "status": "planned",
+      "human_summary": "AI 先帮你选择最省钱的可行路线，不会要求你先买 3D 打印机。"
+    },
+    {
+      "id": "A02",
+      "title": "Agent 读取官方 GitHub、立创和版本记录",
+      "actor": "agent",
+      "requires": [
+        "A01"
+      ],
+      "goal": "收集正确的上游资源，不让新手自己逐页查阅",
+      "agent": [
+        "用可用的 GitHub/网页工具读取 HachimoDock README、Releases、当前 license，记录具体链接、检查日期和版本",
+        "读取 OSHWHub 工程的 PCB_V1.2、SCH_V1.2、BOM、两份 STEP、装配视频的实际获取方式；**不复制未获再发布许可的内容到公开仓库**",
+        "读取微雪板卡文档并列出已知芯片修订、接口与用户环境的约束，列明哪些文档须登录才可下载"
+      ],
+      "human": [
+        "若受登录或附件权限限制，向 Agent 提供自己合法获得的文件/页面截图，不需要自己判断技术内容"
+      ],
+      "outputs": [
+        "来源与版本核对表（链接/日期/工程标识）",
+        "还未取得的上游文件清单"
+      ],
+      "verify": {
+        "type": "public-source",
+        "criteria": "所有结论可指向官方证据；受限下载如实标 unresolved",
+        "status": "planned"
+      },
+      "block": "官方链接过期或无法访问就标无法读取；不得用未经验证的第三方镜像替代",
+      "deep": "/projects/hachimodock/02-sources/",
+      "status": "planned",
+      "human_summary": "AI 会读取官方 GitHub、立创项目、版本与版权资料，并告诉你哪些真正能用。"
+    },
+    {
+      "id": "A03",
+      "title": "Agent 做四项兼容性核验",
+      "actor": "agent",
+      "requires": [
+        "A02"
+      ],
+      "goal": "先确认能买对主控、屏幕、PCB、轴体",
+      "agent": [
+        "从已公开工程和版次说明构建主控 silicon v1/v3—官方固件构建兼容矩阵；M/已焊排针不代表 v3",
+        "核对屏幕 MIPI-DSI、实际屏幕模组、22P 0.5mm FFC 的触点/长度/驱动；只凭分辨率不判通过",
+        "核对 PCB_V1.2 与 SCH_V1.2 的 SW1-3 KEY-TH_CPG135001D0X / C400229、排母、摇杆的封装；历史 BOX 文案与 BOM 的差异不能直接判全部问题已解决",
+        "把公开资料无法确认的具体 SKU/供货批次/外壳配合留 HOLD，写清最低补证信息"
+      ],
+      "human": [
+        "若 Agent 找不到非公开屏幕规格或芯片批次，由人代转发向卖家的精确问题和答复；不要求人自己验证封装"
+      ],
+      "outputs": [
+        "兼容矩阵与 HOLD 阻塞项",
+        "缺证据要问的问题"
+      ],
+      "verify": {
+        "type": "public-source",
+        "criteria": "每个兼容结论有型号、版本、来源及证据等级；尚不能确定的不得 PASS",
+        "status": "planned"
+      },
+      "block": "任一关键型号或接口冲突，停止采购对应批次并升级到原作者/供应商的实证",
+      "deep": "/projects/hachimodock/purchase-plan/",
+      "status": "planned",
+      "human_summary": "AI 会对比主控、屏幕、排线、PCB 与按键的兼容关系，把仍未知的地方明确标红。"
+    },
+    {
+      "id": "A04",
+      "title": "Agent 模拟装配并决定打印路线",
+      "actor": "shared",
+      "requires": [
+        "A02",
+        "A01"
+      ],
+      "goal": "在付款之前识别结构冲突与打印方案",
+      "agent": [
+        "根据官方 STEP、PCB 3D、屏幕/主控尺寸图做几何检查：孔位、按键高度、FFC 弯折、USB 开口、螺孔",
+        "对自有打印机：根据真实型号、喷嘴、材料使用对应切片器，提供朝向/支撑/耗材/时间的**模拟结果**；不能沿用 P1S 参数当通用方案",
+        "对没有打印机：生成可交给合法代打印服务的规格单（文件、材料、强度用途、关键孔尺寸、是否需要试件、预计数量），收集含运费报价",
+        "所有没有真实 CAD 输入或尺寸图的项标 UNKNOWN，不把模拟当作实物配合通过"
+      ],
+      "human": [
+        "选择自己的打印或代打印路径；如模型只能登录下载，提供源文件给有权限的 Agent；暂无机器也能先做模拟"
+      ],
+      "outputs": [
+        "几何碰撞/公差清单",
+        "打印或代打印方案与试件计划"
+      ],
+      "verify": {
+        "type": "simulation",
+        "criteria": "软件/模型/版本/假设均记录；所有物理卡口待实物干配",
+        "status": "planned"
+      },
+      "block": "缺 STEP/尺寸图不能宣称“无碰撞”；先询问文件或向供应商索取尺寸",
+      "deep": "/projects/hachimodock/04-simulation/",
+      "status": "planned",
+      "human_summary": "AI 会分析外壳尺寸、打印需求，按你是否拥有机器推荐自打印、借用或代打印方案。"
+    },
+    {
+      "id": "A05",
+      "title": "Agent 形成可采购的 BOM 和真实到手预算",
+      "actor": "agent",
+      "requires": [
+        "A03",
+        "A04"
+      ],
+      "goal": "让人拿到精确购物单而不是规格模糊的商品名",
+      "agent": [
+        "根据 source-data/hachimodock/bom.csv、blockers.csv 更新各项 SKU、替代与数量",
+        "查执行当天真实在售渠道和报价，记录商品页链接、售卖地区、发布时间/读取日、价格、运费、PCB 打样最小数量和代打印费用",
+        "核算一次性工具成本与可复用材料；将官方历史参考价与当日实际报价分列",
+        "若仍有 HOLD，输出无法下单的清单，并指出可先采购的低风险通用件"
+      ],
+      "human": [],
+      "outputs": [
+        "可追溯到 SKU 的购物单",
+        "含运费预算及待确认项"
+      ],
+      "verify": {
+        "type": "public-source",
+        "criteria": "型号与精确报价/运费明确，关键 HOLD 未被默默放行；无报价不声称预算已闭环",
+        "status": "planned"
+      },
+      "block": "渠道无法读取实价就请求人提供购物车截图，由 Agent 计算；不把搜索摘要当实时成交价",
+      "deep": "/projects/hachimodock/03-bom/",
+      "status": "planned",
+      "human_summary": "AI 会生成精确购物链接与总预算，区分当前报价、旧参考价和待确认材料。"
+    },
+    {
+      "id": "A06",
+      "title": "采购授权门禁：人确认是否下单",
+      "actor": "human",
+      "requires": [
+        "A05"
+      ],
+      "goal": "避免错买和未经授权的支付",
+      "agent": [
+        "给出分批采购选择：必要核心件、标准五金、工具与打印路线；逐项标明 PASS/HOLD/UNKNOWN 和总价",
+        "出示清单与风险，但不因为是公开 BOM 就自动放行付款"
+      ],
+      "human": [
+        "对精确 SKU、数量、含运费总价作最后决定；明确授权后才付款/安排代打印/打样"
+      ],
+      "outputs": [
+        "用户购买决定及具体 SKU 批次"
+      ],
+      "verify": {
+        "type": "human-approval",
+        "criteria": "有明确同意和准确商品、价格、渠道；关键 HOLD 不允许靠推测直接购买",
+        "status": "planned"
+      },
+      "block": "仍有决定性 HOLD 或预算超标时，不付款，返回 Agent 检查或换方案",
+      "deep": "/projects/hachimodock/purchase-plan/",
+      "status": "planned",
+      "human_summary": "AI 会把已经核实的购物车列给你看；**只有你明确批准才能付款**。"
+    },
+    {
+      "id": "A07",
+      "title": "完成采购、PCB 打样或代打印订单",
+      "actor": "shared",
+      "requires": [
+        "A06"
+      ],
+      "goal": "正确获得零件，不擅自更改官方电路",
+      "agent": [
+        "按已经授权的精确型号生成商家/工厂下单参数（PCB 基于上游指定工程，避免误点自动同步网表）",
+        "登记订单到货时间、SKU 与预计数量，不要求公开姓名/地址/付款截图"
+      ],
+      "human": [
+        "自行完成付款或另行显式授权支持的交易工具；收货核对包装与料号，仅向 Agent 分享去隐私的规格照片"
+      ],
+      "outputs": [
+        "采购台账、实收料号与缺件表"
+      ],
+      "verify": {
+        "type": "physical-observation",
+        "criteria": "实收型号与授权清单一致；发货不等于到货验证",
+        "status": "planned"
+      },
+      "block": "收到不匹配型号立即停止对应安装并联系商家，不带电试错",
+      "deep": "/projects/hachimodock/05-pcb/",
+      "status": "planned",
+      "human_summary": "AI 会准备 PCB 打样参数和收货核对表，帮你记录材料与型号。"
+    },
+    {
+      "id": "A08",
+      "title": "打印外壳或验收代打印件",
+      "actor": "shared",
+      "requires": [
+        "A07",
+        "A04"
+      ],
+      "goal": "得到可实际干配的外壳",
+      "agent": [
+        "按真实设备/代打印商能力准备专用切片或服务验收表，优先试验螺孔、屏幕和按键局部件",
+        "看到用户照片与卡尺尺寸后对照 CAD 建立误差表；Agent 只能辅助解释物理观察"
+      ],
+      "human": [
+        "有打印机则按机型安全流程打印，没打印机则收代打印件；用卡尺/实物检查屏幕、按键、USB 孔、PCB 干配；上传去隐私的照片或读数"
+      ],
+      "outputs": [
+        "试件和尺寸记录",
+        "最终外壳与打印消耗"
+      ],
+      "verify": {
+        "type": "physical-measurement",
+        "criteria": "由实际干配/尺寸测量证明；数字切片不能等同通过",
+        "status": "planned"
+      },
+      "block": "配合不通过时只调整明确失败位置，先打小试件而非盲目重打整件",
+      "deep": "/projects/hachimodock/06-print/",
+      "status": "planned",
+      "human_summary": "AI 会根据你的设备或代打印方案准备参数，并对比你提供的实物尺寸。"
+    },
+    {
+      "id": "A09",
+      "title": "焊接 PCB 并进行断电检查",
+      "actor": "shared",
+      "requires": [
+        "A07"
+      ],
+      "goal": "避免引脚错焊和通电短路",
+      "agent": [
+        "提供对应 PCB_V1.2 的元件位置、焊接方向和万用表测量位置；照片不足时明确要求更清晰细节",
+        "将检查结果分为看图判断与人实际测量，不凭照片说电路绝对安全"
+      ],
+      "human": [
+        "如果不具备焊接经验，先练习或找有能力的协助者；断电插入器件并焊接，用万用表确认关键点无意外短路；发现异常立即停止"
+      ],
+      "outputs": [
+        "焊点照片、断电检查记录"
+      ],
+      "verify": {
+        "type": "physical-measurement",
+        "criteria": "经过实际测量而非 Agent 看图推测；不确定时不通电",
+        "status": "planned"
+      },
+      "block": "短路、冒烟、发烫或型号冲突就断电停止，不能继续刷固件验证",
+      "deep": "/projects/hachimodock/07-solder/",
+      "status": "planned",
+      "human_summary": "AI 会指出器件位置和测量要求，但电烙铁操作与真实万用表测量仍需现场完成。"
+    },
+    {
+      "id": "A10",
+      "title": "Agent 准备匹配固件，人确认写入",
+      "actor": "shared",
+      "requires": [
+        "A09",
+        "A03"
+      ],
+      "goal": "按实际 ESP32-P4 芯片修订烧录正确固件",
+      "agent": [
+        "按执行当天上游 Release 和实际芯片检测结果选 v1/v3 固件与官方烧录脚本",
+        "校验官方校验和、识别机器平台与串口，提出明确命令及其写入影响",
+        "不要跳过上游的芯片版次检查、硬编码 flash offset 或混刷不同包"
+      ],
+      "human": [
+        "连上 USB，按提示操作 BOOT/RST；在了解会覆盖设备数据后授权执行烧录；记录终端成功/失败输出（去除设备 ID）"
+      ],
+      "outputs": [
+        "实际芯片版次证据",
+        "固件 SHA-256 与烧录日志"
+      ],
+      "verify": {
+        "type": "device-log",
+        "criteria": "官方工具报告烧录并校验成功；脚本准备好不等于烧录完成",
+        "status": "planned"
+      },
+      "block": "芯片版本不清、脚本签名/来源不明、烧录报错立即停止写入；先读真实错误再修",
+      "deep": "/projects/hachimodock/08-flash/",
+      "status": "planned",
+      "human_summary": "AI 会核对固件版本、下载文件校验和与实际芯片；烧录设备前仍须你的确认。"
+    },
+    {
+      "id": "A11",
+      "title": "安装电脑端客户端并做基础交互",
+      "actor": "shared",
+      "requires": [
+        "A10"
+      ],
+      "goal": "让硬件连接一台实际受支持的电脑并显示 Agent 工作状态",
+      "agent": [
+        "对读者电脑系统核实官方当前是否有匹配的客户端与接入方式；无对应系统包不能假装成功",
+        "给出最小验证任务：开机屏幕、SW1–3、摇杆、音频、一次真实 Agent 执行到完成；收集错误日志并形成排查树"
+      ],
+      "human": [
+        "连接 USB 并按 Agent 给出的 OS 操作步骤安装，真实按键/摇杆测试；麦克风与联网服务只在必要且取得授权时启用"
+      ],
+      "outputs": [
+        "连接与交互证据",
+        "系统/客户端/固件版本"
+      ],
+      "verify": {
+        "type": "physical-observation",
+        "criteria": "实机能显示一次真实 Agent 状态变化，按键和音频通过相应测试",
+        "status": "planned"
+      },
+      "block": "系统不受官方支持、USB 不识别或屏幕不亮时不编造兼容结论，回退到官方支持条件",
+      "deep": "/projects/hachimodock/09-desktop/",
+      "status": "planned",
+      "human_summary": "AI 会检查你电脑系统的官方支持情况，给出适用安装方案和小步测试。"
+    },
+    {
+      "id": "A12",
+      "title": "最终装壳、验收和发布复盘",
+      "actor": "shared",
+      "requires": [
+        "A11",
+        "A08"
+      ],
+      "goal": "装配完成并把真实经验沉淀到 Maker Lab",
+      "agent": [
+        "对照结构、输入、显示、供电/重连、约 30 分钟稳定运行、成本与失败记录生成验收清单",
+        "把“来源资料→数字模拟→现实测量→真正通过”分开写在日志中；提炼对未来新手有用的错误与修复",
+        "将个人照片、订单信息、儿童或工作内容做隐私脱敏，视频有拍摄才标已发布"
+      ],
+      "human": [
+        "断电装壳，用实机逐项操作，提供结果/照片/测量读数；确认可公开的内容与实际成本"
+      ],
+      "outputs": [
+        "带证据的最终验收报告",
+        "图文/视频教程修订和复盘"
+      ],
+      "verify": {
+        "type": "physical-observation",
+        "criteria": "由真实设备完成关键验证；缺项保留待测，不因视频拍摄而宣称通过",
+        "status": "planned"
+      },
+      "block": "任何装壳导致的功能回归先断电拆查，不要只改软件掩盖机械干涉",
+      "deep": "/projects/hachimodock/10-assemble/",
+      "status": "planned",
+      "human_summary": "AI 会整理实际成本、照片、故障与验收记录；你确认实物功能是否真正通过。"
+    }
+  ],
+  "display_name": "HachimoDock 哈基米机"
+}

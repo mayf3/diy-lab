@@ -54,6 +54,11 @@ def path_for_site_url(path: str) -> Path | None:
 
 
 def validate():
+    # Single-source workflow check: human and Agent views must be derived from
+    # the same typed DOAVR tasks and cannot silently drift.
+    from render_diy_ir import run as check_ir
+    if check_ir(check=True):
+        error('DIY IR schema or derived runbooks are invalid')
     slugs = set()
     for project in PROJECTS:
         slug = project.get('slug', '')

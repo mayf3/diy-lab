@@ -4,6 +4,12 @@
 
 **GitHub 进度追踪**：[采购门禁 Issue #1](https://github.com/mayf3/diy-lab/issues/1) · [结构模拟 Issue #2](https://github.com/mayf3/diy-lab/issues/2)。
 
+## Agent-first 采购入口
+
+- [人类制作版](/projects/hachimodock/human-track/)：读者不必自己翻 GitHub、EDA、BOM，也不必有 P1S。只需要提供预算与电脑/加工条件；对精确购物车做最后确认。
+- [Agent 执行版](/projects/hachimodock/agent-track/)：Agent 自己检索公开资料、核对型号、做结构模拟、比价并形成可直接购买的 SKU+数量+含运费报价。供应商受登录限制时只请人转发具体截图/询问消息，不交给人作专业兼容判断。
+- 现有的卖家问询模板是**Agent 调查受阻后的备用动作**；不能自动表述成新手的必做作业。付款依然须人授权，未拿到证据的核心器件仍 HOLD。
+
 ## 目标
 
 把**想买什么、找谁核实、何时付款**拆成三个独立动作。你不需要先学完电子工程，也不必为了赶进度把所有东西一次下单。

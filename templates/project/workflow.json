@@ -1,0 +1,110 @@
+{
+  "schema_version": "0.1",
+  "project": "{{SLUG}}",
+  "updated": "待核验",
+  "direction": {
+    "goal": "制作 {{TITLE}}；先明确可验收的真实结果",
+    "audience": "面向没有专业设备的新手，不预设拥有指定品牌机器",
+    "non_goals": [
+      "不在缺资料或授权时宣称已验证",
+      "不预先购买全部物料"
+    ],
+    "done_when": "真实作品满足约定的实物验收项并留下证据"
+  },
+  "resource_routes": [
+    {
+      "id": "manufacturing",
+      "question": "如何获得需要的材料与加工条件？",
+      "options": [
+        "自有工具与材料",
+        "借用设备或材料",
+        "选择代工服务",
+        "尚未决定"
+      ],
+      "policy": "Agent 先调查可选方案，人选择购买和实物执行路径"
+    }
+  ],
+  "references": [],
+  "tasks": [
+    {
+      "id": "A01",
+      "title": "明确目标与现有资源",
+      "actor": "shared",
+      "requires": [],
+      "goal": "完成最低限度的设备、预算和风险约束",
+      "agent": [
+        "只询问会改变方案的关键条件，给出自做/借用/服务替代路线；没有数据时标未知"
+      ],
+      "human": [
+        "描述希望完成的作品、预算上限、现有工具和不想做的步骤"
+      ],
+      "outputs": [
+        "确认的目标与资源表"
+      ],
+      "verify": {
+        "type": "human-confirmation",
+        "criteria": "人确认目标和约束；未实际制作",
+        "status": "planned"
+      },
+      "block": "信息不够时保留待确认，不因缺设备而中止资料调查",
+      "deep": "/projects/{{SLUG}}/01-workflow/",
+      "status": "planned",
+      "human_summary": "AI 帮你整理现有条件和几条路线，不预设你有特定工具。"
+    },
+    {
+      "id": "A02",
+      "title": "Agent 调查材料与可行性",
+      "actor": "agent",
+      "requires": [
+        "A01"
+      ],
+      "goal": "形成有来源的材料/工具候选与风险清单",
+      "agent": [
+        "自行查阅有权限的官方来源、图纸、型号、价格；标明日期、版本及不确定项",
+        "生成可执行的原材料/设备清单与至少一种可替代制作路径，不从未经证明的搜索摘要得出实测结论"
+      ],
+      "human": [],
+      "outputs": [
+        "来源与可行性说明",
+        "未解决问题列表"
+      ],
+      "verify": {
+        "type": "public-source",
+        "criteria": "每条关键事实可追溯；不确定项明确 HOLD",
+        "status": "planned"
+      },
+      "block": "官方资料受限时索取最少必要文件或保留 HOLD，不编造",
+      "deep": "/projects/{{SLUG}}/01-workflow/",
+      "status": "planned",
+      "human_summary": "AI 在有权限时自己查材料、来源、报价及风险，不让你翻专业源码。"
+    },
+    {
+      "id": "A03",
+      "title": "决定下一步制作与安全门禁",
+      "actor": "human",
+      "requires": [
+        "A02"
+      ],
+      "goal": "人在理解风险和预算后选择执行方案",
+      "agent": [
+        "整理可选路线、完整预算和需要的授权，明确哪些还不能买"
+      ],
+      "human": [
+        "确认想走的路线，并对购买、加工和风险动作分别做决定"
+      ],
+      "outputs": [
+        "获得确认的下一阶段计划"
+      ],
+      "verify": {
+        "type": "human-approval",
+        "criteria": "得到明确人类决定且关键信息完整后才采购",
+        "status": "planned"
+      },
+      "block": "关键规格或安全问题未解决，不继续不可逆操作",
+      "deep": "/projects/{{SLUG}}/01-workflow/",
+      "status": "planned",
+      "human_summary": "AI 提供方案与问题，你决定是否进入下一阶段。"
+    }
+  ],
+  "display_name": "{{TITLE}}"
+}

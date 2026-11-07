@@ -1,5 +1,9 @@
 # 把每一次 DIY，都做成下一次更容易的起点
 
+**面向所有人的 Agent-first DIY 平台**：不用先有某个品牌的打印机、Mac 或焊接工具，也不用自己研究 GitHub 与 PCB。Agent 在工具许可范围内先做资料查证、兼容性分析和采购比价，制作人负责目标选择、必要的实物动作、付款及真实验收。
+
+[先从 AI 帮我做开始](/guide/agent-first/) · [HachimoDock 人类制作版](/projects/hachimodock/human-track/) · [HachimoDock Agent 版](/projects/hachimodock/agent-track/) · [DIY 原语](/guide/diy-primitives/)
+
 这不是“成品照片收藏夹”，而是一个给新手也能照着做出来的项目实验室。每个作品从 **为什么做 → 模拟 → 购物 → 制作 → 验收 → 视频 → 复盘** 留下真实、可追溯的步骤。项目可以没做完，但不能把没测过的步骤写成成功。
 
 ## 这里有什么
