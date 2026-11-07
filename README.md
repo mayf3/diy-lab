@@ -87,7 +87,8 @@ diy-lab/
 │       ├── christmas-magic-tent/ # 规划中
 │       └── robot-lab-draw-tree/ # SO-101 机械臂画树：准备中
 ├── source-data/
-│   ├── hachimodock/          # HachimoDock BOM、blockers 与 workflow\n│   └── robot-lab-draw-tree/  # SO-101 BOM、来源、blockers 与 DOAVR workflow
+│   ├── hachimodock/          # HachimoDock BOM、blockers 与 workflow
+│   └── robot-lab-draw-tree/  # SO-101 BOM、来源、blockers 与 DOAVR workflow
 ├── public/media/             # 仅放有授权的小照片与缩略图
 ├── templates/project/        # 以后每个新 DIY 都复用的模板
 ├── scripts/
