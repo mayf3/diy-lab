@@ -1,5 +1,23 @@
 [
   {
+    "project": "christmas-magic-tent",
+    "video_id": "g0-space-check",
+    "title": "下单前先模拟：圣诞帐篷 G0 几何检查",
+    "status": "published",
+    "kind": "digital-simulation",
+    "display_label": "数字模拟教学样片",
+    "description": "53.54 秒、8 镜头，基于已保存的 Blender G0 渲染与几何检查。展示 A/B、门顶净空、站立区和房门动线；无口播音轨。不是实物教程或安全认证。",
+    "disclosure": "全部画面是 Blender G0 数字模型，未表示真实商品已装配成功。",
+    "video_url": "https://github.com/mayf3/diy-lab/releases/download/makerlab-video-g0-20261107/makerlab-g0-digital-tutorial.mp4",
+    "caption_url": "https://github.com/mayf3/diy-lab/releases/download/makerlab-video-g0-20261107/makerlab-g0-digital-tutorial.srt",
+    "embed": "html5",
+    "cover": "/media/christmas-magic-tent/video/g0-tutorial-cover.webp",
+    "source_page": "/projects/christmas-magic-tent/g0-review/",
+    "storyboard_path": "source-data/christmas-magic-tent/video/g0-storyboard.json",
+    "published_date": "2026-11-07",
+    "duration": "00:54"
+  },
+  {
     "project": "hachimodock",
     "title": "HachimoDock 从购物到 Agent 跟随",
     "status": "planned",

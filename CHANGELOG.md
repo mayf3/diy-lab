@@ -1,5 +1,14 @@
 # 版本记录
 
+## 视频工坊 v1（2026-11-07）
+
+- 检索比较 Remotion、Motion Canvas、Blender Exploded Assembly Studio、OBS、Screenity、demo-machine、Auto-Editor、faster-whisper 的角色与许可。
+- 发布一条圣诞互动帐篷 G0 的 53.54 秒数字模拟教学样片（真实已有 Blender G0 渲染图、8 镜头、字幕与证据清单），视频与字幕放 GitHub Release，非实物制作录像。
+- 视频生产使用结构化 storyboard.json + 可选 Pillow/FFmpeg 生成器；加强网站 html5 播放、封面与关联图文链接，增加视频数据校验/回归测试。
+- 不修改现有项目采购/验收结论；不新增静态站点的部署依赖。
+
+
+
 ## v0.3.0（Agent-first 双版本与 DIY 原语提案）— 2026-11-07
 
 - 对公共新手教程取消“已有 Bambu P1S / Apple silicon Mac”的默认前提，增加自有打印、借用、代打印以及电脑平台与焊接资源分流。

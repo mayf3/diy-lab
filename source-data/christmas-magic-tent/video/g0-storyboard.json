@@ -1,0 +1,147 @@
+{
+  "schema_version": "1",
+  "project": "christmas-magic-tent",
+  "video_id": "g0-space-check",
+  "title": "圣诞帐篷：下单前用 Blender 找出 3 个尺寸陷阱",
+  "format": "16:9",
+  "width": 1280,
+  "height": 720,
+  "fps": 24,
+  "kind": "digital-simulation",
+  "status": "demo",
+  "display_notice": "Blender 数字模拟示范；不是实物安装或儿童安全验收",
+  "source_page": "/projects/christmas-magic-tent/g0-review/",
+  "source_project": "source-data/christmas-magic-tent/g0/tent_generator.py",
+  "license_note": "全部画面使用本 Maker Lab 项目自身生成的 G0 Blender 渲染图。未使用第三方上游视频/音乐/肖像。",
+  "last_source_check": "2026-11-07",
+  "transition_seconds": 0.35,
+  "scenes": [
+    {
+      "id": "S01",
+      "seconds": 5,
+      "label": "DIY · 先模拟再购买",
+      "title": "帐篷买回来，才发现门顶太低？",
+      "visual": "public/media/christmas-magic-tent/g0/B_full_layout.png",
+      "bullets": [
+        "先把尺寸冲突找出来",
+        "一段 50 多秒的几何检查示范"
+      ],
+      "narration": "下单前，先用 Blender 看看帐篷的入口、站立空间和房门动线。",
+      "evidence": "G0 模型可视化，非实物",
+      "action_ref": "G0-INTRO",
+      "evidence_ref": "content/projects/christmas-magic-tent/g0-review.md"
+    },
+    {
+      "id": "S02",
+      "seconds": 7,
+      "label": "01 · 建立参数",
+      "title": "把帐篷先变成一组可修改的尺寸",
+      "visual": "public/media/christmas-magic-tent/g0/A_top_tent.png",
+      "bullets": [
+        "方案 A：110 × 160 cm",
+        "方案 B：160 × 110 cm",
+        "檐高 80 cm；屋脊 135 cm"
+      ],
+      "narration": "两个方案占地面积相同，但朝向不同，门顶和活动空间就可能不同。",
+      "evidence": "候选尺寸，非商品实测",
+      "action_ref": "G0-INPUT",
+      "evidence_ref": "source-data/christmas-magic-tent/g0/dimension_comparison.csv"
+    },
+    {
+      "id": "S03",
+      "seconds": 7,
+      "label": "02 · 运行模型",
+      "title": "一份脚本，生成两套 Blender 场景",
+      "visual": "public/media/christmas-magic-tent/g0/B_top_tent.png",
+      "bullets": [
+        "打开 tent_generator.py",
+        "分别运行 --variant A / B",
+        "导出视图、CSV 与几何检查"
+      ],
+      "narration": "把尺寸写成参数，一键跑出 A 和 B 的不同视角，再查看保存的数字检查结果。",
+      "evidence": "G0 Blender 数字模拟",
+      "action_ref": "G0-GENERATE",
+      "evidence_ref": "source-data/christmas-magic-tent/g0/tent_generator.py"
+    },
+    {
+      "id": "S04",
+      "seconds": 8,
+      "label": "03 · 对比入口",
+      "title": "先看门洞上角碰不碰屋顶",
+      "visual": "public/media/christmas-magic-tent/g0/B_front.png",
+      "bullets": [
+        "A 方案净空：10.0 cm",
+        "B 方案净空：20.9 cm",
+        "余量更大 ≠ 实物已通过"
+      ],
+      "narration": "数字模型显示 B 的门顶净空更大，但真实门框和布料仍需要到货后测量。",
+      "evidence": "理想几何推导",
+      "action_ref": "G0-CLEARANCE",
+      "evidence_ref": "source-data/christmas-magic-tent/g0/geometry_checks.json"
+    },
+    {
+      "id": "S05",
+      "seconds": 7,
+      "label": "04 · 检查活动区域",
+      "title": "房子能放下，不代表孩子能站得舒服",
+      "visual": "public/media/christmas-magic-tent/g0/A_child_entry.png",
+      "bullets": [
+        "假设身高 110 cm",
+        "可站立带宽：A 30 cm / B 43.6 cm",
+        "活动形态以低姿态为主"
+      ],
+      "narration": "屋脊虽有一百三十五厘米，足够站立的区域仍然很窄。",
+      "evidence": "数字人物占位模拟",
+      "action_ref": "G0-ACTIVITY",
+      "evidence_ref": "source-data/christmas-magic-tent/g0/dimension_comparison.csv"
+    },
+    {
+      "id": "S06",
+      "seconds": 8,
+      "label": "05 · 压力测试",
+      "title": "把房门开启范围也放进平面图",
+      "visual": "public/media/christmas-magic-tent/g0/A_small_top_room.png",
+      "bullets": [
+        "3.0 × 3.5 m 假想区域",
+        "门扇范围与入口通道重叠",
+        "真实房间尺寸需另行量"
+      ],
+      "narration": "只量帐篷的长宽还不够，门扇、家具和入口通道也可能互相挡住。",
+      "evidence": "假想房间布局压力测试",
+      "action_ref": "G0-FLOW",
+      "evidence_ref": "source-data/christmas-magic-tent/g0/geometry_checks.json"
+    },
+    {
+      "id": "S07",
+      "seconds": 7,
+      "label": "06 · 分离电子层",
+      "title": "灯光和控制盒不要混在模型里",
+      "visual": "public/media/christmas-magic-tent/g0/A_base_no_electronics.png",
+      "bullets": [
+        "控制盒、电源和扬声器预留在帐外",
+        "帐篷主体与电子装饰分层",
+        "这是布局设想，不是电气安全认证"
+      ],
+      "narration": "先确认纯帐篷的结构，再把灯光和控制盒作为独立层处理。",
+      "evidence": "仅几何占位，未做电气验证",
+      "action_ref": "G0-ELECTRONICS",
+      "evidence_ref": "source-data/christmas-magic-tent/g0/tent_generator.py"
+    },
+    {
+      "id": "S08",
+      "seconds": 7,
+      "label": "结论 · 下一步",
+      "title": "真实商品尺寸回来，再重新跑一遍",
+      "visual": "public/media/christmas-magic-tent/g0/B_full_layout.png",
+      "bullets": [
+        "拿到门净宽高、檐高、杆径",
+        "回填真实数据重做模拟",
+        "到货后仍要实测与安全检查"
+      ],
+      "narration": "数字模拟的作用，是把要问卖家的问题找清楚。真实购买和实物验收还要另做。",
+      "evidence": "方法演示；实物待验证",
+      "action_ref": "G0-RECHECK",
+      "evidence_ref": "content/projects/christmas-magic-tent/g0-review.md"
+    }
+  ]
+}

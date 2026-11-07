@@ -1,5 +1,7 @@
 # Maker Lab｜我的 AI DIY 实验室
 
+**视频工坊 v1：** [视频工具与制作 SOP](https://mayf3.github.io/diy-lab/guide/video-production/) · [数字模拟教程样片](https://mayf3.github.io/diy-lab/videos/) · [配套机器可读分镜](source-data/christmas-magic-tent/video/g0-storyboard.json)。已把 Blender G0 模拟图做成 53.54 秒 MP4 与 SRT，发布在 GitHub Release，**没有把原始视频加入源码历史**；保留所有已发布/待拍摄项目的证据边界。
+
 **Agent-first · 面向所有新手**。不假设读者有 Bambu P1S、Mac 或焊台：人类版只引导实际动手和授权，Agent 版负责 GitHub、EDA、CAD、BOM、兼容性、供应商查证。两种视图从同一份结构化工作流生成。
 
 [在线新手入口](https://mayf3.github.io/diy-lab/guide/agent-first/) · [HachimoDock 人类版](https://mayf3.github.io/diy-lab/projects/hachimodock/human-track/) · [Agent 版](https://mayf3.github.io/diy-lab/projects/hachimodock/agent-track/) · [DIY 原语](https://mayf3.github.io/diy-lab/guide/diy-primitives/) · [Agent 任务入口](AGENT_RUNBOOK.md)
