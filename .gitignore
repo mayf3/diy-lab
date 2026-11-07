@@ -11,3 +11,7 @@ node_modules/
 !.env.example
 *.pem
 test_g2
+
+video/remotion/props/
+video/remotion/public/images/
+video/remotion/out/

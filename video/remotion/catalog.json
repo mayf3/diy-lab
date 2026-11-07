@@ -1,0 +1,10 @@
+[
+  {
+    "id": "ChristmasTentG0",
+    "storyboard": "source-data/christmas-magic-tent/video/g0-storyboard.json"
+  },
+  {
+    "id": "HachimoPrepurchase",
+    "storyboard": "source-data/hachimodock/video/remotion-prepurchase.json"
+  }
+]

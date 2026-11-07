@@ -1,0 +1,157 @@
+{
+  "schema_version": "1-remotion",
+  "project": "hachimodock",
+  "video_id": "hachimo-prepurchase-remotion",
+  "title": "HachimoDock 新手采购前检查：先解决三个兼容疑点",
+  "format": "16:9",
+  "width": 1280,
+  "height": 720,
+  "fps": 24,
+  "kind": "technical-schematic",
+  "status": "not-physical",
+  "display_notice": "结构示意 + 官方资料核对；未采购、未焊接、未亮屏、未实物验证",
+  "source_page": "/projects/hachimodock/purchase-plan/",
+  "source_refs": [
+    "source-data/hachimodock/blockers.csv",
+    "source-data/hachimodock/sources.csv",
+    "source-data/hachimodock/workflow.json"
+  ],
+  "license_note": "抽象示意由 Maker Lab 原创 Remotion 代码绘制；不使用上游 PCB 版图、STEP 模型或未经授权的官方视频。",
+  "scenes": [
+    {
+      "id": "S01",
+      "seconds": 5,
+      "label": "下单之前",
+      "title": "别让第一台哈基米机，卡在买错零件",
+      "diagram": "device",
+      "bullets": [
+        "主控、屏幕、PCB 不是随便组合",
+        "先由 Agent 查证，用户最后决定付款"
+      ],
+      "narration": "看起来只是买零件加打印外壳，但最容易返工的是兼容关系。",
+      "action_ref": "A02",
+      "evidence_ref": "source-data/hachimodock/blockers.csv",
+      "evidence_id": "BK1",
+      "evidence": "上游资料/采购疑点；未做实物验收"
+    },
+    {
+      "id": "S02",
+      "seconds": 6,
+      "label": "理解产品",
+      "title": "它是连接电脑的 Agent 桌面终端",
+      "diagram": "device",
+      "bullets": [
+        "ESP32-P4 + 小屏幕 + 按键与摇杆",
+        "不是在这个小盒子里运行大语言模型",
+        "需要电脑端软件配合"
+      ],
+      "narration": "先理解设备结构，再判断家里缺什么。",
+      "action_ref": "A02",
+      "evidence_ref": "source-data/hachimodock/blockers.csv",
+      "evidence_id": "S1",
+      "evidence": "上游资料/采购疑点；未做实物验收"
+    },
+    {
+      "id": "S03",
+      "seconds": 7,
+      "label": "兼容检查 01",
+      "title": "开发板 M 版本，不等于芯片 v3",
+      "diagram": "chip",
+      "bullets": [
+        "确认 ESP32-P4 实际 silicon 版次",
+        "官方固件区分 v1 与 v3 构建",
+        "不确定就先标记 HOLD"
+      ],
+      "narration": "这里要核对的不是板子名字，而是芯片本身的修订版。",
+      "action_ref": "A03",
+      "evidence_ref": "source-data/hachimodock/blockers.csv",
+      "evidence_id": "BK1",
+      "evidence": "上游资料/采购疑点；未做实物验收"
+    },
+    {
+      "id": "S04",
+      "seconds": 8,
+      "label": "兼容检查 02",
+      "title": "2.8 英寸相同，不等于屏幕就能用",
+      "diagram": "ribbon",
+      "bullets": [
+        "核对 MIPI-DSI 驱动与模组型号",
+        "22P、0.5mm FFC 仍需确认触点方向",
+        "屏幕尺寸图和排线要匹配"
+      ],
+      "narration": "只看分辨率、大小，无法证明屏幕、排线和接口真正兼容。",
+      "action_ref": "A03",
+      "evidence_ref": "source-data/hachimodock/blockers.csv",
+      "evidence_id": "BK2",
+      "evidence": "上游资料/采购疑点；未做实物验收"
+    },
+    {
+      "id": "S05",
+      "seconds": 7,
+      "label": "兼容检查 03",
+      "title": "PCB、按键和外壳，必须是同一套版本",
+      "diagram": "pcb",
+      "bullets": [
+        "已在工程 BOM 定位 C400229 × 3",
+        "仍要核对键帽高度及装壳间隙",
+        "PCB_V1.2 网表疑点继续 HOLD"
+      ],
+      "narration": "原理图提供了轴体型号，但这还不能证明安装进打印壳后一定不干涉。",
+      "action_ref": "A03",
+      "evidence_ref": "source-data/hachimodock/blockers.csv",
+      "evidence_id": "BK3",
+      "evidence": "上游资料/采购疑点；未做实物验收"
+    },
+    {
+      "id": "S06",
+      "seconds": 7,
+      "label": "没有打印机怎么办",
+      "title": "三条路线都可以得到机壳",
+      "diagram": "route",
+      "bullets": [
+        "自己的打印机：按真实机型切片",
+        "学校或朋友设备：先核对喷嘴和耗材",
+        "代打印：给供应商明确规格"
+      ],
+      "narration": "教程不能假设你有拓竹打印机。没有机器，也可以由 Agent 准备代打印规格。",
+      "action_ref": "A04",
+      "evidence_ref": "source-data/hachimodock/blockers.csv",
+      "evidence_id": "BK4",
+      "evidence": "上游资料/采购疑点；未做实物验收"
+    },
+    {
+      "id": "S07",
+      "seconds": 7,
+      "label": "付款门禁",
+      "title": "Agent 负责查证，人负责确认",
+      "diagram": "gate",
+      "bullets": [
+        "Agent 整理来源、型号、报价、风险",
+        "决定性兼容疑点仍待证实",
+        "实际付款和通电操作须明确授权"
+      ],
+      "narration": "当规格没核实完时，先不要付款。完成采购不代表设备已经通过实物测试。",
+      "action_ref": "A06",
+      "evidence_ref": "source-data/hachimodock/blockers.csv",
+      "evidence_id": "BK1",
+      "evidence": "上游资料/采购疑点；未做实物验收"
+    },
+    {
+      "id": "S08",
+      "seconds": 6,
+      "label": "下一步",
+      "title": "把不确定的问题变成可执行清单",
+      "diagram": "check",
+      "bullets": [
+        "先拿到准确屏幕模组与排线资料",
+        "让 Agent 出可核验的 BOM 和模拟结论",
+        "买到零件后再做焊接、烧录、亮屏验收"
+      ],
+      "narration": "让 AI 做更多资料工作，把人真正需要动手的步骤留给人。",
+      "action_ref": "A06",
+      "evidence_ref": "source-data/hachimodock/blockers.csv",
+      "evidence_id": "BK2",
+      "evidence": "上游资料/采购疑点；未做实物验收"
+    }
+  ]
+}
