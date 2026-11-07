@@ -1,5 +1,9 @@
 # 第 12 步｜拍摄、配音和发布视频
 
+## Agent 视频工坊升级
+
+[视频制作指南](/guide/video-production/) 给出了 GitHub 工具选型与模板：Remotion / Motion Canvas 用于解释动画、Blender Exploded Assembly Studio 用于 CAD 爆炸装配、Screenity/OBS 用于真实录屏、Auto-Editor 用于真人素材初剪。**Agent 负责上游源码和脚本查证、分镜/字幕/数字模拟草稿**；手机拍摄实物插线、焊接、烧录结果必须在人真的完成后才能加入。HachimoDock 当前没有实物操作录像，所以这一章仍是拍摄计划。
+
 ## 目标
 
 把项目转成**其他人真的能照做**的公开视频，不只是好看的成品展示。现在只有拍摄计划，没有自录视频，发布入口暂时留空。

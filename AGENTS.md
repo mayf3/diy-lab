@@ -12,6 +12,12 @@
 - 有风险的实物焊接、通电、产品打样、付款、不可逆烧录或现场验收仍须人/供应商完成；公开资料/模型分析**不能代替实物观察**。
 - 更新工作流后运行 `python3 scripts/render_diy_ir.py`，随后 `python3 scripts/check.py`（会拒绝视图版本漂移）。
 
+## DIY 视频生成：分镜就是有证据的派生视图
+
+收到“为 DIY 加视频”的任务时，先读 [制作规范](content/guide/video-production.md)。优先用有权限的工具从已确认工作流、工程图与实际测试取得内容。视频片段分别标记 real physical / real screen / digital simulation / illustration；不得虚构用户动手画面或上游视频授权。Agent 应自行生成可重复渲染的分镜、素材清单、字幕和审查结果；人仍负责真实拍摄与发布授权。
+
+G0 示例用 source-data/christmas-magic-tent/video/g0-storyboard.json + scripts/video_from_storyboard.py，生成的网站不依赖 Pillow/FFmpeg。原创短篇数字视频存 GitHub Release，大视频去视频平台，不把 MP4 加到 Git 历史。
+
 ## 必须遵守
 
 1. **Issue-first**：说明正在解决的是哪一关、缺什么证据、会修改哪些文件，然后做尽量小的补丁。

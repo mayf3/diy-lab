@@ -173,6 +173,13 @@ def validate():
                 error(f'{slug}: verified status requires all blockers closed; still open: {", ".join(open_ids)}')
     if 'hachimodock' in project_status and 'hachimodock' not in blockers_by_slug:
         error('HachimoDock: missing blockers.csv doubt register')
+    # Derived tutorial videos must link to actual project-owned scene evidence.
+    from video_from_storyboard import load_and_check
+    for story in sorted((ROOT / 'source-data').glob('*/video/*-storyboard.json')):
+        try:
+            load_and_check(story)
+        except (AssertionError, KeyError, OSError, ValueError) as exc:
+            error(f'{story.relative_to(ROOT)}: video storyboard invalid: {exc}')
     videos_file = ROOT / 'data/videos.json'
     if videos_file.exists():
         for v in json.loads(videos_file.read_text(encoding='utf-8')):
@@ -182,8 +189,29 @@ def validate():
                 error('Invalid video status')
             if v.get('status') == 'published' and not v.get('video_url','').startswith('https://'):
                 error('Published video missing secure https URL')
-            if v.get('embed') not in {'', 'bilibili'}:
+            if v.get('embed') not in {'', 'bilibili', 'html5'}:
                 error('Unsupported video embed provider')
+            if v.get('embed') == 'html5':
+                # Preview only our own release assets; no arbitrary HTML5 stream URL.
+                if not re.fullmatch(
+                    r'https://github[.]com/mayf3/diy-lab/releases/download/[^/]+/[^/]+[.]mp4',
+                    v.get('video_url','')
+                ):
+                    error('HTML5 player must use the Maker Lab GitHub Release MP4')
+            if v.get('kind') == 'digital-simulation' and v.get('status') == 'published':
+                if not v.get('disclosure') or not v.get('source_page'):
+                    error('Published simulation video needs explicit disclosure and source page')
+                story = v.get('storyboard_path','')
+                if not re.fullmatch(r'source-data/[a-z0-9-]+/video/[a-z0-9-]+[.]json', story):
+                    error('Published simulation video needs safe storyboard_path')
+                elif not (ROOT / story).is_file():
+                    error('Published simulation video missing storyboard')
+                elif v.get('project') not in story:
+                    error('Video storyboard must belong to the same project')
+                if not v.get('cover') or not (ROOT/'public'/str(v['cover']).lstrip('/')).is_file():
+                    error('Published simulation video missing an owned cover image')
+                if not v.get('caption_url','').startswith('https://'):
+                    error('Published simulation video needs downloadable captions')
     for media in (ROOT / 'public/media').rglob('*'):
         if media.is_file() and media.suffix.lower() in {'.mp4', '.mov', '.mkv'}:
             error(f'{media.relative_to(ROOT)}: original videos should be hosted outside Git')
