@@ -105,7 +105,7 @@ def md_human(data: dict) -> str:
       "详细说明：[如何让 Agent 帮你做](/guide/agent-first/) · [DIY 原语方法](/guide/diy-primitives/) · [Agent 执行版](/projects/" + name + "/agent-track/)。", "",
       "## 一句话委托 Agent", "",
       "> 项目执行规范：https://mayf3.github.io/diy-lab/projects/" + name + "/agent-track/ 。请先阅读此规范与公开上游工程。不要让我替你核查 GitHub、PCB、BOM 或下载文件；你负责调查、判断证据等级、按我的设备条件制定制作/代打印路径并给出精确 SKU 与报价。不能访问的资料请只向我索取具体文件。未经我批准，不付款、不写设备固件、不进行有风险的实物操作。每一步只告诉我你做了什么、我还要动手做什么、怎么看结果及出错后怎么办。", "",
-      "## 按顺序制作（12 关）", ""
+      f"## 按顺序制作（{len(data['tasks'])} 关）", ""
     ]
     for i,t in enumerate(data["tasks"], 1):
         result += [
