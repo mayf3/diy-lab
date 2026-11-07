@@ -30,5 +30,13 @@
     "description": "方案阶段，尚未制作或拍摄。",
     "video_url": "",
     "embed": ""
+  },
+  {
+    "project": "robot-lab-draw-tree",
+    "title": "AI Robot Lab 01：让 GPT 指挥机械臂画一棵树",
+    "status": "planned",
+    "description": "从 G0 离线绘图、单臂采购、P1S 打印、LeRobot 校准到真实三次画树验收；尚未拍摄。",
+    "video_url": "",
+    "embed": ""
   }
 ]

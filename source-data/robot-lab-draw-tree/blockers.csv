@@ -1,0 +1,8 @@
+id,疑点,影响,关闭所需证据,证据来源,状态,核验日期,结论
+RB1,7.4V C001 舵机与驱动板电源及接头未核实,G1禁止付款/通电,卖家铭牌照片+电源输出参数+与上游BOM逐项比对,https://github.com/TheRobotStudio/SO-ARM100,open,2026-11-07,
+RB2,官方 SO101 follower STL 与所购舵机/夹具实际尺寸未量规验证,G2禁止整臂一次性打印和装配完工声明,实际电机与打印量规试配照片/尺寸,https://github.com/TheRobotStudio/SO-ARM100,open,2026-11-07,
+RB3,LeRobot CLI 与实际 macOS USB 设备/驱动板版本未确认,G3禁止自动运动,当时软件版本/端口识别/逐个电机ID/校准记录,https://huggingface.co/docs/lerobot/so101,open,2026-11-07,
+RB4,笔尖工具中心点和柔性接触深度未标定,G4禁止贴纸运行,离纸路径/单笔压力/纸面损伤测试,https://github.com/TheRobotStudio/SO-ARM100,open,2026-11-07,
+RB5,80mm绘画区域可达性和轨迹避障未实测,G4禁止完成整幅绘画,全轨迹干跑+IK可达/速度/关节/碰撞检查日志,https://github.com/TheRobotStudio/SO-ARM100/tree/main/Simulation/SO101,open,2026-11-07,
+RB6,摄像头与纸平面变换及自动评估未实测,G5不能声称视觉闭环完成,相机标定照片+重复3次前后图像和判定一致性,https://huggingface.co/docs/lerobot/cameras,open,2026-11-07,
+RB7,独立断电及工作区安全措施尚无实物证据,G3-G6不能运行物理机械臂,现场断电装置照片及预运行安全记录,https://huggingface.co/docs/lerobot/so101,open,2026-11-07,
