@@ -134,18 +134,33 @@ def video_cards(current: str) -> str:
     cards = []
     for video in VIDEOS:
         p = PROJECT_MAP[video['project']]
-        is_published = video['status'] == 'published'
+        published = video['status'] == 'published'
         video_url = video.get('video_url', '')
-        button = f'<a href="{q(video_url)}" target="_blank" rel="noopener noreferrer" class="video-watch">观看视频 ↗</a>' if is_published and video_url else '<span class="video-pending">拍摄 / 整理中</span>'
-        iframe = ''
+        kind = video.get('kind', 'planned')
+        label = video.get('display_label') or ('已发布' if published else '待拍摄')
+        target = video.get('source_page') or '/projects/' + p['slug'] + '/'
+        detail_link = url_for(current, target)
+        cover = video.get('cover', '')
+        cover_html = (f'<img src="{q(url_for(current, cover))}" loading="lazy" alt="{q(video["title"])} 封面">' if cover else '<span>▶</span>')
+        button = (f'<a href="{q(video_url)}" target="_blank" rel="noopener noreferrer" class="video-watch">观看或下载视频 ↗</a>'
+                  if published and video_url else '<span class="video-pending">拍摄 / 整理中</span>')
+        player = ''
         video_match = re.search(r'/video/(BV[a-zA-Z0-9]+)', video_url)
-        if is_published and video.get('embed') == 'bilibili' and video_match:
+        if published and video.get('embed') == 'bilibili' and video_match:
             bv = video_match.group(1)
-            # Click-to-load frame, to avoid sending data to player.bilibili.com on page load.
-            iframe = f'<div class="video-embed" data-bvid="{q(bv)}"><button type="button" class="load-video">点此加载 B 站播放器</button></div>'
-        cards.append(f'''<div class="video-card"><div class="video-cover"><span>▶</span><small>{q(p['category'])}</small></div>
-          <div class="video-details"><small>{'已发布' if is_published else '尚未发布'}</small><h3>{q(video['title'])}</h3><p>{q(video['description'])}</p>
-          {button}<a class="video-project" href="{q(link_for(current,'projects/'+p['slug']))}">查看图文教程 →</a></div>{iframe}</div>''')
+            # Click-to-load frame to avoid sending data to Bilibili until user asks.
+            player = f'<div class="video-embed" data-bvid="{q(bv)}"><button type="button" class="load-video">点此加载 B 站播放器</button></div>'
+        elif published and video.get('embed') == 'html5':
+            poster = f' poster="{q(url_for(current, cover))}"' if cover else ''
+            # Source is validated to an approved GitHub Release URL by check.py.
+            player = (f'<div class="video-embed video-embed-html5"><video controls playsinline preload="none"{poster}>'
+                      f'<source src="{q(video_url)}" type="video/mp4">此浏览器不支持 MP4 播放，可使用上方下载链接。</video></div>')
+        disclosure = f'<p class="video-disclosure">{q(video["disclosure"])}</p>' if video.get('disclosure') else ''
+        captions = (f'<a class="video-captions" href="{q(video["caption_url"])}" target="_blank" rel="noopener noreferrer">下载字幕 SRT</a>'
+                    if video.get('caption_url') else '')
+        cards.append(f'''<div class="video-card"><div class="video-cover">{cover_html}<small>{q(p['category'])}</small></div>
+          <div class="video-details"><small>{q(label)}</small><h3>{q(video['title'])}</h3><p>{q(video['description'])}</p>
+          {button}<a class="video-project" href="{q(detail_link)}">对应图文关卡 ↗</a> {captions}{disclosure}</div>{player}</div>''')
     return '<div class="video-grid">' + ''.join(cards) + '</div>'
 
 
@@ -212,6 +227,7 @@ def sidebar(slug: str, project: dict | None) -> str:
         links.append(nav_link(slug, "projects/hachimodock", "HachimoDock <span class='nav-mini'>13 关</span>"))
         links.append(nav_link(slug, "guide/agent-first", "有 AI 帮忙的 DIY"))
         links.append(nav_link(slug, "guide/diy-primitives", "DIY 原语与 Agent 分工"))
+        links.append(nav_link(slug, "guide/video-production", "DIY 视频制作与工具"))
         links.append(nav_link(slug, "guide/new-project", "创建一个新项目"))
         links.append(nav_link(slug, "guide/media", "拍摄、照片与素材"))
         links.append(nav_link(slug, "guide/legal", "版权与事实声明"))

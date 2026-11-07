@@ -1,5 +1,9 @@
 # 第一次来到 Maker Lab
 
+**想用视频跟着做？** [DIY 视频工坊指南](/guide/video-production/) 介绍屏幕录制、真实手部操作、Blender 3D 装配、Agent 剪辑与字幕，也有一条基于圣诞帐篷 G0 模型实际生成的短片。视频中的模拟和实测证据严格区分。
+
+**想用视频跟着做？** [DIY 视频工坊指南](/guide/video-production/) 介绍屏幕录制、真实手部操作、Blender 3D 装配、Agent 剪辑与字幕，也有一条基于圣诞帐篷 G0 模型实际生成的短片。视频中的模拟和实测证据严格区分。
+
 **你不需要先买任何专业设备。** 第一次做某个项目，建议先打开 [有 AI 助手的 DIY](/guide/agent-first/)，选择自有工具、借用或代工路线。上游 GitHub、BOM、CAD、固件版本等技术资料应由有权限的 Agent 查明；人只需要完成少量必要的实物操作。
 
 [DIY Primitives：人类/Agent 双视图](/guide/diy-primitives/) · [HachimoDock 人类制作版](/projects/hachimodock/human-track/)
