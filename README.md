@@ -157,3 +157,8 @@ open dist/index.html
 - 微雪 ESP32-P4-WIFI6 开发板：<https://docs.waveshare.com/ESP32-P4-WIFI6>
 
 本仓库是**个人原创学习教程与进度记录**，不是原作者官方授权的设备套件。所有上游文档和素材的许可仍归其原始权利方。
+
+
+## Remotion 视频教程引擎（2026-11-07）
+
+Remotion 4.0.541 已作为独立的作者端视频工程接入 `video/remotion/`，从已确认的 DIY 分镜生成动画，而不增加 GitHub Pages 读者的依赖。 [安装、预览与渲染](/guide/remotion/) · [HachimoDock 采购前视频教程](/projects/hachimodock/video-prepurchase/) · [视频工坊](/videos/)。真实开箱、焊接、烧录、验收仍需拍摄；当前视频不宣称实物制作成功。

@@ -1,0 +1,79 @@
+name: Render DIY tutorial video (manual)
+
+on:
+  workflow_dispatch:
+    inputs:
+      composition:
+        description: Remotion composition to render
+        required: true
+        type: choice
+        options:
+          - HachimoPrepurchase
+          - ChristmasTentG0
+      publish_release:
+        description: Publish to a GitHub Release? Leave false to preview artifact only
+        required: true
+        default: false
+        type: boolean
+      release_tag:
+        description: Unique tag for release, only needed when publish_release is true
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: video/remotion/package-lock.json
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify video provenance and generate Remotion inputs
+        run: python scripts/prepare_remotion.py
+      - name: Install frozen dependencies
+        working-directory: video/remotion
+        run: npm ci
+      - name: Typecheck
+        working-directory: video/remotion
+        run: npx tsc --noEmit
+      - name: Ensure Remotion's browser
+        working-directory: video/remotion
+        run: npx remotion browser ensure
+      - name: Render requested video
+        working-directory: video/remotion
+        env:
+          COMPOSITION: ${{ inputs.composition }}
+        run: |
+          mkdir -p ../../out
+          npx remotion render src/index.tsx "$COMPOSITION" "../../out/${COMPOSITION}.mp4" --concurrency=2 --codec=h264 --crf=23
+      - name: Produce subtitles and evidence manifest
+        env:
+          COMPOSITION: ${{ inputs.composition }}
+        run: python scripts/remotion_captions.py "$COMPOSITION" "out/${COMPOSITION}.mp4"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: diy-video-${{ inputs.composition }}
+          path: out/${{ inputs.composition }}.*
+          retention-days: 14
+      - name: Release only when explicitly requested
+        if: ${{ inputs.publish_release }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ inputs.release_tag }}
+          COMPOSITION: ${{ inputs.composition }}
+        run: |
+          if [[ ! "$TAG" =~ ^makerlab-video-[a-z0-9-]+$ ]]; then
+            echo "Provide a unique makerlab-video-* release_tag"; exit 1
+          fi
+          gh release create "$TAG" "out/${COMPOSITION}.mp4" "out/${COMPOSITION}.srt" "out/${COMPOSITION}.manifest.json" \
+            --title "Maker Lab · ${COMPOSITION} Remotion 教程" \
+            --notes "由结构化分镜自动渲染。模拟画面和实测证据必须以源项目文档为准；未表明真实硬件已经验证。"

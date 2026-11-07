@@ -31,7 +31,7 @@
 | 真人录像初剪 | [Auto-Editor](https://github.com/WyattBlue/auto-editor) | 自动根据声音停顿裁减冗余片段 | Unlicense；不要自动删掉有教学意义的操作停顿 |
 | 配音字幕校对 | [faster-whisper](https://github.com/SYSTRAN/faster-whisper) | 本地转写口播，生成带时间戳的文字草稿 | MIT；引脚名称与单位仍需核对 |
 
-**Maker Lab v1 实际采用：Pillow + FFmpeg 的轻量可复现样片生成器。** 不要求每个读者装 Node、Remotion、Blender 或剪辑软件才能浏览网站。后续要做复杂装配动画时，再按需接 Blender 插件或 Remotion。
+**Maker Lab 视频工坊已采用 Remotion 作为标准的新视频制作底座。** [Remotion 视频工程与命令](/guide/remotion/) 可直接在 Studio 中预览、渲染，使用项目事实源生成视频；过去的 Pillow + FFmpeg 样片作为轻量历史实现保留。**浏览网站的普通读者仍无需 Node 或 Remotion。**
 
 ## Agent 到成片的七步 SOP
 
@@ -47,7 +47,7 @@
 
 ## 已做出的样片：圣诞互动帐篷 G0 尺寸模拟
 
-本次真正生成了一条**53.54 秒、1280×720、24fps** 的无配音字幕卡片视频，使用 Maker Lab 自有的 Blender G0 渲染图；展示参数 A/B 对比、门顶净空、儿童站立空间、假想房间动线与电子布局预留。
+本次真正生成了一条**53.54 秒、1280×720、24fps** 的历史无配音字幕卡片视频（现已有 [Remotion 升级版](/guide/remotion/)），使用 Maker Lab 自有的 Blender G0 渲染图；展示参数 A/B 对比、门顶净空、儿童站立空间、假想房间动线与电子布局预留。
 
 **明确说明：这是数字模拟教学样片，不是实物制作、商品验收或儿童安全认证。** 口播文案随分镜保存，尚未录制或声称有人配音；可另下 SRT 文稿用于以后补真实配音。
 

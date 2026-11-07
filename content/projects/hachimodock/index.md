@@ -4,6 +4,10 @@
 
 HachimoDock 不是在小盒子里运行大语言模型：它通过 USB 与电脑上的 HachimiDock 管理端通信，让 Codex 等 Agent 的状态变成小屏动画，并通过按键、摇杆、语音与电脑交互。我们的目标是**原样复刻第一台，完全跑通后再定制**。
 
+## 视频：从购买前的兼容检查开始
+
+[HachimoDock 原创 Remotion 采购前视频教程](/projects/hachimodock/video-prepurchase/) 解释主控、屏幕排线、PCB 与键帽的关键关系；当前是结构示意，不是实物操作。真实购买、3D 打印、焊接和亮屏将用实际制作证据逐段补充。
+
 ## 新手先从两个版本里选择
 
 - **[人类制作版（推荐）](/projects/hachimodock/human-track/)**：没有设备也能先开始；每一关告诉你“Agent 已负责什么、你需要亲手做什么、验收怎样判断”。可走自有打印机、借用机器或代打印路线。
