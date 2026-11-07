@@ -8,13 +8,17 @@
 
 ## 二、用命令创建项目
 
+**Agent-first 增强：** 新项目脚本还会生成一份 `source-data/<slug>/workflow.json` 轻量原语，以及两份从该数据生成的人类/Agent 制作流程。初始内容全是 `planned`，尚未验证，需 Agent 填写具体任务后发布。参见 [DIY 原语规范](/guide/diy-primitives/)。
+
+
+
 在仓库根目录打开终端（需要 Python 3.10+）：
 
 ```bash
 python3 scripts/new_project.py mini-robot-desk "桌面小机器人"
 ```
 
-脚本会复制 `templates/project/`，在 `content/projects/mini-robot-desk/` 生成基础教程，并把新项目登记到 `data/projects.json`，自动出现在首页目录和侧边导航。
+脚本会复制 `templates/project/`，在 `content/projects/mini-robot-desk/` 生成基础教程，并把新项目登记到 `data/projects.json`，自动出现在首页目录和侧边导航。还会生成 `source-data/mini-robot-desk/workflow.json`、`human-track.md` 和 `agent-track.md`；这两个教程视图来自同一份工作流。
 
 ## 三、把空白模板替换成真实步骤
 

@@ -197,6 +197,10 @@ def sidebar(slug: str, project: dict | None) -> str:
     if project and project.get("steps"):
         root = "projects/" + project["slug"]
         links.append(nav_link(slug, root, q(project["title"])))
+        if (CONTENT / "projects" / project["slug"] / "human-track.md").exists():
+            links.append(nav_link(slug, root + "/human-track", "先跟着做 · 人类版"))
+        if (CONTENT / "projects" / project["slug"] / "agent-track.md").exists():
+            links.append(nav_link(slug, root + "/agent-track", "交给 AI · Agent 版"))
         phase_before = None
         for st in project["steps"]:
             if st["phase"] != phase_before:
@@ -206,6 +210,8 @@ def sidebar(slug: str, project: dict | None) -> str:
             links.append(f'<div class="step-nav" data-nav-step="{q(project["slug"]+":"+st["id"])}">' + nav_link(slug, subslug, f'<span class="step-num">{q(st["id"])}</span> {q(st["title"])}') + '</div>')
     else:
         links.append(nav_link(slug, "projects/hachimodock", "HachimoDock <span class='nav-mini'>13 关</span>"))
+        links.append(nav_link(slug, "guide/agent-first", "有 AI 帮忙的 DIY"))
+        links.append(nav_link(slug, "guide/diy-primitives", "DIY 原语与 Agent 分工"))
         links.append(nav_link(slug, "guide/new-project", "创建一个新项目"))
         links.append(nav_link(slug, "guide/media", "拍摄、照片与素材"))
         links.append(nav_link(slug, "guide/legal", "版权与事实声明"))

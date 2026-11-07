@@ -2,6 +2,16 @@
 
 你在帮助维护一套**长期运行、可复刻的中文 DIY 教程和实测日志**，而不是仅仅生成文章。
 
+## Agent-first DIY 双视图（2026-11）
+
+面向外部新手的站点先看 [AI 帮我做](/guide/agent-first/)（源码 `content/guide/agent-first.md`）。**不要假设读者有 Bambu P1S、Apple silicon Mac、焊台、CAD 技能。**
+
+- 核心原语 `D/O/A/V/R`：[DIY 原语说明](content/guide/diy-primitives.md)，执行约定 [AGENT_RUNBOOK.md](AGENT_RUNBOOK.md)。
+- 在 `source-data/<slug>/workflow.json` 表示真实目标、设备/代工替代路径、Agent / 人 / 商家动作、证据、阻断依赖；`human-track.md` 与 `agent-track.md` 是**自动生成**的两种视图，禁止手改后造成漂移。
+- 上游 GitHub、官方版本、CAD/PCB 文件和购物资料检索是**Agent 的工作**。具有工具权限时直接完成，不要把专业源代码调查转交零基础用户；无权限则如实标出缺口，最小化向用户索要文件/照片。
+- 有风险的实物焊接、通电、产品打样、付款、不可逆烧录或现场验收仍须人/供应商完成；公开资料/模型分析**不能代替实物观察**。
+- 更新工作流后运行 `python3 scripts/render_diy_ir.py`，随后 `python3 scripts/check.py`（会拒绝视图版本漂移）。
+
 ## 必须遵守
 
 1. **Issue-first**：说明正在解决的是哪一关、缺什么证据、会修改哪些文件，然后做尽量小的补丁。

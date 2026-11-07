@@ -33,9 +33,14 @@ def main(argv):
     media_root.mkdir(parents=True)
     templates=ROOT/'templates/project'
     for source, destination in [('index.md','index.md'),('01-workflow.md','01-workflow.md'),('video-plan.md','video-plan.md')]:
-        body=(templates/source).read_text(encoding='utf-8').replace('{{TITLE}}',title)
+        body=(templates/source).read_text(encoding='utf-8').replace('{{TITLE}}',title).replace('{{SLUG}}',slug)
         (project_root/destination).write_text(body,encoding='utf-8')
     shutil.copy2(templates/'bom.csv',source_root/'bom.csv')
+    workflow_template=(templates/'workflow.json').read_text(encoding='utf-8')
+    (source_root/'workflow.json').write_text(
+        workflow_template.replace('{{SLUG}}', slug).replace('{{TITLE}}', title),
+        encoding='utf-8'
+    )
     (media_root/'.gitkeep').write_text('',encoding='utf-8')
     projects.append({
       'slug':slug, 'title':title, 'subtitle':'待补充项目目标',
@@ -50,6 +55,11 @@ def main(argv):
     current.append({'project':slug,'title':title+'：制作全过程','status':'planned',
                     'description':'拍摄计划已创建，尚未拍摄或发布。', 'video_url':'', 'embed':''})
     videos.write_text(json.dumps(current,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+    # Generate both readers from the same source data, never copy stale prose.
+    from render_diy_ir import run as render_views
+    if render_views():
+        print('DIY 工作流检查失败，请修复 workflow.json')
+        return 1
     print(f'已创建: {project_root.relative_to(ROOT)}')
     print(f'购物清单: {source_root.relative_to(ROOT)}/bom.csv')
     print('下一步: 编辑教程和 BOM，然后执行 python3 scripts/check.py && python3 scripts/build.py')

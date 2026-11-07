@@ -1,12 +1,20 @@
 # Maker Lab｜我的 AI DIY 实验室
 
+**Agent-first · 面向所有新手**。不假设读者有 Bambu P1S、Mac 或焊台：人类版只引导实际动手和授权，Agent 版负责 GitHub、EDA、CAD、BOM、兼容性、供应商查证。两种视图从同一份结构化工作流生成。
+
+[在线新手入口](https://mayf3.github.io/diy-lab/guide/agent-first/) · [HachimoDock 人类版](https://mayf3.github.io/diy-lab/projects/hachimodock/human-track/) · [Agent 版](https://mayf3.github.io/diy-lab/projects/hachimodock/agent-track/) · [DIY 原语](https://mayf3.github.io/diy-lab/guide/diy-primitives/) · [Agent 任务入口](AGENT_RUNBOOK.md)
+
+
+
 > 一个长期可维护的中文 DIY 教程网站。让新手按步骤复刻作品，把材料、购物、结构仿真、制作、验收、视频与失败记录留在同一个 GitHub 仓库。
 
 **第一个完整案例**：[HachimoDock 哈基米机](content/projects/hachimodock/index.md)（2026-11-06，**准备中、未做实物验证**）。另外补录 2026 万圣节服装/门饰的制作参数与数字设计证据边界，以及圣诞互动帐篷的 [G0 数字模拟评审](content/projects/christmas-magic-tent/g0-review.md)（A/B 几何对比完成，待真实商品尺寸回填）；历史项目的最终文件与实物验收证据尚待回填。
 
 **2026-11-06 更新**：已由用户 GitHub 账户创建公开仓库 <https://github.com/mayf3/diy-lab>。网站已经通过 GitHub Pages 自动部署，并验证可访问：<https://mayf3.github.io/diy-lab/>。
 
-## 第 1 步：在自己的 Mac 上预览网站
+## 第 1 步：在电脑上预览网站（维护者）
+
+下面以 macOS 为维护示例；Linux 和 Windows 也能用 Python 构建静态网页，具体命令如 `open` 需要替换成操作系统对应的打开方式。**这里的电脑只是维护站点的环境，不是 DIY 作品本身的购买要求。**
 
 1. 下载并解压整个 `diy-lab-repo.zip`，文件夹建议放在 `~/Documents/DIY/diy-lab/`。
 2. 直接双击 `dist/index.html` 就能打开**已生成的离线网站**（压缩包附带一次静态构建）。
@@ -46,7 +54,7 @@ python3 -m http.server 8000 --directory dist
 
 1. 修改 `content/` 下的 Markdown、`data/` 的卡片/视频数据，或 `source-data/` 中的采购 BOM。
 2. 本地运行 `python3 scripts/check.py && python3 scripts/build.py && python3 scripts/verify_site.py`。
-3. `git add . && git commit -m "Document DIY progress" && git push`。
+3. 只逐项暂存自己修改的文件（**不要** `git add .`，仓库可能有其他会话未提交改动），确认 diff 后 `git commit` 和 `git push`。
 4. GitHub Actions 自动构建并发布到 Pages；首次可能需要仓库 Settings → Pages → Source 选择 **GitHub Actions**。
 
 **已验证 Pages 地址**：<https://mayf3.github.io/diy-lab/>；如后续修改未出现，查看 [Actions](https://github.com/mayf3/diy-lab/actions) 的自动部署状态。

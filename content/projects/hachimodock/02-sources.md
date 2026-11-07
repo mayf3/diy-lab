@@ -4,6 +4,12 @@
 
 把所有上游资料定位到**权威原始位置**，明确版本、版权与使用边界，不因下载错误文件导致 PCB、固件或外壳不匹配。预计 20–40 分钟。
 
+## 这一关默认交给 Agent
+
+**GitHub README、Release、立创 PCB/STEP/BOM 和微雪文档的读取、版本比较与来源整理，默认由具备网页/文件工具的 Agent 自己完成。** 以下手工导航步骤只供没有 Agent 的读者备用。若资料必须登录下载，Agent 应说明缺的是哪个具体文件，让读者提供取得权限后的文件；不得声称自己看过无法访问的内容。
+
+[从 Agent 执行版开始](/projects/hachimodock/agent-track/) · [新手制作路线](/projects/hachimodock/human-track/)
+
 ## 操作
 
 1. 从 [立创硬件项目](https://oshwhub.com/eda_gqvzlprk/project_cnbmkbjc) 找到 `PCB_V1.2` 和 BOM；在 EDA 中查看，不要点击“更新网表”后直接打板。
@@ -33,7 +39,7 @@
 
 ## 验收
 
-- [ ] 已能打开 GitHub、Releases、OSHWHub、微雪文档四个权威入口。
+- [ ] Agent 已报告 GitHub、Releases、OSHWHub、微雪文档的可访问性和具体证据；若没有 Agent，手动打开这些官方入口。
 - [ ] 已找到两个 STEP 文件与装配视频附件的下载入口。
 - [ ] 已记录实际下载版本、文件名、日期和校验结果。
 - [ ] 已确认下载 v1/v3 固件前需要知道**芯片实际修订版**。

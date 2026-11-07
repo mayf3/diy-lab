@@ -1,5 +1,9 @@
 # 第一次来到 Maker Lab
 
+**你不需要先买任何专业设备。** 第一次做某个项目，建议先打开 [有 AI 助手的 DIY](/guide/agent-first/)，选择自有工具、借用或代工路线。上游 GitHub、BOM、CAD、固件版本等技术资料应由有权限的 Agent 查明；人只需要完成少量必要的实物操作。
+
+[DIY Primitives：人类/Agent 双视图](/guide/diy-primitives/) · [HachimoDock 人类制作版](/projects/hachimodock/human-track/)
+
 ## 给新手的阅读顺序
 
 1. 先看[项目目录](/projects/)，挑一个当前有教程的项目。
