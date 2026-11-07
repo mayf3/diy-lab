@@ -163,5 +163,73 @@
         "phase": "数字模拟"
       }
     ]
+  },
+  {
+    "slug": "robot-lab-draw-tree",
+    "title": "AI Robot Lab 01｜机械臂画一棵树",
+    "subtitle": "用 GPT 规划笔画，SO-101 动手画，摄像头检查结果",
+    "status": "preparing",
+    "category": "机器人 / 3D 打印 / AI Agent",
+    "description": "已设计 G0–G6 完整关卡、SO-101 单从臂 BOM、风险门禁和离线笔画计划校验器；尚未采购、无实物测试。先画树，再做换笔和模仿学习。",
+    "date": "2026-11-07",
+    "budget": "上游单从臂物料参考约 ¥682.23；相机、工装、安全与运费待核价",
+    "steps": [
+      {
+        "id": "01",
+        "file": "01-start.md",
+        "title": "G0：从任务到离线 SVG",
+        "minutes": "按关卡实施，时间依实测",
+        "phase": "准备"
+      },
+      {
+        "id": "02",
+        "file": "02-purchase.md",
+        "title": "G1：采购与兼容性门禁",
+        "minutes": "按关卡实施，时间依实测",
+        "phase": "采购前"
+      },
+      {
+        "id": "03",
+        "file": "03-print-assemble.md",
+        "title": "G2：P1S 打印与组装",
+        "minutes": "按关卡实施，时间依实测",
+        "phase": "制作"
+      },
+      {
+        "id": "04",
+        "file": "04-bringup.md",
+        "title": "G3：LeRobot 连接和校准",
+        "minutes": "按关卡实施，时间依实测",
+        "phase": "调试"
+      },
+      {
+        "id": "05",
+        "file": "05-draw-workspace.md",
+        "title": "G4：笔架、纸面标定和干跑",
+        "minutes": "按关卡实施，时间依实测",
+        "phase": "调试"
+      },
+      {
+        "id": "06",
+        "file": "06-gpt-vision.md",
+        "title": "G5：GPT 规划与视觉反馈",
+        "minutes": "按关卡实施，时间依实测",
+        "phase": "联调"
+      },
+      {
+        "id": "07",
+        "file": "07-accept-log.md",
+        "title": "G6：连续三次验收与记录",
+        "minutes": "按关卡实施，时间依实测",
+        "phase": "验收"
+      },
+      {
+        "id": "08",
+        "file": "08-extensions.md",
+        "title": "扩展：换笔、颜料、抓取、模仿学习",
+        "minutes": "后续按项目",
+        "phase": "进阶"
+      }
+    ]
   }
 ]
