@@ -5,10 +5,10 @@ B03,电源,官方匹配外置电源,SO101 7.4V 电机对应的官方推荐供电
 B04,线材,USB-C 数据线,支持数据传输,1,23.9,23.9,https://github.com/TheRobotStudio/SO-ARM100,检查电脑端接口和驱动板,HOLD,官方参考价
 B05,固定,桌面夹具,适配 SO101 底座,2,3.9,7.8,https://github.com/TheRobotStudio/SO-ARM100,固定牢靠不倾倒;上游为一组参考,HOLD,仅参考
 B06,工具,十字螺丝刀,#0/#1 适合装配,1,14.9,14.9,https://github.com/TheRobotStudio/SO-ARM100,已有可复用,HOLD,参考价
-B07,打印,SO101 Follower 结构件,官方 STL+PLA+ 耗材,1,,,https://github.com/TheRobotStudio/SO-ARM100,必须先打印尺寸量规;记录 commit, CHECK,Bambu P1S 已有;耗材不能凭空计价
+B07,打印,SO101 Follower 结构件,官方 STL+PLA+ 耗材,1,,,https://github.com/TheRobotStudio/SO-ARM100,必须先打印尺寸量规;记录 commit,CHECK,Bambu P1S 已有;耗材不能凭空计价
 B08,紧固件,舵机线/螺钉/舵盘,按官方 Follower 清单和卖家套装,1,,,https://huggingface.co/docs/lerobot/so101,核实是否随舵机赠送及数量,HOLD,若缺需单独报价
 B09,视觉,USB UVC 摄像头,macOS+OpenCV 可读,1,,,https://huggingface.co/docs/lerobot/cameras,全幅看到 A5 纸;可先借用,HOLD,价格未核
 B10,工装,自制笔架和柔性笔尖结构,适配手头水性笔和夹爪,1,,,https://github.com/TheRobotStudio/SO-ARM100,接触力和夹持可靠性尚需实测,HOLD,自己 CAD+P1S 打印
-B11,耗材,A5 纸与水性笔,非尖锐水性细头笔+纸夹,1,,,https://github.com/TheRobotStudio/SO-ARM100,保证纸不滑动;便于更换, CHECK,可能已有
+B11,耗材,A5 纸与水性笔,非尖锐水性细头笔+纸夹,1,,,https://github.com/TheRobotStudio/SO-ARM100,保证纸不滑动;便于更换,CHECK,可能已有
 B12,安全,外置断电/急停手段,独立于 GPT 和软件驱动,1,,,https://huggingface.co/docs/lerobot/so101,可触及+与实际供电适配+断电复位安全,HOLD,不能用软件按钮单独替代
-B13,视觉,固定相机支架,可观测纸面四角,1,,,https://github.com/TheRobotStudio/SO-ARM100,与机械臂不会碰撞, CHECK,可自制打印
+B13,视觉,固定相机支架,可观测纸面四角,1,,,https://github.com/TheRobotStudio/SO-ARM100,与机械臂不会碰撞,CHECK,可自制打印
