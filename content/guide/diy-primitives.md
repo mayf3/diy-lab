@@ -41,11 +41,12 @@
 
 ## 两种读法，数据只维护一处
 
-`source-data/hachimodock/workflow.json` 是第一个结构化示例；其中每个 A 都标识参与者、依赖、输入、输出、验收与遇阻分支。
+`source-data/hachimodock/workflow.json` 是第一个结构化示例，`source-data/robot-lab-draw-tree/workflow.json` 是第二个实际应用。每个 A 标识参与者、依赖、输入、输出、验收与遇阻分支。
 
 - [人类制作版](/projects/hachimodock/human-track/)：从该 JSON 自动生成，新手只需按自己的资源路径完成必要物理动作。
 - [Agent 执行版](/projects/hachimodock/agent-track/)：从同一 JSON 自动生成，要求 Agent 自主查证、报告证据、说明当前授权边界。
 - [深入教程](/projects/hachimodock/)：原有的 13 个章节是详细解释，不应复制维护机器工作流的状态；若二者冲突，应提出更新来源数据的补丁。
+- [AI Robot Lab 人类制作版](/projects/robot-lab-draw-tree/human-track/) · [Agent 执行版](/projects/robot-lab-draw-tree/agent-track/)：从 SO-101 画树这个单任务验证 DOAVR，先离线笔画、兼容查证和安全适配，再进入实物组装、标定、三次画树验收。**当前全部任务仍为计划状态，不能把网站回归测试当作机械臂实测。**
 
 运行 `python3 scripts/render_diy_ir.py` 可重建两个版本；`python3 scripts/render_diy_ir.py --check` 检查是否出现版本漂移，已纳入 CI 内容检查。原始结构及测试可在 GitHub 仓库中查看。
 
