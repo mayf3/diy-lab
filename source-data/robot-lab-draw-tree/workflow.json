@@ -1,0 +1,347 @@
+{
+  "schema_version": "0.1",
+  "project": "robot-lab-draw-tree",
+  "updated": "2026-11-07",
+  "display_name": "AI Robot Lab 01｜SO-101 机械臂画树",
+  "direction": {
+    "goal": "完成一个可重复验收的 AI 机械臂画树闭环：GPT 从中文指令生成受约束笔画计划，本地执行器检查轨迹后控制 SO-101 follower 在固定 A5 纸上绘制，俯视相机拍照复核结果。",
+    "audience": "希望从零尝试机器人和具身智能的 DIY 新手；不预设拥有 Mac、Bambu P1S、摄像头、机械臂或机器人学基础。",
+    "non_goals": [
+      "V1 只用一支黑色水性笔画简化线稿，不做水彩、自动调色或颜料滴定。",
+      "GPT 不直接发送舵机角度、不访问串口、不执行任意 Python 或 shell；V1 不做无人值守实物运动。",
+      "不把 SO-101 的精度、负载、力控和安全等级等同于工业级 xArm 7。",
+      "不未经许可复制上游 STL、STEP、PCB 或装配视频。"
+    ],
+    "done_when": "单条 SO-101 follower 完成装配、供电核对与校准；在固定 A5 纸面上由人工批准完成三次可复现的树木线稿绘制；每次都有轨迹、日志和前后照片，视觉验收结果可复查。"
+  },
+  "resource_routes": [
+    {
+      "id": "computer",
+      "question": "你准备使用什么电脑运行本地规划器和 LeRobot？",
+      "options": [
+        "macOS 电脑（按当天官方文档核对驱动与串口）",
+        "Windows 或 Linux 电脑（按当天官方支持范围核对）",
+        "借用实验室电脑或尚未决定"
+      ],
+      "policy": "离线 SVG 校验可先在普通电脑完成；机械臂 bring-up 前必须核对操作系统、Python、USB 驱动与当前 LeRobot 版本，不假设所有平台完全一致。"
+    },
+    {
+      "id": "printer",
+      "question": "你准备怎样获得 SO-101 打印件？",
+      "options": [
+        "自己的 3D 打印机（按具体机型切片）",
+        "借用学校、朋友或创客空间设备",
+        "找正规代打印服务",
+        "尚未决定"
+      ],
+      "policy": "Bambu P1S 不是公众教程的前置条件；Agent 应按实际打印机或代打印路径给出参数和验收，不让用户为此额外购买打印机。"
+    },
+    {
+      "id": "camera",
+      "question": "你有哪些可固定在纸面上方的相机？",
+      "options": [
+        "USB UVC 摄像头",
+        "可固定的手机相机",
+        "借用相机或暂未决定"
+      ],
+      "policy": "相机必须稳定覆盖整张 A5 纸并能识别纸面定位点；型号、视野和标定能力需实测，不假设任意摄像头可用。"
+    },
+    {
+      "id": "robot",
+      "question": "你目前如何获得 SO-101 follower？",
+      "options": [
+        "已有型号和电机版本明确的兼容套件",
+        "G0 仿真通过后采购单 follower 套件",
+        "借用实验室或创客空间机械臂",
+        "尚未决定"
+      ],
+      "policy": "G0 离线计划与运动学可达性报告未通过、卖家未确认电机/驱动板/电源前，不付款、不通电。"
+    }
+  ],
+  "references": [
+    {
+      "id": "hardware",
+      "url": "https://github.com/TheRobotStudio/SO-ARM100",
+      "role": "SO-101 机械结构、BOM、打印文件和电机版本基线"
+    },
+    {
+      "id": "so101-guide",
+      "url": "https://huggingface.co/docs/lerobot/so101",
+      "role": "SO-101 组装、电机配置、串口发现与校准"
+    },
+    {
+      "id": "lerobot-install",
+      "url": "https://huggingface.co/docs/lerobot/installation",
+      "role": "LeRobot 安装与版本要求"
+    },
+    {
+      "id": "simulation",
+      "url": "https://github.com/TheRobotStudio/SO-ARM100/tree/main/Simulation/SO101",
+      "role": "SO-101 URDF / MuJoCo 模型与运动学可达性检查"
+    },
+    {
+      "id": "cameras",
+      "url": "https://huggingface.co/docs/lerobot/cameras",
+      "role": "LeRobot 摄像头接入参考；实际俯视标定仍需项目验证"
+    },
+    {
+      "id": "opencv-aruco",
+      "url": "https://docs.opencv.org/4.x/d5/dae/tutorial_aruco_detection.html",
+      "role": "纸面定位标记检测与平面坐标标定参考"
+    },
+    {
+      "id": "imitation-learning",
+      "url": "https://huggingface.co/docs/lerobot/il_robots",
+      "role": "后续 leader 示教与模仿学习路线，不是 V1 必需项"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "A01",
+      "title": "确认任务、预算与现有资源",
+      "actor": "shared",
+      "requires": [],
+      "goal": "锁定首个实体作品和预算边界，并选择电脑、打印、相机与机械臂的可行资源路线。",
+      "agent": [
+        "读取仓库已有项目说明和用户已经明确的设备信息；只询问会改变实际方案的缺失条件。",
+        "把已有设备、可借用设备、代打印和待采购项分开记录，不假设读者拥有 P1S 或 Mac。"
+      ],
+      "human": [
+        "确认 V1 只做单臂黑色笔画树；给出预算上限，并说明电脑、打印资源、相机和机械臂现状。",
+        "若型号不确定，只需提供设备标签或商品页，不需要自己判断兼容性。"
+      ],
+      "outputs": [
+        "目标与预算记录",
+        "电脑/打印/相机/机械臂资源路线"
+      ],
+      "verify": {
+        "type": "human-confirmation",
+        "criteria": "目标、预算和资源路线由人确认；未知项明确标记 unknown。",
+        "status": "planned"
+      },
+      "block": "预算或设备情况不明时保留待确认路线；Agent 仍可继续查公开资料和做离线分析，不得推定用户已有某种硬件。",
+      "deep": "/projects/robot-lab-draw-tree/01-start/",
+      "status": "planned",
+      "human_summary": "Agent 先整理你已有的设备和省钱路线；你只确认目标与预算，不必自己研究机械臂型号。"
+    },
+    {
+      "id": "A02",
+      "title": "Agent 核对官方硬件、软件和版本",
+      "actor": "agent",
+      "requires": [
+        "A01"
+      ],
+      "goal": "锁定 SO-101 follower 的官方机械模型、关键电机/控制板/供电版本和当天 LeRobot 软件接口。",
+      "agent": [
+        "读取 TheRobotStudio 官方仓库的 SO-101 follower BOM、STL、装配图、许可证和版本；记录检查日期与 commit。",
+        "核对 follower 六个电机的型号、齿比、电压、控制板、总线线材和匹配电源；将 leader 电机规格与 follower 明确区分。",
+        "读取当前 LeRobot SO-101 文档和安装文档，记录当天支持的操作系统、Python、串口发现、电机 ID 和校准命令。",
+        "核对仿真模型的 URDF/MJCF、模型校准约定和工具坐标定义；资料缺失时标 BLOCKED，不用旧博客补猜。"
+      ],
+      "human": [],
+      "outputs": [
+        "官方来源与版本表",
+        "SO-101 follower 兼容性清单",
+        "未关闭的采购与技术疑点"
+      ],
+      "verify": {
+        "type": "public-source",
+        "criteria": "每项关键硬件和软件结论都能追溯到官方来源、型号与检查日期；未证实项保留 HOLD。",
+        "status": "planned"
+      },
+      "block": "官方文档、模型或版本无法读取时，明确列出缺失文件和影响；不得把搜索摘要当作型号兼容证据。",
+      "deep": "/projects/robot-lab-draw-tree/02-purchase/",
+      "status": "planned",
+      "human_summary": "Agent 自己读取官方硬件和 LeRobot 资料，整理准确型号、版本与尚未证实的地方。"
+    },
+    {
+      "id": "A03",
+      "title": "采购前 G0：离线笔画与机械臂可达性仿真",
+      "actor": "agent",
+      "requires": [
+        "A02"
+      ],
+      "goal": "在付款前验证离线笔画格式，以及 SO-101 是否有可能在目标纸面区域内保持笔尖姿态并连续画树。",
+      "agent": [
+        "运行仓库 plan_validator.py 的自测和 demo_plan.json，确认越界或非法计划会被拒绝；明确这只验证计划格式，不等于机械臂可达。",
+        "基于官方 SO-101 URDF/MJCF 锁定模型版本，建立 A5 纸面、目标绘画区域和轻量笔夹占位工具模型。",
+        "对绘画区域九个采样点及树干/树枝/树冠连续路径运行 IK、关节余量、路径连续性和碰撞检查；保存模型假设、结果表和截图。",
+        "若缺少可运行模型、工具姿态无解、路径不连续或碰撞检查未完成，将 G0 标记 BLOCKED；不得放行 G1 付款。"
+      ],
+      "human": [],
+      "outputs": [
+        "离线 SVG / JSON 计划及校验结果",
+        "SO-101 九点可达性与路径连续性报告",
+        "G0 PASS / BLOCKED 结论和仿真证据"
+      ],
+      "verify": {
+        "type": "simulation",
+        "criteria": "离线校验通过；官方模型、工具占位、九点 IK、关节余量和整条树形路径均有可复查结果。模拟仅降低采购风险，不代表实物通过。",
+        "status": "planned"
+      },
+      "block": "若仿真不能完成或存在不可达点，先缩小绘画区域、调整纸面方向或重新评估平台；没有 G0 PASS 不采购。",
+      "deep": "/projects/robot-lab-draw-tree/01-start/",
+      "status": "planned",
+      "human_summary": "Agent 在你花钱前先用官方模型检查机械臂能不能够到纸面并连续画线；没有通过报告就不买。"
+    },
+    {
+      "id": "A04",
+      "title": "生成精确 BOM、国内询价和采购门禁",
+      "actor": "agent",
+      "requires": [
+        "A03"
+      ],
+      "goal": "形成可核对到具体 SKU 的单 follower 购物清单、实时到手价和所有风险项。",
+      "agent": [
+        "按 G0 报告和用户预算更新 BOM，区分必须件、已有可复用件、可借用件和后续升级件。",
+        "通过上游列出的中国供应商渠道核对当前商品 SKU，询问六个 follower 电机的标签、齿比、电压、控制板版本、线材和匹配电源铭牌。",
+        "记录询价日期、商品页、数量、运费、售后和商家书面答复；把官方历史参考价与当日实际报价分开。",
+        "逐项更新 blockers.csv；关键电机/控制板/电源仍有 HOLD 时，输出不可付款清单。"
+      ],
+      "human": [],
+      "outputs": [
+        "可编辑 BOM 与精确 SKU 候选",
+        "两家以上同口径询价和含运费预算",
+        "HOLD / CHECK 风险清单"
+      ],
+      "verify": {
+        "type": "public-source",
+        "criteria": "商品型号、数量、版本、卖家确认和到手价可追溯；G0 未通过或关键供电不明时不得放行。",
+        "status": "planned"
+      },
+      "block": "商家只写 SO100/SO101 通用或无法提供电机、电源铭牌时保持 HOLD；不以低价替代兼容证据。",
+      "deep": "/projects/robot-lab-draw-tree/02-purchase/",
+      "status": "planned",
+      "human_summary": "Agent 负责找国内渠道、核对 SKU 和算真实总价；不会把旧参考价当成现在的成交价。"
+    },
+    {
+      "id": "A05",
+      "title": "人批准采购并核对实收物料",
+      "actor": "human",
+      "requires": [
+        "A04"
+      ],
+      "goal": "由人对精确 SKU、总价和风险做最终决定，并在收货后核对真实物料。",
+      "agent": [],
+      "human": [
+        "查看 Agent 提供的 BOM、G0 报告、卖家答复、运费和总预算；明确决定是否购买。",
+        "付款后收货，对照订单核对六个电机标签、控制板、线材、电源铭牌和紧固件数量；拍照时遮盖姓名、地址和订单号。",
+        "若实物与订单或卖家承诺不一致，停止装配并联系商家，不插电试错。"
+      ],
+      "outputs": [
+        "明确的人类采购决定",
+        "去隐私的实收型号与数量记录",
+        "实际到手价"
+      ],
+      "verify": {
+        "type": "physical-observation",
+        "criteria": "真实收货物料与已批准 SKU 一致；电机和电源铭牌照片可核对，订单隐私已脱敏。",
+        "status": "planned"
+      },
+      "block": "实收型号不符、缺件或电源参数不清时停止装配；先向商家补证或退换，不得混用不同电压版本。",
+      "deep": "/projects/robot-lab-draw-tree/02-purchase/",
+      "status": "planned",
+      "human_summary": "只有你决定是否付款；收货后按清单拍几张去隐私的标签照片，Agent 再帮你复核。"
+    },
+    {
+      "id": "A06",
+      "title": "打印、装配、LeRobot 校准与安全点动",
+      "actor": "shared",
+      "requires": [
+        "A05"
+      ],
+      "goal": "把单 follower 组装成可被 LeRobot 识别和低速控制的实体设备。",
+      "agent": [
+        "按读者实际打印机或代打印路线提供结构件文件链接、切片设置、量规和尺寸检查；不默认用户有 P1S。",
+        "根据当前官方 LeRobot 文档提供版本匹配的安装、串口发现、电机 ID 设置和校准步骤。",
+        "检查用户提供的装配照片、日志和电源铭牌；区分图像推断与真实测量。"
+      ],
+      "human": [
+        "按官方结构和打印路径制作、装配并固定底座；检查线缆不会被关节夹住。",
+        "核对电机与电源版本，设置物理断电开关，按官方流程逐个设置电机 ID 并校准。",
+        "在无人/宠物进入工作区的条件下做无笔、低速、小幅点动和物理断电测试。"
+      ],
+      "outputs": [
+        "装配照片与实收 BOM",
+        "LeRobot 版本、端口、电机 ID 和校准日志",
+        "低速基础运动及物理断电测试记录"
+      ],
+      "verify": {
+        "type": "device-log",
+        "criteria": "实体设备可稳定识别、校准和低速点动；物理断电开关已实测；无异响、卡滞、底座移动或线缆干涉。",
+        "status": "planned"
+      },
+      "block": "供电参数、关节装配或电机 ID 任一不确定时保持断电；通信异常或急停失败时停止后续动作。",
+      "deep": "/projects/robot-lab-draw-tree/04-bringup/",
+      "status": "planned",
+      "human_summary": "Agent 提供匹配当前版本的安装和校准步骤；你负责打印、组装、接线、首次通电和现场安全检查。"
+    },
+    {
+      "id": "A07",
+      "title": "笔架、纸面标定、GPT 笔画规划和受控绘制",
+      "actor": "shared",
+      "requires": [
+        "A03",
+        "A06"
+      ],
+      "goal": "完成从中文任务到受限笔画、轨迹预览、人工批准、实体绘制和摄像头观察的闭环。",
+      "agent": [
+        "根据真实夹爪尺寸协助设计轻量柔性笔夹和纸面定位工装；将笔尖工具坐标加入运动学模型。",
+        "实现 GPT 输出受限 SVG/JSON 的白名单解析、越界拒绝、轨迹采样、坐标映射、IK、关节/速度/碰撞检查和 dry-run。",
+        "实现俯视相机纸面标定、结果拍照和目标线稿对齐；输出每一步可复查的日志。",
+        "禁止 GPT 获得串口、任意代码执行或绕过人工批准的能力。"
+      ],
+      "human": [
+        "安装笔夹、固定纸张和相机；提供夹爪尺寸、纸面测量和标定照片。",
+        "先做离纸 dry-run，再做短直线和三角形小样；确认笔尖接触、纸张固定和安全范围后，人工批准第一幅树形线稿。",
+        "全程观察实体运动，发生异响、碰撞、卡滞或压力异常立即物理断电。"
+      ],
+      "outputs": [
+        "笔夹和纸面工装尺寸/照片",
+        "受限 SVG/JSON、轨迹计划与安全校验报告",
+        "作画前后照片和视觉比对结果"
+      ],
+      "verify": {
+        "type": "physical-observation",
+        "criteria": "dry-run 和小样通过；人工批准后完成一幅树形线稿；相机标定和结果对齐可复查。",
+        "status": "planned"
+      },
+      "block": "笔尖姿态、接触压力、坐标映射或路径安全任一未确认时不得接入 GPT 实体执行；退回小轨迹测试。",
+      "deep": "/projects/robot-lab-draw-tree/06-gpt-vision/",
+      "status": "planned",
+      "human_summary": "Agent 把 GPT 线稿变成经过检查的动作；你负责装笔、标定、先干跑，再亲自批准和看护绘制。"
+    },
+    {
+      "id": "A08",
+      "title": "三次实物验收、制作日志和视频复盘",
+      "actor": "shared",
+      "requires": [
+        "A07"
+      ],
+      "goal": "证明作品可以重复完成，并将真实成本、失败、证据和可复刻教程沉淀回仓库。",
+      "agent": [
+        "对三次运行的 SVG、轨迹、照片和日志做一致性分析，区分仿真、软件测试与实物观察。",
+        "更新 BOM 实际价格、blockers 关闭证据、故障复现和回归测试；未完成项继续保持 open。",
+        "整理视频分镜和可公开的小图；检查版权、设备标识和个人信息。"
+      ],
+      "human": [
+        "在同一安全配置下完成三次人工批准的绘制，逐次保存结果和失败原因。",
+        "确认实际花费、主动操作时间和可公开素材；审核视频与教程是否准确描述真实过程。"
+      ],
+      "outputs": [
+        "三次运行日志与对比照片",
+        "实际成本和问题复盘",
+        "经过事实审核的视频与教程更新"
+      ],
+      "verify": {
+        "type": "physical-observation",
+        "criteria": "三次运行均有原始证据；任何未通过的测试明确保留失败或待测状态，不得只展示最好的一次。",
+        "status": "planned"
+      },
+      "block": "三次结果不稳定时先做故障定位和回归测试，不扩展自动换笔、调色或无人值守功能。",
+      "deep": "/projects/robot-lab-draw-tree/07-accept-log/",
+      "status": "planned",
+      "human_summary": "你负责重复实测和确认能否公开；Agent 帮你分析结果、补齐日志和更新教程。"
+    }
+  ]
+}

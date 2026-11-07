@@ -16,11 +16,18 @@
 - [ ] 确保每次执行前人工确认、固定臂底座、限速、笔尖柔性接触、外置断电/急停；手不进入工作区。
 - [ ] 相机保存作画前后画面和判定结果；至少连续 3 次重复，逐次记录成功/失败和误差。未实测前不声称通过。
 
+## 两种执行视图
+
+- [人类制作版：按步骤完成作品](/projects/robot-lab-draw-tree/human-track/)
+- [Agent 执行版：让 Agent 自主查资料、仿真和生成采购方案](/projects/robot-lab-draw-tree/agent-track/)
+
+**采购前硬门禁：** 离线 SVG 校验通过不代表 SO-101 能够真实画图。G1 付款前必须先由 Agent 使用官方 URDF/MJCF 和笔夹占位模型完成目标绘画区域九点 IK、关节余量、路径连续性与碰撞检查；没有 G0 PASS 报告就保持 HOLD。
+
 ## 从 0 到 1 的关卡
 
 | 关 | 要完成什么 | 过关证据 |
 | --- | --- | --- |
-| [G0：明确目标与离线样例](/projects/robot-lab-draw-tree/01-start/) | 不买硬件，先跑结构化绘图计划的离线验证 | 输出 SVG 和命令记录 |
+| [G0：明确目标与离线样例](/projects/robot-lab-draw-tree/01-start/) | 不买硬件，先跑离线计划校验，并完成官方模型的九点可达性与路径连续性检查 | SVG、校验记录、G0 仿真报告；未 PASS 不采购 |
 | [G1：询价和采购门禁](/projects/robot-lab-draw-tree/02-purchase/) | 锁定 SO-101 follower / 舵机 / 电源 / 兼容性 | 报价、型号和风险关闭依据 |
 | [G2：P1S 打印和机械装配](/projects/robot-lab-draw-tree/03-print-assemble/) | 打印量规 → 结构件 → 一件件组装 | 尺寸、固定、照片 |
 | [G3：LeRobot 首次连接](/projects/robot-lab-draw-tree/04-bringup/) | 电机 ID、串口、校准、监督运动 | 可复现的本机日志 |
