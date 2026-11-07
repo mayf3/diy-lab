@@ -16,6 +16,7 @@
 ## 导航
 
 - [HachimoDock Agent 执行版](https://mayf3.github.io/diy-lab/projects/hachimodock/agent-track/)
+- [AI Robot Lab：SO-101 画树 Agent 执行版](https://mayf3.github.io/diy-lab/projects/robot-lab-draw-tree/agent-track/) · 工作流：`source-data/robot-lab-draw-tree/workflow.json`；目前仅规划/软件验证，绝不可把路线视为实机已通过
 - 原语工作流（机器可读）：`source-data/hachimodock/workflow.json`
 - 独立质量检查：`python3 scripts/render_diy_ir.py --check && python3 -m unittest discover -s tests && python3 scripts/check.py`
 
