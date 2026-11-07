@@ -32,3 +32,6 @@
 ## 已做过的作品怎么补成教程？
 
 从[万圣节服装](/projects/halloween-costume/)和[门饰](/projects/halloween-door/)的示例出发，先填确知事实，再列候选数字方案和需补证据；不能因为方案中有文件就认定最终实物采用了它。首个新项目则按照[HachimoDock 采购执行单](/projects/hachimodock/purchase-plan/)先核对再付款。
+
+
+想观看或制作视频时请先看 [Remotion 视频底座和使用步骤](/guide/remotion/) 及 [视频工坊](/videos/)；视频里的 Blender 模拟、工程 SVG 与真人实拍采用不同证据标记。

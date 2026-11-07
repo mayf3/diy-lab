@@ -1,8 +1,8 @@
 # 视频工坊
 
-这里汇集每个 DIY 项目的真实操作录像、3D 数字模拟视频、B 站成片链接和分镜记录。目前已发布一条**基于现有 Blender G0 模型的数字模拟教学样片**；HachimoDock 等项目尚未有实物制作录像，不会把数字示意或第三方参考视频冒充自己的实拍。
+这里汇集每个 DIY 项目的真实操作录像、3D 数字模拟视频、B 站成片链接和分镜记录。目前已发布**两条 Remotion 动画教程**（HachimoDock 采购前结构示意、圣诞帐篷 G0 数字模拟），以及一条早期 G0 技术样片；HachimoDock 等项目仍未有实物制作录像，不会把数字示意或第三方参考视频冒充自己的实拍。
 
-[观看第一条圣诞帐篷 G0 数字模拟样片](/guide/video-production/) · [DIY 视频从原语到成片完整流程](/guide/video-production/) · [HachimoDock 待拍镜头](/projects/hachimodock/12-video/)
+[HachimoDock Remotion 采购前动画](/projects/hachimodock/video-prepurchase/) · [圣诞帐篷数字模拟](/projects/christmas-magic-tent/g0-review/) · [Remotion 制作步骤](/guide/remotion/) · [真实 DIY 待拍镜头](/projects/hachimodock/12-video/)
 
 ## 为什么把视频也当作教程的一部分？
 
@@ -25,3 +25,6 @@
 ## 著作权和隐私
 
 不能在无许可情况下转载 HachimoDock 官方 `.mp4`；发布自己的视频也要检查孩子隐私、订单个人信息、API Key 和私人 Agent Session 内容。
+
+
+**Remotion 视频制作已正式纳入流程：**[Remotion 使用说明](/guide/remotion/)，目前可以把已保存的 DIY 工程分镜做成有动画与字幕的教程。具体哪些视频已实际发布、哪些仍待拍摄，以本页目录为准。

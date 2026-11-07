@@ -59,6 +59,13 @@ def validate():
     from render_diy_ir import run as check_ir
     if check_ir(check=True):
         error('DIY IR schema or derived runbooks are invalid')
+    # Remotion authoring is optional, but its published storyboards must refer
+    # only to project-owned simulation assets or clearly labeled diagrams.
+    try:
+        from prepare_remotion import prepare
+        prepare(write=False)
+    except (AssertionError, ValueError, KeyError, OSError) as exc:
+        error(f'Remotion storyboard provenance failed: {exc}')
     slugs = set()
     for project in PROJECTS:
         slug = project.get('slug', '')
@@ -198,9 +205,9 @@ def validate():
                     v.get('video_url','')
                 ):
                     error('HTML5 player must use the Maker Lab GitHub Release MP4')
-            if v.get('kind') == 'digital-simulation' and v.get('status') == 'published':
+            if v.get('kind') in {'digital-simulation', 'technical-schematic'} and v.get('status') == 'published':
                 if not v.get('disclosure') or not v.get('source_page'):
-                    error('Published simulation video needs explicit disclosure and source page')
+                    error('Published simulation/schematic video needs explicit disclosure and source page')
                 story = v.get('storyboard_path','')
                 if not re.fullmatch(r'source-data/[a-z0-9-]+/video/[a-z0-9-]+[.]json', story):
                     error('Published simulation video needs safe storyboard_path')
