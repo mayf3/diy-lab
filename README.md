@@ -10,7 +10,7 @@
 
 **第一个完整案例**：[HachimoDock 哈基米机](content/projects/hachimodock/index.md)（2026-11-06，**准备中、未做实物验证**）。另外补录 2026 万圣节服装/门饰的制作参数与数字设计证据边界，以及圣诞互动帐篷的 [G0 数字模拟评审](content/projects/christmas-magic-tent/g0-review.md)（A/B 几何对比完成，待真实商品尺寸回填）；历史项目的最终文件与实物验收证据尚待回填。
 
-**正在准备的新项目**：[AI Robot Lab 01｜让 GPT 指挥 SO-101 机械臂画树](content/projects/robot-lab-draw-tree/index.md)：G0–G6 完整任务路线、单臂材料表、Python 离线计划校验器。尚未采购、尚未实物验证。跟踪 [Issue #3](https://github.com/mayf3/diy-lab/issues/3)。
+**正在准备的新项目**：[AI Robot Lab 01｜让 GPT 指挥 SO-101 机械臂画树](content/projects/robot-lab-draw-tree/index.md)：已按 DOAVR 创作原语提供 [人类制作版](content/projects/robot-lab-draw-tree/human-track.md) / [Agent 执行版](content/projects/robot-lab-draw-tree/agent-track.md) 两种视图，保留 G0–G6 详细教程、单臂 BOM 和离线计划校验器。尚未采购、尚未实物验证；跟踪 [Issue #3](https://github.com/mayf3/diy-lab/issues/3)。
 
 **2026-11-06 更新**：已由用户 GitHub 账户创建公开仓库 <https://github.com/mayf3/diy-lab>。网站已经通过 GitHub Pages 自动部署，并验证可访问：<https://mayf3.github.io/diy-lab/>。
 
