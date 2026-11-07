@@ -18,7 +18,7 @@
 
 **想复刻一个作品**，直接从下方 HachimoDock 项目开始；**想建自己的新项目**，请看 [如何新建项目](/guide/new-project/)；**想把已做过的作品补成教程**，先看 [素材整理规范](/guide/media/)。
 
-**想挑战机器人**，请从 [AI Robot Lab 01｜机械臂画树](/projects/robot-lab-draw-tree/) 开始：第一关完全离线，不用买硬件；采购、打印、校准和画图按安全门禁逐关推进。
+**想挑战机器人**，请从 [AI Robot Lab 01｜机械臂画树的人类制作版](/projects/robot-lab-draw-tree/human-track/) 开始：12 个关卡先让 AI 调研与模拟，不用马上买硬件；有 AI 工具的读者让它读取 [Agent 执行版](/projects/robot-lab-draw-tree/agent-track/)，再按安全门禁推进采购、打印、校准与画图。
 
 ## 我们坚持的三条约定
 
