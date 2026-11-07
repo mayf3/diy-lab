@@ -4,6 +4,8 @@
 
 **第一个完整案例**：[HachimoDock 哈基米机](content/projects/hachimodock/index.md)（2026-11-06，**准备中、未做实物验证**）。另外补录 2026 万圣节服装/门饰的制作参数与数字设计证据边界，以及圣诞互动帐篷的 [G0 数字模拟评审](content/projects/christmas-magic-tent/g0-review.md)（A/B 几何对比完成，待真实商品尺寸回填）；历史项目的最终文件与实物验收证据尚待回填。
 
+**正在准备的新项目**：[AI Robot Lab 01｜让 GPT 指挥 SO-101 机械臂画树](content/projects/robot-lab-draw-tree/index.md)：G0–G6 完整任务路线、单臂材料表、Python 离线计划校验器。尚未采购、尚未实物验证。跟踪 [Issue #3](https://github.com/mayf3/diy-lab/issues/3)。
+
 **2026-11-06 更新**：已由用户 GitHub 账户创建公开仓库 <https://github.com/mayf3/diy-lab>。网站已经通过 GitHub Pages 自动部署，并验证可访问：<https://mayf3.github.io/diy-lab/>。
 
 ## 第 1 步：在自己的 Mac 上预览网站
@@ -74,7 +76,8 @@ diy-lab/
 │       ├── hachimodock/       # 13 关完整新手教程 + 日志
 │       ├── halloween-costume/ # 已完成：待整理
 │       ├── halloween-door/    # 已完成：待整理
-│       └── christmas-magic-tent/ # 规划中
+│       ├── christmas-magic-tent/ # 规划中
+│       └── robot-lab-draw-tree/ # SO-101 机械臂画树：准备中
 ├── source-data/
 │   └── hachimodock/bom.csv    # 可在 Excel/Numbers 中编辑的材料表
 ├── public/media/             # 仅放有授权的小照片与缩略图
