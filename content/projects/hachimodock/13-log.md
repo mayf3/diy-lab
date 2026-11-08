@@ -14,6 +14,7 @@
 | --- | --- | --- | --- | --- |
 | 2026-11-06 | 文档准备 | 建立教程、购物核对和验证流程 | 本仓库 | 确认屏幕/FFC、按键/PCB、芯片修订号 |
 | 2026-11-06 | 采购核查 | Brave 实查微雪产品页与立创项目页：微雪页面与文档均无 silicon 版次（国际站当日整线缺货）；PCB_V1.2 内嵌 BOM 与 SCH_V1.2 原理图确认 SW1-3 = CPG135001D01（原理图 2026-10-30 更新过）；原作者 2026-10-29 评论区确认主板-屏幕用 22pin FFC（0.5mm 同向） | purchase-plan.md 阻塞项进展、blockers.csv、sources.csv S3 | 卖家答复 BK1/BK2；STEP 外壳键孔配合检查未做 |
+| 2026-11-08 | 公开渠道采购研究（未下单） | 按14行BOM查核：微雪SKU31647中国官网¥0为占位、京东商品页下柜；立创新增C50984排母、C20615902 22P同向FFC候选；C400229定位CHOC V1红轴并找到专用键帽3D打印方案；屏幕厂商KD028VGFID048虽为480×640 MIPI但20Pin，**不是可确认兼容原版屏幕**。其他真实含运费价仍未知 | [调研BOM](/downloads/hachimodock-bom.csv)、[微雪](https://dd.waveshare.net/shop/ESP32-P4-WIFI6-M.htm)、[FFC](https://item.szlcsc.com/21980078.html)、[屏幕候选](https://tft-tft.com/product/detail?id=669)、[键帽打印方案](https://github.com/klouderone/KEA-choc-keycaps) | BK1–BK4保持open；等待明确屏幕/主控供货与实机兼容证据；无报价不准按参考价下单 |
 | 待填 | ... | ... | ... | ... |
 
 ## 实际材料 / 成本
