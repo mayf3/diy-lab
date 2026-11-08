@@ -1,15 +1,15 @@
-id,类别,材料,型号或规格,数量,参考单价_元,参考小计_元,采购链接或来源,必须确认的事项,采购状态,备注
-B01,主控,微雪 ESP32-P4-WIFI6-M,已焊排针版; ESP32-P4 实际 v1/v3 修订,1,81.15,81.15,https://www.waveshare.com/esp32-p4-wifi6.htm,芯片 silicon 版次需商家确认,HOLD,官方参考价; 不代表实时成交
-B02,屏幕,2.8寸 IPS MIPI-DSI 屏,480x640; 模组尺寸/驱动/FFC 未核对,1,65,65,https://oshwhub.com/eda_gqvzlprk/project_cnbmkbjc,必须确认屏幕模组和 FFC Pin 数/方向/尺寸,HOLD,15P 与 22P 排线问题仍待核实
-B03,连接,单排排母,2.54mm 1x20P,2,0.17,0.34,https://oshwhub.com/eda_gqvzlprk/project_cnbmkbjc,与开发板排针及 PCB 机械高度核对,CHECK,两只
-B04,输入,摇杆,YA13S-L7.4-B10Ka(60)-0-DL01 C37323748,1,3.54,3.54,https://item.szlcsc.com/39051755.html,核对完整型号和 PCB V1.2 焊孔,CHECK,不可按外观替代
-B05,输入,机械键盘轴,已确认取 CPG135001D01（C400229）; PCB BOM 与原理图双证据 2026-11-06,3,,12.7,https://www.lcsc.com/product-detail/Mechanical-Keyboard-Shaft_Kailh-CPG135001D01_C400229.html,键帽与轴体在外壳键孔的配合待 STEP 检查,HOLD,12.7按一组估算; 非单轴真实价格
-B06,音频,2011 小腔体扬声器,1.25 端子; 需匹配开发板音频口,1,4.5,4.5,https://oshwhub.com/eda_gqvzlprk/project_cnbmkbjc,连接器与电气规格,CHECK,微雪文档接口支持 8Ω 2W
-B07,PCB,定制 PCB,官方 PCB_V1.2,1,,,https://oshwhub.com/eda_gqvzlprk/project_cnbmkbjc,PCB与原理图网表差异以及打样规格,HOLD,需取得真实打样+运费报价
-B08,紧固件,M2.5 圆头螺钉,M2.5x6,2,,,https://oshwhub.com/eda_gqvzlprk/project_cnbmkbjc,长度和热熔螺母匹配,CHECK,备几个
-B09,紧固件,热熔铜螺母,M2.5x4x3.5,2,,,https://oshwhub.com/eda_gqvzlprk/project_cnbmkbjc,外壳孔公差和压入深度,CHECK,备几个
-B10,连接,FFC 屏幕排线,22P 0.5mm 间距 同向（作者 2026-10-29 评论区确认主板用 22pin）,1,,,https://oshwhub.com/eda_gqvzlprk/project_cnbmkbjc,FFC 接点方向(A/B面)与长度待卖家确认; 优先问是否随屏附带,HOLD,淘宝关键词: 22pin 0.5mm间距 同向 FFC线
-B11,外观,机械轴键帽,取决于实际轴系列,3,,,https://oshwhub.com/eda_gqvzlprk/project_cnbmkbjc,键帽与轴、外壳孔位兼容,HOLD,不要先按 BOX 规格购买
-B12,外观,摇杆帽,与 YA13S 摇杆匹配,1,,,https://oshwhub.com/eda_gqvzlprk/project_cnbmkbjc,是否与摇杆一并提供,CHECK,检查外壳行程
-B13,电源,USB 数据线,必须支持数据传输,1,,,,线缆可连接 Mac 串口,CHECK,优先复用已有
-B14,打印,PLA/PETG 耗材,Bambu P1S 0.4mm 喷嘴,1,,,,材料和打印时间依切片实际结果,CHECK,优先复用现有材料
+id,类别,材料,型号或规格,数量,参考单价_元,参考小计_元,采购链接或来源,必须确认的事项,采购状态,备注,渠道调研日期,候选商品或来源链接,实查人民币单价_元,含运费到手价_元,公开渠道核查结论
+B01,主控,微雪 ESP32-P4-WIFI6-M,已焊排针版; ESP32-P4 实际 v1/v3 修订,1,81.15,81.15,https://www.waveshare.com/esp32-p4-wifi6.htm,芯片 silicon 版次需商家确认,HOLD,官方参考价; 不代表实时成交,2026-11-08,https://dd.waveshare.net/shop/ESP32-P4-WIFI6-M.htm,,,SKU 31647/预焊排针版型号确认；微雪官方中国站显示¥0占位，非售价；京东同型号页已下柜，库存和硅片 v1/v3 未确认。参考价¥81.15并非2026-11-08成交价。
+B02,屏幕,2.8寸 IPS MIPI-DSI 屏,480x640; 模组尺寸/驱动/FFC 未核对,1,65,65,https://oshwhub.com/eda_gqvzlprk/project_cnbmkbjc,必须确认屏幕模组和 FFC Pin 数/方向/尺寸,HOLD,15P 与 22P 排线问题仍待核实,2026-11-08,https://tft-tft.com/product/detail?id=669,,,**不可直接买**：查到2.83寸480x640 ST7701S MIPI 2-lane 厂家候选 KD028VGFID048，但它是20Pin而非已描述22P线方案；未找到已核对的HachimoDock原版屏幕SKU、引脚映射、驱动初始化或2.5D外框。
+B03,连接,单排排母,2.54mm 1x20P,2,0.17,0.34,https://oshwhub.com/eda_gqvzlprk/project_cnbmkbjc,与开发板排针及 PCB 机械高度核对,CHECK,两只,2026-11-08,https://item.szlcsc.com/51996.html,,,立创 C50984/BOOMELE 2.54-1*20P母，直插单排20P，数量2；仍须核对排母高度、插针截面和PCB孔。
+B04,输入,摇杆,YA13S-L7.4-B10Ka(60)-0-DL01 C37323748,1,3.54,3.54,https://item.szlcsc.com/39051755.html,核对完整型号和 PCB V1.2 焊孔,CHECK,不可按外观替代,2026-11-08,https://item.szlcsc.com/39051755.html,,,立创 C37323748 对应完整型号YA13S-L7.4-B10Ka(60)-0-DL01、插件14P、22.6×16.7mm；核对摇杆帽是否包含。
+B05,输入,机械键盘轴,已确认取 CPG135001D01（C400229）; PCB BOM 与原理图双证据 2026-11-06,3,,12.7,https://www.lcsc.com/product-detail/Mechanical-Keyboard-Shaft_Kailh-CPG135001D01_C400229.html,键帽与轴体在外壳键孔的配合待 STEP 检查,HOLD,12.7按一组估算; 非单轴真实价格,2026-11-08,https://item.szlcsc.com/383994.html,,,立创 C400229/CPG135001D01 是 CHOC V1 红轴/插件；不是BOX/MX/Choc V2。参考¥12.7/组并非2026-11-08实时价，数量需3、键帽高度和外壳仍未验证。
+B06,音频,2011 小腔体扬声器,1.25 端子; 需匹配开发板音频口,1,4.5,4.5,https://oshwhub.com/eda_gqvzlprk/project_cnbmkbjc,连接器与电气规格,CHECK,微雪文档接口支持 8Ω 2W,2026-11-08,https://docs.waveshare.net/ESP32-P4-WIFI6/,,,微雪官方文档确认MX1.25 2P可用8Ω2W扬声器，但未找到符合原方案2011小腔体、外形、线长和接头的**确切商品SKU**；2030/4230等商品不能凭相同阻抗直接替代。
+B07,PCB,定制 PCB,官方 PCB_V1.2,1,,,https://oshwhub.com/eda_gqvzlprk/project_cnbmkbjc,PCB与原理图网表差异以及打样规格,HOLD,需取得真实打样+运费报价,2026-11-08,https://smt.szlcsc.com/,,,嘉立创下单页显示常规PCB 5片/¥0起与免费券活动；仅适用账号和工程符合条件时，不能当真实到手报价。PCB_V1.2层数/尺寸/厚度与网表未核定，仍HOLD。
+B08,紧固件,M2.5 圆头螺钉,M2.5x6,2,,,https://oshwhub.com/eda_gqvzlprk/project_cnbmkbjc,长度和热熔螺母匹配,CHECK,备几个,2026-11-08,https://oshwhub.com/eda_gqvzlprk/project_cnbmkbjc,,,M2.5×6圆头机螺钉建议2颗+备用若干；规格可定位，但未取得具体零售SKU和含运费报价。
+B09,紧固件,热熔铜螺母,M2.5x4x3.5,2,,,https://oshwhub.com/eda_gqvzlprk/project_cnbmkbjc,外壳孔公差和压入深度,CHECK,备几个,2026-11-08,https://oshwhub.com/eda_gqvzlprk/project_cnbmkbjc,,,M2.5×4×3.5热熔滚花铜螺母建议2颗+备用；买前对外径/长度/外壳预留孔的含义与实物干配。
+B10,连接,FFC 屏幕排线,22P 0.5mm 间距 同向（作者 2026-10-29 评论区确认主板用 22pin）,1,,,https://oshwhub.com/eda_gqvzlprk/project_cnbmkbjc,FFC 接点方向(A/B面)与长度待卖家确认; 优先问是否随屏附带,HOLD,淘宝关键词: 22pin 0.5mm间距 同向 FFC线,2026-11-08,https://item.szlcsc.com/21980078.html,,,立创 C20615902 讯普 FFC-0.5-22-100-A-4-8，22P/0.5mm/10cm/同向/双端补强；但屏幕端接头、两端方向和所需长度尚未确认，仍HOLD，先问屏幕卖家是否附带。
+B11,外观,机械轴键帽,取决于实际轴系列,3,,,https://oshwhub.com/eda_gqvzlprk/project_cnbmkbjc,键帽与轴、外壳孔位兼容,HOLD,不要先按 BOX 规格购买,2026-11-08,https://github.com/klouderone/KEA-choc-keycaps,,,明确应选 CHOC V1 1u 双脚键帽，不能买MX/BOX键帽；未锁定国内零售SKU。备用：FDM打印KEA Choc V1键帽模型（原作者CC BY-NC 4.0），先打印1枚并核实外壳间隙。
+B12,外观,摇杆帽,与 YA13S 摇杆匹配,1,,,https://oshwhub.com/eda_gqvzlprk/project_cnbmkbjc,是否与摇杆一并提供,CHECK,检查外壳行程,2026-11-08,https://item.szlcsc.com/39051755.html,,,摇杆帽不可凭外观推断匹配；优先确认YA13S实际包装是否自带，若不带需卖家给可配套SKU与装壳高度。
+B13,电源,USB 数据线,必须支持数据传输,1,,,,线缆可连接 Mac 串口,CHECK,优先复用已有,2026-11-08,,,,仅复用现有**能数据传输的**USB线；需实测Mac枚举/串口，不另买。
+B14,打印,PLA/PETG 耗材,Bambu P1S 0.4mm 喷嘴,1,,,,材料和打印时间依切片实际结果,CHECK,优先复用现有材料,2026-11-08,,,,优先复用现有PLA/PETG；是否足够依最终STEP导入切片得出，不作新购成交价。
