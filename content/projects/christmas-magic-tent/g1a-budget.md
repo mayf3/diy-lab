@@ -1,5 +1,6 @@
 # G1a｜商品核实与完整预算（2026-11-07）
 
+> **⚠️ 2026-11-09 采购策略变更——本页 HelloKitty 内容已作废为历史比价记录**：最终采购帐篷改为**天猫哎哟宝贝「165cm-实木杆」apple小熊+双门帘-无垫 ¥210**（CONDITIONAL BUY，尽调见 `source-data/christmas-magic-tent/g1a-final-report.md`）。一次性合并采购清单见 **[采购合并清单](/projects/christmas-magic-tent/consolidated-purchase-plan/)**。本页数据不得作为下单依据。
 > **证据分级**：✅=商品页/主图直接核实；⚠️=待补证据（标注获取方式）；❌=未核实。
 > 全程零采购、零加购、零询价。价格查看只读商品页公开信息。
 

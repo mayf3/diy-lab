@@ -72,7 +72,7 @@ Blender 参数化模型已建成，A（110×160）/ B（160×110）两候选完�
 ## G2-V2 与 G1a 预算收敛（2026-11-07，零采购）
 
 - **G2-V2 纯数字模拟完成**：新增 `greeter.h`（PIR 触发/冷却 15s/防重复/事件 Welcome↔Story 交替/按钮优先/上电预热抑制），**G2-V1 controller.h 零改动**；主机测试 6 场景全 PASS（连续触发、播放中再触发、手动按钮优先级、上电默认全覆盖），G2-V1 回归 11 场景 PASS。声音=串口事件模拟（PLAY_WELCOME/PLAY_STORY），未宣称 DFPlayer 验证。详见 **[G2-V2 报告](/projects/christmas-magic-tent/g2-v2/)**。
-- **G1a 预算收敛**：主候选锁定 **HelloKitty 160×100×130 双门帘款**（京东 ID 10235916801103，门在 160 宽面=G1b 确定通过形态，双侧网纱窗，7 天无理由）；V3 BOM 重算显示**帐篷实价是唯一预算变量**：≤¥200 全预算闭环、≤¥240 需借万用表、>¥285 破裂。还差 5 项决定性证据（实价/详情图尺寸/对照款 SKU/Arduino 照片/家里实测）。详见 **[G1a 预算页](/projects/christmas-magic-tent/g1a-budget/)**。
+- **G1a 预算收敛**：~~主候选曾锁定 HelloKitty 160×100×130~~ **2026-11-09 采购决策更新：最终帐篷改为天猫哎哟宝贝 165cm 实木款 ¥210（CONDITIONAL BUY）**，HelloKitty 内容保留为历史比价（详见 [G1a 预算页](/projects/christmas-magic-tent/g1a-budget/) 与 g1a-final-report.md）。一次性合并采购清单（帐篷+装饰+电子四层，READY_BUY/BOARD_DEPENDENT/SIZE_DEPENDENT 分级）见 **[采购合并清单](/projects/christmas-magic-tent/consolidated-purchase-plan/)**。
 
 ## 帐篷采购放行（2026-11-07，用户拍板）
 
