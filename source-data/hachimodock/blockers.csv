@@ -1,5 +1,5 @@
 id,疑点,影响,关闭所需证据,证据来源,状态,核验日期,结论
 BK1,ESP32-P4 实际 silicon 版次未知（v1/v3 固件包不同）,B01 开发板与第 8 关固件选择,卖家书面确认版次为预检; 收货后以 esptool chip_id 实读为最终证据（官方辨别文档 S9）,https://docs.espressif.com/projects/esp-chip-errata/en/latest/esp32p4/01-chip-identification/index.html,open,2026-11-06,
-BK2,2.8 寸屏模组与 FFC 规格未核对（Pin 数/间距/方向/长度/外框）,B02 屏幕 + B10 排线 + 第 4/7 关装配,型号已由固件 BSP 锁定 WLK2802MIPI-15P/ST7701S; 待作者/实物裁决 PCB 端 15P vs 22P 矛盾 + 卖家/Thorb 提供同版本规格书与实拍,https://github.com/YizhengWw/HachimoDock/blob/main/firmware/components/esp32_p4_wifi6_touch_lcd_4_3/include/bsp/display.h,open,2026-11-09,
+BK2,2.8 寸屏模组与 FFC 规格未核对（Pin 数/间距/方向/长度/外框）,B02 屏幕 + B10 排线 + 第 4/7 关装配,型号已由固件 BSP 锁定 WLK2802MIPI-15P/ST7701S; 原理图证实底板无屏幕连接器（屏直插微雪板自载 DSI 座）; 待核对微雪板 DSI 座针数(15P/22P) + 卖家/Thorb 提供同版本规格书与实拍,https://github.com/YizhengWw/HachimoDock/blob/main/firmware/components/esp32_p4_wifi6_touch_lcd_4_3/include/bsp/display.h,open,2026-11-09,
 BK3,PCB_V1.2 网表差异与排母间距/板厚未核对,B07 PCB + B03 排母,立创 EDA 原工程核对记录 + 原作者确认以已发布 PCB 为准（原理图 SCH_V1.2 更新于 2026-10-30 需留意网表提示）,https://oshwhub.com/eda_gqvzlprk/project_cnbmkbjc,open,2026-11-06,
 BK4,机械轴封装冲突（官方正文 BOX vs BOM CPG135001D01/C400229）,B05 轴体 + B11 键帽 + 外壳键孔,键帽/轴体在外壳键孔的配合经 STEP 检查或同版实装证据（购买型号已定：按 PCB BOM + 原理图双证据取 CPG135001D01 ×3）,https://oshwhub.com/eda_gqvzlprk/project_cnbmkbjc,open,2026-11-06,
