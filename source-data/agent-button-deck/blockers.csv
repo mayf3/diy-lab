@@ -1,0 +1,7 @@
+id,疑点,影响,关闭所需证据,证据来源,状态,核验日期,结论
+BD1,实际板卡版本和 USB-to-UART 接口未确认,G1 禁止不核实型号就采购或通电,实物铭牌板卡照片与对应官方引脚图,https://docs.espressif.com/projects/esp-dev-kits/en/latest/esp32s3/esp32-s3-devkitc-1/user_guide_v1.1.html,open,2026-11-09,
+BD2,按钮常开触点和线序未经实测,G1 不得宣称按键电路成功,断电导通检查与四键分别串口日志,https://docs.espressif.com/projects/esp-dev-kits/en/latest/esp32s3/esp32-s3-devkitc-1/user_guide_v1.1.html,open,2026-11-09,
+BD3,固件未在目标 Arduino Core 与板卡编译和烧录,G1 不得宣称硬件已运行,编译软件版本与实机固件日志,https://docs.espressif.com/projects/arduino-esp32/en/latest/troubleshooting.html,open,2026-11-09,
+BD4,Mac 串口和动作权限尚未实机验证,G2 不能声称电脑行为联调完成,实物端口和 dry-run 及已批准动作的日志,https://pyserial.readthedocs.io/en/latest/shortintro.html,open,2026-11-09,
+BD5,目标 Agent 会话的授权稳定接口与 adapter 未实现,G2 不得声称已向指定会话发送消息,adapter 授权与 API 回执和实测审计日志,https://support.apple.com/guide/shortcuts-mac/apd455c82f02/mac,open,2026-11-09,
+BD6,BLE/GATT 与 I2C 扩展暂为设计,G3 不得声称蓝牙/额外十六键已完成,独立固件和实物键盘测试及 BLE 断连重连日志,https://www.microchip.com/en-us/product/mcp23017,open,2026-11-09,
