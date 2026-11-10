@@ -55,6 +55,20 @@ def link_for(current_slug: str, target_slug: str) -> str:
     return rel.replace("\\", "/")
 
 
+def build_version() -> str:
+    """Cache-bust 版本：固定文件名资源（main.js/search-index.js）用已发布提交的短哈希。
+    老访客的 immutable 长缓存只能靠 URL 变化迁移，这是 2026-11-10 审查确认的方案。"""
+    try:
+        import subprocess
+        return subprocess.check_output(
+            ["git", "rev-parse", "--short", "HEAD"],
+            text=True, cwd=Path(__file__).resolve().parent.parent,
+        ).strip()
+    except Exception:
+        import datetime
+        return datetime.datetime.now().strftime("%Y%m%d%H%M")
+
+
 def url_for(current_slug: str, target_path: str) -> str:
     if target_path.startswith("#"):
         return target_path
@@ -344,8 +358,9 @@ def render_one(source: Path) -> tuple[str, dict]:
     else:
         root_prefix += "/"
     stylesheet = q(url_for(slug,"/assets/style.css"))
-    js = q(url_for(slug,"/assets/main.js"))
-    search = q(url_for(slug,"/assets/search-index.js"))
+    bv = build_version()
+    js = q(url_for(slug,"/assets/main.js") + f"?v={bv}")
+    search = q(url_for(slug,"/assets/search-index.js") + f"?v={bv}")
     home = q(link_for(slug,""))
     projects = q(link_for(slug,"projects"))
     guide = q(link_for(slug,"guide"))
@@ -387,7 +402,7 @@ def main():
         pages.append(meta)
     search_data=[{"title":p["title"],"summary":p["summary"],"path":p["path"]} for p in pages]
     (DIST / "assets/search-index.js").write_text("window.MAKER_SEARCH_INDEX="+json.dumps(search_data,ensure_ascii=False,separators=(',',':'))+";window.MAKER_PROJECT_STEPS="+json.dumps({p['slug']:[s['id'] for s in p.get('steps',[])] for p in PROJECTS},ensure_ascii=False,separators=(',',':'))+";",encoding="utf-8")
-    (DIST / "404.html").write_text('<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>页面未找到 · Maker Lab</title><p>页面不存在，<a href="./index.html">返回首页</a>。</p></html>',encoding="utf-8")
+    (DIST / "404.html").write_text('<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>页面未找到 · Maker Lab</title><p>页面不存在，<a href="https://diy-lab.mayf3.com/">返回首页（大陆镜像）</a> 或 <a href="/diy-lab/">GitHub Pages 版</a>。</p></html>',encoding="utf-8")
     mirror = Path.home() / "Library" / "Application Support" / "MakerLabSite"
     if mirror.is_dir():
         shutil.rmtree(mirror)
