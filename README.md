@@ -16,6 +16,8 @@
 
 **2026-11-06 更新**：已由用户 GitHub 账户创建公开仓库 <https://github.com/mayf3/diy-lab>。网站已经通过 GitHub Pages 自动部署，并验证可访问：<https://mayf3.github.io/diy-lab/>。
 
+**2026-11-10 更新**：新增大陆加速镜像 **<https://diy-lab.mayf3.com/>**（阿里云 ECS，nginx 独立 vhost + Let's Encrypt 自动续期；DNS A 记录与证书 2026-11-10 配置）。发布流程：`git push`（Pages 自动部署）+ `bash scripts/deploy-aliyun.sh`（镜像原子换名同步，脚本内先跑 check.py 门禁）。
+
 ## 第 1 步：在电脑上预览网站（维护者）
 
 下面以 macOS 为维护示例；Linux 和 Windows 也能用 Python 构建静态网页，具体命令如 `open` 需要替换成操作系统对应的打开方式。**这里的电脑只是维护站点的环境，不是 DIY 作品本身的购买要求。**
