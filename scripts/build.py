@@ -402,7 +402,7 @@ def main():
         pages.append(meta)
     search_data=[{"title":p["title"],"summary":p["summary"],"path":p["path"]} for p in pages]
     (DIST / "assets/search-index.js").write_text("window.MAKER_SEARCH_INDEX="+json.dumps(search_data,ensure_ascii=False,separators=(',',':'))+";window.MAKER_PROJECT_STEPS="+json.dumps({p['slug']:[s['id'] for s in p.get('steps',[])] for p in PROJECTS},ensure_ascii=False,separators=(',',':'))+";",encoding="utf-8")
-    (DIST / "404.html").write_text('<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>页面未找到 · Maker Lab</title><p>页面不存在，<a href="https://diy-lab.mayf3.com/">返回首页（大陆镜像）</a> 或 <a href="/diy-lab/">GitHub Pages 版</a>。</p></html>',encoding="utf-8")
+    (DIST / "404.html").write_text('<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>页面未找到 · Maker Lab</title><p>页面不存在，<a href="https://diy-lab.mayf3.com/">返回首页（大陆镜像）</a> 或 <a href="https://mayf3.github.io/diy-lab/">GitHub Pages 版</a>。</p></html>',encoding="utf-8")
     mirror = Path.home() / "Library" / "Application Support" / "MakerLabSite"
     if mirror.is_dir():
         shutil.rmtree(mirror)
