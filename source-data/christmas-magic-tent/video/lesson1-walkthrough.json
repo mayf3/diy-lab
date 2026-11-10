@@ -1,0 +1,27 @@
+{
+  "video_id": "ChristmasHandsOnLesson1",
+  "title": "第1关：UNO R3 板载灯动手动画",
+  "source_workflow": "source-data/christmas-magic-tent/workflow.json",
+  "scene_renderer": "assets/christmas-steps/scene.mjs",
+  "author_renderer": "scripts/render_christmas_lesson_cdp.py",
+  "code_source": "source-data/christmas-magic-tent/tutorial/firmware/FirstBlink/FirstBlink.ino",
+  "action_ref": "A02",
+  "scene_ids": [
+    "b1",
+    "b2",
+    "b3",
+    "b4",
+    "b5"
+  ],
+  "format": "mp4",
+  "duration_seconds": 40,
+  "frames_per_second": 8,
+  "width": 1280,
+  "height": 720,
+  "visual_kind": "original procedural instruction schematic",
+  "real_hardware_verified": false,
+  "notice": "动画是逐步操作示意，未在用户真实硬件上验收，不是帐篷装配实拍。",
+  "sha256": "3797c26e64bc78d78e9390425cc648b530dae4531c82e921b5f4bd6573f8e5f7",
+  "size_bytes": 262822,
+  "date": "2026-11-10"
+}

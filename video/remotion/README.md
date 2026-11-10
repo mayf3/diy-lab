@@ -29,3 +29,18 @@ npx remotion render src/index.tsx HachimoPrepurchase /tmp/hachimo-prepurchase-re
 标注：帐篷示例为数字几何模拟；HachimoDock 示例仅有抽象示意与来源核查，并没有实际开箱、焊接、接线、烧录、实物验收。**不能声称已经完成硬件制作。**
 
 出版视频到 GitHub Release 或 B 站；不要把原视频塞进 Git 历史。检查 [Remotion 许可证](https://github.com/remotion-dev/remotion/blob/main/LICENSE.md)：个人与符合条件的小团队可免费，其他组织可能需 Company License。
+
+## 圣诞小屋分步操作动画
+
+新 Composition：`ChristmasHandsOnLesson1`，读取同一份 `assets/christmas-steps/course.generated.mjs` 和 `scene.mjs`，动画不冒充实物。
+
+```bash
+python3 scripts/build_christmas_hands_on.py --check
+python3 scripts/prepare_remotion.py
+cd video/remotion
+npx remotion compositions src/index.tsx
+# 需要完整高清制作时：
+npx remotion render src/index.tsx ChristmasHandsOnLesson1 /tmp/christmas-lesson1.mp4 --concurrency=1
+```
+
+仓库同时提供 `scripts/render_christmas_lesson_cdp.py` 轻量录制版本，按本地站点、Chrome CDP 9222、Python `websockets` 与 FFmpeg 使用；它复用同一 SVG 图形和动作数据，输出 8fps 40 秒快览。完整互动教程不依赖这些作者工具。

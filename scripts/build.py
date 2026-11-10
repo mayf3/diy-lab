@@ -342,6 +342,7 @@ def render_one(source: Path) -> tuple[str, dict]:
         article = article.replace('视频目录</h2>', '视频目录</h2>' + video_cards(slug))
     else:
         article = markup
+    is_hands_on = slug == "projects/christmas-magic-tent/hands-on"
     stepid = project["slug"]+":"+step["id"] if project and step else ""
     stephead = f'''<div class="chapter-stephead"><span class="step-tag">{q(step["phase"])} / {q(step["id"])}</span><span>建议耗时 {q(step["minutes"])}</span></div>''' if step else ""
     complete = f'''<div class="complete-bar" data-chapter="{q(stepid)}"><div><strong>本章操作已通过？</strong><p>完成所有勾选项后可标记本章完成。个人进度只存储在浏览器。</p></div><button class="complete-toggle" disabled type="button">完成本章</button></div>''' if step else ""
@@ -358,16 +359,18 @@ def render_one(source: Path) -> tuple[str, dict]:
     else:
         root_prefix += "/"
     stylesheet = q(url_for(slug,"/assets/style.css"))
+    lesson_css = ('<link rel="stylesheet" href="' + q(url_for(slug, "/assets/christmas-steps/tutorial.css")) + '">' if is_hands_on else '')
+    lesson_js = ('<script type="module" src="' + q(url_for(slug, "/assets/christmas-steps/tutorial.mjs")) + '"></script>' if is_hands_on else '')
     bv = build_version()
     js = q(url_for(slug,"/assets/main.js") + f"?v={bv}")
     search = q(url_for(slug,"/assets/search-index.js") + f"?v={bv}")
     home = q(link_for(slug,""))
     projects = q(link_for(slug,"projects"))
     guide = q(link_for(slug,"guide"))
-    cls = "home-page" if is_home else ("project-root" if is_project_root else "content-page")
+    cls = "hands-on-page" if is_hands_on else ("home-page" if is_home else ("project-root" if is_project_root else "content-page"))
     html_page = f'''<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="{q(summary(body))}"><meta name="color-scheme" content="light">
-<title>{q(title)} · Maker Lab</title><link rel="stylesheet" href="{stylesheet}"><link rel="icon" href="{q(url_for(slug,"/assets/favicon.svg"))}" type="image/svg+xml"></head>
+<title>{q(title)} · Maker Lab</title><link rel="stylesheet" href="{stylesheet}">{lesson_css}<link rel="icon" href="{q(url_for(slug,"/assets/favicon.svg"))}" type="image/svg+xml"></head>
 <body class="{cls}" data-root="{q(root_prefix)}" data-project="{q(project["slug"] if project else "")}">
 <header class="topbar"><div class="topbar-inner"><button class="menu-toggle" id="menuToggle" type="button" aria-controls="sidebar" aria-expanded="false" aria-label="打开导航">☰</button>
 <a class="brand" href="{home}"><span class="brand-symbol">M<span>·</span></span><span class="brand-name">MAKER <b>LAB</b></span><small>AI DIY JOURNAL</small></a>
@@ -376,7 +379,7 @@ def render_one(source: Path) -> tuple[str, dict]:
 <div class="site-layout">{sidebar_html}<main id="mainContent" class="main-content" tabindex="-1">{'' if is_home else breadcrumb(slug,project)}
 <article class="doc-content">{article}</article><footer class="footer">Maker Lab · 用真实动手验证每一步。本站为独立学习记录，与上游项目无官方合作关系。<br>制作日期 2026-11-06 · <a href="{q(link_for(slug,"guide/legal"))}">许可与来源</a> · <a href="{q(link_for(slug,"guide/new-project"))}">新增项目</a></footer></main>{rail}</div>
 <div id="mobileOverlay" class="mobile-overlay" hidden></div><div class="search-modal" id="searchModal" role="dialog" aria-modal="true" aria-label="搜索教程" hidden><div class="search-panel"><div class="search-top"><input id="searchInput" placeholder="搜索项目、材料、步骤或问题…" aria-label="搜索关键词" autocomplete="off"><button type="button" id="searchClose" aria-label="关闭搜索">✕</button></div><div id="searchResults" class="search-results"><p>输入关键词，搜索全站教程。</p></div><div class="search-help">按 Esc 关闭 · 离线也可以搜索</div></div></div>
-<script defer src="{search}"></script><script defer src="{js}"></script></body></html>'''
+<script defer src="{search}"></script><script defer src="{js}"></script>{lesson_js}</body></html>'''
     metadata = {"title":title,"summary":summary(body),"path": str(output_path(slug).relative_to(DIST)).replace("\\","/"),"slug":slug}
     return html_page,metadata
 

@@ -1,5 +1,21 @@
 [
   {
+    "project": "christmas-magic-tent",
+    "title": "圣诞魔法小屋：第一关板载灯逐步动手动画",
+    "status": "published",
+    "kind": "technical-schematic",
+    "description": "40秒、5个可跟做的具体动作：断开旧外设→接USB-B→选择UNO和端口→上传程序→验证L灯。原创程序性接线/软件示意，不是实物操作录像；完整可暂停、可放大的19步教程另见项目页。",
+    "disclosure": "原创接线与软件操作示意，未完成用户实物验收；不含PIR/音频和帐篷真实安装。",
+    "video_url": "https://github.com/mayf3/diy-lab/releases/download/christmas-hands-on-l1-20261110/christmas-hands-on-lesson1.mp4",
+    "caption_url": "https://github.com/mayf3/diy-lab/releases/download/christmas-hands-on-l1-20261110/christmas-hands-on-lesson1.srt",
+    "embed": "html5",
+    "cover": "/media/christmas-magic-tent/video/hands-on-l1-cover.png",
+    "source_page": "/projects/christmas-magic-tent/hands-on/",
+    "storyboard_path": "source-data/christmas-magic-tent/video/lesson1-walkthrough.json",
+    "duration": "00:40",
+    "published_date": "2026-11-10"
+  },
+  {
     "project": "hachimodock",
     "video_id": "hachimodock-prepurchase-remotion",
     "title": "哈基米机：买零件前检查三个兼容性风险（Remotion）",
