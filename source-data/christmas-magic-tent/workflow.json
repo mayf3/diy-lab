@@ -1,0 +1,627 @@
+{
+  "schema_version": "0.1",
+  "project": "christmas-magic-tent",
+  "updated": "2026-11-10",
+  "display_name": "圣诞魔法小屋",
+  "direction": {
+    "goal": "一次采购主要材料，分阶段做出可拆卸的帐篷、按钮彩灯、感应与音频装置；先完成一个手里能用的小成果",
+    "audience": "电子制作新手；已有 UNO R3 可先练，其他人等材料齐全再跟做；不要求读研究报告",
+    "non_goals": [
+      "不重做既有 Blender/Wokwi 模拟",
+      "不把动画或网页检查当作实物已经通过",
+      "不扩大帐篷选型或自动付款",
+      "不把尚未完成的声音、封装教程展示为可跟做"
+    ],
+    "done_when": "帐篷实物、独立灯光、PIR/音频及收纳分别经人观察验收；所有电子模块能与帐篷物理分离"
+  },
+  "resource_routes": [
+    {
+      "id": "arrival",
+      "question": "手头有什么？",
+      "options": [
+        "已有 UNO 和数据线：先学第 1 关",
+        "按钮/彩灯到货：继续后续电子小关",
+        "帐篷到货：先看到货验收",
+        "还未采购：只预览，不把勾选当成实测"
+      ],
+      "policy": "按真实持有材料推进；已加购物车不等于已有库存。"
+    },
+    {
+      "id": "making",
+      "question": "按钮/模块接线准备好了吗？",
+      "options": [
+        "有绝缘可靠的预接线或预焊排针",
+        "请有经验的成人准备线束",
+        "没有焊接工具：选择预焊服务或暂停这关"
+      ],
+      "policy": "不让新手通过扭接裸线或带电试错跳过端子准备。"
+    }
+  ],
+  "references": [
+    {
+      "id": "arduino-upload",
+      "url": "https://support.arduino.cc/hc/en-us/articles/4733418441116-Upload-a-sketch-in-Arduino-IDE",
+      "role": "Arduino 官方：安装开发板支持、打开程序与上传",
+      "checked": "2026-11-10"
+    },
+    {
+      "id": "arduino-board",
+      "url": "https://support.arduino.cc/hc/en-us/articles/4406856349970-Select-board-and-port-in-Arduino-IDE",
+      "role": "Arduino 官方：选择开发板与真实串口",
+      "checked": "2026-11-10"
+    },
+    {
+      "id": "arduino-input",
+      "url": "https://docs.arduino.cc/built-in-examples/digital/InputPullupSerial/",
+      "role": "Arduino 官方：D2 到 GND 的内部上拉按钮接法",
+      "checked": "2026-11-10"
+    },
+    {
+      "id": "arduino-power",
+      "url": "https://docs.arduino.cc/learn/electronics/power-pins/",
+      "role": "Arduino 官方：USB 供电与电源引脚边界",
+      "checked": "2026-11-10"
+    },
+    {
+      "id": "neopixel-best",
+      "url": "https://learn.adafruit.com/adafruit-neopixel-uberguide/best-practices",
+      "role": "Adafruit：DIN 串联电阻、并联电容、断电接线与共地",
+      "checked": "2026-11-10"
+    },
+    {
+      "id": "neopixel-power",
+      "url": "https://learn.adafruit.com/adafruit-neopixel-uberguide/powering-neopixels/",
+      "role": "Adafruit：小规模 USB 供电、极性与电流估算",
+      "checked": "2026-11-10"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "A01",
+      "title": "准备材料，留一张不导电的工作台",
+      "actor": "shared",
+      "requires": [],
+      "goal": "分清旧 UNO 库存、待收货器件与未付款购物车",
+      "agent": [
+        "核对已锁定器件与官方依据，生成逐动作图文/动画；解释失败现象，不伪造实测。"
+      ],
+      "human": [
+        "完成断电检查与实际操作，并只勾选本人看到的结果。"
+      ],
+      "outputs": [
+        "分清旧 UNO 库存、待收货器件与未付款购物车",
+        "真实观察或问题记录"
+      ],
+      "verify": {
+        "type": "physical-observation",
+        "criteria": "本人观察到本关预期结果并保存必要证据；动画播放/勾选本身不构成实物验收。",
+        "status": "planned"
+      },
+      "block": "条件不符就停止本关；断电后排错，不绕过电气保护。",
+      "deep": "/projects/christmas-magic-tent/hands-on/",
+      "status": "planned",
+      "human_summary": "按动画一次做一个动作，观察实物结果再继续；材料或现象不符先停下。"
+    },
+    {
+      "id": "A02",
+      "title": "先让板上的小灯闪起来",
+      "actor": "shared",
+      "requires": [
+        "A01"
+      ],
+      "goal": "证明电脑、数据线和旧 UNO 能一起工作。",
+      "agent": [
+        "核对已锁定器件与官方依据，生成逐动作图文/动画；解释失败现象，不伪造实测。"
+      ],
+      "human": [
+        "完成断电检查与实际操作，并只勾选本人看到的结果。"
+      ],
+      "outputs": [
+        "证明电脑、数据线和旧 UNO 能一起工作。",
+        "真实观察或问题记录"
+      ],
+      "verify": {
+        "type": "physical-observation",
+        "criteria": "本人观察到本关预期结果并保存必要证据；动画播放/勾选本身不构成实物验收。",
+        "status": "planned"
+      },
+      "block": "条件不符就停止本关；断电后排错，不绕过电气保护。",
+      "deep": "/projects/christmas-magic-tent/hands-on/",
+      "status": "planned",
+      "human_summary": "按动画一次做一个动作，观察实物结果再继续；材料或现象不符先停下。",
+      "teaching": {
+        "id": "blink",
+        "action_ref": "A02",
+        "number": "01",
+        "title": "先让板上的小灯闪起来",
+        "outcome": "证明电脑、数据线和旧 UNO 能一起工作。",
+        "time": "按自己的速度操作",
+        "materials": [
+          "旧 UNO R3（ATmega328P）",
+          "USB-A → USB-B 数据线",
+          "Mac；只有 USB-C 时用 USB-C 公 → USB-A 母转接头"
+        ],
+        "prerequisite": "成人操作；干燥桌面。卸下全部外接线、盾板与外部电源。旧程序需要保留时先备份，再批准上传。",
+        "code_files": [
+          "tutorial/firmware/FirstBlink/FirstBlink.ino"
+        ],
+        "refs": [
+          "arduino-upload",
+          "arduino-board",
+          "arduino-power"
+        ],
+        "steps": [
+          {
+            "id": "b1",
+            "title": "桌上只留下 UNO 和 USB 数据线",
+            "scene": "parts",
+            "do": "拔掉旧 UNO 上的全部外设和电源，放在不导电的桌垫上。",
+            "expected": "板子只有 USB 插口等待接线；5V、VIN 和圆形电源口都空着。",
+            "stop": "板子破损、松动或来源/型号不明时先停；不要接市电或打开充电头。",
+            "check": "已确认是 UNO R3，全部外设已移开",
+            "caption": "这一关只用旧 UNO，不接灯板、PIR 或喇叭。",
+            "detail": "",
+            "seconds": 10,
+            "evidence_kind": "technical-schematic"
+          },
+          {
+            "id": "b2",
+            "title": "把方口 USB 插入 UNO",
+            "scene": "usb",
+            "do": "把 USB-B 方形插头插到 UNO 的 USB-B 插口；另一端接电脑。Mac 只有 USB-C 时按动画所示接转接头。",
+            "expected": "板上的 ON 电源指示灯亮起；L 灯此时怎么闪不算本关成功。",
+            "stop": "只亮灯却没有串口可能是充电线；不要用力硬插，也不要误接圆形电源口。",
+            "check": "插头方向正确，ON 灯亮",
+            "caption": "USB-B → UNO；USB-A → 转接头母口；USB-C 公头 → Mac。",
+            "detail": "",
+            "seconds": 10,
+            "evidence_kind": "technical-schematic"
+          },
+          {
+            "id": "b3",
+            "title": "安装 IDE，选 Arduino Uno 与端口",
+            "scene": "ideBoard",
+            "do": "从 Arduino 官网安装 Arduino IDE。打开开发板管理器安装 Arduino AVR Boards，再在开发板选择器选择 Arduino Uno 和插线后新增的端口。",
+            "expected": "选择器显示 Arduino Uno；端口是这块板插拔时出现/消失的那一项。",
+            "stop": "不要选 UNO R4。没有新增端口就先换数据线/USB 口；克隆板驱动问题交给 Agent 按实际串口芯片核对，别装来历不明的驱动。",
+            "check": "已选 Arduino Uno 和实际出现的端口",
+            "caption": "IDE 界面为操作示意：先选板，再选真实端口。",
+            "detail": "软件入口：https://www.arduino.cc/en/software/；不同 IDE 版本的界面位置可能不同。",
+            "seconds": 13,
+            "evidence_kind": "technical-schematic"
+          },
+          {
+            "id": "b4",
+            "title": "打开本关程序，点击向右的上传箭头",
+            "scene": "ideUpload",
+            "do": "下载下方 FirstBlink.ino，双击打开；IDE 提示建同名文件夹时同意。点击向右箭头「上传」，不要只点对勾「验证」。",
+            "expected": "IDE 显示上传完成，而不是只有编译成功。",
+            "stop": "上传失败先看板型、端口与数据线；不要更改 bootloader 或提高供电电压。",
+            "check": "IDE 已显示上传完成",
+            "caption": "上传把程序送到实物板子；对勾只检查代码。",
+            "detail": "本关代码会替换板上旧程序。尚未准备好覆盖时停在这里。",
+            "seconds": 13,
+            "evidence_kind": "technical-schematic"
+          },
+          {
+            "id": "b5",
+            "title": "看 L 灯：亮一秒，灭一秒",
+            "scene": "blink",
+            "do": "找到板上标着 L 的小灯，连续观察三个亮灭周期。",
+            "expected": "L 灯约每秒切换一次；ON 灯通常保持亮。",
+            "stop": "不要把 ON 电源灯当成 L 灯。L 没按节奏闪时回到上一操作，检查程序是否真的上传。",
+            "check": "实物 L 灯已连续完成三个亮灭周期",
+            "caption": "这里展示的是预期节奏，不是读取你的板子。",
+            "detail": "",
+            "seconds": 10,
+            "evidence_kind": "technical-schematic"
+          }
+        ]
+      }
+    },
+    {
+      "id": "A03",
+      "title": "两根线，让按钮控制小灯",
+      "actor": "shared",
+      "requires": [
+        "A02"
+      ],
+      "goal": "按住按钮 L 灯亮，松开后熄灭。暂时不用外接彩灯。",
+      "agent": [
+        "核对已锁定器件与官方依据，生成逐动作图文/动画；解释失败现象，不伪造实测。"
+      ],
+      "human": [
+        "完成断电检查与实际操作，并只勾选本人看到的结果。"
+      ],
+      "outputs": [
+        "按住按钮 L 灯亮，松开后熄灭。暂时不用外接彩灯。",
+        "真实观察或问题记录"
+      ],
+      "verify": {
+        "type": "physical-observation",
+        "criteria": "本人观察到本关预期结果并保存必要证据；动画播放/勾选本身不构成实物验收。",
+        "status": "planned"
+      },
+      "block": "条件不符就停止本关；断电后排错，不绕过电气保护。",
+      "deep": "/projects/christmas-magic-tent/hands-on/",
+      "status": "planned",
+      "human_summary": "按动画一次做一个动作，观察实物结果再继续；材料或现象不符先停下。",
+      "teaching": {
+        "id": "button",
+        "action_ref": "A03",
+        "number": "02",
+        "title": "两根线，让按钮控制小灯",
+        "outcome": "按住按钮 L 灯亮，松开后熄灭。暂时不用外接彩灯。",
+        "time": "每接一根线停下来检查",
+        "materials": [
+          "已通过第 1 关的 UNO R3",
+          "两端子常开、自复位按钮（如 R13-507）",
+          "两根已可靠固定并绝缘的按钮引线；UNO 端为可插排母的公针"
+        ],
+        "prerequisite": "先完成第 1 关。面板按钮若只有裸焊片，先由会焊接的成人制成绝缘线束或选择已接线按钮；不要把裸线拧在焊片上。四脚轻触按钮不照搬本图。",
+        "code_files": [
+          "tutorial/firmware/ButtonLamp/ButtonLamp.ino"
+        ],
+        "refs": [
+          "arduino-input",
+          "arduino-upload"
+        ],
+        "steps": [
+          {
+            "id": "k1",
+            "title": "先拔掉 USB，再碰接线",
+            "scene": "unplug",
+            "do": "从 UNO 拔下 USB 线。确认没有外部电源接着它。",
+            "expected": "ON 灯与 L 灯都熄灭。",
+            "stop": "灯仍亮说明还在供电；先找到并断开电源，不能带电改线。",
+            "check": "实物两盏指示灯均已熄灭",
+            "caption": "先断电，后接线。",
+            "detail": "",
+            "seconds": 10,
+            "evidence_kind": "technical-schematic"
+          },
+          {
+            "id": "k2",
+            "title": "把按钮的一根线接到 GND",
+            "scene": "wireGround",
+            "do": "找到 UNO 上丝印 GND，把按钮任一端子的引线插到这个 GND 孔。",
+            "expected": "一根线连接按钮与 GND；另一根暂不接。",
+            "stop": "以实物丝印为准，别数图上的孔位；不接 5V，不把裸线顶在孔边。",
+            "check": "一根按钮线已牢固接到 GND",
+            "caption": "按钮没有正负；先接 GND 这一根。",
+            "detail": "",
+            "seconds": 10,
+            "evidence_kind": "technical-schematic"
+          },
+          {
+            "id": "k3",
+            "title": "把另一根线接到数字 2",
+            "scene": "wireButton",
+            "do": "找到数字引脚区标着 2 的孔，把按钮另一端的引线插进去。",
+            "expected": "按钮的两个端子分别连 GND 和 D2，只有两根线。",
+            "stop": "不要接模拟口 A2、TX/RX 或 5V。两端子之间不能被裸线永久短接。",
+            "check": "另一根线接的是数字 2，不是 A2",
+            "caption": "第二根线：按钮 → D2。",
+            "detail": "",
+            "seconds": 10,
+            "evidence_kind": "technical-schematic"
+          },
+          {
+            "id": "k4",
+            "title": "核对两条连接，再接回 USB",
+            "scene": "buttonCheck",
+            "do": "沿两根线分别看一遍：一个端子到 GND、另一个到 D2。确认焊点绝缘且固定牢，再接回 USB。",
+            "expected": "ON 灯重新亮起；程序尚未更新时按钮不必有反应。",
+            "stop": "线头松动、铜丝外露或针脚挤在一起时先拔 USB 整理，不进入下一步。",
+            "check": "两根线无松动、无裸露短路点",
+            "caption": "复核：GND ↔ 按钮 ↔ D2。USB 是唯一电源。",
+            "detail": "",
+            "seconds": 10,
+            "evidence_kind": "technical-schematic"
+          },
+          {
+            "id": "k5",
+            "title": "上传 ButtonLamp 程序",
+            "scene": "ideButton",
+            "do": "下载并打开 ButtonLamp.ino，仍选 Arduino Uno 和刚才的端口，点击上传箭头。",
+            "expected": "上传完成。此时 L 灯在松开按钮时应该熄灭。",
+            "stop": "程序里 INPUT_PULLUP 会启用内部上拉，不需要再接一根 5V 到按钮。",
+            "check": "ButtonLamp 已上传完成",
+            "caption": "这份程序读取 D2，用板载 L 灯显示按钮是否按下。",
+            "detail": "",
+            "seconds": 12,
+            "evidence_kind": "technical-schematic"
+          },
+          {
+            "id": "k6",
+            "title": "按住、松开，重复三次",
+            "scene": "buttonTest",
+            "do": "按住实物按钮，观察 L 灯；松开再观察，重复三次。",
+            "expected": "按住时 L 灯亮，松开约 30ms 后熄灭；不是按一下锁定开关。",
+            "stop": "一直亮：检查按钮是否自锁、线是否短接。一直不亮：核对 D2/GND 和上传结果。先拔电再排查。",
+            "check": "实物已完成三次“按亮、松灭”",
+            "caption": "先看一次动画，再用你手里的按钮验证。",
+            "detail": "",
+            "seconds": 12,
+            "evidence_kind": "technical-schematic"
+          }
+        ]
+      }
+    },
+    {
+      "id": "A04",
+      "title": "把小灯换成四颗彩灯",
+      "actor": "shared",
+      "requires": [
+        "A03"
+      ],
+      "goal": "短按切换暖色 / 彩色 / 熄灭，长按关闭。",
+      "agent": [
+        "核对已锁定器件与官方依据，生成逐动作图文/动画；解释失败现象，不伪造实测。"
+      ],
+      "human": [
+        "完成断电检查与实际操作，并只勾选本人看到的结果。"
+      ],
+      "outputs": [
+        "短按切换暖色 / 彩色 / 熄灭，长按关闭。",
+        "真实观察或问题记录"
+      ],
+      "verify": {
+        "type": "physical-observation",
+        "criteria": "本人观察到本关预期结果并保存必要证据；动画播放/勾选本身不构成实物验收。",
+        "status": "planned"
+      },
+      "block": "条件不符就停止本关；断电后排错，不绕过电气保护。",
+      "deep": "/projects/christmas-magic-tent/hands-on/",
+      "status": "planned",
+      "human_summary": "按动画一次做一个动作，观察实物结果再继续；材料或现象不符先停下。",
+      "teaching": {
+        "id": "pixels",
+        "action_ref": "A04",
+        "number": "03",
+        "title": "把小灯换成四颗彩灯",
+        "outcome": "短按切换暖色 / 彩色 / 熄灭，长按关闭。",
+        "time": "桌面测试，不接 PIR 和音频",
+        "materials": [
+          "前两关的 UNO、按钮与可靠线束",
+          "一块只有 4 颗的 5V WS2812B 灯板（已预焊线/排针）",
+          "330Ω 电阻 ×1",
+          "1000µF / 10V 电解电容 ×1",
+          "绝缘的可靠接点或面包板；已准备好的公针连接线"
+        ],
+        "prerequisite": "这是单独的低亮度桌面小实验，不是最终音频整机供电图。仅 UNO USB 单入口、4 颗灯、没有 DFPlayer/PIR/外部 5V。灯板端子顺序按实物 5V / DIN / GND 丝印，不能照图猜。未预焊或无可靠接点就先准备端子，不带电凑接。",
+        "code_files": [
+          "g2/firmware/ChristmasStar.ino",
+          "g2/firmware/controller.h"
+        ],
+        "refs": [
+          "neopixel-best",
+          "neopixel-power",
+          "arduino-power"
+        ],
+        "steps": [
+          {
+            "id": "p1",
+            "title": "先装库并上传彩灯程序",
+            "scene": "idePixels",
+            "do": "在 Arduino IDE 的库管理器安装 Adafruit NeoPixel。下载代码包，打开 ChristmasStar 文件夹中的 .ino（controller.h 必须同目录），在灯板尚未接入时上传。",
+            "expected": "编译和上传完成。仅有 UNO 和按钮时，不要求板载 L 灯继续响应。",
+            "stop": "缺 Adafruit_NeoPixel.h 就检查库是否安装；缺 controller.h 就把两个文件放回同一文件夹。不要改成其他板型跳过检查。",
+            "check": "ChristmasStar 已上传；两个源码文件在同一文件夹",
+            "caption": "先上传，再断电接灯板。",
+            "detail": "",
+            "seconds": 14,
+            "evidence_kind": "technical-schematic"
+          },
+          {
+            "id": "p2",
+            "title": "拔 USB，认清灯板输入端",
+            "scene": "pixelParts",
+            "do": "拔掉 USB，等指示灯熄灭。找到四灯板的 5V、DIN、GND 标记；把 DOUT 留空。",
+            "expected": "灯板断电，输入 DIN 已辨认，灯珠总数只有 4。",
+            "stop": "只有 12V 标记、灯珠更多或没有清楚丝印时停下；不要按焊盘左右位置猜。",
+            "check": "已找到 5V / DIN / GND，确认不是 DOUT",
+            "caption": "灯板外形可能不同：跟丝印，不跟示意图位置。",
+            "detail": "",
+            "seconds": 10,
+            "evidence_kind": "technical-schematic"
+          },
+          {
+            "id": "p3",
+            "title": "先连接灯板 GND",
+            "scene": "pixelGround",
+            "do": "将灯板 GND 连接到 UNO 的 GND。按钮原来的 GND 也保留；需要分线时用可靠公共接点。",
+            "expected": "灯板与 UNO 共地，仍未通电。",
+            "stop": "不要把两个粗线头强塞进一个 UNO 插孔；缺分线接点就先准备。",
+            "check": "灯板 GND 已可靠接回 UNO GND",
+            "caption": "黑线表示 GND；标签比线色更重要。",
+            "detail": "",
+            "seconds": 10,
+            "evidence_kind": "technical-schematic"
+          },
+          {
+            "id": "p4",
+            "title": "把 UNO 的 5V 输出接到灯板 5V",
+            "scene": "pixelPower",
+            "do": "在断电状态下，将 UNO 的 5V 输出连接到四灯板 5V。这里只从 UNO 给小灯板供电，不向 UNO 5V 口倒灌。",
+            "expected": "5V 到 5V，GND 到 GND，两条电源线分开且没有短接。",
+            "stop": "本关不连接充电头分线板；不要把整套灯光、音频都挂到这条小实验电源上。",
+            "check": "已确认 5V 与 GND 没接反或短接",
+            "caption": "USB → UNO → 4 颗低亮度 LED，仅本关的桌面基线。",
+            "detail": "",
+            "seconds": 10,
+            "evidence_kind": "technical-schematic"
+          },
+          {
+            "id": "p5",
+            "title": "在灯板电源旁并联电容",
+            "scene": "capacitor",
+            "do": "电容正脚接灯板 5V，带负号条纹的一侧接 GND。接在同一对电源节点上，不是串在导线上。",
+            "expected": "电容的 + 到 5V、− 到 GND，两个脚绝缘分开。",
+            "stop": "长脚仅供未剪脚时辅助辨认，以电容极性标记为准。极性看不清、鼓包或破损就不用。",
+            "check": "电容极性、额定电压和绝缘已核对",
+            "caption": "1000µF / 10V：并联在 5V 与 GND 之间。",
+            "detail": "",
+            "seconds": 12,
+            "evidence_kind": "technical-schematic"
+          },
+          {
+            "id": "p6",
+            "title": "D6 经过 330Ω 电阻再到 DIN",
+            "scene": "pixelData",
+            "do": "把 UNO 数字 6 接到 330Ω 电阻一端，电阻另一端接灯板 DIN。电阻尽量靠近灯板。",
+            "expected": "数据线路是 D6 → 330Ω → DIN；不是 DOUT，也不是 5V。",
+            "stop": "电阻没有正负，但要核对阻值；没有可靠固定点时不要扭接裸线。",
+            "check": "数据线完整经过 330Ω 并到 DIN",
+            "caption": "电阻在数据线上，不串在 5V 电源线上。",
+            "detail": "",
+            "seconds": 12,
+            "evidence_kind": "technical-schematic"
+          },
+          {
+            "id": "p7",
+            "title": "最后检查，才插回 USB",
+            "scene": "pixelCheck",
+            "do": "核对 GND、5V、电容极性、D6→330Ω→DIN、D2 按钮五项；确认线路固定，才插回 USB。",
+            "expected": "上电默认熄灯。没有冒烟、异味、异常发热或反复重启。",
+            "stop": "出现异常立即拔 USB。USB 是唯一电源；不加声音模块，不靠提高电压解决问题。",
+            "check": "五项核对完成，通电无异常且默认熄灯",
+            "caption": "默认熄灯是设计行为，不是接线失败。",
+            "detail": "",
+            "seconds": 12,
+            "evidence_kind": "technical-schematic"
+          },
+          {
+            "id": "p8",
+            "title": "短按换色，长按关闭",
+            "scene": "pixelTest",
+            "do": "短按并松开：暖色。再短按：彩色。第三次：熄灭。点亮后按住超过 1.2 秒，应直接关闭。",
+            "expected": "四颗灯按顺序变化，长按关闭后松手不会再次点亮。",
+            "stop": "灯不亮先拔电查 DIN/DOUT、共地和库配置；不要把亮度拉满来排错。颜色顺序异常先核对灯板类型。",
+            "check": "实物已完成三次切换和一次长按关闭",
+            "caption": "这就是小屋第一件独立可用的互动装置。",
+            "detail": "",
+            "seconds": 16,
+            "evidence_kind": "technical-schematic"
+          }
+        ]
+      }
+    },
+    {
+      "id": "A05",
+      "title": "到货后先搭帐篷，再拆装验收",
+      "actor": "shared",
+      "requires": [
+        "A01"
+      ],
+      "goal": "确认木杆、门窗、净尺寸、通风和拆装收纳能通过验收",
+      "agent": [
+        "核对已锁定器件与官方依据，生成逐动作图文/动画；解释失败现象，不伪造实测。"
+      ],
+      "human": [
+        "完成断电检查与实际操作，并只勾选本人看到的结果。"
+      ],
+      "outputs": [
+        "确认木杆、门窗、净尺寸、通风和拆装收纳能通过验收",
+        "真实观察或问题记录"
+      ],
+      "verify": {
+        "type": "physical-observation",
+        "criteria": "本人观察到本关预期结果并保存必要证据；动画播放/勾选本身不构成实物验收。",
+        "status": "planned"
+      },
+      "block": "条件不符就停止本关；断电后排错，不绕过电气保护。",
+      "deep": "/projects/christmas-magic-tent/arrival/",
+      "status": "planned",
+      "human_summary": "按动画一次做一个动作，观察实物结果再继续；材料或现象不符先停下。"
+    },
+    {
+      "id": "A06",
+      "title": "布艺装饰独立、可拆、不伤帐篷",
+      "actor": "shared",
+      "requires": [
+        "A05"
+      ],
+      "goal": "主题装饰与帐篷主体可分开收纳",
+      "agent": [
+        "核对已锁定器件与官方依据，生成逐动作图文/动画；解释失败现象，不伪造实测。"
+      ],
+      "human": [
+        "完成断电检查与实际操作，并只勾选本人看到的结果。"
+      ],
+      "outputs": [
+        "主题装饰与帐篷主体可分开收纳",
+        "真实观察或问题记录"
+      ],
+      "verify": {
+        "type": "physical-observation",
+        "criteria": "本人观察到本关预期结果并保存必要证据；动画播放/勾选本身不构成实物验收。",
+        "status": "planned"
+      },
+      "block": "本关尚未交付可跟做的器件专属教程；先完成之前的小成果，不依据概念图上电。",
+      "deep": "/projects/christmas-magic-tent/next-build/",
+      "status": "planned",
+      "human_summary": "按动画一次做一个动作，观察实物结果再继续；材料或现象不符先停下。"
+    },
+    {
+      "id": "A07",
+      "title": "独立验证真实 PIR 与声音",
+      "actor": "shared",
+      "requires": [
+        "A04"
+      ],
+      "goal": "实际 HC-SR501 与 DFPlayer 有明确接线、供电、低音量和停止方法",
+      "agent": [
+        "核对已锁定器件与官方依据，生成逐动作图文/动画；解释失败现象，不伪造实测。"
+      ],
+      "human": [
+        "完成断电检查与实际操作，并只勾选本人看到的结果。"
+      ],
+      "outputs": [
+        "实际 HC-SR501 与 DFPlayer 有明确接线、供电、低音量和停止方法",
+        "真实观察或问题记录"
+      ],
+      "verify": {
+        "type": "physical-observation",
+        "criteria": "本人观察到本关预期结果并保存必要证据；动画播放/勾选本身不构成实物验收。",
+        "status": "planned"
+      },
+      "block": "本关尚未交付可跟做的器件专属教程；先完成之前的小成果，不依据概念图上电。",
+      "deep": "/projects/christmas-magic-tent/next-build/",
+      "status": "planned",
+      "human_summary": "按动画一次做一个动作，观察实物结果再继续；材料或现象不符先停下。"
+    },
+    {
+      "id": "A08",
+      "title": "控制盒封装，最后才整合",
+      "actor": "shared",
+      "requires": [
+        "A05",
+        "A06",
+        "A07"
+      ],
+      "goal": "无裸露带电接点，供电和线束可检查，电子装置能整体移离帐篷",
+      "agent": [
+        "核对已锁定器件与官方依据，生成逐动作图文/动画；解释失败现象，不伪造实测。"
+      ],
+      "human": [
+        "完成断电检查与实际操作，并只勾选本人看到的结果。"
+      ],
+      "outputs": [
+        "无裸露带电接点，供电和线束可检查，电子装置能整体移离帐篷",
+        "真实观察或问题记录"
+      ],
+      "verify": {
+        "type": "physical-observation",
+        "criteria": "本人观察到本关预期结果并保存必要证据；动画播放/勾选本身不构成实物验收。",
+        "status": "planned"
+      },
+      "block": "本关尚未交付可跟做的器件专属教程；先完成之前的小成果，不依据概念图上电。",
+      "deep": "/projects/christmas-magic-tent/next-build/",
+      "status": "planned",
+      "human_summary": "按动画一次做一个动作，观察实物结果再继续；材料或现象不符先停下。"
+    }
+  ],
+  "tutorial_version": "1.0.0",
+  "tutorial_notice": "原创操作示意，不是真实录像；动作按官方资料与项目代码设计，尚未在你的硬件上验收。"
+}
