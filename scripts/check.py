@@ -180,6 +180,13 @@ def validate():
                 error(f'{slug}: verified status requires all blockers closed; still open: {", ".join(open_ids)}')
     if 'hachimodock' in project_status and 'hachimodock' not in blockers_by_slug:
         error('HachimoDock: missing blockers.csv doubt register')
+    # Interactive human lessons are generated from one DOAVR workflow and real firmware source.
+    from build_christmas_hands_on import build as build_christmas_course, TARGET as christmas_course_file
+    try:
+        if christmas_course_file.read_text(encoding='utf-8') != build_christmas_course():
+            error('Christmas hands-on lesson drift: run python3 scripts/build_christmas_hands_on.py')
+    except (AssertionError, KeyError, OSError, ValueError) as exc:
+        error(f'Christmas hands-on lesson invalid: {exc}')
     # Derived tutorial videos must link to actual project-owned scene evidence.
     from video_from_storyboard import load_and_check
     for story in sorted((ROOT / 'source-data').glob('*/video/*-storyboard.json')):
