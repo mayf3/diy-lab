@@ -1,5 +1,12 @@
 # 版本记录
 
+## 设计体系 v0.1 落地（2026-11-12）
+
+- 采纳 Mayf3 Design System 基线（见 `content/guide/design-system.md`），完成 Maker Lab 第一步视觉改造：全部标题换思源宋体/宋体风格，色板统一为纸白 #F7F8F3 / 暖白 #FCFBF6 / 深墨绿 #253935 / 海松绿 #326F67 / 陶土橙 #AD6A4B。
+- 卡片圆角 12–16px 收敛为 4px，移除卡片阴影与悬停浮起（改为边框色变化），阅读栏收敛至 720px，正文 16px/1.8；新增全局键盘焦点样式。
+- 设备插画保留但降噪（青雾底、松绿屏、陶土按钮）；代码块/表格/状态徽标/搜索弹层同步换色。所有选择器与业务功能不变。
+- 桌面/移动/正文页截图逐屏对比验收通过；三站统一推进顺序见设计文档 §四。
+
 ## 视频工坊 v1（2026-11-07）
 
 - 检索比较 Remotion、Motion Canvas、Blender Exploded Assembly Studio、OBS、Screenity、demo-machine、Auto-Editor、faster-whisper 的角色与许可。
