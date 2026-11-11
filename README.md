@@ -62,6 +62,7 @@ python3 -m http.server 8000 --directory dist
 2. 本地运行 `python3 scripts/check.py && python3 scripts/build.py && python3 scripts/verify_site.py`。
 3. 只逐项暂存自己修改的文件（**不要** `git add .`，仓库可能有其他会话未提交改动），确认 diff 后 `git commit` 和 `git push`。
 4. GitHub Actions 自动构建并发布到 Pages；首次可能需要仓库 Settings → Pages → Source 选择 **GitHub Actions**。
+5. （可选）发布大陆加速镜像 diy-lab.mayf3.com：`bash scripts/deploy-aliyun.sh`（需按脚本头部注释在本机配置部署别名与目录环境变量；服务器端无自动同步，push 后需手动跑一次）。
 
 **已验证 Pages 地址**：<https://mayf3.github.io/diy-lab/>；如后续修改未出现，查看 [Actions](https://github.com/mayf3/diy-lab/actions) 的自动部署状态。
 
