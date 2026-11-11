@@ -15,20 +15,24 @@
 
 审美立场：安静、清晰、温暖、精致的知识工作室。**不做**深色背景 + 霓虹渐变 + 发光卡片 + 无意义动画的"AI 产品风"。
 
-## 二、设计令牌（v0.1 候选值，实施前允许微调）
+## 二、设计令牌（v0.2 — 2026-11-12 按 learn/map 实测值校准）
+
+> **v0.1 → v0.2 变更原因**：v0.1 的墨绿主色（#326F67）落地后发现与 learn/map 的实际画风仍有差距——两站实测主色是**低饱和海蓝青/灰绿**，且都有**青雾空气感背景**。v0.2 直接取两站 CSS 实测值校准（map `--green:#1e7898`、`--bg:#f9f7f1`；learn `--mist:#eef4f4`、陶土橙两站一致）。
 
 ```css
 :root {
-  /* 色板 */
-  --mds-paper: #F7F8F3;      /* 纸白：页面底色 */
-  --mds-warm-white: #FCFBF6; /* 暖白：卡片/面板 */
-  --mds-ink: #253935;        /* 深墨绿：正文与标题 */
-  --mds-pine: #326F67;       /* 海松绿：链接/主操作 */
-  --mds-clay: #AD6A4B;       /* 陶土橙：强调/警示点缀 */
+  /* 色板（v0.2，来源：map/learn 线上 CSS 实测） */
+  --mds-bg: #f9f7f1;         /* 暖纸白：页面底色（map --bg） */
+  --mds-paper: #fcfbf6;      /* 暖白：卡片/面板（map --paper） */
+  --mds-mist: #edf3f5;       /* 青雾：背景渐变与悬停底（map --soft / learn --mist） */
+  --mds-ink: #162e3b;        /* 深海墨蓝：正文与标题（map --ink） */
+  --mds-teal: #1e7898;       /* 海蓝青：链接/主操作（map --green） */
+  --mds-sage: #829477;       /* 灰绿：次级点缀（learn --leaf） */
+  --mds-clay: #ad6349;       /* 陶土橙：强调/警示点缀（map --accent） */
 
   /* 排版 */
-  --mds-font-serif: "Source Han Serif SC", "Noto Serif SC", "Songti SC", serif; /* 中文大标题 */
-  --mds-font-sans: "Source Han Sans SC", "Noto Sans SC", "PingFang SC", sans-serif; /* 正文 */
+  --mds-font-serif: "Songti SC", "STSong", "Noto Serif SC", "Source Han Serif SC", serif; /* 中文大标题 */
+  --mds-font-sans: -apple-system, "PingFang SC", "Noto Sans SC", sans-serif; /* 正文 */
   --mds-font-mono: "SF Mono", "JetBrains Mono", Consolas, monospace; /* 编号/元数据 */
   --mds-body-size: 16.5px;
   --mds-body-lh: 1.8;
@@ -36,12 +40,14 @@
 
   /* 形状与层级：内容层级和留白区分，不靠堆容器 */
   --mds-radius: 4px;
-  --mds-border: 1px solid color-mix(in srgb, var(--mds-ink) 14%, transparent);
-  --mds-shadow: none;        /* 默认无阴影；弹出层可用极浅 0 1px 2px rgba(37,57,53,.08) */
+  --mds-border: 1px solid rgba(22, 46, 59, 0.13); /* map --line */
+  --mds-shadow: none;        /* 默认无阴影；弹出层可用极浅 0 12px 40px rgba(22,46,59,.18) */
 }
 ```
 
-规则：卡片细边框 + 4px 圆角 + 默认无阴影；交互只做轻微颜色变化（无浮起/缩放/发光）；海景装饰只出现在合适位置，不覆盖正文阅读区；所有交互元素统一键盘焦点样式（2px 海松绿 outline）。
+**空气感规则（v0.2 新增）**：页面背景自顶向下`青雾 → 暖纸白`轻渐变；顶栏与侧栏**透明融入背景**（顶栏保留模糊以保证可读），不再用实心白盒；海雾色允许出现在 hero 底晕与悬停底色，不覆盖正文阅读区。
+
+规则：卡片细边框 + 4px 圆角 + 默认无阴影；交互只做轻微颜色变化（无浮起/缩放/发光）；所有交互元素统一键盘焦点样式（2px 海蓝青 outline）。
 
 ## 三、现状差距（2026-11 审计）
 
