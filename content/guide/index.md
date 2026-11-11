@@ -8,6 +8,8 @@
 
 [DIY Primitives：人类/Agent 双视图](/guide/diy-primitives/) · [HachimoDock 人类制作版](/projects/hachimodock/human-track/)
 
+**站点维护者**（含 Agent 会话）：改版面前先读 [Mayf3 Design System 设计母体](/guide/design-system/)——learn/map/diy-lab 三站统一的设计令牌与推进顺序，文档先行、令牌版本化。
+
 ## 给新手的阅读顺序
 
 1. 先看[项目目录](/projects/)，挑一个当前有教程的项目。
