@@ -27,3 +27,15 @@
 
 /* Cross-site family nav (Mayf3 design system §三). */
 .family-nav{margin-bottom:8px;font-size:10.5px;letter-spacing:.4px;color:#87958a}.family-nav a{color:#6d8177;border-bottom:1px solid rgba(22,46,59,.18);padding-bottom:1px}.family-nav a:hover{color:var(--accent)}.family-nav strong{color:var(--ink);font-weight:700}
+
+/* Concept-art zoom (Mayf3 design system; degrades to plain link without JS). */
+.doc-content a.img-zoom{display:block;max-width:720px;margin:14px 0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--paper)}
+.doc-content a.img-zoom img{display:block;width:100%;height:auto}
+.img-lightbox{position:fixed;inset:0;z-index:90;background:rgba(22,46,59,.86);display:flex;align-items:center;justify-content:center;padding:28px}
+.img-lightbox[hidden]{display:none!important}
+.img-lightbox figure{margin:0;position:relative;max-width:min(1536px,94vw)}
+.img-lightbox img{max-width:94vw;max-height:86vh;width:auto;height:auto;border-radius:var(--radius);background:var(--paper);display:block}
+.img-lightbox figcaption{position:absolute;top:14px;right:16px;display:flex;gap:10px;align-items:center}
+.img-lightbox figcaption{color:#dfe7ea;font-size:11px}
+.img-lightbox-close{border:0;background:var(--paper);color:var(--ink);border-radius:var(--radius);padding:7px 12px;font-weight:700}
+body.lb-is-open{overflow:hidden}
