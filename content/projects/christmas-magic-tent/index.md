@@ -1,5 +1,15 @@
 # Project Christmas Magic Tent｜圣诞互动帐篷
 
+
+## 目标效果｜圣诞树魔法小屋（2D+3D）
+
+<a class="img-zoom" href="../../media/christmas-magic-tent/concept/christmas-magic-tent-concept-full.png" title="点击放大查看 1536×1024 高清原图"><img src="../../media/christmas-magic-tent/concept/christmas-magic-tent-concept.webp" alt="圣诞树魔法小屋概念效果图（目标设计，非实拍）" loading="lazy"></a>
+
+[放大查看高清原图](/media/christmas-magic-tent/concept/christmas-magic-tent-concept-full.png) · [8步制作路线](/projects/christmas-magic-tent/mixed-media-plan/) · 效果图加入于 2026-11-12
+
+> 这是概念效果图而非实拍。施工时以165cm实木杆款为基础，所有2D+3D装饰固定在可拆独立背板上，电子件和灯串与帐篷结构物理分离。
+
+
 > **模拟与采购决策完成；帐篷未下单、未到货（2026-11-12）。** 目标预算 **≤¥500**，实际支出 **¥0**。最终 SKU 决策：天猫哎哟宝贝 165cm 实木杆款 **¥210**（READY_BUY，见[采购合并清单](/projects/christmas-magic-tent/consolidated-purchase-plan/)）；历史候选 HelloKitty ¥299.52 **已作废**。当前尺寸、材料、电路仍是设计候选值与模拟结论，非实物结论。
 
 ## 希望实现的四层体验

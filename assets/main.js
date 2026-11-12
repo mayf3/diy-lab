@@ -136,3 +136,31 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 });
+
+// Concept-art lightbox: click-to-enlarge, Esc/click to close (no-JS fallback: plain link).
+(function () {
+  var box = document.createElement('div');
+  box.className = 'img-lightbox';
+  box.hidden = true;
+  box.innerHTML = '<figure><img alt="放大查看的效果图"><button type="button" class="img-lightbox-close" aria-label="关闭放大查看">✕ 关闭</button><figcaption>Esc 或点击任意空白处关闭</figcaption></figure>';
+  document.body.appendChild(box);
+  function open(link) {
+    box.querySelector('img').src = link.getAttribute('href');
+    box.hidden = false;
+    document.body.classList.add('lb-is-open');
+  }
+  function close() {
+    if (box.hidden) return;
+    box.hidden = true;
+    box.querySelector('img').src = '';
+    document.body.classList.remove('lb-is-open');
+  }
+  document.addEventListener('click', function (event) {
+    var zoomLink = event.target.closest('a.img-zoom');
+    if (zoomLink) { event.preventDefault(); open(zoomLink); return; }
+    if (event.target.closest('.img-lightbox')) close();
+  });
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape') close();
+  });
+})();
