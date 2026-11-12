@@ -30,6 +30,7 @@ G0 示例用 source-data/christmas-magic-tent/video/g0-storyboard.json + scripts
 8. **维护最小复杂度**：本站只依赖 Python 与 Mistune，优先维护现有静态生成器，避免引入复杂服务、数据库或前端依赖。
 9. **不碰生产**：不修改任何其他 GitHub 仓库、远程 Mac 生产代码或个人 Agent Workflow；只在当前 Maker Lab 路径工作。
 10. **多会话共享工作区**：同一仓库可能有多个 Agent 会话并行工作。`git add` 必须逐个指定自己改动的文件，**禁止 `git add -A` / `git add .`**；提交前先看 `git status`，对不属于自己任务的未提交文件既不提交也不回退（包括 `git checkout` / `git restore`），发现他人改动时在日志中记录而不是处理。
+11. **站点统计**：埋点只允许经 site-analytics 公共模块薄接入（见 `content/guide/site-analytics.md`）；当前 Maker Lab 零统计，未到接入波次前禁止向本仓添加任何统计脚本或第三方 tracker。
 
 ## 新项目的最小文件
 
