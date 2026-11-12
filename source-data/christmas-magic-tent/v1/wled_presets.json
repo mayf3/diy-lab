@@ -1,0 +1,13 @@
+{
+  "_meta": {
+    "purpose": "圣诞帐篷 V1 WLED 预设（暖光/闪烁/彩虹/全灭），预留给 Button Deck K1-K4 的 HTTP 映射",
+    "import": "WLED UI → Presets 页手动照表配置，或 Config → Security & Updates → 将本文件作为 presets.json 上传到文件系统；导入后逐个校对效果 ID（不同 WLED 版本效果编号可能偏移）",
+    "api": "调用：curl http://<wled-ip>/win.json&P1=1&TT=16（切换预设 1）；完整 API 见 https://kno.wled.ge/interfaces/json-api/",
+    "safety": "所有预设亮度 ≤64（低亮度验收口径）；电流限制在 LED Preferences 设 700mA"
+  },
+  "0": {"name": "V1-全灭", "on": false, "bri": 0, "seg": [{"id": 0, "fx": 0, "sx": 255}]},
+  "1": {"name": "V1-暖光低亮", "on": true, "bri": 64, "seg": [{"id": 0, "fx": 0, "col": [[255, 158, 84], [0, 0, 0], [0, 0, 0]]}]},
+  "2": {"name": "V1-慢闪", "on": true, "bri": 48, "seg": [{"id": 0, "fx": 1, "sx": 60, "col": [[255, 120, 60], [0, 0, 0], [0, 0, 0]]}]},
+  "3": {"name": "V1-彩虹", "on": true, "bri": 56, "seg": [{"id": 0, "fx": 6, "sx": 90, "col": [[255, 0, 0], [0, 255, 0], [0, 0, 255]]}]},
+  "4": {"name": "V1-呼吸", "on": true, "bri": 56, "seg": [{"id": 0, "fx": 2, "sx": 80, "col": [[255, 170, 90], [0, 0, 0], [0, 0, 0]]}]}
+}

@@ -1,13 +1,33 @@
 # Project Christmas Magic Tent｜圣诞互动帐篷
 
+
+## 目标效果｜圣诞树魔法小屋（2D+3D）
+
+<a class="img-zoom" href="../../media/christmas-magic-tent/concept/christmas-magic-tent-concept-full.png" title="点击放大查看 1536×1024 高清原图"><img src="../../media/christmas-magic-tent/concept/christmas-magic-tent-concept.webp" alt="圣诞树魔法小屋概念效果图（目标设计，非实拍）" loading="lazy"></a>
+
+[放大查看高清原图](/media/christmas-magic-tent/concept/christmas-magic-tent-concept-full.png) · [8步制作路线](/projects/christmas-magic-tent/mixed-media-plan/) · 效果图加入于 2026-11-12
+
+> 这是概念效果图而非实拍。施工时以165cm实木杆款为基础，所有2D+3D装饰固定在可拆独立背板上，电子件和灯串与帐篷结构物理分离。
+
+
 > **模拟与采购决策完成；帐篷未下单、未到货（2026-11-12）。** 目标预算 **≤¥500**，实际支出 **¥0**。最终 SKU 决策：天猫哎哟宝贝 165cm 实木杆款 **¥210**（READY_BUY，见[采购合并清单](/projects/christmas-magic-tent/consolidated-purchase-plan/)）；历史候选 HelloKitty ¥299.52 **已作废**。当前尺寸、材料、电路仍是设计候选值与模拟结论，非实物结论。
+
+## V1 制作路线（主入口）
+
+**V1 范围**：已选帐篷 + 2D A4 拼接圣诞树图案 + P1S 3D 立体装饰件 + 独立免焊 WLED 可编程灯光。PIR 与 DFPlayer 列入 V2，不阻塞 V1；独立桌面小树（tree-v1）是另一件装置，不承担帐篷装饰。
+
+**→ [开始跟做：V1 制作路线全教程](/projects/christmas-magic-tent/v1-build-guide/)**（含每步的拿什么/做什么/看到什么/失败怎么办）
+
+配套入口：[8 步总览](/projects/christmas-magic-tent/mixed-media-plan/) · [V1 统一 BOM（含与原 ¥423.53 购物车的差异）](https://github.com/mayf3/diy-lab/blob/main/source-data/christmas-magic-tent/v1/v1_wled_bom.csv) · [A4 模板与 STL 生成器](https://github.com/mayf3/diy-lab/tree/main/source-data/christmas-magic-tent/v1) · [WLED 预设](https://github.com/mayf3/diy-lab/blob/main/source-data/christmas-magic-tent/v1/wled_presets.json)
+
+**当前状态**：待下单 → 到货验收 → 按教程第 1 步量尺。权威关卡状态：`source-data/christmas-magic-tent/workflow.json`（9 关，observed 均带证据）。
 
 ## 希望实现的四层体验
 
 1. **帐篷结构**：偏向小屋 / 城堡式，可拆搭、可存放的软布空间。
-2. **灯光**：星星灯 / 树灯，可替换主题装饰。
-3. **传感器**：使用 **HC-SR501 PIR** 检测有人经过或进入（不用于儿童安全监控）。
-4. **声音**：Arduino + **DFPlayer Mini** 播放问候声或圣诞音效；先在桌面用低压电路测试。
+2. **灯光**：**V1 = WLED 可编程灯串（免焊、软件切场景）**；装饰灯主题可换。
+3. **传感器**（V2 暂缓，不阻塞 V1）：使用 **HC-SR501 PIR** 检测有人经过或进入（不用于儿童安全监控）。
+4. **声音**（V2 暂缓，不阻塞 V1）：Arduino + **DFPlayer Mini** 播放问候声或圣诞音效。
 
 ## 已记录但尚未冻结的候选尺寸
 
@@ -21,6 +41,10 @@
 | 可用空间 | 曾报告宽和进深各 **1000cm** | 作为输入记录，实际安装净空仍需复测 |
 
 主要资源：Bambu P1S、2D 打印机、Arduino UNO R3（2026-11-09 家庭库存盘点确认）。可复用万圣节项目中的布艺、魔术贴和 3D 打印经验。
+
+## 历史研究与决策记录（次级入口）
+
+以下章节保留自模拟与采购研究阶段（2026-11-06 至 11-12），供追溯与审计；**当前口径以页首状态块与 V1 制作路线为准**。权威关卡与验收状态以 `source-data/christmas-magic-tent/workflow.json` 为准。
 
 ## 先模拟，不购物：第一阶段任务
 
