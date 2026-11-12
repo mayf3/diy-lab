@@ -180,6 +180,26 @@ def validate():
                 error(f'{slug}: verified status requires all blockers closed; still open: {", ".join(open_ids)}')
     if 'hachimodock' in project_status and 'hachimodock' not in blockers_by_slug:
         error('HachimoDock: missing blockers.csv doubt register')
+    for slug, st in project_status.items():
+        wf_path = ROOT / 'source-data' / slug / 'workflow.json'
+        if not wf_path.is_file():
+            if st in {'building', 'verified'}:
+                error(f'{slug}: status {st} requires source-data/{slug}/workflow.json with matching public_status and a status_history entry carrying evidence')
+            continue
+        try:
+            wf = json.loads(wf_path.read_text(encoding='utf-8'))
+        except ValueError as exc:
+            error(f'{slug}: workflow.json invalid JSON ({exc})')
+            continue
+        pub = wf.get('public_status')
+        if pub is None:
+            error(f'{slug}: workflow.json missing public_status; projects.json state cannot be verified against DOAVR source')
+        elif pub != st:
+            error(f'{slug}: projects.json status {st} does not match workflow.json public_status {pub}')
+        if st in {'building', 'verified'}:
+            hist = wf.get('status_history') or []
+            if not any(h.get('to') == st and h.get('evidence_ref') for h in hist):
+                error(f'{slug}: status {st} requires a status_history entry with evidence_ref in workflow.json')
     # Derived tutorial videos must link to actual project-owned scene evidence.
     from video_from_storyboard import load_and_check
     for story in sorted((ROOT / 'source-data').glob('*/video/*-storyboard.json')):

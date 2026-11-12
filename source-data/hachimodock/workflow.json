@@ -428,5 +428,15 @@
       "human_summary": "AI 会整理实际成本、照片、故障与验收记录；你确认实物功能是否真正通过。"
     }
   ],
-  "display_name": "HachimoDock 哈基米机"
+  "display_name": "HachimoDock 哈基米机",
+  "public_status": "preparing",
+  "status_history": [
+    {
+      "from": "",
+      "to": "preparing",
+      "on": "2026-11-06",
+      "evidence_ref": "source-data/hachimodock/blockers.csv",
+      "note": "初始登记：四门禁 BK1-BK4 全部 open，采购未发生"
+    }
+  ]
 }

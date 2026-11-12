@@ -128,9 +128,9 @@
     "slug": "christmas-magic-tent",
     "title": "Project Christmas Magic Tent",
     "subtitle": "可发光、感应、发声的儿童节日小屋",
-    "status": "building",
+    "status": "preparing",
     "category": "布艺 / 电子互动 / 3D 打印",
-    "description": "G0/G1/G2 数字与电路模拟已通过，帐篷已购入到货（¥299.52）；进入搭建与实物验收阶段。",
+    "description": "G0/G1a/G1b/G2 数字与电路模拟已通过；帐篷 SKU 已冻结（天猫 165cm 实木杆款 ¥210，未下单）；HelloKitty ¥299.52 候选已作废；实际支出 ¥0，到货验收未开始。",
     "date": "2026-11-12",
     "budget": "目标 ≤¥500，非真实支出",
     "steps": [

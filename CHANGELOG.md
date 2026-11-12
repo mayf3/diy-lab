@@ -1,5 +1,14 @@
 # 版本记录
 
+## 复审整改 P1/P2（2026-11-12）
+
+- P1-1 采购事实对齐：帐篷实际状态为「SKU 已冻结（天猫 165cm 实木杆款 ¥210）、未下单、到货验收未开始，实际支出 ¥0」；三处公开页面（projects.json / 项目首页 / 采购合并清单）统一该口径；HelloKitty ¥299.52 全部标注已作废；到货验收清单加状态横幅（全部条目未执行）；区分实际支出/预计剩余/预算上限。
+- P1-2 DOAVR 权威源：新增 `source-data/christmas-magic-tent/workflow.json`（9 关任务，observed 关卡均带 evidence_ref + observed_on；含 planning→building→preparing 的完整状态史，含 2026-11-12 错误登记与撤销记录）；hachimodock/robot-lab 工作流补 `public_status`；`check.py` 新增门禁：workflow 存在时 public_status 必须与 projects.json 一致，building/verified 需要 status_history 带 evidence_ref。
+- P1-3 首页 CTA 改为「查看圣诞帐篷制作进展」；回归测试锁定该文案，具备可跟做教程前不得使用「跟做」类承诺。
+- P2-2 设计文档区分规范版本（v0.3）与各站实现版本；P2-3 页脚区分「始建 2026-11-06」与「最近更新（构建日）」；P2-4 新增 `tests/test_project_state.py` 跨页面事实一致性回归（结构化字段断言，34 tests 全绿）。
+- 负向自测：projects.json 强设 building 时 check.py 报 public_status 不一致（已验证拦截并还原）。
+
+## 评审改进四项（2026-11-12）
 ## 评审改进四项（2026-11-12）
 
 - 首页主视觉由 CSS 卡通设备插画改为真实作品图：圣诞帐篷 G0 参数化模型渲染 + Wokwi 点灯电路运行截图，双卡错落排布并带「数字模拟 / 模拟运行」证据标签，呼应站点证据分级理念。
