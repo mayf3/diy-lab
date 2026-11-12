@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="210.0mm" height="297.0mm" viewBox="0 0 210.0 297.0">
+  <defs><clipPath id="tile1"><rect x="180.0" y="0.0" width="190.0" height="277.0"/></clipPath>
+  <g id="tree1"><path d="M 0.0 160.0 L 280.0 0.0 L 560.0 160.0 Z" fill="#3e7d4f"/>
+<path d="M 0.0 160.0 L 280.0 88.0 L 560.0 160.0 Z" fill="#2c5e46"/>
+<path d="M 45.9 320.0 L 280.0 160.0 L 514.1 320.0 Z" fill="#3e7d4f"/>
+<path d="M 45.9 320.0 L 280.0 248.0 L 514.1 320.0 Z" fill="#2c5e46"/>
+<path d="M 91.8 480.0 L 280.0 320.0 L 468.2 480.0 Z" fill="#3e7d4f"/>
+<path d="M 91.8 480.0 L 280.0 408.0 L 468.2 480.0 Z" fill="#2c5e46"/>
+<path d="M 137.8 640.0 L 280.0 480.0 L 422.2 640.0 Z" fill="#3e7d4f"/>
+<path d="M 137.8 640.0 L 280.0 568.0 L 422.2 640.0 Z" fill="#2c5e46"/>
+<path d="M 183.7 800.0 L 280.0 640.0 L 376.3 800.0 Z" fill="#3e7d4f"/>
+<path d="M 183.7 800.0 L 280.0 728.0 L 376.3 800.0 Z" fill="#2c5e46"/>
+<rect x="78.4" y="800.0" width="0" height="0"/>
+<rect x="168.0" y="-14.0" width="224.0" height="90.0" rx="8" fill="#f2f6f3" stroke="#22333a" stroke-width="1"/></g></defs>
+  <rect x="0" y="0" width="210.0" height="297.0" fill="white"/>
+  <rect x="10.0" y="10.0" width="190.0" height="277.0" fill="none" stroke="#bbbbbb" stroke-width="0.5" stroke-dasharray="4 3"/>
+  <g transform="translate(-180.0,-0.0)" clip-path="url(#tile1)">
+    <use href="#tree1"/>
+  </g>
+  <g>
+    <line x1="2.0" y1="10.0" x2="18.0" y2="10.0" stroke="#22333a" stroke-width="0.8"/><line x1="10.0" y1="2.0" x2="10.0" y2="18.0" stroke="#22333a" stroke-width="0.8"/><line x1="192.0" y1="10.0" x2="208.0" y2="10.0" stroke="#22333a" stroke-width="0.8"/><line x1="200.0" y1="2.0" x2="200.0" y2="18.0" stroke="#22333a" stroke-width="0.8"/><line x1="2.0" y1="287.0" x2="18.0" y2="287.0" stroke="#22333a" stroke-width="0.8"/><line x1="10.0" y1="279.0" x2="10.0" y2="295.0" stroke="#22333a" stroke-width="0.8"/><line x1="192.0" y1="287.0" x2="208.0" y2="287.0" stroke="#22333a" stroke-width="0.8"/><line x1="200.0" y1="279.0" x2="200.0" y2="295.0" stroke="#22333a" stroke-width="0.8"/>
+    <line x1="97.0" y1="10.0" x2="113.0" y2="10.0" stroke="#22333a" stroke-width="0.8"/><line x1="105.0" y1="2.0" x2="105.0" y2="18.0" stroke="#22333a" stroke-width="0.8"/><line x1="97.0" y1="287.0" x2="113.0" y2="287.0" stroke="#22333a" stroke-width="0.8"/><line x1="105.0" y1="279.0" x2="105.0" y2="295.0" stroke="#22333a" stroke-width="0.8"/>
+  </g>
+  <text x="10.0" y="293.0" font-size="7" fill="#22333a" font-family="monospace">PAGE 2/12 · 打印 100%（禁用适应页面）· 搭接 10mm · 树冠 560×800mm</text>
+  <text x="110.0" y="22.0" font-size="7" fill="#999999" font-family="monospace">PLACEHOLDER · 待实测回填</text>
+</svg>
