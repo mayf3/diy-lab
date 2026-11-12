@@ -6,6 +6,7 @@ works under file://, a root domain, or a GitHub Pages repository path.
 """
 from __future__ import annotations
 
+import datetime
 import html
 import json
 import os
@@ -23,6 +24,7 @@ PROJECTS = json.loads((ROOT / "data/projects.json").read_text(encoding="utf-8"))
 PROJECT_MAP = {p["slug"]: p for p in PROJECTS}
 VIDEOS = json.loads((ROOT / "data/videos.json").read_text(encoding="utf-8"))
 GENERATOR_VERSION = "0.1"
+BUILD_DATE = datetime.date.today().isoformat()
 STATUS = {
     "planning": ("规划中", "planning"),
     "preparing": ("准备中 · 未验证", "preparing"),
@@ -296,7 +298,7 @@ def hero(current_slug: str) -> str:
     return f'''<section class="hero"><div class="hero-copy"><span class="eyebrow">AI + MAKING · PERSONAL DIY JOURNAL</span>
         <h1>把灵感，<br><span>亲手做出来。</span></h1>
         <p>从 3D 打印、纸工、布艺到电子互动。每一次制作，都留下新手真正能跟着完成的操作、材料、视频和验收记录。</p>
-        <div class="hero-actions"><a class="primary-cta" href="{q(link_for(current_slug, "projects/christmas-magic-tent"))}">跟做进行中的制作：圣诞魔法帐篷 <span>↗</span></a>
+        <div class="hero-actions"><a class="primary-cta" href="{q(link_for(current_slug, "projects/christmas-magic-tent"))}">查看圣诞帐篷制作进展 <span>↗</span></a>
         <a class="secondary-cta" href="{q(link_for(current_slug, "projects"))}">浏览全部项目</a></div>
         <div class="hero-facts"><span>{len(PROJECTS):02d} <small>个项目档案</small></span><span>{len(PROJECT_MAP['hachimodock']['steps']):02d} <small>篇 HachimoDock 关卡教程</small></span><span>01 <small>个可复制模板</small></span></div>
     </div>{hero_illustration()}</section>'''
@@ -376,7 +378,7 @@ def render_one(source: Path) -> tuple[str, dict]:
 <nav class="top-nav" aria-label="顶部导航"><a href="{home}">首页</a><a href="{projects}">所有项目</a><a href="{q(link_for(slug,"videos"))}">视频工坊</a><a href="{guide}">新手指南</a></nav>
 <button class="search-button" id="searchOpen" type="button" aria-label="搜索教程"><span class="search-lens">⌕</span><span>搜索教程</span><kbd>/</kbd></button></div></header>
 <div class="site-layout">{sidebar_html}<main id="mainContent" class="main-content" tabindex="-1">{'' if is_home else breadcrumb(slug,project)}
-<article class="doc-content">{article}</article><footer class="footer"><div class="family-nav">Mayf3 三站：<a href="https://learn.mayf3.com/">Learning Lab · 学习</a> · <a href="https://map.mayf3.com/">Podcast Map · 探索</a> · <strong>Maker Lab · 创造（本站）</strong></div><br>Maker Lab · 用真实动手验证每一步。本站为独立学习记录，与上游项目无官方合作关系。<br>制作日期 2026-11-06 · <a href="{q(link_for(slug,"guide/legal"))}">许可与来源</a> · <a href="{q(link_for(slug,"guide/new-project"))}">新增项目</a></footer></main>{rail}</div>
+<article class="doc-content">{article}</article><footer class="footer"><div class="family-nav">Mayf3 三站：<a href="https://learn.mayf3.com/">Learning Lab · 学习</a> · <a href="https://map.mayf3.com/">Podcast Map · 探索</a> · <strong>Maker Lab · 创造（本站）</strong></div><br>Maker Lab · 用真实动手验证每一步。本站为独立学习记录，与上游项目无官方合作关系。<br>始建 2026-11-06 · 最近更新 {BUILD_DATE} · <a href="{q(link_for(slug,"guide/legal"))}">许可与来源</a> · <a href="{q(link_for(slug,"guide/new-project"))}">新增项目</a></footer></main>{rail}</div>
 <div id="mobileOverlay" class="mobile-overlay" hidden></div><div class="search-modal" id="searchModal" role="dialog" aria-modal="true" aria-label="搜索教程" hidden><div class="search-panel"><div class="search-top"><input id="searchInput" placeholder="搜索项目、材料、步骤或问题…" aria-label="搜索关键词" autocomplete="off"><button type="button" id="searchClose" aria-label="关闭搜索">✕</button></div><div id="searchResults" class="search-results"><p>输入关键词，搜索全站教程。</p></div><div class="search-help">按 Esc 关闭 · 离线也可以搜索</div></div></div>
 <script defer src="{search}"></script><script defer src="{js}"></script></body></html>'''
     metadata = {"title":title,"summary":summary(body),"path": str(output_path(slug).relative_to(DIST)).replace("\\","/"),"slug":slug}

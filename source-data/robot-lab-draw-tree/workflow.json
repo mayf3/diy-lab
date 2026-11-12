@@ -490,5 +490,15 @@
       "status": "planned",
       "human_summary": "你说一句“画棵秋天的树”，AI 规划并检查；你现场批准运行，最终用三次实画判断是否成功。"
     }
+  ],
+  "public_status": "preparing",
+  "status_history": [
+    {
+      "from": "",
+      "to": "preparing",
+      "on": "2026-11-07",
+      "evidence_ref": "content/projects/robot-lab-draw-tree/index.md",
+      "note": "初始登记：设计阶段，未采购未实装"
+    }
   ]
 }
