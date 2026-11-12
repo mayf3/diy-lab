@@ -10,6 +10,8 @@
 
 **站点维护者**（含 Agent 会话）：改版面前先读 [Mayf3 Design System 设计母体](/guide/design-system/)——learn/map/diy-lab 三站统一的设计令牌与推进顺序，文档先行、令牌版本化。
 
+**埋点/统计**：三站统一走 [site-analytics 架构规范](/guide/site-analytics/)——一份公共模块+各站薄接入；Maker Lab 现状为零统计，接入须等包在 Map/Learn 验证发布后按规范执行，任何会话不得私自添加统计脚本。
+
 ## 给新手的阅读顺序
 
 1. 先看[项目目录](/projects/)，挑一个当前有教程的项目。
