@@ -128,10 +128,10 @@
     "slug": "christmas-magic-tent",
     "title": "Project Christmas Magic Tent",
     "subtitle": "可发光、感应、发声的儿童节日小屋",
-    "status": "planning",
+    "status": "building",
     "category": "布艺 / 电子互动 / 3D 打印",
-    "description": "≤¥500 目标；G0 数字模拟完成（A/B 几何对比、门洞净空 10.0/20.9cm、站立条带限制、小区域动线测试），仍不采购，下一步回填真实商品尺寸重跑。",
-    "date": "2026-11-06",
+    "description": "G0/G1/G2 数字与电路模拟已通过，帐篷已购入到货（¥299.52）；进入搭建与实物验收阶段。",
+    "date": "2026-11-12",
     "budget": "目标 ≤¥500，非真实支出",
     "steps": [
       {
