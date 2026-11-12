@@ -89,6 +89,12 @@ class TentPurchaseFacts(unittest.TestCase):
         self.assertIn("READY_BUY", self.plan)
         self.assertNotIn("已购买", self.plan)
 
+    def test_budget_field_separates_actual_planned_and_cap(self):
+        budget = self.tent["budget"]
+        self.assertIn("¥0", budget, "预算字段必须写明实际支出")
+        self.assertIn("上限", budget, "预算字段必须写明总预算上限")
+        self.assertNotIn("非真实支出", budget, "旧的单一预算文案应已被三口径取代")
+
     def test_arrival_checklist_stays_unchecked_until_it_happens(self):
         checklist = (ROOT / "source-data/christmas-magic-tent/arrival-acceptance-checklist.md").read_text(encoding="utf-8")
         self.assertIn("- [ ]", checklist, "到货验收未发生：清单必须保留未勾选状态")
