@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "routes": {
+    "K1": {
+      "type": "open_app",
+      "bundle_id": "com.apple.Notes"
+    },
+    "K2": {
+      "type": "open_url",
+      "url": "https://example.com"
+    },
+    "K3": {
+      "type": "shortcut",
+      "name": "AI Lab Capture"
+    },
+    "K4": {
+      "type": "agent_event",
+      "route_id": "research",
+      "endpoint": "http://127.0.0.1:8765/button"
+    }
+  }
+}
