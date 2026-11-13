@@ -85,6 +85,47 @@ def bullet(items: list[str], empty: str = "本关不要求你操作。") -> str:
         return empty + "\n"
     return "".join(f"- {item}\n" for item in items)
 
+KIND_CN = {"simulation": "数字模拟", "physical-measurement": "实物测量", "physical-observation": "实物观察",
+           "device-log": "设备日志验证", "human-approval": "人工决策确认", "human-confirmation": "人工确认",
+           "public-source": "公开来源核对"}
+
+
+def status_text(task: dict) -> str:
+    """状态主体化：observed/planned 都带出「谁、什么事、凭什么、适用范围」。"""
+    v = task.get("verify", {})
+    st, vt = v.get("status"), v.get("type")
+    kind = KIND_CN.get(vt, str(vt))
+    if st == "observed":
+        tail = {"simulation": "换设备、房间或参数时需重新验证",
+                "device-log": "以你手头实物的检查结果为准",
+                "physical-measurement": "以你手头实物的检查结果为准",
+                "physical-observation": "以你手头实物的检查结果为准",
+                "human-approval": "该决策属于作者案例，不约束你的选择",
+                "human-confirmation": "该决策属于作者案例，不约束你的选择",
+                "public-source": "来源页面可能更新，使用前请复核"}.get(vt, "")
+        on = v.get("observed_on", "")
+        when = f"（{on}）" if on else ""
+        ref = f"证据：{v.get('evidence_ref', '见详情')}"
+        return f"**作者已完成{kind}**{when}；{ref}。{tail}。**这不是你的进度**。"
+    if st == "failed":
+        return f"**作者记录到一次失败**（{v.get('evidence_ref', '见详情')}）；原因与对策见该关详情。"
+    if st == "blocked":
+        return f"**作者当前受阻**：{v.get('criteria', '见详情')}。"
+    return "**实物测试或对应操作尚未进行**；以下是计划，不代表已完成。**这不是你的进度**。"
+
+
+def author_case_note(data: dict) -> str:
+    rows = []
+    for r in data.get("resource_routes", []):
+        if r.get("author_case"):
+            rows.append(f"- **{r['question']}** 作者案例：{r['author_case']}。你的条件：{' / '.join(r['options'])}。{r['policy']}。")
+    if not rows:
+        return ""
+    return ("### 作者案例 ≠ 你的条件\n\n"
+            "以下左侧是作者验证到什么程度，右侧才是你需要按自己情况确认的条件：\n\n"
+            + "\n".join(rows) + "\n\n")
+
+
 def route_table(data: dict) -> str:
     lines = ["| 先看条件 | 你可以选什么 | AI 应如何分流 |",
              "| --- | --- | --- |"]
@@ -97,11 +138,12 @@ def md_human(data: dict) -> str:
     result = [
       f"# {data.get('display_name', name)}｜新手制作路线（人类版）", "",
       "> **自动生成·工作流仍是计划，不是实物测试报告。** 本页由 source-data/" + name + "/workflow.json 生成；不能把 AI 看过网页、切片预览或用户勾选说成已经制作成功。", "",
-      "你不需要自己逐页检索上游仓库、核对复杂零件规格或独立判断设备兼容性。**把具体调查交给有文件和网络访问权限的 Agent**；你只做目标选择、必要的实物操作、付款和实机验收。如果没有 Agent，仍可以点击每一关的详细教程按传统方式进行。", "",
+      "本页所有进度状态（已完成/未进行）描述的是**作者案例**：作者验证到什么程度、凭什么证据。它们不是你的进度；你的个人勾选只保存在你自己的浏览器里。\n\n你不需要自己逐页检索上游仓库、核对复杂零件规格或独立判断设备兼容性。**把具体调查交给有文件和网络访问权限的 Agent**；你只做目标选择、必要的实物操作、付款和实机验收。如果没有 Agent，仍可以点击每一关的详细教程按传统方式进行。", "",
       f"**目标**：{data['direction']['goal']}。",
       f"**完成标准**：{data['direction']['done_when']}。", "",
       "## 先选择你自己的资源条件", "",
       route_table(data),
+      author_case_note(data),
       "详细说明：[如何让 Agent 帮你做](/guide/agent-first/) · [DIY 原语方法](/guide/diy-primitives/) · [Agent 执行版](/projects/" + name + "/agent-track/)。", "",
       "## 一句话委托 Agent", "",
       "> 项目执行规范：https://mayf3.github.io/diy-lab/projects/" + name + "/agent-track/ 。请先阅读此规范与公开上游工程。不要让我替你调查上游仓库、物料清单、设备规格或下载文件；你负责调查、判断证据等级、按我的设备条件制定制作/代打印路径并给出精确 SKU 与报价。不能访问的资料请只向我索取具体文件。未经我批准，不付款、不写设备固件、不进行有风险的实物操作。每一步只告诉我你做了什么、我还要动手做什么、怎么看结果及出错后怎么办。", "",
@@ -114,7 +156,8 @@ def md_human(data: dict) -> str:
           "**交给 Agent 完成**：", "", t["human_summary"], "",
           "**你亲自做**：", "", bullet(t["human"]), "",
           f"**完成时应该有：** {'、'.join(t['outputs'])}。", "",
-          f"**怎样判断：** {t['verify']['criteria']}。**当前证据状态：{t['verify']['status']}**（未运行不能算通过）。", "",
+          f"**怎样判断：** {t['verify']['criteria']}。", "",
+          f"**作者进度（只读）**：{status_text(t)}", "",
           f"**卡住或失败：** {t['block']}", "",
           f"[展开这关的图文细节]({t['deep']})", ""
         ]

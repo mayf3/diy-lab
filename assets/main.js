@@ -4,21 +4,46 @@
   const prefix = 'makerlab:v1:';
   const body = document.body;
   const project = body.dataset.project || '';
-  const currentPage = window.location.pathname;
   function read(key) { try { return window.localStorage.getItem(prefix + key); } catch { return null; } }
   function write(key, value) { try { window.localStorage.setItem(prefix + key, String(value)); } catch { /* storage may be blocked */ } }
   function keyOfChapter(chapter) { return 'chapter:' + chapter; }
 
-  const checklist = Array.from(document.querySelectorAll('.doc-content input[type="checkbox"]'));
-  checklist.forEach((input, index) => {
+  // 个人进度：只接管带 data-personal-key 的清单（步骤页的"我的验收"）。
+  // 作者事实（✅/◻ 徽章）是内容源渲染的只读记录，这里一律不碰。
+  const personal = Array.from(document.querySelectorAll('.doc-content input[data-personal-key]'));
+
+  // 旧版按"页内顺序"编号的记录无法可靠对应到当前内容：停用、清除并告知，绝不静默套用到新条目。
+  (function retireLegacy() {
+    if (!personal.length) return;
+    let stale = 0;
+    try {
+      const doomed = [];
+      for (let i = 0; i < window.localStorage.length; i++) {
+        const k = window.localStorage.key(i);
+        if (k && k.startsWith(prefix + 'check:')) doomed.push(k);
+      }
+      stale = doomed.length;
+      doomed.forEach(k => window.localStorage.removeItem(k));
+    } catch { return; }
+    if (stale) {
+      const doc = document.querySelector('.doc-content');
+      if (doc) {
+        const note = document.createElement('div');
+        note.className = 'legacy-progress-note';
+        note.textContent = '检测到旧版个人勾选记录（旧格式按页内顺序编号，无法可靠对应到当前内容），已停用并清除；请重新确认你的勾选。页面里的作者记录不受影响。';
+        doc.prepend(note);
+      }
+    }
+  })();
+
+  personal.forEach(input => {
+    const storageKey = 'personal:' + input.dataset.personalKey;
     input.disabled = false;
-    input.dataset.checkId = String(index);
-    const storageKey = 'check:' + currentPage + ':' + index;
     input.checked = read(storageKey) === 'true';
     const label = input.closest('li');
     if (label) label.classList.toggle('is-checked', input.checked);
     input.addEventListener('change', () => {
-      write(storageKey, input.checked);
+      write(storageKey, input.checked);   // 显式记录取消与恢复
       if (label) label.classList.toggle('is-checked', input.checked);
       updateCompleteButton();
     });
@@ -50,7 +75,7 @@
     if (!complete || !doneButton) return;
     const id = complete.dataset.chapter;
     const isDone = read(keyOfChapter(id)) === 'true';
-    const allChecked = checklist.every(item => item.checked);
+    const allChecked = personal.every(item => item.checked);
     doneButton.textContent = isDone ? '重新打开本章' : '标记本章已完成';
     doneButton.classList.toggle('is-done', isDone);
     doneButton.disabled = !isDone && !allChecked;
