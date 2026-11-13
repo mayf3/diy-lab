@@ -1,0 +1,90 @@
+/* mayf3-visual-system 0.1.0; generated, edit src/ for a new release. */
+:root {
+  --mf-paper: #f0f4f4;
+  --mf-mist: #eef4f4;
+  --mf-ink: #27302e;
+  --mf-ink-muted: #6b675f;
+  --mf-moss: #64735a;
+  --mf-leaf: #829477;
+  --mf-accent: #bf704e;
+  --mf-card: #f7fbfb;
+  --mf-border: rgba(39, 48, 46, 0.12);
+  --mf-border-strong: rgba(39, 48, 46, 0.28);
+  --mf-surface-page: rgba(240, 244, 244, 0.95);
+  --mf-surface-soft: rgba(247, 251, 251, 0.90);
+  --mf-font-body: "Noto Sans SC", "PingFang SC", system-ui, sans-serif;
+  --mf-font-heading: Georgia, "Noto Serif SC", serif;
+  --mf-font-mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  --mf-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --mf-radius: 2px;
+}
+
+/* Learn seaside foundation. Product layouts and data visualizations stay local. */
+body.mf-theme-seaside {
+  margin: 0;
+  background-color: var(--mf-paper);
+  background-image: linear-gradient(rgba(238, 246, 246, 0.60), rgba(238, 246, 246, 0.75)), url("./seaside-hero.jpg");
+  background-size: auto, cover;
+  background-position: 0 0, left bottom;
+  background-attachment: fixed, fixed;
+  color: var(--mf-ink);
+  font-family: var(--mf-font-body);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  color-scheme: light;
+}
+
+.mf-theme-seaside .mf-heading {
+  color: var(--mf-ink);
+  font-family: var(--mf-font-heading);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.35;
+}
+
+.mf-theme-seaside .mf-meta {
+  color: var(--mf-ink-muted);
+  font-family: var(--mf-font-mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+}
+
+.mf-theme-seaside .mf-paper,
+.mf-theme-seaside .mf-card {
+  background: var(--mf-surface-page);
+  border: 1px solid var(--mf-border);
+  border-radius: var(--mf-radius);
+  box-shadow: none;
+}
+
+.mf-theme-seaside .mf-card {
+  background: var(--mf-card);
+}
+
+.mf-theme-seaside .mf-button {
+  background: var(--mf-moss);
+  border: 1px solid var(--mf-moss);
+  border-radius: var(--mf-radius);
+  color: var(--mf-card);
+  font: inherit;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.mf-theme-seaside .mf-button:hover { background: #556349; }
+.mf-theme-seaside .mf-button:disabled { opacity: 0.55; cursor: not-allowed; }
+.mf-theme-seaside :focus-visible { outline: 2px solid var(--mf-moss); outline-offset: 3px; }
+.mf-theme-seaside input[type="range"],
+.mf-theme-seaside input[type="checkbox"],
+.mf-theme-seaside input[type="radio"] { accent-color: var(--mf-moss); }
+
+@media (max-width: 720px) {
+  body.mf-theme-seaside {
+    background-image: linear-gradient(rgba(238, 246, 246, 0.72), rgba(238, 246, 246, 0.85)), url("./seaside-hero.jpg");
+    background-attachment: scroll, scroll;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mf-theme-seaside .mf-button { transition: none; }
+}
