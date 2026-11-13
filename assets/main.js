@@ -12,28 +12,42 @@
   // 作者事实（✅/◻ 徽章）是内容源渲染的只读记录，这里一律不碰。
   const personal = Array.from(document.querySelectorAll('.doc-content input[data-personal-key]'));
 
-  // 旧版按"页内顺序"编号的记录无法可靠对应到当前内容：停用、清除并告知，绝不静默套用到新条目。
+  // 旧版记录（check: 逐项 + chapter: 章节完成，均为当时的个人自记）：
+  // 停止自动套用，也**不删除**——原样保留待核对；新清单一律按待确认处理，不猜测旧条目映射。
   (function retireLegacy() {
     if (!personal.length) return;
-    let stale = 0;
+    let kept = 0;
     try {
-      const doomed = [];
       for (let i = 0; i < window.localStorage.length; i++) {
         const k = window.localStorage.key(i);
-        if (k && k.startsWith(prefix + 'check:')) doomed.push(k);
+        if (k && (k.startsWith(prefix + 'check:') || k.startsWith(prefix + 'chapter:'))) kept += 1;
       }
-      stale = doomed.length;
-      doomed.forEach(k => window.localStorage.removeItem(k));
     } catch { return; }
-    if (stale) {
-      const doc = document.querySelector('.doc-content');
-      if (doc) {
-        const note = document.createElement('div');
-        note.className = 'legacy-progress-note';
-        note.textContent = '检测到旧版个人勾选记录（旧格式按页内顺序编号，无法可靠对应到当前内容），已停用并清除；请重新确认你的勾选。页面里的作者记录不受影响。';
-        doc.prepend(note);
-      }
-    }
+    if (!kept) return;
+    const doc = document.querySelector('.doc-content');
+    if (!doc) return;
+    const note = document.createElement('div');
+    note.className = 'legacy-progress-note';
+    const text = document.createElement('span');
+    text.textContent = '检测到旧版个人勾选记录（含章节完成与逐项勾选，均为你此前的个人自记，章节完成不代表新清单已确认）。'
+      + '旧记录已保留待核对，不会被套用到新清单；新清单请重新确认。';
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.textContent = '清除旧记录';
+    btn.addEventListener('click', () => {
+      try {
+        const doomed = [];
+        for (let i = 0; i < window.localStorage.length; i++) {
+          const k = window.localStorage.key(i);
+          if (k && (k.startsWith(prefix + 'check:') || k.startsWith(prefix + 'chapter:'))) doomed.push(k);
+        }
+        doomed.forEach(k => window.localStorage.removeItem(k));
+      } catch { /* storage blocked */ }
+      text.textContent = '旧记录已清除（清除后不可恢复）。新清单保持待确认状态。';
+      btn.remove();
+    });
+    note.append(text, btn);
+    doc.prepend(note);
   })();
 
   personal.forEach(input => {

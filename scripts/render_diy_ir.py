@@ -118,7 +118,7 @@ def author_case_note(data: dict) -> str:
     rows = []
     for r in data.get("resource_routes", []):
         if r.get("author_case"):
-            rows.append(f"- **{r['question']}** 作者案例：{r['author_case']}。你的条件：{' / '.join(r['options'])}。{r['policy']}。")
+            rows.append(f"- **{r['question']}**（作者案例）{r['author_case']}。你的条件：{' / '.join(r['options'])}。{r['policy']}。")
     if not rows:
         return ""
     return ("### 作者案例 ≠ 你的条件\n\n"
