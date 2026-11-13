@@ -7,6 +7,7 @@ works under file://, a root domain, or a GitHub Pages repository path.
 from __future__ import annotations
 
 import datetime
+import hashlib
 import html
 import json
 import os
@@ -225,9 +226,10 @@ def sidebar(slug: str, project: dict | None) -> str:
         nav_link(slug, "videos", "视频工坊"),
         '<div class="sidebar-cap space-above">重点教程</div>',
     ]
-    if project and project.get("steps"):
+    if project:
         root = "projects/" + project["slug"]
         links.append(nav_link(slug, root, q(project["title"])))
+    if project and project.get("steps"):
         if (CONTENT / "projects" / project["slug"] / "human-track.md").exists():
             links.append(nav_link(slug, root + "/human-track", "先跟着做 · 人类版"))
         if (CONTENT / "projects" / project["slug"] / "agent-track.md").exists():
@@ -325,6 +327,80 @@ def chapter_footer(slug: str, p: dict, step: dict) -> str:
     return "".join(nav)
 
 
+# 页面勾选语义（遵循 mayf3/primitives design 0.2.0 APPLICATION §1 状态主体）：
+# - 来源中已勾选（- [x]）= 作者事实，渲染为只读徽章，任何脚本不得改写；
+# - 未勾选（- [ ]）默认也是作者记录（◻ 未完成，只读）；
+# - 只有注册为"步骤页"的页面（projects.json steps）里的清单才是访客个人进度，
+#   用内容哈希作稳定键，插入/重排不会串项，接入 localStorage。
+COLLAPSED_SECTIONS = {
+    "projects/christmas-magic-tent": (
+        "当前进展", "G1 第一轮商品搜寻", "G2-V1 电子数字模拟", "G2-V2 与 G1a 预算收敛",
+        "帐篷采购放行", "先模拟，不购物", "已记录但尚未冻结",
+    ),
+}
+
+
+def personal_slugs() -> set:
+    return {f"projects/{p['slug']}/{s['file'].removesuffix('.md')}" for p in PROJECTS for s in p.get("steps", [])}
+
+
+def transform_checklists(markup: str, slug: str) -> str:
+    personal = slug in personal_slugs()
+    heading = ""
+    out = []
+    pos = 0
+    pattern = re.compile(r'(<h[23][^>]*>.*?</h[23]>)|(<li class="task-list-item">.*?</li>)', re.S)
+    for m in pattern.finditer(markup):
+        out.append(markup[pos:m.start()])
+        seg = m.group(0)
+        if seg.startswith('<h2') or seg.startswith('<h3'):
+            heading = re.sub(r'\s+', ' ', html.unescape(re.sub(r'<[^>]+>', '', seg))).strip()
+            out.append(seg)
+        elif '<input' not in seg:
+            out.append(seg)
+        else:
+            li = seg
+            text = re.sub(r'\s+', ' ', html.unescape(re.sub(r'<[^>]+>', '', li))).strip()
+            inp = re.search(r'<input[^>]*>', li).group(0)
+            if 'checked' in inp:
+                li = li.replace(inp, '<span class="fact-mark" title="作者记录（只读）">✅ 已完成</span>')
+                li = li.replace('task-list-item', 'task-list-item fact-item', 1)
+            elif not personal:
+                li = li.replace(inp, '<span class="fact-mark pending" title="作者记录（只读）">◻ 未完成</span>')
+                li = li.replace('task-list-item', 'task-list-item fact-item', 1)
+            else:
+                key = hashlib.sha1((slug + '|' + heading + '|' + text).encode('utf-8')).hexdigest()[:12]
+                new_inp = re.sub(r'\s+disabled|\s+checked', '', inp)
+                new_inp = new_inp[:-2] + f' data-personal-key="{key}">' if new_inp.endswith('/>') else new_inp[:-1] + f' data-personal-key="{key}">'
+                li = li.replace(inp, new_inp)
+            out.append(li)
+        pos = m.end()
+    out.append(markup[pos:])
+    return ''.join(out)
+
+
+def collapse_sections(markup: str, slug: str) -> str:
+    prefixes = COLLAPSED_SECTIONS.get(slug)
+    if not prefixes:
+        return markup
+    parts = re.split(r'(<h2[^>]*>.*?</h2>)', markup, flags=re.S)
+    out = [parts[0]]
+    i = 1
+    while i < len(parts):
+        head = parts[i]
+        body = parts[i + 1] if i + 1 < len(parts) else ""
+        text = html.unescape(re.sub(r'<[^>]+>', '', head)).strip()
+        if any(p in text for p in prefixes):
+            out.append(f'<details class="history-block"><summary>{head}</summary><div class="history-body">')
+            out.append(body)
+            out.append('</div></details>')
+        else:
+            out.append(head)
+            out.append(body)
+        i += 2
+    return ''.join(out)
+
+
 def render_one(source: Path) -> tuple[str, dict]:
     slug = slug_from_source(source)
     body = source.read_text(encoding="utf-8")
@@ -332,6 +408,8 @@ def render_one(source: Path) -> tuple[str, dict]:
     project = project_of_slug(slug)
     step = current_step(slug, project)
     markup, toc = toc_and_anchors(md(rewrite_md_links(body, slug)))
+    markup = transform_checklists(markup, slug)
+    markup = collapse_sections(markup, slug)
     is_home = slug == ""
     if is_home:
         main_top = hero(slug)

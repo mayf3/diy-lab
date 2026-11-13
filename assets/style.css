@@ -62,3 +62,17 @@ a:hover { color:var(--accent2); }
 @media(max-width:840px) {
   .sidebar { background:var(--mf-surface-page); box-shadow:none; }
 }
+
+/* Author facts vs personal checks (state ownership, primitives design 0.2.0). */
+.doc-content .fact-item{color:var(--text)}
+.fact-mark{display:inline-flex;align-items:center;font-size:10px;font-weight:800;letter-spacing:.3px;padding:2px 8px;border-radius:3px;background:var(--mist);color:var(--ink);border:1px solid var(--line);white-space:nowrap;margin-right:2px;transform:translateY(-1px)}
+.fact-mark.pending{color:var(--sub);background:transparent}
+.history-block{border:1px solid var(--line);border-radius:var(--radius);background:var(--paper);margin:16px 0;padding:0 16px}
+.history-block summary{cursor:pointer;padding:11px 0;font-weight:700;color:var(--ink);list-style:none}
+.history-block summary::-webkit-details-marker{display:none}
+.history-block summary::before{content:'▸ ';color:var(--sub)}
+.history-block[open] summary::before{content:'▾ '}
+.history-block summary h2{margin:0;font-size:16.5px;display:inline;border:0;padding:0}
+.history-block[open] summary{border-bottom:1px dashed var(--line);margin-bottom:10px}
+.history-block .history-body{padding-bottom:10px}
+.legacy-progress-note{border:1px solid var(--line);border-left:3px solid var(--accent2);background:#f8f1e9;color:#7d5638;padding:8px 12px;font-size:12px;line-height:1.7;margin:14px 0;border-radius:var(--radius)}
