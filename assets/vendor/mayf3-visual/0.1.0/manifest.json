@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "mayf3-visual-release-v1",
+  "repository": "mayf3-visual-system",
+  "version": "0.1.0",
+  "reference": "interactive-learning-lab/platform/src/styles.css + platform/public/images/seaside-hero.jpg",
+  "backgroundSha256": "75ca4bd35319790d97cee5463265b8930501372d7dc5622e513d625c2e3a6616",
+  "files": {
+    "seaside.css": {
+      "sha256": "c2edea1db23b1591285b6dc2ac16b12d774ef6de36d34c7b88cecd6784c3228d",
+      "bytes": 2746
+    },
+    "seaside.inline.css": {
+      "sha256": "ac51256e66d7cbab38d39178d55b009810335f014b3b7dd757956606faca8259",
+      "bytes": 311332
+    },
+    "seaside-hero.jpg": {
+      "sha256": "75ca4bd35319790d97cee5463265b8930501372d7dc5622e513d625c2e3a6616",
+      "bytes": 115716
+    },
+    "SKILL.md": {
+      "sha256": "c7006a8386a24ee09a1a5c9cd8a522422c5488ca6a3adb0bfa4defe85af6128c",
+      "bytes": 2946
+    }
+  }
+}

@@ -362,6 +362,7 @@ def render_one(source: Path) -> tuple[str, dict]:
     else:
         root_prefix += "/"
     stylesheet = q(url_for(slug,"/assets/style.css"))
+    visual_css = q(url_for(slug,"/assets/vendor/mayf3-visual/0.1.0/seaside.css"))
     bv = build_version()
     js = q(url_for(slug,"/assets/main.js") + f"?v={bv}")
     search = q(url_for(slug,"/assets/search-index.js") + f"?v={bv}")
@@ -371,8 +372,8 @@ def render_one(source: Path) -> tuple[str, dict]:
     cls = "home-page" if is_home else ("project-root" if is_project_root else "content-page")
     html_page = f'''<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="{q(summary(body))}"><meta name="color-scheme" content="light">
-<title>{q(title)} · Maker Lab</title><link rel="stylesheet" href="{stylesheet}"><link rel="icon" href="{q(url_for(slug,"/assets/favicon.svg"))}" type="image/svg+xml"></head>
-<body class="{cls}" data-root="{q(root_prefix)}" data-project="{q(project["slug"] if project else "")}">
+<title>{q(title)} · Maker Lab</title><link rel="stylesheet" href="{visual_css}"><link rel="stylesheet" href="{stylesheet}"><link rel="icon" href="{q(url_for(slug,"/assets/favicon.svg"))}" type="image/svg+xml"></head>
+<body class="mf-theme-seaside {cls}" data-root="{q(root_prefix)}" data-project="{q(project["slug"] if project else "")}">
 <header class="topbar"><div class="topbar-inner"><button class="menu-toggle" id="menuToggle" type="button" aria-controls="sidebar" aria-expanded="false" aria-label="打开导航">☰</button>
 <a class="brand" href="{home}"><span class="brand-symbol">M<span>·</span></span><span class="brand-name">MAKER <b>LAB</b></span><small>AI DIY JOURNAL</small></a>
 <nav class="top-nav" aria-label="顶部导航"><a href="{home}">首页</a><a href="{projects}">所有项目</a><a href="{q(link_for(slug,"videos"))}">视频工坊</a><a href="{guide}">新手指南</a></nav>
