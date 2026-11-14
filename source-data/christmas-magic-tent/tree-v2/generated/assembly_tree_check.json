@@ -1,0 +1,611 @@
+{
+  "A": {
+    "label": "方案A",
+    "mesh_parts": 32,
+    "triangles": 1698,
+    "parts": [
+      {
+        "name": "A_col_seg1",
+        "dims_mm": [
+          30.0,
+          30.0,
+          265.0
+        ],
+        "tris": 6
+      },
+      {
+        "name": "A_col_sleeve1",
+        "dims_mm": [
+          40.0,
+          40.0,
+          70.0
+        ],
+        "tris": 70
+      },
+      {
+        "name": "A_col_seg2",
+        "dims_mm": [
+          30.0,
+          30.0,
+          265.0
+        ],
+        "tris": 6
+      },
+      {
+        "name": "A_col_sleeve2",
+        "dims_mm": [
+          40.0,
+          40.0,
+          70.0
+        ],
+        "tris": 70
+      },
+      {
+        "name": "A_col_seg3",
+        "dims_mm": [
+          30.0,
+          30.0,
+          265.0
+        ],
+        "tris": 6
+      },
+      {
+        "name": "A_base_joint",
+        "dims_mm": [
+          46.0,
+          46.0,
+          60.0
+        ],
+        "tris": 151
+      },
+      {
+        "name": "A_foot_legL",
+        "dims_mm": [
+          205.0,
+          24.0,
+          24.0
+        ],
+        "tris": 6
+      },
+      {
+        "name": "A_foot_tailL",
+        "dims_mm": [
+          123.0,
+          24.0,
+          24.0
+        ],
+        "tris": 6
+      },
+      {
+        "name": "A_foot_spliceL",
+        "dims_mm": [
+          30.0,
+          30.0,
+          60.0
+        ],
+        "tris": 70
+      },
+      {
+        "name": "A_foot_legR",
+        "dims_mm": [
+          205.0,
+          24.0,
+          24.0
+        ],
+        "tris": 6
+      },
+      {
+        "name": "A_foot_tailR",
+        "dims_mm": [
+          123.0,
+          24.0,
+          24.0
+        ],
+        "tris": 6
+      },
+      {
+        "name": "A_foot_spliceR",
+        "dims_mm": [
+          30.0,
+          30.0,
+          60.0
+        ],
+        "tris": 70
+      },
+      {
+        "name": "A_spreaderL",
+        "dims_mm": [
+          225.0,
+          24.0,
+          24.0
+        ],
+        "tris": 10
+      },
+      {
+        "name": "A_spreaderR",
+        "dims_mm": [
+          225.0,
+          24.0,
+          24.0
+        ],
+        "tris": 10
+      },
+      {
+        "name": "A_spreader_splice",
+        "dims_mm": [
+          30.0,
+          30.0,
+          70.0
+        ],
+        "tris": 40
+      },
+      {
+        "name": "A_beam_joint_L1",
+        "dims_mm": [
+          46.0,
+          46.0,
+          36.0
+        ],
+        "tris": 183
+      },
+      {
+        "name": "A_beam_L1_L",
+        "dims_mm": [
+          235.0,
+          24.0,
+          24.0
+        ],
+        "tris": 10
+      },
+      {
+        "name": "A_beam_L1_R",
+        "dims_mm": [
+          235.0,
+          24.0,
+          24.0
+        ],
+        "tris": 10
+      },
+      {
+        "name": "A_beam_joint_L2",
+        "dims_mm": [
+          46.0,
+          46.0,
+          36.0
+        ],
+        "tris": 183
+      },
+      {
+        "name": "A_beam_L2_L",
+        "dims_mm": [
+          202.8,
+          24.0,
+          24.0
+        ],
+        "tris": 10
+      },
+      {
+        "name": "A_beam_L2_R",
+        "dims_mm": [
+          202.8,
+          24.0,
+          24.0
+        ],
+        "tris": 10
+      },
+      {
+        "name": "A_beam_joint_L3",
+        "dims_mm": [
+          46.0,
+          46.0,
+          36.0
+        ],
+        "tris": 183
+      },
+      {
+        "name": "A_beam_L3_L",
+        "dims_mm": [
+          170.5,
+          24.0,
+          24.0
+        ],
+        "tris": 10
+      },
+      {
+        "name": "A_beam_L3_R",
+        "dims_mm": [
+          170.5,
+          24.0,
+          24.0
+        ],
+        "tris": 10
+      },
+      {
+        "name": "A_beam_joint_L4",
+        "dims_mm": [
+          46.0,
+          46.0,
+          36.0
+        ],
+        "tris": 183
+      },
+      {
+        "name": "A_beam_L4_L",
+        "dims_mm": [
+          138.3,
+          24.0,
+          24.0
+        ],
+        "tris": 10
+      },
+      {
+        "name": "A_beam_L4_R",
+        "dims_mm": [
+          138.3,
+          24.0,
+          24.0
+        ],
+        "tris": 10
+      },
+      {
+        "name": "A_beam_joint_L5",
+        "dims_mm": [
+          46.0,
+          46.0,
+          36.0
+        ],
+        "tris": 183
+      },
+      {
+        "name": "A_beam_L5_L",
+        "dims_mm": [
+          106.0,
+          24.0,
+          24.0
+        ],
+        "tris": 10
+      },
+      {
+        "name": "A_beam_L5_R",
+        "dims_mm": [
+          106.0,
+          24.0,
+          24.0
+        ],
+        "tris": 10
+      },
+      {
+        "name": "A_star_cap",
+        "dims_mm": [
+          40.0,
+          40.0,
+          34.0
+        ],
+        "tris": 107
+      },
+      {
+        "name": "A_star",
+        "dims_mm": [
+          133.1,
+          126.6,
+          32.0
+        ],
+        "tris": 43
+      }
+    ],
+    "issues": [
+      "A_col_seg1 超出 P1S 行程",
+      "A_col_seg2 超出 P1S 行程",
+      "A_col_seg3 超出 P1S 行程"
+    ]
+  },
+  "B": {
+    "label": "方案B",
+    "mesh_parts": 33,
+    "triangles": 991,
+    "parts": [
+      {
+        "name": "B_trunk_seg1",
+        "dims_mm": [
+          30.0,
+          30.0,
+          204.0
+        ],
+        "tris": 6
+      },
+      {
+        "name": "B_trunk_sleeve1",
+        "dims_mm": [
+          40.0,
+          40.0,
+          70.0
+        ],
+        "tris": 70
+      },
+      {
+        "name": "B_trunk_seg2",
+        "dims_mm": [
+          30.0,
+          30.0,
+          204.0
+        ],
+        "tris": 6
+      },
+      {
+        "name": "B_trunk_sleeve2",
+        "dims_mm": [
+          40.0,
+          40.0,
+          70.0
+        ],
+        "tris": 70
+      },
+      {
+        "name": "B_trunk_seg3",
+        "dims_mm": [
+          30.0,
+          30.0,
+          204.0
+        ],
+        "tris": 6
+      },
+      {
+        "name": "B_trunk_sleeve3",
+        "dims_mm": [
+          40.0,
+          40.0,
+          70.0
+        ],
+        "tris": 70
+      },
+      {
+        "name": "B_trunk_seg4",
+        "dims_mm": [
+          30.0,
+          30.0,
+          204.0
+        ],
+        "tris": 6
+      },
+      {
+        "name": "B_trunk_sleeve4",
+        "dims_mm": [
+          40.0,
+          40.0,
+          70.0
+        ],
+        "tris": 70
+      },
+      {
+        "name": "B_tier_hub_t1",
+        "dims_mm": [
+          46.0,
+          46.0,
+          36.0
+        ],
+        "tris": 183
+      },
+      {
+        "name": "B_branch_t1_1",
+        "dims_mm": [
+          162.0,
+          24.0,
+          24.0
+        ],
+        "tris": 6
+      },
+      {
+        "name": "B_branch_t1_2",
+        "dims_mm": [
+          162.0,
+          24.0,
+          24.0
+        ],
+        "tris": 6
+      },
+      {
+        "name": "B_branch_t1_3",
+        "dims_mm": [
+          162.0,
+          24.0,
+          24.0
+        ],
+        "tris": 6
+      },
+      {
+        "name": "B_branch_t1_4",
+        "dims_mm": [
+          162.0,
+          24.0,
+          24.0
+        ],
+        "tris": 6
+      },
+      {
+        "name": "B_branch_t1_5",
+        "dims_mm": [
+          162.0,
+          24.0,
+          24.0
+        ],
+        "tris": 6
+      },
+      {
+        "name": "B_branch_t1_6",
+        "dims_mm": [
+          162.0,
+          24.0,
+          24.0
+        ],
+        "tris": 6
+      },
+      {
+        "name": "B_tier_hub_t2",
+        "dims_mm": [
+          46.0,
+          46.0,
+          36.0
+        ],
+        "tris": 183
+      },
+      {
+        "name": "B_branch_t2_1",
+        "dims_mm": [
+          132.0,
+          24.0,
+          24.0
+        ],
+        "tris": 6
+      },
+      {
+        "name": "B_branch_t2_2",
+        "dims_mm": [
+          132.0,
+          24.0,
+          24.0
+        ],
+        "tris": 6
+      },
+      {
+        "name": "B_branch_t2_3",
+        "dims_mm": [
+          132.0,
+          24.0,
+          24.0
+        ],
+        "tris": 6
+      },
+      {
+        "name": "B_branch_t2_4",
+        "dims_mm": [
+          132.0,
+          24.0,
+          24.0
+        ],
+        "tris": 6
+      },
+      {
+        "name": "B_branch_t2_5",
+        "dims_mm": [
+          132.0,
+          24.0,
+          24.0
+        ],
+        "tris": 6
+      },
+      {
+        "name": "B_branch_t2_6",
+        "dims_mm": [
+          132.0,
+          24.0,
+          24.0
+        ],
+        "tris": 6
+      },
+      {
+        "name": "B_tier_hub_t3",
+        "dims_mm": [
+          46.0,
+          46.0,
+          36.0
+        ],
+        "tris": 183
+      },
+      {
+        "name": "B_branch_t3_1",
+        "dims_mm": [
+          102.0,
+          24.0,
+          24.0
+        ],
+        "tris": 6
+      },
+      {
+        "name": "B_branch_t3_2",
+        "dims_mm": [
+          102.0,
+          24.0,
+          24.0
+        ],
+        "tris": 6
+      },
+      {
+        "name": "B_branch_t3_3",
+        "dims_mm": [
+          102.0,
+          24.0,
+          24.0
+        ],
+        "tris": 6
+      },
+      {
+        "name": "B_branch_t3_4",
+        "dims_mm": [
+          102.0,
+          24.0,
+          24.0
+        ],
+        "tris": 6
+      },
+      {
+        "name": "B_branch_t3_5",
+        "dims_mm": [
+          102.0,
+          24.0,
+          24.0
+        ],
+        "tris": 6
+      },
+      {
+        "name": "B_branch_t3_6",
+        "dims_mm": [
+          102.0,
+          24.0,
+          24.0
+        ],
+        "tris": 6
+      },
+      {
+        "name": "B_foot_1",
+        "dims_mm": [
+          340.0,
+          24.0,
+          24.0
+        ],
+        "tris": 6
+      },
+      {
+        "name": "B_foot_2",
+        "dims_mm": [
+          340.0,
+          24.0,
+          24.0
+        ],
+        "tris": 6
+      },
+      {
+        "name": "B_foot_3",
+        "dims_mm": [
+          340.0,
+          24.0,
+          24.0
+        ],
+        "tris": 6
+      },
+      {
+        "name": "B_star",
+        "dims_mm": [
+          117.9,
+          112.2,
+          9.0
+        ],
+        "tris": 12
+      }
+    ],
+    "issues": [
+      "B_foot_1 超出 P1S 行程",
+      "B_foot_2 超出 P1S 行程",
+      "B_foot_3 超出 P1S 行程"
+    ]
+  }
+}

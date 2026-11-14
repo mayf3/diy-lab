@@ -124,7 +124,7 @@
 - 保存订单截图并抹去隐私
 
 - **应交付**：订单截图（遮住个人信息）；SKU 五要素核对记录：165cm 实木杆、apple小熊、双门帘、无垫
-- **V 证据**：human-approval，订单截图显示正确 SKU 与实付金额，个人信息已脱敏，当前 planned
+- **V 证据**：human-approval，订单截图显示正确 SKU 与实付金额，个人信息已脱敏，当前 observed
 - **R 遇阻条件**：缺货或页面 SKU 与冻结决策不符时停止下单并回到 A02
 - **深入说明**：[详细教程](/projects/christmas-magic-tent/consolidated-purchase-plan/)
 
