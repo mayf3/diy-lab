@@ -1,0 +1,45 @@
+{
+  "tree_panel_top_slot": {
+    "stl": "tree_panel_top_slot.stl",
+    "step": "tree_panel_top_slot.step",
+    "extents_mm": [
+      192.0,
+      231.99,
+      3.6
+    ],
+    "approx_solid_volume_cm3": 76.17
+  },
+  "tree_panel_bottom_slot": {
+    "stl": "tree_panel_bottom_slot.stl",
+    "step": "tree_panel_bottom_slot.step",
+    "extents_mm": [
+      192.0,
+      235.0,
+      3.6
+    ],
+    "approx_solid_volume_cm3": 76.12
+  },
+  "tree_cross_base": {
+    "stl": "tree_cross_base.stl",
+    "step": "tree_cross_base.step",
+    "extents_mm": [
+      175.0,
+      175.0,
+      12.0
+    ],
+    "approx_solid_volume_cm3": 66.86
+  },
+  "parameters": {
+    "height_mm": 235,
+    "width_mm": 192,
+    "footspan_mm": 175,
+    "thickness_mm": 3.6
+  },
+  "design_notes": {
+    "status": "parametric CAD only; no printed fit/stability testing",
+    "clearance_mm": 0.5,
+    "assembly": "print both panels flat; join at the central cross-slit, insert both feet into grooved base",
+    "illumination": "wrap removable 5V prewired LED seed string around silhouette and use loose reusable ties through holes; do not pinch conductors",
+    "placement": "tabletop, outside children's reach, independent of tent; no overnight unattended use"
+  }
+}

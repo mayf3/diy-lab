@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "description": "WLED light scenes for the 5V desk Christmas tree. Pixel/controller count is configured on the physical controller.",
+  "default_scene": "warm",
+  "brightness_ceiling": 88,
+  "scenes": {
+    "warm": {"description": "Soft amber static tree", "effect": "Solid", "brightness": 64, "color": [255, 151, 45], "speed": 120, "intensity": 120},
+    "breathe": {"description": "Slow winter white breathing", "effect": "Breathe", "brightness": 64, "color": [180, 210, 255], "speed": 55, "intensity": 85},
+    "sparkle": {"description": "Twinkling festive stars", "effect": "Twinkle", "brightness": 80, "color": [255, 189, 90], "speed": 110, "intensity": 90},
+    "rainbow": {"description": "Color-changing rainbow", "effect": "Rainbow", "brightness": 78, "color": [255, 80, 30], "speed": 75, "intensity": 90},
+    "night": {"description": "Dim warm evening light", "effect": "Solid", "brightness": 18, "color": [255, 119, 38], "speed": 110, "intensity": 110}
+  },
+  "button_deck_mapping": {"K1": "warm", "K2": "sparkle", "K3": "rainbow", "K4": "off"}
+}
