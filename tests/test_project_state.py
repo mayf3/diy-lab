@@ -67,12 +67,13 @@ class TentPurchaseFacts(unittest.TestCase):
         self.assertEqual(self.tent["status"], "preparing",
                          "帐篷未下单（READY_BUY）：不得标记 building")
 
-    def test_description_makes_no_purchase_or_arrival_claim(self):
-        for word in ("已购", "购入", "已到货"):
+    def test_description_claims_purchase_without_arrival_acceptance(self):
+        # 2026-11-13 用户确认已购买：描述可以声称已购买，但到货验收仍未发生
+        self.assertIn("已购买", self.tent["description"])
+        self.assertIn("尺寸待实测", self.tent["description"])
+        for word in ("已到货", "验收通过"):
             self.assertNotIn(word, self.tent["description"],
-                             "实际支出为 ¥0：projects.json 描述不得声称已购买/已到货")
-        self.assertIn("到货验收未开始", self.tent["description"],
-                      "描述应明确验收尚未发生")
+                             "到货验收未发生：不得声称已到货或已通过验收")
 
     def test_index_header_no_longer_claims_no_purchase_planned(self):
         self.assertNotIn("规划中、明确暂不采购", self.index,
@@ -91,7 +92,7 @@ class TentPurchaseFacts(unittest.TestCase):
 
     def test_budget_field_separates_actual_planned_and_cap(self):
         budget = self.tent["budget"]
-        self.assertIn("¥0", budget, "预算字段必须写明实际支出")
+        self.assertIn("已确认支出", budget, "预算字段必须写明实际支出口径")
         self.assertIn("上限", budget, "预算字段必须写明总预算上限")
         self.assertNotIn("非真实支出", budget, "旧的单一预算文案应已被三口径取代")
 

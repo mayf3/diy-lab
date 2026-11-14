@@ -10,7 +10,7 @@
 > 这是概念效果图而非实拍。施工时以165cm实木杆款为基础，所有2D+3D装饰固定在可拆独立背板上，电子件和灯串与帐篷结构物理分离。
 
 
-> **模拟与采购决策完成；帐篷未下单、未到货（2026-11-12）。** 目标预算 **≤¥500**，实际支出 **¥0**。最终 SKU 决策：天猫哎哟宝贝 165cm 实木杆款 **¥210**（READY_BUY，见[采购合并清单](/projects/christmas-magic-tent/consolidated-purchase-plan/)）；历史候选 HelloKitty ¥299.52 **已作废**。当前尺寸、材料、电路仍是设计候选值与模拟结论，非实物结论。
+> **帐篷已购买（2026-11-13 确认；订单截图待回填），尺寸待实测、到货验收未开始。** 目标预算 **≤¥500**。最终 SKU 决策：天猫哎哟宝贝 165cm 实木杆款（READY_BUY→已购，见[采购合并清单](/projects/christmas-magic-tent/consolidated-purchase-plan/)）；历史候选 HelloKitty ¥299.52 **已作废**。当前装饰、图案与结构件仍是设计目标，未打印、未试装。最终 SKU 决策：天猫哎哟宝贝 165cm 实木杆款 **¥210**（READY_BUY，见[采购合并清单](/projects/christmas-magic-tent/consolidated-purchase-plan/)）；历史候选 HelloKitty ¥299.52 **已作废**。当前尺寸、材料、电路仍是设计候选值与模拟结论，非实物结论。
 
 ## V1 制作路线（主入口）
 

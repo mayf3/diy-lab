@@ -1,0 +1,30 @@
+{
+  "config": {
+    "A4_W": 210.0,
+    "A4_H": 297.0,
+    "MARGIN": 10.0,
+    "OVERLAP": 10.0,
+    "TREE_H": 800.0,
+    "TREE_W": 560.0,
+    "LAYERS": 5,
+    "SNOW_H": 90.0,
+    "TENT_SIDE_W": null,
+    "TENT_SIDE_H": null
+  },
+  "pages": 12,
+  "tile_mm": [
+    190.0,
+    277.0
+  ],
+  "overlap_mm": 10.0,
+  "coverage_check": "4×3 页覆盖 730×811mm ≥ 图案 560×800mm",
+  "pending_measurement": [
+    "TENT_SIDE_W",
+    "TENT_SIDE_H"
+  ],
+  "outputs": [
+    "a4_tree_p*.svg（可编辑）",
+    "a4_tree.pdf（直接打印）",
+    "assembly_preview.svg（拼接预览）"
+  ]
+}
