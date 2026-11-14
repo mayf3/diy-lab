@@ -1,0 +1,48 @@
+{
+  "board_thickness_assumed_mm": 5.0,
+  "clip_inner_width_mm": 5.6,
+  "note": "BOARD_T 为 5mm 瓦楞板假设值；真实背板厚度实测后用 --board-t 重跑。切片需在 Bambu Studio 完成，本报告只是几何检查。",
+  "models": {
+    "star_topper": {
+      "stl": "star_topper.stl",
+      "extents_mm": [
+        104.6,
+        99.5,
+        8.0
+      ],
+      "approx_solid_volume_cm3": 9.5,
+      "triangles": 40
+    },
+    "snowflake": {
+      "stl": "snowflake.stl",
+      "extents_mm": [
+        96.0,
+        85.6,
+        5.0
+      ],
+      "approx_solid_volume_cm3": 3.2,
+      "triangles": 216
+    },
+    "gift_box": {
+      "stl": "gift_box.stl",
+      "extents_mm": [
+        72.0,
+        42.0,
+        12.0
+      ],
+      "approx_solid_volume_cm3": 12.1,
+      "triangles": 48
+    },
+    "backboard_clip": {
+      "stl": "backboard_clip.stl",
+      "extents_mm": [
+        16.6,
+        18.0,
+        60.0
+      ],
+      "approx_solid_volume_cm3": 4.2,
+      "triangles": 32,
+      "mount": "挂在背板上缘，内宽 5.6mm（背板厚 5.0mm + 公差 0.6mm）"
+    }
+  }
+}

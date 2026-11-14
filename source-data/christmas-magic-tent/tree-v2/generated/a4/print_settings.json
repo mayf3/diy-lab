@@ -1,0 +1,33 @@
+{
+  "config": {
+    "A4_W": 210.0,
+    "A4_H": 297.0,
+    "MARGIN": 10.0,
+    "OVERLAP": 10.0,
+    "TREE_H": 800.0,
+    "TREE_W": 560.0,
+    "TRUNK_W": 90.0,
+    "SNOW_H": 90.0,
+    "TENT_SIDE_W": null,
+    "TENT_SIDE_H": null,
+    "LAYERS": 5
+  },
+  "pages": 12,
+  "tile_size_mm": [
+    190.0,
+    277.0
+  ],
+  "overlap_mm": 10.0,
+  "pending_measurement": [
+    "TENT_SIDE_W",
+    "TENT_SIDE_H"
+  ],
+  "print": [
+    "A4 纵向",
+    "缩放 100%（禁用「适应页面」/「适合纸张」）",
+    "彩色输出",
+    "四角十字标用于对齐",
+    "相邻页搭接 OVERLAP mm：先对齐十字标再粘贴"
+  ],
+  "output_dir": "/Users/yanfenma/Documents/DIY/diy-lab/source-data/christmas-magic-tent/tree-v2/generated/a4"
+}

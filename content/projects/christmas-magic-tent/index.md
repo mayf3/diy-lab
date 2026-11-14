@@ -20,6 +20,8 @@
 
 配套入口：[8 步总览](/projects/christmas-magic-tent/mixed-media-plan/) · [V1 统一 BOM（含与原 ¥423.53 购物车的差异）](https://github.com/mayf3/diy-lab/blob/main/source-data/christmas-magic-tent/v1/v1_wled_bom.csv) · [A4 模板与 STL 生成器](https://github.com/mayf3/diy-lab/tree/main/source-data/christmas-magic-tent/v1) · [WLED 预设](https://github.com/mayf3/diy-lab/blob/main/source-data/christmas-magic-tent/v1/wled_presets.json)
 
+**造型已定**：帐篷旁圣诞树两方案对比与推荐（平面骨架树 25 件/16 螺丝）见 [圣诞树双方案对比](/projects/christmas-magic-tent/tree-designs/)——含效果图、爆炸图、首盘试件清单。
+
 **当前状态**：待下单 → 到货验收 → 按教程第 1 步量尺。权威关卡状态：`source-data/christmas-magic-tent/workflow.json`（9 关，observed 均带证据）。
 
 ## 希望实现的四层体验

@@ -1,0 +1,47 @@
+{
+  "A": {
+    "parts": {
+      "A_col_seg1": 1,
+      "A_col_seg2": 1,
+      "A_col_seg3": 1,
+      "A_beam_L1": 2,
+      "A_beam_L2": 2,
+      "A_beam_L3": 2,
+      "A_beam_L4": 2,
+      "A_beam_L5": 2,
+      "A_joint_L1": 1,
+      "A_joint_L2": 1,
+      "A_joint_L3": 1,
+      "A_joint_L4": 1,
+      "A_joint_L5": 1,
+      "A_col_sleeve1": 1,
+      "A_col_sleeve2": 1,
+      "A_foot": 2,
+      "A_foot_spread": 1,
+      "A_base_joint": 1,
+      "A_star": 1
+    },
+    "fasteners": 16
+  },
+  "B": {
+    "parts": {
+      "B_trunk_seg1": 1,
+      "B_trunk_seg2": 1,
+      "B_trunk_seg3": 1,
+      "B_trunk_seg4": 1,
+      "B_tier_hub_t1": 1,
+      "B_branch_t1": 6,
+      "B_ring_t1": 6,
+      "B_tier_hub_t2": 1,
+      "B_branch_t2": 6,
+      "B_ring_t2": 6,
+      "B_tier_hub_t3": 1,
+      "B_branch_t3": 6,
+      "B_ring_t3": 6,
+      "B_foot": 3,
+      "B_base_hub": 1,
+      "B_star": 1
+    },
+    "fasteners": 30
+  }
+}
