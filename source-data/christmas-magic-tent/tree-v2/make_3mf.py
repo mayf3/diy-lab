@@ -69,9 +69,34 @@ def check_mesh(name, tris, bounds):
     return issues, dims
 
 
+def dedup_tris(tris):
+    """去掉重复三角与零面积退化三角（布尔并集重合面会以重复形式出现）。"""
+    seen, out = set(), []
+    dropped = 0
+    for t in tris:
+        a, b, c = t
+        if a == b or b == c or a == c:
+            dropped += 1
+            continue
+        ux, uy, uz = b[0]-a[0], b[1]-a[1], b[2]-a[2]
+        vx, vy, vz = c[0]-a[0], c[1]-a[1], c[2]-a[2]
+        cx3, cy3, cz3 = uy*vz-uz*vy, uz*vx-ux*vz, ux*vy-uy*vx
+        if (cx3*cx3 + cy3*cy3 + cz3*cz3) ** 0.5 * 0.5 < 1e-6:
+            dropped += 1
+            continue
+        key = tuple(sorted(t))
+        if key in seen:
+            dropped += 1
+            continue
+        seen.add(key)
+        out.append(t)
+    return out, dropped
+
+
 def build_3mf(parts, out: Path):
     objects_xml, build_xml = [], []
     for i, (name, tris, tx, ty) in enumerate(parts, start=1):
+        tris, dropped = dedup_tris(tris)
         vs, vmap = [], {}
         for t in tris:
             for v in t:

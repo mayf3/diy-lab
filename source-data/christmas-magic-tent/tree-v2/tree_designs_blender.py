@@ -76,13 +76,14 @@ def new_obj(name, coll):
 
 
 def box(coll, name, w, d, h, center=(0, 0, 0), color_name="PETG"):
-    """mm；center 为外接盒中心（位置在调用方换算为米后写入）。"""
+    """mm；center 烘焙进顶点（外接盒中心）。"""
     o = new_obj(name, coll)
     hx, hy, hz = w / 2000, d / 2000, h / 2000
+    cx, cy, cz = center[0] * MM, center[1] * MM, center[2] * MM
     me = o.data
     me.from_pydata([
-        (-hx, -hy, -hz), (hx, -hy, -hz), (hx, hy, -hz), (-hx, hy, -hz),
-        (-hx, -hy, hz), (hx, -hy, hz), (hx, hy, hz), (-hx, hy, hz)],
+        (cx - hx, cy - hy, cz - hz), (cx + hx, cy - hy, cz - hz), (cx + hx, cy + hy, cz - hz), (cx - hx, cy + hy, cz - hz),
+        (cx - hx, cy - hy, cz + hz), (cx + hx, cy - hy, cz + hz), (cx + hx, cy + hy, cz + hz), (cx - hx, cy + hy, cz + hz)],
         [], [(0, 1, 2, 3), (7, 6, 5, 4), (0, 4, 5, 1), (1, 5, 6, 2), (2, 6, 7, 3), (3, 7, 4, 0)])
     me.validate()
     o.data.materials.append(mat(color_name, COLORS[color_name]))
@@ -145,11 +146,21 @@ def finish(part, color_name="PETG", coll="A"):
     return part
 
 
-def screw(part, name, center, axis="Z", d=SCREW_D, depth=14.0):
-    """M4 顶丝孔（Ø4.2×14）贯穿登记；数量与孔位一一对应。"""
+def screw(part, name, center, axis="Z", d=SCREW_D, depth=14.0, nut_pocket=False, pocket_side=1.0):
+    """M4 孔两种形态：
+    - nut_pocket=False → 定位自攻孔（Ø4.2 盲孔，防止拔出；主承载仍靠插接）；
+    - nut_pocket=True → 贯通孔 + 出口面六角螺母捕获口袋（9.5×9.5×5），可反复拆装。"""
     cutter = cyl("CUT", name + "_hole", d / 2, depth + 6, center, axis)
-    bool_op(part, [cutter])
-    screw_seats.append({"part": part.name, "name": name, "mm": list(center), "axis": axis})
+    cuts = [cutter]
+    if nut_pocket:
+        pk = {"Z": (0, 0, 0), "X": (pocket_side * 4.5, 0, 0), "Y": (0, pocket_side * 4.5, 0)}[axis]
+        cuts.append(box("CUT", name + "_nutpk", *[9.5 if i == 0 else 9.5 for i in range(3)], center))
+        cuts[-1] = box("CUT", name + "_nutpk", *(
+            [5.0, 9.5, 9.5] if axis == "X" else [9.5, 5.0, 9.5] if axis == "Y" else [9.5, 9.5, 5.0]),
+            center)
+    bool_op(part, cuts)
+    screw_seats.append({"part": part.name, "name": name, "mm": list(center), "axis": axis,
+                        "type": "through-nut" if nut_pocket else "tap"})
     return part
 
 
@@ -162,8 +173,8 @@ def make_col_sleeve(name, coll="A"):
     o = box("CUT", name, 40, 40, 70, (0, 0, 0))
     hole = box("CUT", name + "_hole", COL + TOL_SQ_TOTAL, COL + TOL_SQ_TOTAL, 74, (0, 0, 0))
     bool_op(o, [hole])
-    screw(o, name + "_sX", (20 - 1.8, 0, -14), axis="X")
-    screw(o, name + "_sX2", (-20 + 1.8, 0, 14), axis="X")
+    screw(o, name + "_boltY1", (0, 14, 0), axis="X", depth=44, nut_pocket=True, pocket_side=-1)
+    screw(o, name + "_boltY2", (0, -14, 0), axis="X", depth=44, nut_pocket=True, pocket_side=-1)
     return finish(o, coll=coll)
 
 
@@ -201,9 +212,9 @@ def make_base_joint(name, coll="A"):
                            (side * (23 - 13), 0, -8), axis="X"))
     bool_op(o, cutters)
     screw(o, name + "_sCol", (0, 0, 30 - 1.2), axis="Z", depth=10)
-    screw(o, name + "_sFx", (-20 + 1.8, 0, -14), axis="X")
-    screw(o, name + "_sFx2", (20 - 1.8, 0, -14), axis="X")
-    screw(o, name + "_sFy", (0, -20 + 1.8, -10), axis="Y", depth=10)
+    screw(o, name + "_sFootX", (13 - 1.2, 0, -8), axis="Z", depth=30)
+    screw(o, name + "_sFootX2", (-13 + 1.2, 0, -8), axis="Z", depth=30)
+    screw(o, name + "_sColSet", (0, 20 - 1.2, 0), axis="Y", depth=10)
     return finish(o, coll=coll)
 
 
@@ -243,7 +254,7 @@ def make_star(name, r_out=70.0, depth=10.0, coll="A", tenon=True):
 def make_foot_leg(name, length, coll="A", tenon_end="inner"):
     o = box(coll, name, length, BEAM, BEAM, (length / 2, 0, 0))
     if tenon_end == "inner":
-        ten = cyl("CUT", name + "_tenon", TENON_D / 2, TENON_L, (TENON_L / 2, 0, 0), axis="X")
+        ten = cyl("CUT", name + "_tenon", TENON_D / 2, TENON_L, (0, 0, 0), axis="X")
         bool_op(o, [ten], op="UNION")
     return o
 
@@ -564,19 +575,17 @@ def stage_render():
     cam = setup_camera_light(loc=(2.9, -2.4, 1.35), target=(0.35, 0.15, 0.55))
     setup_render(cam, res=(1600, 1000))
     render_to(RENDERS / "scale_with_tent.png")
-    # 接头剖视图
+    # 接头剖视图：切掉节点上半，露出立柱孔与梁插座；梁圆榫半插展示插接
     reset_scene()
     j = finish(make_beam_joint("SEC_joint"), coll="A")
     b = finish(make_beam("SEC_beam", 120, coll="A"), coll="A")
+    b.location = (4 * MM, 0, 2 * MM)     # 圆榫半插（拔出 4mm 展示插接口）
     c = finish(make_col_segment("SEC_col", 200), coll="A")
     place(c, (0, 0, -100))
-    cut = box("CUT", "SEC_cutaway", 60, 60, 200)
-    place(cut, (30, 0, 0))
-    bool_op(j, [cut], op="INTERSECT")
-    bcut = box("CUT", "SEC_bcut", 60, 60, 200)
-    place(bcut, (60, 0, 0))
-    bool_op(b, [bcut], op="INTERSECT")
-    cam = setup_camera_light(loc=(0.4, -0.32, 0.15), target=(0.015, 0, 0), name="CAM_SEC")
+    cut = box("CUT", "SEC_cutaway", 90, 90, 22)
+    place(cut, (15, 0, 47))
+    bool_op(j, [cut], op="DIFFERENCE")   # 切掉上半，露出孔与插座
+    cam = setup_camera_light(loc=(0.32, -0.26, 0.17), target=(0.015, 0, 0), name="CAM_SEC")
     setup_render(cam, res=(1100, 900))
     render_to(RENDERS / "joint_section.png")
     # 爆炸图（完整入镜）
