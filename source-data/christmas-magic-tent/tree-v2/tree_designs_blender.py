@@ -504,16 +504,17 @@ def stage_geometry():
     for d in ("A", "B", "first_plate"):
         (stl_dir / d).mkdir(parents=True, exist_ok=True)
     count = 0
-    for obj in list(bpy.data.objects):
-        if obj.type != "MESH" or not obj.name.startswith(("A_", "B_")):
-            continue
-        target = "first_plate" if obj.name.startswith("TP") else obj.name[:1]
-        bpy.ops.object.select_all(action="DESELECT")
-        obj.select_set(True)
-        bpy.context.view_layer.objects.active = obj
-        bpy.ops.wm.stl_export(filepath=str(stl_dir / target / f"{obj.name}.stl"),
-                              export_selected_objects=True, ascii_format=False)
-        count += 1
+    for coll_name in ("A", "B", "first_plate"):
+        for obj in list(bpy.data.collections[coll_name].objects):
+            if obj.type != "MESH":
+                continue
+            target = coll_name
+            bpy.ops.object.select_all(action="DESELECT")
+            obj.select_set(True)
+            bpy.context.view_layer.objects.active = obj
+            bpy.ops.wm.stl_export(filepath=str(stl_dir / target / f"{obj.name}.stl"),
+                                  export_selected_objects=True, ascii_format=False)
+            count += 1
     # 整树装配检查（两方案；必须在首盘 reset 之前）
     check_a = tree_check("A", "方案A")
     check_b = tree_check("B", "方案B")
