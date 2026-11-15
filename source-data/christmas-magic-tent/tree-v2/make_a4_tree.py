@@ -133,27 +133,42 @@ def emit_preview(path: Path):
     Path(path).write_text("\n".join(svg), encoding="utf-8")
 
 
-def emit_pdf(pages, path: Path):
-    """用 PIL 把每页原语画成位图并合成 A4 PDF（150dpi）。"""
+def emit_pdf(tree_prims, tiles, page_size, path: Path):
+    """渲染整幅图案层位图，按页裁剪贴入 A4 页面并叠加标尺/十字标（150dpi 多页 PDF）。"""
     from PIL import Image, ImageDraw
     dpi = 150
+    pat_w = int((CFG["TREE_W"] + 2) / 25.4 * dpi)
+    pat_h = int((CFG["TREE_H"] + CFG["SNOW_H"] + 2) / 25.4 * dpi)
+    layer = Image.new("RGB", (pat_w, pat_h), "white")
+    ldr = ImageDraw.Draw(layer)
+    s = dpi / 25.4
+    ox, oy = 1 * s, 1 * s   # 图案层内 1mm 边距防裁切丢失
+    for p in tree_prims:
+        if p[0] == "poly":
+            _, pts, fill = p
+            ldr.polygon([((x + 1) * s + ox, (y + 1) * s + oy) for x, y in pts], fill=fill)
+        elif p[0] == "rect":
+            _, x, y, w_, h_, fill, stroke, wd, dashed = p
+            ldr.rectangle(((x + 1) * s + ox, (y + 1) * s + oy, (x + w_ + 1) * s + ox, (y + h_ + 1) * s + oy),
+                         fill=fill if fill != "none" else None,
+                         outline=stroke, width=max(1, int(wd * s)))
     w_px = int(CFG["A4_W"] / 25.4 * dpi)
     h_px = int(CFG["A4_H"] / 25.4 * dpi)
     imgs = []
-    for prims in pages:
+    m = CFG["MARGIN"]
+    pw, ph = CFG["A4_W"] - 2 * m, CFG["A4_H"] - 2 * m
+    h_mm = CFG["A4_H"]
+    for i, (tx, ty) in enumerate(tiles):
         im = Image.new("RGB", (w_px, h_px), "white")
         dr = ImageDraw.Draw(im)
-        s = dpi / 25.4
-        for p in prims:
-            if p[0] == "line":
-                _, x1, y1, x2, y2, color, wd, _ = p
-                dr.line((x1 * s, y1 * s, x2 * s, y2 * s), fill=color, width=max(1, int(wd * s)))
-            elif p[0] == "rect":
-                _, x, y, w_, h_, fill, stroke, wd, dashed = p
-                dr.rectangle((x * s, y * s, (x + w_) * s, (y + h_) * s), outline=stroke, width=max(1, int(wd * s)))
-            elif p[0] == "text":
-                _, x, y, s_, color, size = p
-                dr.text((x * s, y * s), s_, fill=color)
+        crop = layer.crop((int(tx * s), int(ty * s), int((tx + pw) * s), int((ty + ph) * s)))
+        im.paste(crop, (int(m * s), int(m * s)))
+        for x, y in ((m, m), (m + pw, m), (m, m + ph), (m + pw, m + ph)):
+            dr.line((x * s - 5, y * s, x * s + 5, y * s), fill=INK, width=2)
+            dr.line((x * s, y * s - 5, x * s, y * s + 5), fill=INK, width=2)
+        foot = (f"PAGE {i+1}/{len(tiles)} · 打印 100%（禁用适应页面）· 搭接 {CFG['OVERLAP']:.0f}mm · "
+                f"树冠 {CFG['TREE_W']:.0f}×{CFG['TREE_H']:.0f}mm")
+        dr.text((m * s, (h_mm - m + 4) * s), foot, fill=INK)
         imgs.append(im)
     imgs[0].save(path, save_all=True, append_images=imgs[1:], resolution=dpi)
 
@@ -176,7 +191,7 @@ def main():
         pages.append(page_spec(i, total, pw, ph))
         svg_page(tree_prims(), (tx, ty, pw, ph), (CFG["A4_W"], CFG["A4_H"]),
                  out / f"a4_tree_p{i+1}.svg", footer)
-    emit_pdf(pages, out / "a4_tree.pdf")
+    emit_pdf(tree_prims(), tiles, (CFG["A4_W"], CFG["A4_H"]), out / "a4_tree.pdf")
     emit_preview(out / "assembly_preview.svg")
     meta = {"config": CFG, "pages": total, "tile_mm": [pw, ph], "overlap_mm": CFG["OVERLAP"],
             "coverage_check": (f"{cols}×{rows} 页覆盖 "

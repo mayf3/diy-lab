@@ -1,434 +1,87 @@
 {
-  "screw_seats": [
+  "A_parts": 32,
+  "B_parts": 26,
+  "A_issues": [
+    "A_base: 4 条开放边（非水密）",
+    "A_joint_210: 8 条开放边（非水密）",
+    "A_joint_390: 8 条开放边（非水密）",
+    "A_joint_570: 8 条开放边（非水密）",
+    "A_joint_149: 28 条开放边（非水密）",
+    "A_joint_149: 70 条三面共边（非流形）",
+    "A_joint_709: 28 条开放边（非水密）",
+    "A_joint_709: 70 条三面共边（非流形）",
+    "A_leg_hub: 8 条开放边（非水密）",
+    "A_leg_splice_L: 24 条开放边（非水密）",
+    "A_leg_splice_R: 24 条开放边（非水密）",
+    "A_cap: 4 条开放边（非水密）"
+  ],
+  "B_issues": [
+    "B_base: 4 条开放边（非水密）",
+    "B_hub_t1: 8 条开放边（非水密）",
+    "B_hub_t2: 8 条开放边（非水密）",
+    "B_hub_t3: 8 条开放边（非水密）",
+    "B_collar: 4 条开放边（非水密）",
+    "B_cap: 4 条开放边（非水密）"
+  ],
+  "A_layers": [
     {
-      "part": "A_col_sleeve1",
-      "name": "A_col_sleeve1_boltY1",
-      "mm": [
-        0,
-        14,
-        0
-      ],
-      "axis": "X",
-      "type": "through-nut"
+      "z_mm": 149.0,
+      "joint": "plain",
+      "crown_w_mm": 520.0
     },
     {
-      "part": "A_col_sleeve1",
-      "name": "A_col_sleeve1_boltY2",
-      "mm": [
-        0,
-        -14,
-        0
-      ],
-      "axis": "X",
-      "type": "through-nut"
+      "z_mm": 210.0,
+      "joint": "combined",
+      "crown_w_mm": 477.5
     },
     {
-      "part": "A_col_sleeve2",
-      "name": "A_col_sleeve2_boltY1",
-      "mm": [
-        0,
-        14,
-        0
-      ],
-      "axis": "X",
-      "type": "through-nut"
+      "z_mm": 390.0,
+      "joint": "combined",
+      "crown_w_mm": 352.2
     },
     {
-      "part": "A_col_sleeve2",
-      "name": "A_col_sleeve2_boltY2",
-      "mm": [
-        0,
-        -14,
-        0
-      ],
-      "axis": "X",
-      "type": "through-nut"
+      "z_mm": 570.0,
+      "joint": "combined",
+      "crown_w_mm": 226.8
     },
     {
-      "part": "A_base_joint",
-      "name": "A_base_joint_sCol",
-      "mm": [
-        0,
-        0,
-        28.8
-      ],
-      "axis": "Z",
-      "type": "tap"
-    },
-    {
-      "part": "A_base_joint",
-      "name": "A_base_joint_sFootX",
-      "mm": [
-        11.8,
-        0,
-        -8
-      ],
-      "axis": "Z",
-      "type": "tap"
-    },
-    {
-      "part": "A_base_joint",
-      "name": "A_base_joint_sFootX2",
-      "mm": [
-        -11.8,
-        0,
-        -8
-      ],
-      "axis": "Z",
-      "type": "tap"
-    },
-    {
-      "part": "A_base_joint",
-      "name": "A_base_joint_sColSet",
-      "mm": [
-        0,
-        18.8,
-        0
-      ],
-      "axis": "Y",
-      "type": "tap"
-    },
-    {
-      "part": "A_foot_spliceL",
-      "name": "A_foot_spliceL_s1",
-      "mm": [
-        -13.5,
-        0,
-        -12
-      ],
-      "axis": "X",
-      "type": "tap"
-    },
-    {
-      "part": "A_foot_spliceL",
-      "name": "A_foot_spliceL_s2",
-      "mm": [
-        13.5,
-        0,
-        12
-      ],
-      "axis": "X",
-      "type": "tap"
-    },
-    {
-      "part": "A_foot_spliceR",
-      "name": "A_foot_spliceR_s1",
-      "mm": [
-        -13.5,
-        0,
-        -12
-      ],
-      "axis": "X",
-      "type": "tap"
-    },
-    {
-      "part": "A_foot_spliceR",
-      "name": "A_foot_spliceR_s2",
-      "mm": [
-        13.5,
-        0,
-        12
-      ],
-      "axis": "X",
-      "type": "tap"
-    },
-    {
-      "part": "A_spreader_splice",
-      "name": "A_spreader_splice_s1",
-      "mm": [
-        -13.5,
-        0,
-        0
-      ],
-      "axis": "X",
-      "type": "tap"
-    },
-    {
-      "part": "A_beam_joint_L1",
-      "name": "A_beam_joint_L1_sTop",
-      "mm": [
-        0,
-        0,
-        16.6
-      ],
-      "axis": "Z",
-      "type": "tap"
-    },
-    {
-      "part": "A_beam_joint_L1",
-      "name": "A_beam_joint_L1_sBot",
-      "mm": [
-        0,
-        0,
-        -16.6
-      ],
-      "axis": "Z",
-      "type": "tap"
-    },
-    {
-      "part": "A_beam_joint_L2",
-      "name": "A_beam_joint_L2_sTop",
-      "mm": [
-        0,
-        0,
-        16.6
-      ],
-      "axis": "Z",
-      "type": "tap"
-    },
-    {
-      "part": "A_beam_joint_L2",
-      "name": "A_beam_joint_L2_sBot",
-      "mm": [
-        0,
-        0,
-        -16.6
-      ],
-      "axis": "Z",
-      "type": "tap"
-    },
-    {
-      "part": "A_beam_joint_L3",
-      "name": "A_beam_joint_L3_sTop",
-      "mm": [
-        0,
-        0,
-        16.6
-      ],
-      "axis": "Z",
-      "type": "tap"
-    },
-    {
-      "part": "A_beam_joint_L3",
-      "name": "A_beam_joint_L3_sBot",
-      "mm": [
-        0,
-        0,
-        -16.6
-      ],
-      "axis": "Z",
-      "type": "tap"
-    },
-    {
-      "part": "A_beam_joint_L4",
-      "name": "A_beam_joint_L4_sTop",
-      "mm": [
-        0,
-        0,
-        16.6
-      ],
-      "axis": "Z",
-      "type": "tap"
-    },
-    {
-      "part": "A_beam_joint_L4",
-      "name": "A_beam_joint_L4_sBot",
-      "mm": [
-        0,
-        0,
-        -16.6
-      ],
-      "axis": "Z",
-      "type": "tap"
-    },
-    {
-      "part": "A_beam_joint_L5",
-      "name": "A_beam_joint_L5_sTop",
-      "mm": [
-        0,
-        0,
-        16.6
-      ],
-      "axis": "Z",
-      "type": "tap"
-    },
-    {
-      "part": "A_beam_joint_L5",
-      "name": "A_beam_joint_L5_sBot",
-      "mm": [
-        0,
-        0,
-        -16.6
-      ],
-      "axis": "Z",
-      "type": "tap"
-    },
-    {
-      "part": "A_star_cap",
-      "name": "A_star_cap_sX",
-      "mm": [
-        -18.2,
-        0,
-        8
-      ],
-      "axis": "X",
-      "type": "tap"
-    },
-    {
-      "part": "A_star_cap",
-      "name": "A_star_cap_sX2",
-      "mm": [
-        18.2,
-        0,
-        -8
-      ],
-      "axis": "X",
-      "type": "tap"
-    },
-    {
-      "part": "B_trunk_sleeve1",
-      "name": "B_trunk_sleeve1_boltY1",
-      "mm": [
-        0,
-        14,
-        0
-      ],
-      "axis": "X",
-      "type": "through-nut"
-    },
-    {
-      "part": "B_trunk_sleeve1",
-      "name": "B_trunk_sleeve1_boltY2",
-      "mm": [
-        0,
-        -14,
-        0
-      ],
-      "axis": "X",
-      "type": "through-nut"
-    },
-    {
-      "part": "B_trunk_sleeve2",
-      "name": "B_trunk_sleeve2_boltY1",
-      "mm": [
-        0,
-        14,
-        0
-      ],
-      "axis": "X",
-      "type": "through-nut"
-    },
-    {
-      "part": "B_trunk_sleeve2",
-      "name": "B_trunk_sleeve2_boltY2",
-      "mm": [
-        0,
-        -14,
-        0
-      ],
-      "axis": "X",
-      "type": "through-nut"
-    },
-    {
-      "part": "B_trunk_sleeve3",
-      "name": "B_trunk_sleeve3_boltY1",
-      "mm": [
-        0,
-        14,
-        0
-      ],
-      "axis": "X",
-      "type": "through-nut"
-    },
-    {
-      "part": "B_trunk_sleeve3",
-      "name": "B_trunk_sleeve3_boltY2",
-      "mm": [
-        0,
-        -14,
-        0
-      ],
-      "axis": "X",
-      "type": "through-nut"
-    },
-    {
-      "part": "B_trunk_sleeve4",
-      "name": "B_trunk_sleeve4_boltY1",
-      "mm": [
-        0,
-        14,
-        0
-      ],
-      "axis": "X",
-      "type": "through-nut"
-    },
-    {
-      "part": "B_trunk_sleeve4",
-      "name": "B_trunk_sleeve4_boltY2",
-      "mm": [
-        0,
-        -14,
-        0
-      ],
-      "axis": "X",
-      "type": "through-nut"
-    },
-    {
-      "part": "B_tier_hub_t1",
-      "name": "B_tier_hub_t1_sTop",
-      "mm": [
-        0,
-        0,
-        16.6
-      ],
-      "axis": "Z",
-      "type": "tap"
-    },
-    {
-      "part": "B_tier_hub_t1",
-      "name": "B_tier_hub_t1_sBot",
-      "mm": [
-        0,
-        0,
-        -16.6
-      ],
-      "axis": "Z",
-      "type": "tap"
-    },
-    {
-      "part": "B_tier_hub_t2",
-      "name": "B_tier_hub_t2_sTop",
-      "mm": [
-        0,
-        0,
-        16.6
-      ],
-      "axis": "Z",
-      "type": "tap"
-    },
-    {
-      "part": "B_tier_hub_t2",
-      "name": "B_tier_hub_t2_sBot",
-      "mm": [
-        0,
-        0,
-        -16.6
-      ],
-      "axis": "Z",
-      "type": "tap"
-    },
-    {
-      "part": "B_tier_hub_t3",
-      "name": "B_tier_hub_t3_sTop",
-      "mm": [
-        0,
-        0,
-        16.6
-      ],
-      "axis": "Z",
-      "type": "tap"
-    },
-    {
-      "part": "B_tier_hub_t3",
-      "name": "B_tier_hub_t3_sBot",
-      "mm": [
-        0,
-        0,
-        -16.6
-      ],
-      "axis": "Z",
-      "type": "tap"
+      "z_mm": 709.0,
+      "joint": "plain",
+      "crown_w_mm": 130.0
     }
   ],
-  "screw_total": 39
+  "legs": {
+    "pivot_z": 334.0,
+    "tip_x": 260.0,
+    "angle_deg": 36.15,
+    "len_mm": 413.6
+  },
+  "fasteners": [
+    {
+      "bolt": "M4x16",
+      "nut": true,
+      "count": 10
+    },
+    {
+      "bolt": "M4x8",
+      "nut": true,
+      "count": 32
+    }
+  ],
+  "first_plate": [
+    "TP1_combined_joint",
+    "TP2_plain_joint",
+    "TP3_beam_stub",
+    "TP4a_col_stub_ridge",
+    "TP4b_col_stub"
+  ],
+  "tolerances": {
+    "square_total": 0.8,
+    "round_total": 0.4
+  },
+  "notes": [
+    "螺纹未建模：以 Ø3.9 栓杆/Ø4.5 孔/AF7.0 螺母间隙验证；实物试拧为准",
+    "立柱各段不锁紧：肩位/凸环+重力承载，抗倾覆由画架脚承担",
+    "星形件移装饰盘（v2 非流形问题待装饰盘轮次处理）"
+  ]
 }
