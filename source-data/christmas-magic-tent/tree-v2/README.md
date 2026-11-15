@@ -41,7 +41,7 @@
 | --- | --- | --- |
 | 已建模 | ✅ | stats.json + assembly_check.json + .blend |
 | 已渲染 | ✅ | renders_local/*.png（裸/装饰/比例/爆炸/对比） |
-| 已切片 | ❌ | 待 Bambu Studio 导入 STL/3MF 后切片 |
+| 已切片 | ❌ | 待 Bambu Studio 导入 STL/3MF 后切片（CLI 尝试挂起未产出） |
 | 已打印 | ❌ | 未执行 |
 | 已试装 | ❌ | 未执行 |
-| 帐篷侧墙实测 | ❌ | 帐篷未下单；TENT_SIDE_W/H 为占位参数 |
+| 帐篷侧墙实测 | ❌ | **帐篷已购买（2026-11-13）**；TENT_SIDE_W/H 仍为占位参数，到货后回填 |
