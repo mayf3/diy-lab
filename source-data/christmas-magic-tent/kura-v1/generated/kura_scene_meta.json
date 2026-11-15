@@ -1,0 +1,12 @@
+{
+  "baseline": "IKEA KURA 502.665.06（用户确认 209×99×116，床垫 90×200）",
+  "official_hk": "199×100×116，床底高 83，承重 100kg，床垫最大 189×92×12（TM-01 长度口径待实测）",
+  "roof_suspect": "斜屋顶非 KURA 标准结构；脊高/斜梁/连接位置待实测（TM-03/04/05）",
+  "deco_rules": "不动承重/无挂钩/睡眠区无绳环垂布悬挂件；PETG 板缘夹 + 魔术贴 + 配重，≤50g/件",
+  "outputs": [
+    "kura_cottage.blend",
+    "kura_structure_labeled.png",
+    "kura_deco_minimal.png",
+    "kura_deco_fabric.png"
+  ]
+}
