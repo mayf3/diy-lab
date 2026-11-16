@@ -225,6 +225,29 @@
 - **R 遇阻条件**：K1–K5 待实测（kura-blockers.csv）：长度口径 209/199、斜屋顶脊高、斜梁长度与根数、连接位置、下铺板材厚度；实测前斜屋顶组件保持参数化占位、不采购不打印
 - **深入说明**：[详细教程](/projects/christmas-magic-tent/kura-cottage/)
 
+### A11 · A11｜森林童话第一轮：布局/日夜间渲染 + 毛毡裁剪 PDF + PETG 三件
+
+- **执行者**：shared；**依赖**：A10；**状态**：observed
+- **目的**：把森林童话效果图变成可完成 DIY：KURA 低床无屋顶基准；展示板 60×90 森林背景 + 毛毡树 450×650（3 层树冠+3 积雪带+红圆片）+ PETG 三件（圆角星/圣诞小屋/森林小屋）；装饰全部位于床旁墙/展示板/床外家具，睡眠区零添加
+- **Agent 必做**：
+
+- 渲染布局图/白天/夜间三图并标注可制作 vs 概念
+- 生成真实比例毛毡裁剪 PDF/SVG/排料图
+- 可复用模型许可审核（NC-ND 不可用→自建）
+- PETG 三件建模、导出与切片（P1S 0.20mm PETG HF 真实切片）
+
+- **必须由人完成/提供**：
+
+- 提供森林童话参考图与房间/家具实拍
+- 按制作顺序打印毛毡页并裁剪
+- 操作 P1S 打印 PETG（本轮 Agent 不启动打印）
+- 付款前核对已加购布料
+
+- **应交付**：forest-v1/felt_templates.py 与 generated/felt_templates.pdf（25 页真实比例+校准尺）；felt_*.svg ×22、排料图、拼接预览；petg_decorations.py 与 STL/3MF/blend×3；petg_preprint_report.json（水密/尺寸/体积/真实切片数据）；布局/白天/夜间渲染 ×3
+- **V 证据**：simulation，三图渲染完成、PDF/SVG 真实比例、PETG 文件入仓、切片数据真实（非几何估算），当前 observed
+- **R 遇阻条件**：cottage_xmas_110 CLI 导入拒绝（原因未明）→ GUI 手动切片或换方案；森林童话参考图未到达 → 按文字要点执行待迭代；展示板基材泡沫板建议补购 ≈¥15–25
+- **深入说明**：[详细教程](/projects/christmas-magic-tent/kura-cottage/)
+
 ## 完工报告格式
 
 ```text
