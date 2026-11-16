@@ -1,0 +1,154 @@
+{
+  "fabric_assumption": "深绿 2000×850 / 白 2000×850 / 浅绿+红 500×420（已加购未付款，付款前先核对）",
+  "tree": {
+    "size_mm": [
+      450,
+      650
+    ],
+    "layers": "3 层树冠（深/中/浅绿）+3 条积雪带（白）+树干（深绿加固）",
+    "note": "各层单独裁剪后上下叠放：可用缝线或魔术贴定位，顶端留 60×60mm 星星位（PETG 件）"
+  },
+  "red_decor": "圆片 Ø40×3 + Ø25×5（缝/魔术贴）",
+  "board_kit": "远景松 A×4 + B×4、雪坡×2、窗棂条×4（60×900 展示板用，板体建议 5mm 泡沫板补购）",
+  "svg_files": [
+    {
+      "name": "crown_top",
+      "file": "felt_crown_top.svg",
+      "w_mm": 200,
+      "h_mm": 190
+    },
+    {
+      "name": "crown_mid",
+      "file": "felt_crown_mid.svg",
+      "w_mm": 300,
+      "h_mm": 210
+    },
+    {
+      "name": "crown_bottom",
+      "file": "felt_crown_bottom.svg",
+      "w_mm": 450,
+      "h_mm": 220
+    },
+    {
+      "name": "snow_top",
+      "file": "felt_snow_top.svg",
+      "w_mm": 156,
+      "h_mm": 22
+    },
+    {
+      "name": "snow_mid",
+      "file": "felt_snow_mid.svg",
+      "w_mm": 236,
+      "h_mm": 22
+    },
+    {
+      "name": "snow_bottom",
+      "file": "felt_snow_bottom.svg",
+      "w_mm": 356,
+      "h_mm": 22
+    },
+    {
+      "name": "trunk",
+      "file": "felt_trunk.svg",
+      "w_mm": 56,
+      "h_mm": 100
+    },
+    {
+      "name": "red_dot_40",
+      "file": "felt_red_dot_40.svg",
+      "w_mm": 40,
+      "h_mm": 40
+    },
+    {
+      "name": "red_dot_40b",
+      "file": "felt_red_dot_40b.svg",
+      "w_mm": 40,
+      "h_mm": 40
+    },
+    {
+      "name": "red_dot_40c",
+      "file": "felt_red_dot_40c.svg",
+      "w_mm": 40,
+      "h_mm": 40
+    },
+    {
+      "name": "red_dot_25_0",
+      "file": "felt_red_dot_25_0.svg",
+      "w_mm": 25,
+      "h_mm": 25
+    },
+    {
+      "name": "red_dot_25_1",
+      "file": "felt_red_dot_25_1.svg",
+      "w_mm": 25,
+      "h_mm": 25
+    },
+    {
+      "name": "red_dot_25_2",
+      "file": "felt_red_dot_25_2.svg",
+      "w_mm": 25,
+      "h_mm": 25
+    },
+    {
+      "name": "red_dot_25_3",
+      "file": "felt_red_dot_25_3.svg",
+      "w_mm": 25,
+      "h_mm": 25
+    },
+    {
+      "name": "red_dot_25_4",
+      "file": "felt_red_dot_25_4.svg",
+      "w_mm": 25,
+      "h_mm": 25
+    },
+    {
+      "name": "bg",
+      "file": "felt_bg.svg",
+      "w_mm": 150,
+      "h_mm": 330
+    },
+    {
+      "name": "bg_snow_0",
+      "file": "felt_bg_snow_0.svg",
+      "w_mm": 600,
+      "h_mm": 76
+    },
+    {
+      "name": "bg_snow_1",
+      "file": "felt_bg_snow_1.svg",
+      "w_mm": 600,
+      "h_mm": 90
+    },
+    {
+      "name": "window_bar_v1",
+      "file": "felt_window_bar_v1.svg",
+      "w_mm": 20,
+      "h_mm": 220
+    },
+    {
+      "name": "window_bar_v2",
+      "file": "felt_window_bar_v2.svg",
+      "w_mm": 20,
+      "h_mm": 220
+    },
+    {
+      "name": "window_bar_h1",
+      "file": "felt_window_bar_h1.svg",
+      "w_mm": 220,
+      "h_mm": 20
+    },
+    {
+      "name": "window_bar_h2",
+      "file": "felt_window_bar_h2.svg",
+      "w_mm": 160,
+      "h_mm": 20
+    }
+  ],
+  "pdf_pages": 25,
+  "ruler": "第 1 页含 100mm 校准尺；打印 100%（禁用适应页面），打印后实测校准尺",
+  "notes": [
+    "魔术贴为无背胶可缝款：裁 40mm 段缝在树背面与展示板/墙面",
+    "积雪带与树冠分层裁剪可产生立体层次；层间用双面缝线固定或魔术贴",
+    "红色圆片直径以毫米计，缝在树冠任意图层表面"
+  ]
+}

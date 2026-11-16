@@ -1,0 +1,50 @@
+{
+  "petg": "PETG 1.27g/cm³；几何估算克重（壁 2 面 + 20% 内填近似 ×0.32 实体系数）；真实克重/时间以 Bambu Studio 0.20mm PETG 切片为准（本轮未切片）",
+  "parts": [
+    {
+      "name": "rounded_star_90",
+      "stl": "generated/stl/rounded_star_90.stl",
+      "3mf": "generated/3mf/rounded_star_90.3mf",
+      "dims_mm": [
+        85.6,
+        81.4,
+        6.0
+      ],
+      "triangles": 41,
+      "volume_cm3": 15.1,
+      "grams_estimate_20pct": 6.1,
+      "grams_if_solid": 19.2,
+      "print": "平放 · PETG · 0.20mm · 2 壁 + 20% 内填（示意）；圆角星带 40×3.2 底槽可站立"
+    },
+    {
+      "name": "cottage_xmas_110",
+      "stl": "generated/stl/cottage_xmas_110.stl",
+      "3mf": "generated/3mf/cottage_xmas_110.3mf",
+      "dims_mm": [
+        75.0,
+        58.0,
+        103.0
+      ],
+      "triangles": 9,
+      "volume_cm3": 392.0,
+      "grams_estimate_20pct": 159.3,
+      "grams_if_solid": 497.9,
+      "print": "平放 · PETG · 0.20mm · 2 壁 + 20% 内填（示意）；圆角星带 40×3.2 底槽可站立"
+    },
+    {
+      "name": "cottage_forest_90",
+      "stl": "generated/stl/cottage_forest_90.stl",
+      "3mf": "generated/3mf/cottage_forest_90.3mf",
+      "dims_mm": [
+        60.0,
+        48.0,
+        80.0
+      ],
+      "triangles": 9,
+      "volume_cm3": 201.6,
+      "grams_estimate_20pct": 81.9,
+      "grams_if_solid": 256.0,
+      "print": "平放 · PETG · 0.20mm · 2 壁 + 20% 内填（示意）；圆角星带 40×3.2 底槽可站立"
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+    "error_string": "Success.",
+    "export_time": 0,
+    "layer_height": 0.20000000298023224,
+    "plate_index": 1,
+    "prepare_time": 5,
+    "return_code": 0,
+    "sliced_plates": [
+        {
+            "feature_type_times": {
+                "Bottom surface": 167.23056030273438,
+                "Custom": 1.1052381992340088,
+                "Inner wall": 545.2494506835938,
+                "Internal solid infill": 454.83721923828125,
+                "Outer wall": 668.6386108398438,
+                "Skirt": 6.047523021697998,
+                "Sparse infill": 4906.41162109375,
+                "Travel": 381.741455078125,
+                "Undefined": 381.4224853515625
+            },
+            "filament_change_times": 0,
+            "filaments": [
+                {
+                    "filament_id": "",
+                    "id": 1,
+                    "main_used_g": 0.0,
+                    "total_used_g": 0.0
+                }
+            ],
+            "generate_support_material_time": 7,
+            "id": 1,
+            "infill_time": 17,
+            "layer_filament_change": 0,
+            "main_predication": 7130.2861328125,
+            "make_perimeters_time": 18,
+            "obj_cached_cnt": 0,
+            "objects": [
+                {
+                    "bbox": {
+                        "depth": 60.0,
+                        "height": 100.0,
+                        "width": 75.0,
+                        "x": 62.4999885559082,
+                        "y": 70.0,
+                        "z": -10.0
+                    },
+                    "id": 5,
+                    "name": "cottage_forest_90.stl",
+                    "triangle_count": 16
+                }
+            ],
+            "sliced_time": 197,
+            "sliced_time_with_cache": 139,
+            "total_predication": 7131.072265625,
+            "triangle_count": 16,
+            "warning_message": ""
+        }
+    ],
+    "sparse_infill_density": 20.0,
+    "wall_loops": 2
+}

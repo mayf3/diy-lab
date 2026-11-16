@@ -1,0 +1,61 @@
+{
+    "error_string": "Success.",
+    "export_time": 0,
+    "layer_height": 0.20000000298023224,
+    "plate_index": 1,
+    "prepare_time": 4,
+    "return_code": 0,
+    "sliced_plates": [
+        {
+            "feature_type_times": {
+                "Bottom surface": 179.23178100585938,
+                "Custom": 1.1044514179229736,
+                "Inner wall": 578.2713012695313,
+                "Internal solid infill": 366.36651611328125,
+                "Outer wall": 708.4454345703125,
+                "Skirt": 6.263521671295166,
+                "Sparse infill": 5383.818359375,
+                "Travel": 400.4113464355469,
+                "Undefined": 400.08935546875
+            },
+            "filament_change_times": 0,
+            "filaments": [
+                {
+                    "filament_id": "",
+                    "id": 1,
+                    "main_used_g": 0.0,
+                    "total_used_g": 0.0
+                }
+            ],
+            "generate_support_material_time": 6,
+            "id": 1,
+            "infill_time": 17,
+            "layer_filament_change": 0,
+            "main_predication": 7622.76025390625,
+            "make_perimeters_time": 13,
+            "obj_cached_cnt": 0,
+            "objects": [
+                {
+                    "bbox": {
+                        "depth": 62.399993896484375,
+                        "height": 104.0,
+                        "width": 78.0,
+                        "x": 60.99999237060547,
+                        "y": 68.80000305175781,
+                        "z": -11.999998092651367
+                    },
+                    "id": 5,
+                    "name": "cottage_forest_90.stl",
+                    "triangle_count": 16
+                }
+            ],
+            "sliced_time": 179,
+            "sliced_time_with_cache": 134,
+            "total_predication": 7623.54296875,
+            "triangle_count": 16,
+            "warning_message": ""
+        }
+    ],
+    "sparse_infill_density": 20.0,
+    "wall_loops": 2
+}

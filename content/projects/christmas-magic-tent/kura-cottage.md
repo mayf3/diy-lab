@@ -85,3 +85,33 @@
 ## 出问题怎么办
 
 如果纸样放在床外侧显得拥挤，先缩小至 A4 纸范围、减少装饰，而不是再购买大型帐篷；如果找不到适合的无损固定位置，改为**床外独立立放**，不增加挂钩、绳圈和硬件；如果儿童能拉扯或扯下装饰，则撤除该装饰。后续灯光设计不得沿用旧帐篷的布线方案，需另行完成安全评估。
+
+---
+
+大型独立 3D 打印圣诞树（[tree-designs](/projects/christmas-magic-tent/tree-designs/)）**暂缓**，工程记录保留。
+
+
+## 森林童话｜第一轮布置与可制作件（2026-11-16）
+
+基准切换为 **KURA 低床、无屋顶、开放矩形木框**（不添加屋脊/顶棚/额外承重件）。
+以「森林童话」效果图为视觉目标（参考图未随任务到达，本轮按文字要点执行，图到位后迭代）。
+
+![森林童话总体布局（真实比例）：展示板 60×90 + 毛毡树 450×650 + PETG 件 + 台灯暖光](/media/christmas-magic-tent/kura-v1/forest_layout.png)
+
+![白天效果](/media/christmas-magic-tent/kura-v1/forest_day.png)
+
+![夜间效果：床外台灯暖光 + 概念窗口暖光（灯光模块另案）](/media/christmas-magic-tent/kura-v1/forest_night.png)
+
+**可制作（本轮交付）**：展示板森林背景、毛毡树、PETG 三件、台灯暖位。
+**概念（不安装）**：窗口自发光、护栏花环；灯光为床外已有台灯，独立低压灯光模块另案。
+
+第一批可制作件与制作顺序、物料核对、预算（≈¥20–35：泡沫板+针线；不买电子件/布篷/骨架/新帐篷）：
+见 [`source-data/christmas-magic-tent/forest-v1/README.md`](https://github.com/mayf3/diy-lab/blob/main/source-data/christmas-magic-tent/forest-v1/README.md)。
+
+PETG 三件（自建参数化，已审核可复用模型许可不满足后自建）：
+
+| 件 | 尺寸 mm | 真实切片（P1S · 0.20mm · Generic PETG HF） |
+| --- | --- | --- |
+| rounded_star_90 | 86×81×6 | Success：≈9.4 g / 14 min |
+| cottage_forest_90 | 60×48×80 | Success：≈67.7 g |
+| cottage_xmas_110 | 75×58×103 | CLI 导入拒绝（原因未明，0.5–2.0× 一致失败）；GUI 手动切片或换方案 |
