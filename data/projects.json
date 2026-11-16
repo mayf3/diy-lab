@@ -126,41 +126,20 @@
   },
   {
     "slug": "christmas-magic-tent",
-    "title": "Project Christmas Magic Tent",
-    "subtitle": "可发光、感应、发声的儿童节日小屋",
+    "title": "AI 圣诞魔法小屋｜KURA 低床无屋顶",
+    "subtitle": "宜家 KURA 开放木框节日装饰：保留原木，先纸样和不织布，再考虑互动",
     "status": "preparing",
     "category": "布艺 / 电子互动 / 3D 打印",
-    "description": "G0/G1a/G1b/G2 数字与电路模拟已通过；帐篷已购买（165cm 实木杆款，尺寸待实测）。造型阶段：平面/立体两骨架方案已建模渲染，推荐平面方案 A（首盘试件 3MF 已出）。PIR/DFPlayer 与声音层列 V2。",
-    "date": "2026-11-12",
-    "budget": "已确认支出：帐篷已购（实付待回填；购物车价 ¥218） ｜ 预计剩余：WLED 控制器+灯串 ¥69–132 + 背板/支架 ¥25–50 ｜ 上限 ¥500",
+    "description": "2026-11-16 已转向宜家 KURA 502.665.06 的低床无屋顶版。旧大型帐篷决定退货（退款未核实）；独立80–90cm打印树暂缓。已生成无屋顶 Blender 模型与两套外侧装饰概念图，尚未切片、打印或安装；灯光/PIR/GPT故事属于后续独立模块。下方G0/G2条目是历史研究，不是当前执行路线。",
+    "date": "2026-11-16",
+    "budget": "旧帐篷待退货；布艺购物车约¥27（未核实付款/到货）；KURA床已在家中，暂不新增电子采购",
     "steps": [
       {
-        "id": "g0",
-        "file": "g0-review.md",
-        "title": "G0 数字模拟评审：Blender 参数化 A/B 对比",
-        "minutes": "20 分钟",
-        "phase": "数字模拟"
-      },
-      {
-        "id": "g2-v1",
-        "file": "g2-v1.md",
-        "title": "G2-V1：Wokwi 数字模拟（UNO+按钮+4×WS2812）",
-        "minutes": "20 分钟",
-        "phase": "数字模拟"
-      },
-      {
-        "id": "g1a",
-        "file": "g1a-budget.md",
-        "title": "G1a：商品核实与完整预算收敛",
-        "minutes": "15 分钟",
-        "phase": "采购评审前"
-      },
-      {
-        "id": "g2-v2",
-        "file": "g2-v2.md",
-        "title": "G2-V2：PIR 迎宾与声音事件数字模拟",
-        "minutes": "15 分钟",
-        "phase": "数字模拟"
+        "id": "kura-v1",
+        "file": "kura-cottage.md",
+        "title": "当前方案｜KURA 低床无屋顶设计",
+        "minutes": "5分钟",
+        "phase": "当前设计"
       }
     ]
   },

@@ -205,6 +205,26 @@
 - **R 遇阻条件**：任何安全项不通过即禁止儿童进入，回退对应关卡
 - **深入说明**：[详细教程](/projects/christmas-magic-tent/)
 
+### A10 · A10｜设计基准 v2：宜家 KURA 床（502.665.06）场景与装饰方案
+
+- **执行者**：shared；**依赖**：无；**状态**：observed
+- **目的**：基准由帐篷迁移至 KURA 床（209×99×116 用户口径；199/100/116 宜家 HK 口径，TM-01 待实测）；区分标准床架/床垫睡眠区/疑似加装斜屋顶；产出可编辑 Blender 场景与两版装饰效果
+- **Agent 必做**：
+
+- 官方结构查证与实拍区分（斜屋顶≠KURA 标准结构）
+- 参数化场景与两版装饰渲染
+- 固定方式合规性论证（不动承重/无挂钩/睡眠区净空）
+
+- **必须由人完成/提供**：
+
+- 提供实拍照片
+- 实测 TM-01~TM-08（脊高/斜梁/连接位置/板材厚度等）
+
+- **应交付**：source-data/christmas-magic-tent/kura-v1/kura_cottage.py；generated/kura_cottage.blend；结构标注图 + 两版装饰渲染；kura-blockers.csv K1–K5
+- **V 证据**：simulation，场景可复跑、结构区分与装饰渲染完成、待实测清单入仓，当前 observed
+- **R 遇阻条件**：K1–K5 待实测（kura-blockers.csv）：长度口径 209/199、斜屋顶脊高、斜梁长度与根数、连接位置、下铺板材厚度；实测前斜屋顶组件保持参数化占位、不采购不打印
+- **深入说明**：[详细教程](/projects/christmas-magic-tent/kura-cottage/)
+
 ## 完工报告格式
 
 ```text
