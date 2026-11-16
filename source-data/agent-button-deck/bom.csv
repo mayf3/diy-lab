@@ -1,0 +1,10 @@
+id,类别,材料,型号或规格,数量,参考单价_元,参考小计_元,采购链接或来源,必须确认的事项,采购状态,备注
+B01,主控,ESP32-S3 开发板,ESP32-S3-DevKitC-1 v1.1 或核对原理图的等效板,1,60,60,https://docs.espressif.com/projects/esp-dev-kits/en/latest/esp32s3/esp32-s3-devkitc-1/user_guide_v1.1.html,确认板级版本和 USB-to-UART 实体接口及 GPIO4-7,HOLD,¥60 仅预算估算不是当前报价
+B02,输入,常开瞬时按钮,NO 常开轻触开关,4,3,12,待按具体 SKU 询价,确认触点脚位和上拉输入匹配,HOLD,¥3 每个为预算估算
+B03,接线,面包板与杜邦线,普通面包板与跳线,1,18,18,待按具体 SKU 询价,核对可靠连接与数量,HOLD,有则复用
+B04,接线,数据 USB 线,官方 DevKitC-1 v1.1 USB-to-UART 口为 Micro-USB,1,12,12,https://docs.espressif.com/projects/esp-dev-kits/en/latest/esp32s3/esp32-s3-devkitc-1/user_guide_v1.1.html,数据传输及 Mac 侧接头需匹配,HOLD,有则复用;克隆板可能不是 Micro-USB
+B05,外壳,可拆外壳/耗材,PLA/PETG 或暂用纸板,1,20,20,待尺寸实测后设计,按实物板卡与键帽小量规后定型,CHECK,G1 非必需
+B06,扩展,MCP23017 扩展模块,16-bit I2C GPIO 扩展板 3.3V 兼容版,1,,,https://www.microchip.com/en-us/product/mcp23017,确认模块电平 I2C 地址与上拉,HOLD,G3 可选且现有固件不支持
+B07,扩展,旋转编码器,EC11,1,,,待按具体 SKU 询价,确认脚位与去抖,HOLD,G3 可选
+B08,扩展,数字麦克风,I2S MEMS 或复用 Mac 麦克风,1,,,待按具体 SKU 询价,供电接口录音提示与隐私确认,HOLD,G3 可选;优先 Mac 麦克风
+B09,扩展,无线供电,认证 USB 电源或安全合规电池方案,1,,,待核实,首版不自制锂电充电电路,HOLD,G3 可选;不是首版采购

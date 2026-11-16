@@ -202,5 +202,45 @@
         "phase": "进阶"
       }
     ]
+  },
+  {
+    "slug": "agent-button-deck",
+    "title": "Agent Button Deck｜AI 实体快捷控制台",
+    "subtitle": "4 键开始：自定义 Mac 行为、快捷指令、授权 Agent 事件",
+    "status": "preparing",
+    "category": "电子制作 / AI Agent / 电脑自动化",
+    "description": "基于 DOAVR 原语的 4 键实体控制器；可先零硬件验证，之后 USB 串口接 Mac。BLE、16 键和语音是独立待验证扩展。",
+    "date": "2026-11-09",
+    "budget": "G0 ¥0；G1 估算 ¥90–200（非当前实价）",
+    "steps": [
+      {
+        "id": "01",
+        "file": "01-start.md",
+        "title": "G0：零硬件模拟与安全 dry-run",
+        "minutes": "20–30 分钟",
+        "phase": "离线验证"
+      },
+      {
+        "id": "02",
+        "file": "02-hardware.md",
+        "title": "G1：ESP32-S3 四键与串口",
+        "minutes": "时间待实测",
+        "phase": "制作"
+      },
+      {
+        "id": "03",
+        "file": "03-host-routing.md",
+        "title": "G2：Mac 与 Agent 路由",
+        "minutes": "时间待实测",
+        "phase": "联调"
+      },
+      {
+        "id": "04",
+        "file": "04-extensions.md",
+        "title": "G3–G4：扩展与实物验收",
+        "minutes": "依扩展模块",
+        "phase": "扩展"
+      }
+    ]
   }
 ]
