@@ -39,18 +39,32 @@
 - 顶端 PETG 星星（`rounded_star_90.stl`，另印）；
 - 树干深绿双层加固（可选）。
 
-文件：`generated/felt_templates.pdf`（**39 页真实比例**，每页含 100mm 校准尺）、
-`generated/felt_tiles/*.svg`（29 个可编辑轮廓）、`generated/felt_nesting.png`（排料图，
-全部材料呈现）、`generated/felt_assembly_preview.png`（拼接预览）、
-`generated/felt_cut_list.json`（含 **page_map**：每图案的页号映射）。
+文件：`generated/felt_templates.pdf`（彩色填充版，39 页真实比例，每页含 100mm 校准尺）、
+`generated/felt_templates_bw.pdf`（**黑白轮廓版**：家庭打印机友好，白底黑线沿轮廓裁剪，
+避免大面积打印绿色）、`generated/felt_tiles/*.svg`（29 个可编辑轮廓）、
+`generated/felt_nesting.png`（排料图，全部材料呈现）、
+`generated/felt_assembly_preview.png`（拼接预览）、
+`generated/felt_cut_list.json`（含 **page_map**：每图案的页号映射）、
+`generated/felt_verify.json`（回拼自检报告）。
 
-**分页与拼接**（v2 真二维分页，可打印区 190×263mm、重叠 15mm）：
-- 树冠顶层 200×190 → 2 页（页 1–2）；中层 300×210 → 2 页（页 3–4）；
-  底层 450×220 → 3 页（页 5–7）；积雪带/树干页 8–12；红圆片合箱页 38；
-- 雪坡 600 宽 → 每坡 4 页（页 29–36）；远景松 A/B 各 2 页（页 13–28）；窗棂小件合箱页 37；
-- 每个拼图页印配对页号（如 `tile row 1/2 col 1/3`）+ 四角对位十字 + 重叠带提示；
+**分页与拼接**（v3 真二维分页，可打印区 190×263mm、重叠 15mm；
+页号按 `felt_cut_list.json` 的 **page_map** 对账，以下为自动派生的权威映射）：
+
+| 图案 | 页号 | 平铺 |
+| --- | --- | --- |
+| 底层树冠 450×220 | **1–3** | 1 行 × 3 列 |
+| 中层树冠 300×210 | **4–5** | 1 行 × 2 列 |
+| 顶层树冠 200×190 | **6–7** | 1 行 × 2 列 |
+| 积雪带 ×3 | 8–12 | 各 2 页（顶带 1 页） |
+| 远景松 A×4 / B×4 | 13–24 | 各 2 页 |
+| 雪坡 ×2（600 宽） | 25–32 | 各 4 页 |
+| 窗棂条 ×4 | 33–37 | 单页 |
+| 树干 + 红圆片（小件合箱） | 38–39 | — |
+
+- 每个拼图页印配对页号 + 四角对位十字 + 重叠带提示 + **100mm 校准尺（每页）**；
 - **回拼自检**：所有页片段按窗口偏移拼回完整轮廓，与原图逐像素比对
-  （缺失 ≤0.5% / 小件 ≤3% 抗锯齿容差），29 个形状全部 PASS（felt_verify.json）。
+  （缺失 ≤0.5% / 小件 ≤3% 抗锯齿容差），29 个形状全部 PASS
+  ——报告内嵌于 `felt_cut_list.json` 的 `reassembly_check`，并落盘 `felt_verify.json`。
 
 ### 2. 森林背景 60×90 展示板套件
 

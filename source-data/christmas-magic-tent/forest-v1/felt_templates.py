@@ -23,7 +23,7 @@ import json
 import math
 from pathlib import Path
 
-from PIL import Image, ImageDraw
+# PIL 延迟导入：形状/分页逻辑可在无 PIL 环境（如 Blender Python）中复用
 
 A4_W, A4_H = 210.0, 297.0
 MARGIN = 10.0
@@ -36,6 +36,21 @@ COLORS = {
     "dark_green": (26, 77, 58), "mid_green": (46, 110, 74), "light_green": (96, 158, 106),
     "white": (245, 247, 244), "red": (178, 44, 38),
 }
+
+
+def _cjk_font(px):
+    """CJK 字体（macOS Songti/PingFang 兜底链）；失败返回 None（PIL 默认字体）。"""
+    from PIL import ImageFont
+    for p in ("/System/Library/Fonts/Supplemental/Songti.ttc",
+              "/System/Library/Fonts/PingFang.ttc",
+              "/System/Library/Fonts/Supplemental/Arial Unicode.ttf"):
+        try:
+            return ImageFont.truetype(p, max(8, int(px)))
+        except OSError:
+            continue
+    return None
+
+
 ROOT = Path(__file__).resolve().parent
 
 
@@ -157,7 +172,7 @@ def group_into_pages(tiles):
 
 
 # ---------- 页面绘制（自检与打印同管线） ----------
-def draw_tiles(dr, page, scale=1.0):
+def draw_tiles(dr, page, scale=1.0, bw=False):
     s = scale
     for m_i, t in enumerate(page["tiles"]):
         wx, wy = t["win"]
@@ -167,20 +182,22 @@ def draw_tiles(dr, page, scale=1.0):
         else:
             slot_x, slot_y = MARGIN, MARGIN
         poly = [((x - wx + slot_x) * s, (y - wy + slot_y) * s) for x, y in t["poly"]]
-        dr.polygon(poly, fill=COLORS[t["color"]], outline=(40, 40, 40))
+        fill = "white" if bw else COLORS[t["color"]]
+        dr.polygon(poly, fill=fill, outline=(30, 30, 30) if bw else (40, 40, 40),
+                   width=2 if bw else 1)
 
 
 def draw_chrome(dr, page, pi, n_pages, scale=1.0):
     s = scale
-    dr.text((10 * s, 8 * s), f"PAGE {pi+1}/{n_pages} · print at 100% (no fit-to-page) · true scale",
-            fill=(0, 0, 0))
+    dr.text((10 * s, 8 * s), f"第 {pi+1}/{n_pages} 页 · 打印 100%（禁用适应页面）· 真实比例",
+            fill=(0, 0, 0), font=_cjk_font(int(4.2 * s)))
     x0, y0, L = 15 * s, 272 * s, 100 * s
     dr.line((x0, y0, x0 + L, y0), fill=(0, 0, 0), width=3)
     for k in range(0, 101, 10):
         x = x0 + k * s
         dr.line((x, y0, x, y0 - (12 if k % 50 == 0 else 6)), fill=(0, 0, 0), width=2)
         dr.text((x - 5, y0 + 3), str(k), fill=(0, 0, 0))
-    dr.text((x0 + L + 6, y0 - 3), "100mm calibration (verify after print)", fill=(0, 0, 0))
+    dr.text((x0 + L + 6, y0 - 3), "100mm 校准尺（打印后实测）", fill=(0, 0, 0), font=_cjk_font(int(3.2 * s)))
     for cxp, cyp in ((MARGIN, MARGIN), (MARGIN + PRINT_W, MARGIN),
                      (MARGIN, MARGIN + PRINT_H), (MARGIN + PRINT_W, MARGIN + PRINT_H)):
         X, Y = cxp * s, cyp * s
@@ -191,18 +208,19 @@ def draw_chrome(dr, page, pi, n_pages, scale=1.0):
         t = multi[0]
         dr.text((10 * s, 20 * s),
                 f"{t['group']} · 拼接页 行{t['r']}/{t['rows']} 列{t['c']}/{t['cols']} · "
-                f"重叠 {OVERLAP:.0f}mm 对齐十字", fill=(150, 40, 40))
+                f"重叠 {OVERLAP:.0f}mm 对齐十字", fill=(150, 40, 40), font=_cjk_font(int(3.6 * s)))
         pairs = " · ".join(f"r{rr+1}c{cc+1}" for rr in range(t["rows"]) for cc in range(t["cols"]))
-        dr.text((10 * s, (A4_H - MARGIN - 8) * s), f"tile group ({t['group']}): {pairs}",
-                fill=(0, 0, 0))
+        dr.text((10 * s, (A4_H - MARGIN - 8) * s), f"拼接页组（{t['group']}）: {pairs}",
+                fill=(0, 0, 0), font=_cjk_font(int(3.2 * s)))
 
 
-def render_page(page, pi, n_pages, with_chrome=True):
+def render_page(page, pi, n_pages, with_chrome=True, bw=False):
+    from PIL import Image
     s = DPI / 25.4
     W, H = int(A4_W * s), int(A4_H * s)
     im = Image.new("RGB", (W, H), "white")
     dr = ImageDraw.Draw(im)
-    draw_tiles(dr, page, s)
+    draw_tiles(dr, page, s, bw=bw)
     if with_chrome:
         draw_chrome(dr, page, pi, n_pages, s)
     return im
@@ -212,6 +230,7 @@ def render_page(page, pi, n_pages, with_chrome=True):
 def verify_reassembly(pages, groups, scale=DPI / 25.4):  # 与页渲染同 px/mm，回拼 1:1
     """回拼自检：每 tile 以「形状掩膜」贴入组画布（与打印页同一几何），掩膜并集
     与原始轮廓逐像素比对；缺失=0 且多余 <2% 才 PASS。"""
+    from PIL import Image, ImageDraw
     report = {"shapes": [], "total_missing_px": 0, "total_extra_px": 0, "verdict": "PASS"}
     orig = {name: (color, poly) for name, color, poly in groups}
     assembled = {name: None for name in orig}
@@ -272,6 +291,7 @@ def verify_reassembly(pages, groups, scale=DPI / 25.4):  # 与页渲染同 px/mm
 
 # ---------- 排料图与预览 ----------
 def render_nesting(groups, path):
+    from PIL import Image, ImageDraw
     rolls = {"dark_green": 850, "mid_green": 850, "light_green": 850, "white": 850, "red": 420}
     col_w = {"dark_green": 330, "mid_green": 270, "light_green": 270, "white": 330, "red": 210}
     s = 0.2
@@ -310,6 +330,7 @@ def render_nesting(groups, path):
 
 
 def render_preview(groups, path):
+    from PIL import Image, ImageDraw
     s = 0.5
     im = Image.new("RGB", (int(950 * s), int(1000 * s)), (240, 244, 240))
     dr = ImageDraw.Draw(im)
@@ -340,11 +361,16 @@ def main():
     n_pages = len(pages)
 
     imgs = []
+    bw_imgs = []
     for pi, page in enumerate(pages):
         im = render_page(page, pi, n_pages, with_chrome=True)
         im.save(tiles_dir / f"page_{pi+1:02d}.png")
         imgs.append(im)
+        bw = render_page(page, pi, n_pages, with_chrome=True, bw=True)
+        bw.save(tiles_dir / f"bw_page_{pi+1:02d}.png")
+        bw_imgs.append(bw)
     imgs[0].save(out / "felt_templates.pdf", save_all=True, append_images=imgs[1:], resolution=DPI)
+    bw_imgs[0].save(out / "felt_templates_bw.pdf", save_all=True, append_images=bw_imgs[1:], resolution=DPI)
 
     svg_files = []
     for name, color, poly in groups:
@@ -385,11 +411,16 @@ def main():
         "fabric_area_available_mm2": {"dark_green": 850 * 2000, "mid_green": 850 * 2000,
                                       "light_green": 850 * 2000, "white": 850 * 2000,
                                       "red": 420 * 500},
+        "outputs_pdf": ["felt_templates.pdf（彩色填充版）", "felt_templates_bw.pdf（黑白轮廓版：家庭打印机友好，填充留白沿黑线裁剪）"],
         "notes": ["魔术贴无背胶可缝款：40mm 段 ×6 缝树背面",
                   "不批量打印：先印第 1 页（校准尺）+ 树冠组，确认后再印其余",
                   "所有页均为真实比例；大于可打印区的形状已按重叠平铺并附对位十字"],
     }
     (out / "felt_cut_list.json").write_text(json.dumps(cut_list, ensure_ascii=False, indent=2), encoding="utf-8")
+    (out / "felt_verify.json").write_text(json.dumps(
+        {"reassembly_check": vrep,
+         "note": "回拼自检：页片段按窗口偏移拼回，与原始轮廓逐像素比对（同一渲染管线）",
+         "threshold": "缺失 ≤0.5%（小件 <60000px ≤3%），额外同阈"}, ensure_ascii=False, indent=2), encoding="utf-8")
     print(json.dumps({"pdf_pages": n_pages, "svg": len(svg_files),
                       "verify": vrep["verdict"], "missing_px": vrep["total_missing_px"]},
                      ensure_ascii=False))
