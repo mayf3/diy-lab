@@ -3,23 +3,22 @@
     "export_time": 0,
     "layer_height": 0.20000000298023224,
     "plate_index": 1,
-    "prepare_time": 4,
+    "prepare_time": 19,
     "return_code": 0,
     "sliced_plates": [
         {
             "feature_type_times": {
-                "Bottom surface": 113.71533966064453,
-                "Bridge": 101.66696166992188,
-                "Custom": 1.037514567375183,
-                "Inner wall": 70.94123077392578,
-                "Internal solid infill": 155.5789031982422,
-                "Outer wall": 94.42247009277344,
-                "Overhang wall": 3.169267177581787,
-                "Skirt": 5.9538750648498535,
-                "Sparse infill": 197.1468505859375,
-                "Top surface": 73.60787963867188,
-                "Travel": 42.3639030456543,
-                "Undefined": 42.11482620239258
+                "Bottom surface": 127.40716552734375,
+                "Bridge": 91.82225036621094,
+                "Custom": 0.9569268822669983,
+                "Inner wall": 75.7795639038086,
+                "Internal solid infill": 145.43905639648438,
+                "Outer wall": 115.49173736572266,
+                "Skirt": 6.028686046600342,
+                "Sparse infill": 190.62867736816406,
+                "Top surface": 61.930667877197266,
+                "Travel": 67.49796295166016,
+                "Undefined": 67.32943725585938
             },
             "filament_change_times": 0,
             "filaments": [
@@ -30,32 +29,32 @@
                     "total_used_g": 0.0
                 }
             ],
-            "generate_support_material_time": 1,
+            "generate_support_material_time": 3,
             "id": 1,
-            "infill_time": 10,
+            "infill_time": 13,
             "layer_filament_change": 0,
-            "main_predication": 858.566162109375,
-            "make_perimeters_time": 7,
+            "main_predication": 882.031494140625,
+            "make_perimeters_time": 15,
             "obj_cached_cnt": 0,
             "objects": [
                 {
                     "bbox": {
-                        "depth": 116.17018127441406,
+                        "depth": 123.93207550048828,
                         "height": 6.0,
-                        "width": 117.09699249267578,
-                        "x": 43.97728729248047,
-                        "y": 34.14134979248047,
+                        "width": 122.73633575439453,
+                        "x": 38.322608947753906,
+                        "y": 34.1291389465332,
                         "z": 0.0
                     },
                     "id": 5,
                     "name": "rounded_star_90.stl",
-                    "triangle_count": 149
+                    "triangle_count": 132
                 }
             ],
-            "sliced_time": 62,
-            "sliced_time_with_cache": 40,
-            "total_predication": 859.3546142578125,
-            "triangle_count": 149,
+            "sliced_time": 98,
+            "sliced_time_with_cache": 57,
+            "total_predication": 882.8198852539063,
+            "triangle_count": 132,
             "warning_message": ""
         }
     ],

@@ -108,10 +108,14 @@
 第一批可制作件与制作顺序、物料核对、预算（≈¥20–35：泡沫板+针线；不买电子件/布篷/骨架/新帐篷）：
 见 [`source-data/christmas-magic-tent/forest-v1/README.md`](https://github.com/mayf3/diy-lab/blob/main/source-data/christmas-magic-tent/forest-v1/README.md)。
 
-PETG 三件（自建参数化，已审核可复用模型许可不满足后自建）：
+PETG 三件（自建参数化，已审核可复用模型许可不满足后自建；**边审计 0 开放边/0 共边**）：
 
-| 件 | 尺寸 mm | 真实切片（P1S · 0.20mm · Generic PETG HF） |
+| 件 | 尺寸 mm | 真实切片（P1S 0.4 · 0.20mm · Generic PETG HF 预设，2026-11-16 CLI） |
 | --- | --- | --- |
-| rounded_star_90 | 86×81×6 | Success：≈9.4 g / 14 min |
-| cottage_forest_90 | 60×48×80 | Success：≈67.7 g |
-| cottage_xmas_110 | 75×58×103 | CLI 导入拒绝（原因未明，0.5–2.0× 一致失败）；GUI 手动切片或换方案 |
+| rounded_star_90 | 86×91×6（站立缺口内建） | Success：≈8.9 g / 14m42s |
+| cottage_xmas_110 | 75×58×100 | Success：≈122.0 g / 2h9m（总高 100mm 规避 CLI >100mm 拒绝 bug） |
+| cottage_forest_90 | 60×48×80 | Success：≈67.7 g / 1h15m |
+
+注：用户确认的是普通 PETG——HF 预设仅为本轮切片估算载体，实物打印前在 GUI 核对实际预设。
+毛毡 PDF 同步整改为 **39 页真二维分页**（重叠 15mm + 配对页号 + 对位十字 + 每页校准尺，
+回拼自检 PASS）；KURA 最终方案无屋顶，斜屋顶实测项（K2–K4）取消。

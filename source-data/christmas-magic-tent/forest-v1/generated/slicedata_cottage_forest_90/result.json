@@ -3,20 +3,20 @@
     "export_time": 0,
     "layer_height": 0.20000000298023224,
     "plate_index": 1,
-    "prepare_time": 4,
+    "prepare_time": 6,
     "return_code": 0,
     "sliced_plates": [
         {
             "feature_type_times": {
                 "Bottom surface": 114.1166000366211,
                 "Custom": 1.1092023849487305,
-                "Inner wall": 398.78802490234375,
-                "Internal solid infill": 302.22467041015625,
-                "Outer wall": 498.5651550292969,
+                "Inner wall": 402.4189453125,
+                "Internal solid infill": 224.00079345703125,
+                "Outer wall": 503.45733642578125,
                 "Skirt": 4.967521667480469,
-                "Sparse infill": 2918.211181640625,
-                "Travel": 299.370361328125,
-                "Undefined": 299.0663757324219
+                "Sparse infill": 2920.05078125,
+                "Travel": 306.9749755859375,
+                "Undefined": 306.6709899902344
             },
             "filament_change_times": 0,
             "filaments": [
@@ -27,12 +27,12 @@
                     "total_used_g": 0.0
                 }
             ],
-            "generate_support_material_time": 5,
+            "generate_support_material_time": 6,
             "id": 1,
-            "infill_time": 12,
+            "infill_time": 14,
             "layer_filament_change": 0,
-            "main_predication": 4536.21826171875,
-            "make_perimeters_time": 9,
+            "main_predication": 4476.03125,
+            "make_perimeters_time": 13,
             "obj_cached_cnt": 0,
             "objects": [
                 {
@@ -49,9 +49,9 @@
                     "triangle_count": 16
                 }
             ],
-            "sliced_time": 141,
-            "sliced_time_with_cache": 107,
-            "total_predication": 4537.0234375,
+            "sliced_time": 179,
+            "sliced_time_with_cache": 135,
+            "total_predication": 4476.83642578125,
             "triangle_count": 16,
             "warning_message": ""
         }

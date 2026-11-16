@@ -253,14 +253,17 @@ def build_rounded_star_90():
         rr = 45.0 if i % 2 == 0 else 20.0
         a = math.pi / 2 + i * math.pi / 5
         pts.append((rr * math.cos(a), rr * math.sin(a)))
-    # 圆角：把角点替换为两段偏移点 + 中点（近似圆角 R6）
+    # 圆角：每角两段 lerp 点（近似 R6）；底部 3.2×40mm 缺口改为轮廓内建（免布尔）
     rounded = []
     for k in range(len(pts)):
-        p_prev, p_cur, p_next = pts[k - 1], pts[k], pts[(k + 1) % len(pts)]
+        p_prev, p_cur = pts[k - 1], pts[k]
         for t in (0.72, 0.86):
             rounded.append((p_prev[0] + (p_cur[0] - p_prev[0]) * t,
                             p_prev[1] + (p_cur[1] - p_prev[1]) * t))
         rounded.append(p_cur)
+    rounded = [p for p in rounded if p[1] >= -38.0]          # 去掉底部尖角区
+    notch = [(-1.6, -46.0), (-1.6, -5.0), (1.6, -5.0), (1.6, -46.0)]
+    rounded = notch + rounded                                 # 缺口开口朝下（站立插槽）
     import bmesh
     o = bpy.data.objects.new("rounded_star_90", bpy.data.meshes.new("rounded_star_90"))
     bpy.data.collections["PARTS"].objects.link(o)
@@ -276,9 +279,6 @@ def build_rounded_star_90():
     bm.to_mesh(o.data)
     bm.free()
     o.data.validate()
-    # 底槽（站立用）：40×3.2×3 深槽从底面开
-    slot = box("CUT", "star_slot", 40, 3.2, 6, (0, 0, 3))
-    bool_op(o, [slot])
     o.data.materials.append(mat_simple("PETG_GOLD", (0.87, 0.70, 0.26, 1.0)))
     return o
 
@@ -314,11 +314,12 @@ def _house_shell(name, w, d, wall_h, rise, coll="PARTS"):
 
 
 def build_cottage_xmas_110():
-    """圣诞小屋 ~103mm 高：75×58 主体，墙高 75，脊高 +28（零布尔；门窗用贴纸/马克笔）。"""
+    """圣诞小屋 100mm 高（≤CLI 切片上限）：75×58 主体，墙高 72，脊高 +28（零布尔）。
+    实现：forest 外壳（同拓扑、已验证可切片）非均匀缩放。"""
     o = _house_shell("cottage_xmas_110", 60.0, 48.0, 60.0, 20.0)
-    # 以经切片器验证的 forest 外壳非均匀缩放到 75×58×103（规避 Bambu CLI 对该尺寸
-    # 组合的导入拒绝；原因未明，记录于 petg_preprint_report.json）
-    sx, sy, sz = 75.0 / 60.0, 58.0 / 48.0, 103.0 / 80.0
+    # 以经切片器验证的 forest 外壳非均匀缩放到 75×58×100（规避 Bambu CLI >100mm
+    # 对象的导入拒绝；原因未明，记录于 petg_preprint_report.json）
+    sx, sy, sz = 75.0 / 60.0, 58.0 / 48.0, 100.0 / 80.0
     for v in o.data.vertices:
         v.co.x *= sx
         v.co.y *= sy

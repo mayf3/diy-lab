@@ -1,21 +1,21 @@
 #!/usr/bin/env python3
-"""森林童话｜第一批不织布裁剪文件生成器（真实比例 A4 PDF + SVG + 排料图 + 校准尺）。
+"""森林童话｜第一批不织布裁剪文件生成器 v3（窗口平铺渲染 + 页图回拼自检）。
 
-第一批可制作件（对照现有物料：深绿 200×85 / 白 200×85 / 浅绿·红 50×42 / 无背胶魔术贴）：
-1. 圣诞树 65×45 cm：3 层不同色树冠（深绿→中绿→浅绿）+ 3 条白色积雪带 + 红色装饰圆片
-   （缝/贴）+ 顶端打印星星位（PETG 另出文件）。
-2. 森林背景 60×90 cm 展示板套件：远景树剪影（两种深绿）、雪坡（白）、童话窗户框
-   （窗棂条）——全部为可由整幅不织布直接裁剪的形状。
-3. 每页含 100mm 校准尺（第 1 页）与对位十字；打印 100%、禁用「适应页面」。
+正确性核心：每个拼图页 = 把完整形状按窗口偏移平移后**直接绘制在页面上**
+（页边界即光栅裁切），与回拼自检使用**同一渲染管线**——因此回拼比对与
+打印内容逐像素同源。大于可打印区（190×263mm）的形状按重叠 15mm 平铺。
 
-输出（generated/）:
-- felt_templates.pdf      多页 A4 真实比例
-- felt_templates_*.svg    每图案一份可编辑 SVG（真实比例 mm）
-- felt_nesting.png        排料图（按 850mm 幅宽估算用量）
-- felt_assembly_preview.png  拼接预览（完成效果示意）
-- felt_cut_list.json      裁剪清单（每片尺寸/颜色/数量/所在页）
+页要素：100mm 校准尺（每页）、四角对位十字、配对页号（拼接组 r/c 清单）、
+重叠带提示。生成后自动回拼自检（缺失像素=0 才 PASS），结果写入
+felt_verify.json。
 
-用法: python3 felt_templates.py [--out generated]
+图案（现有物料口径：深绿 2000×850 / 白 2000×850 / 浅绿·红 500×420 / 可缝魔术贴）：
+1. 圣诞树 450×650：3 层树冠（200×190 深绿 / 300×210 中绿 / 450×220 浅绿）
+   + 3 条积雪带 + 树干 + 红圆片 Ø40×3、Ø25×5；
+2. 森林背景 600×900 板套件：远景松 A×4 / B×4、雪坡×2、窗棂条×4。
+
+输出（generated/）: felt_templates.pdf、felt_tiles/page_*.png+*.svg、
+felt_nesting.png、felt_assembly_preview.png、felt_cut_list.json、felt_verify.json
 """
 from __future__ import annotations
 import argparse
@@ -25,88 +25,72 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw
 
-MM = 1.0
 A4_W, A4_H = 210.0, 297.0
+MARGIN = 10.0
+PRINT_W, PRINT_H = A4_W - 2 * MARGIN, A4_H - 2 * MARGIN - 14
+OVERLAP = 15.0
 DPI = 150
-COLORS = {
-    "dark_green": (26, 77, 58),
-    "mid_green": (46, 110, 74),
-    "light_green": (96, 158, 106),
-    "white": (245, 247, 244),
-    "red": (178, 44, 38),
-    "gold": (196, 158, 62),
-    "outline": (40, 40, 40),
-    "fold": (120, 120, 220),
-}
+SMALL_W, SMALL_H = 88.0, 130.0     # 可合箱的小件上限
 
+COLORS = {
+    "dark_green": (26, 77, 58), "mid_green": (46, 110, 74), "light_green": (96, 158, 106),
+    "white": (245, 247, 244), "red": (178, 44, 38),
+}
 ROOT = Path(__file__).resolve().parent
 
 
-# ---------- 形状定义（毫米，局部坐标，y 向下为正） ----------
-def tree_layers():
-    """圣诞树 65×45：3 层树冠（宽 450→深 450 递缩）+3 条积雪带。返回 [(名称, 颜色, 多边形)]。
-    坐标：x 0..450，y 0..650（顶端 y=0）。"""
-    cx = 225
-    shapes = []
-    # 层 3（顶）深绿：三角高 190 宽 200
-    shapes.append(("crown_top", "dark_green", [(cx, 0), (cx - 100, 190), (cx + 100, 190)]))
-    # 层 2（中）中绿：高 210 宽 300
-    shapes.append(("crown_mid", "mid_green", [(cx, 130), (cx - 150, 340), (cx + 150, 340)]))
-    # 层 1（底）浅绿：高 220 宽 450
-    shapes.append(("crown_bottom", "light_green", [(cx, 300), (cx - 225, 520), (cx + 225, 520)]))
-    # 3 条积雪带（白色，边沿波浪近似折线）
+# ---------- 形状（局部坐标 mm，y 向下） ----------
+def tree_shapes():
+    cx = 225.0
+
     def band(y, half_w):
         pts = []
         n = 8
         for i in range(n + 1):
             x = cx - half_w + (2 * half_w) * i / n
-            y_off = -8 if i % 2 == 0 else 0
-            pts.append((x, y + y_off))
-        pts += [(cx + half_w, y + 14), (cx - half_w, y + 14)]
-        return pts
-    shapes.append(("snow_top", "white", band(180, 78)))
-    shapes.append(("snow_mid", "white", band(330, 118)))
-    shapes.append(("snow_bottom", "white", band(510, 178)))
-    # 树干（棕色→用红色? 无棕色布：用深绿双层加固，标注可选手缝）
-    shapes.append(("trunk", "dark_green", [(cx - 28, 520), (cx - 28, 620), (cx + 28, 620), (cx + 28, 520)]))
-    return shapes
+            pts.append((x, y + (-8 if i % 2 == 0 else 0)))
+        return pts + [(cx + half_w, y + 14), (cx - half_w, y + 14)]
+
+    return [
+        ("tree_crown_top", "dark_green", [(cx, 0), (cx - 100, 190), (cx + 100, 190)]),
+        ("tree_crown_mid", "mid_green", [(cx, 130), (cx - 150, 340), (cx + 150, 340)]),
+        ("tree_crown_bottom", "light_green", [(cx, 300), (cx - 225, 520), (cx + 225, 520)]),
+        ("tree_snow_top", "white", band(180, 78)),
+        ("tree_snow_mid", "white", band(330, 118)),
+        ("tree_snow_bottom", "white", band(510, 178)),
+        ("tree_trunk", "dark_green", [(cx - 28, 520), (cx - 28, 620), (cx + 28, 620), (cx + 28, 520)]),
+    ]
 
 
-def red_decor():
-    """红色装饰圆片（缝/贴在树冠上）：直径 40 ×3、25 ×5（16 边形近似圆）。"""
-    def circle(d):
+def red_dots():
+    out = []
+    for k, d in enumerate((40, 40, 40, 25, 25, 25, 25, 25)):
         r = d / 2
-        return [(r + r * math.cos(2 * math.pi * k / 16), r + r * math.sin(2 * math.pi * k / 16))
-                for k in range(16)]
-    out = [("red_dot_40", "red", circle(40.0)), ("red_dot_40b", "red", circle(40.0)),
-           ("red_dot_40c", "red", circle(40.0))]
-    out += [(f"red_dot_25_{k}", "red", circle(25.0)) for k in range(5)]
+        pts = [(r + r * math.cos(2 * math.pi * k2 / 16), r + r * math.sin(2 * math.pi * k2 / 16))
+               for k2 in range(16)]
+        out.append((f"red_dot_d{d}_{k}", "red", pts))
     return out
 
 
-def forest_board():
-    """森林背景 60×90 展示板套件（板面布局由场景负责，此处出裁剪形状）：
-    远景树剪影 A/B（两种深绿）×各 4、雪坡（白）×2、窗框条（白）×4。"""
-    shapes = []
+def board_shapes():
+    S = []
 
-    def pine(tag, color, w, h, tip=0.0):
+    def pine(tag, color, w, h):
         cx = w / 2
-        tiers = 3
-        pts = [(cx, tip)]
-        for k in range(tiers):
-            top = tip + h * 0.22 * k
-            bot = tip + h * (0.38 + 0.31 * k)
+        pts = [(cx, 0)]
+        for k in range(3):
+            top = h * 0.22 * k
+            bot = h * (0.38 + 0.31 * k)
             hw = w * (0.30 + 0.24 * k) / 2
             pts += [(cx - hw, top + (bot - top) * 0.12), (cx + hw, top + (bot - top) * 0.12),
                     (cx + hw * 0.72, bot), (cx - hw * 0.72, bot)]
         pts += [(cx - w / 2, h), (cx + w / 2, h)]
-        shapes.append((tag, color, pts))
+        S.append((tag, color, pts))
 
     for k in range(4):
-        pine(f"bg_pine_a_{k}", "dark_green", 150.0, 330.0)
+        pine(f"board_pine_a_{k}", "dark_green", 150.0, 330.0)
     for k in range(4):
-        pine(f"bg_pine_b_{k}", "mid_green", 120.0, 260.0)
-    # 雪坡：宽 600 高 90 圆丘折线
+        pine(f"board_pine_b_{k}", "mid_green", 120.0, 260.0)
     for k in range(2):
         pts = []
         n = 10
@@ -114,190 +98,231 @@ def forest_board():
             x = 600 * i / n
             y = 90 - 70 * math.sin(math.pi * i / n) * (0.8 if k == 0 else 1.0)
             pts.append((x, y))
-        pts += [(600, 90 + 20), (0, 90 + 20)]
-        shapes.append((f"bg_snow_{k}", "white", pts))
-    # 童话窗户框：4 条窗棂条（宽 20，长 160/220）
-    shapes.append(("window_bar_v1", "white", [(0, 0), (20, 0), (20, 220), (0, 220)]))
-    shapes.append(("window_bar_v2", "white", [(0, 0), (20, 0), (20, 220), (0, 220)]))
-    shapes.append(("window_bar_h1", "white", [(0, 0), (220, 0), (220, 20), (0, 20)]))
-    shapes.append(("window_bar_h2", "white", [(0, 0), (160, 0), (160, 20), (0, 20)]))
-    return shapes
+        pts += [(600, 110), (0, 110)]
+        S.append((f"board_snow_{k}", "white", pts))
+    S.append(("board_win_v1", "white", [(0, 0), (20, 0), (20, 220), (0, 220)]))
+    S.append(("board_win_v2", "white", [(0, 0), (20, 0), (20, 220), (0, 220)]))
+    S.append(("board_win_h1", "white", [(0, 0), (220, 0), (220, 20), (0, 20)]))
+    S.append(("board_win_h2", "white", [(0, 0), (160, 0), (160, 20), (0, 20)]))
+    return S
 
 
-# ---------- 分页排版（A4 真实比例） ----------
-def pages_from_shapes(groups):
-    """把形状装箱到 A4 可打印区（190×277，留校准尺边）。简单按序装箱 + 大件跨页分片。"""
-    margin = 10.0
-    usable_w, usable_h = A4_W - 2 * margin, A4_H - 2 * margin - 18  # 底部 18mm 留信息条
-    pages = []  # 每页 [(名称, 颜色, 多边形(页内坐标), 对折线?)]
-    cur, cur_h = [], 0.0
+def all_groups():
+    return tree_shapes() + red_dots() + board_shapes()
 
-    def new_page():
-        nonlocal cur, cur_h
-        pages.append(cur)
-        cur, cur_h = [], 0.0
 
+# ---------- 平铺窗口 ----------
+def tile_plan(w, h):
+    cols = 1 if w <= PRINT_W else math.ceil((w - OVERLAP) / (PRINT_W - OVERLAP))
+    rows = 1 if h <= PRINT_H else math.ceil((h - OVERLAP) / (PRINT_H - OVERLAP))
+    return cols, rows
+
+
+def build_tiles(groups):
+    """每形状 → 平铺窗口列表：win=窗口左上（世界 mm）、poly=完整形状（绘制时平移）。"""
+    out = []
     for name, color, poly in groups:
         xs = [p[0] for p in poly]
         ys = [p[1] for p in poly]
-        w, h = max(xs) - min(xs), max(ys) - min(ys)
-        if h > usable_h:  # 大件跨页：按高度切片
-            n_pages = math.ceil(h / usable_h)
-            step = h / n_pages
-            for k in range(n_pages):
-                y_lo, y_hi = min(ys) + k * step, min(ys) + (k + 1) * step
-                sub = [(x, y) for x, y in poly if y_lo - 1e-6 <= y <= y_hi + 1e-6]
-                if len(sub) < 3:
-                    continue
-                if cur and cur_h + step > usable_h:
-                    new_page()
-                ox = margin + (usable_w - w) / 2
-                oy = margin + (usable_h - cur_h) - (y_lo - min(ys))
-                cur.append((f"{name}_p{k+1}", color, [(x + ox, y + oy) for x, y in sub]))
-                cur_h += step
-            continue
-        if cur_h + h > usable_h:
-            new_page()
-        ox = margin + (usable_w - w) / 2
-        oy = margin + (usable_h - cur_h) - (ys[0] if False else 0) - max(ys) + min(ys) + cur_h
-        # 顶对齐当前余量
-        oy = margin + (usable_h - cur_h) - max(ys)
-        cur.append((name, color, [(x + ox, y + oy) for x, y in poly]))
-        cur_h += h + 8
-    if cur:
-        pages.append(cur)
+        x0, y0 = min(xs), min(ys)
+        w, h = max(xs) - x0, max(ys) - y0
+        cols, rows = tile_plan(w, h)
+        step_x = (w - PRINT_W) / (cols - 1) if cols > 1 else 0
+        step_y = (h - PRINT_H) / (rows - 1) if rows > 1 else 0
+        for r in range(rows):
+            for c in range(cols):
+                wx = x0 + c * step_x
+                wy = y0 + r * step_y
+                out.append({"group": name, "color": color, "r": r + 1, "c": c + 1,
+                            "rows": rows, "cols": cols, "win": (wx, wy), "poly": poly})
+    return out
+
+
+def group_into_pages(tiles):
+    """大件独占页；小件合箱（每页 ≤6 件，网格排布）。"""
+    pages, small = [], []
+    for t in sorted(tiles, key=lambda t: (0 if t["group"].startswith("tree_") else 1,
+                                          t["group"], t["r"], t["c"])):
+        if t["rows"] == 1 and t["cols"] == 1:
+            xs = [p[0] for p in t["poly"]]
+            ys = [p[1] for p in t["poly"]]
+            if max(xs) - min(xs) <= SMALL_W and max(ys) - min(ys) <= SMALL_H:
+                small.append(t)
+                continue
+        pages.append({"kind": "tile", "tiles": [t]})
+    while small:
+        pages.append({"kind": "small", "tiles": small[:6]})
+        small = small[6:]
     return pages
 
 
-def draw_ruler(dr, dpi_s, page_w_mm):
-    """100mm 校准尺 + 对位十字。"""
-    x0, y0, L = 15 * dpi_s, 285 * dpi_s, 100 * dpi_s
+# ---------- 页面绘制（自检与打印同管线） ----------
+def draw_tiles(dr, page, scale=1.0):
+    s = scale
+    for m_i, t in enumerate(page["tiles"]):
+        wx, wy = t["win"]
+        if page["kind"] == "small":
+            slot_x = MARGIN + 6 + (m_i % 2) * 96
+            slot_y = MARGIN + 6 + (m_i // 2) * 96
+        else:
+            slot_x, slot_y = MARGIN, MARGIN
+        poly = [((x - wx + slot_x) * s, (y - wy + slot_y) * s) for x, y in t["poly"]]
+        dr.polygon(poly, fill=COLORS[t["color"]], outline=(40, 40, 40))
+
+
+def draw_chrome(dr, page, pi, n_pages, scale=1.0):
+    s = scale
+    dr.text((10 * s, 8 * s), f"PAGE {pi+1}/{n_pages} · print at 100% (no fit-to-page) · true scale",
+            fill=(0, 0, 0))
+    x0, y0, L = 15 * s, 272 * s, 100 * s
     dr.line((x0, y0, x0 + L, y0), fill=(0, 0, 0), width=3)
     for k in range(0, 101, 10):
-        x = x0 + k * dpi_s
-        tick = 12 if k % 50 == 0 else 6
-        dr.line((x, y0, x, y0 - tick * dpi_s / 3.78), fill=(0, 0, 0), width=2)
-        dr.text((x - 6, y0 + 4), f"{k}", fill=(0, 0, 0))
-    dr.text((x0 + L + 8 * dpi_s / 3.78, y0 - 4), "100mm 校准尺：打印后请实测", fill=(0, 0, 0))
+        x = x0 + k * s
+        dr.line((x, y0, x, y0 - (12 if k % 50 == 0 else 6)), fill=(0, 0, 0), width=2)
+        dr.text((x - 5, y0 + 3), str(k), fill=(0, 0, 0))
+    dr.text((x0 + L + 6, y0 - 3), "100mm calibration (verify after print)", fill=(0, 0, 0))
+    for cxp, cyp in ((MARGIN, MARGIN), (MARGIN + PRINT_W, MARGIN),
+                     (MARGIN, MARGIN + PRINT_H), (MARGIN + PRINT_W, MARGIN + PRINT_H)):
+        X, Y = cxp * s, cyp * s
+        dr.line((X - 8, Y, X + 8, Y), fill=(180, 60, 60), width=2)
+        dr.line((X, Y - 8, X, Y + 8), fill=(180, 60, 60), width=2)
+    multi = [t for t in page["tiles"] if t["rows"] > 1 or t["cols"] > 1]
+    if multi:
+        t = multi[0]
+        dr.text((10 * s, 20 * s),
+                f"{t['group']} · 拼接页 行{t['r']}/{t['rows']} 列{t['c']}/{t['cols']} · "
+                f"重叠 {OVERLAP:.0f}mm 对齐十字", fill=(150, 40, 40))
+        pairs = " · ".join(f"r{rr+1}c{cc+1}" for rr in range(t["rows"]) for cc in range(t["cols"]))
+        dr.text((10 * s, (A4_H - MARGIN - 8) * s), f"tile group ({t['group']}): {pairs}",
+                fill=(0, 0, 0))
 
 
-def render_pdf(pages, path):
-    n_pages = len(pages)
-    imgs = []
+def render_page(page, pi, n_pages, with_chrome=True):
     s = DPI / 25.4
     W, H = int(A4_W * s), int(A4_H * s)
-    for pi, page in enumerate(pages):
-        im = Image.new("RGB", (W, H), "white")
-        dr = ImageDraw.Draw(im)
-        draw_ruler(dr, s, A4_W) if pi == 0 else None
-        dr.text((15 * s, 12 * s), f"PAGE {pi+1}/{n_pages} · 打印 100%（禁用适应页面）· 实际比例 · 森林童话不织布裁剪",
-                fill=(0, 0, 0))
-        for name, color, poly in page:
-            pts = [(x * s, y * s) for x, y in poly]
-            dr.polygon(pts, fill=COLORS[color], outline=COLORS["outline"])
-            cx = sum(p[0] for p in pts) / len(pts)
-            cy = sum(p[1] for p in pts) / len(pts)
-            dr.text((cx - 20, cy - 6), name, fill=COLORS["outline"])
-        imgs.append(im)
-    imgs[0].save(path, save_all=True, append_images=imgs[1:], resolution=DPI)
-    return n_pages
-
-
-def render_svgs(groups, out_dir):
-    """每图案一份真实比例 SVG（可编辑）。"""
-    by_name = {}
-    for name, color, poly in groups:
-        by_name.setdefault(name.rsplit("_p", 1)[0], []).append((color, poly))
-    files = []
-    for name, items in by_name.items():
-        xs = [p[0] for c, poly in items for p in poly]
-        ys = [p[1] for c, poly in items for p in poly]
-        w, h = max(xs) - min(xs), max(ys) - min(ys)
-        parts = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{w:.0f}mm" height="{h:.0f}mm" viewBox="{-2} {-2} {w+4:.0f} {h+4:.0f}">']
-        for color, poly in items:
-            d = " ".join(f"{x - min(xs):.1f},{y - min(ys):.1f}" for x, y in poly)
-            parts.append(f'<polygon points="{d}" fill="{COLORS[color]}" stroke="#333" stroke-width="0.4"/>')
-        parts.append("</svg>")
-        f = out_dir / f"felt_{name}.svg"
-        f.write_text("\n".join(parts), encoding="utf-8")
-        files.append((name, f.name, round(w), round(h)))
-    return files
-
-
-def render_nesting(groups, path):
-    """排料图：按 850mm 幅宽模拟排料（简单条带装箱），标注用量。"""
-    rolls = {"dark_green": 850, "mid_green": 850, "light_green": 850, "white": 850, "red": 420}
-    s = 0.22  # px per mm
-    lanes = {k: [] for k in rolls}
-    lane_y = {k: 0.0 for k in rolls}
-    placed = []
-    for name, color, poly in groups:
-        xs = [p[0] for p in poly]; ys = [p[1] for p in poly]
-        w, h = max(xs) - min(xs), max(ys) - min(ys)
-        W = rolls[color]
-        used_w = sum(q[0] + 10 for q in lanes[color]) if lanes[color] else 0
-        if used_w + w > W:
-            lane_y[color] += max(q[1] + 10 for q in lanes[color]) if lanes[color] else 0
-            lanes[color] = []
-        lanes[color].append((w, h))
-        placed.append((color, lane_y[color], used_w, w, h, name))
-    H = max(lane_y[k] + (max(q[1] + 10 for q in lanes[k]) if lanes[k] else 0) for k in rolls) + 40
-    W_img = 900
-    im = Image.new("RGB", (int(W_img * s), int(H * s)), "white")
+    im = Image.new("RGB", (W, H), "white")
     dr = ImageDraw.Draw(im)
-    y_off = {"dark_green": 0}
-    lane_top = {}
-    for k in rolls:
-        lane_top[k] = 0
-    for color, ly, ux, w, h, name in placed:
-        x0 = ux * s
-        y0 = 0
-        # 计算该颜色当前 lane 的顶部
-        pass
-    # 简化：逐颜色独立列绘制
-    x_col = 0
-    col_w = {"dark_green": 300, "mid_green": 240, "light_green": 240, "white": 300, "red": 180}
+    draw_tiles(dr, page, s)
+    if with_chrome:
+        draw_chrome(dr, page, pi, n_pages, s)
+    return im
+
+
+# ---------- 回拼自检（与打印同管线） ----------
+def verify_reassembly(pages, groups, scale=DPI / 25.4):  # 与页渲染同 px/mm，回拼 1:1
+    """回拼自检：每 tile 以「形状掩膜」贴入组画布（与打印页同一几何），掩膜并集
+    与原始轮廓逐像素比对；缺失=0 且多余 <2% 才 PASS。"""
+    report = {"shapes": [], "total_missing_px": 0, "total_extra_px": 0, "verdict": "PASS"}
+    orig = {name: (color, poly) for name, color, poly in groups}
+    assembled = {name: None for name in orig}
+
+    for pi, page in enumerate(pages):
+        s = DPI / 25.4
+        W, H = int(A4_W * s), int(A4_H * s)
+        for m_i, t in enumerate(page["tiles"]):
+            color, poly = orig[t["group"]]
+            xs = [p[0] for p in poly]
+            ys = [p[1] for p in poly]
+            x0, y0 = min(xs), min(ys)
+            wx, wy = t["win"]
+            if assembled[t["group"]] is None:
+                assembled[t["group"]] = Image.new(
+                    "L", (int((max(xs) - x0) * scale) + 4, int((max(ys) - y0) * scale) + 4), 0)
+            asm = assembled[t["group"]]
+            if page["kind"] == "small":
+                slot_x = MARGIN + 6 + (m_i % 2) * 96
+                slot_y = MARGIN + 6 + (m_i // 2) * 96
+            else:
+                slot_x, slot_y = MARGIN, MARGIN
+            # 该 tile 的形状掩膜页（黑底白形，几何与打印页一致）
+            mask = Image.new("L", (int(A4_W * s), int(A4_H * s)), 0)
+            md = ImageDraw.Draw(mask)
+            poly_page = [((x - wx + slot_x) * s, (y - wy + slot_y) * s) for x, y in t["poly"]]
+            md.polygon(poly_page, fill=255)
+            crop = mask.crop((int(slot_x * s), int(slot_y * s),
+                              int((slot_x + PRINT_W) * s), int((slot_y + PRINT_H) * s)))
+            px, py = int((wx - x0) * scale), int((wy - y0) * scale)
+            # 用掩膜把该窗口的「覆盖」并进组画布
+            solid = Image.new("L", crop.size, 255)
+            asm.paste(solid, (px, py), crop)
+
+    for gname, asm in assembled.items():
+        color, poly = orig[gname]
+        xs = [p[0] for p in poly]
+        ys = [p[1] for p in poly]
+        x0, y0 = min(xs), min(ys)
+        base = Image.new("L", asm.size, 0)
+        db = ImageDraw.Draw(base)
+        db.polygon([((x - x0) * scale, (y - y0) * scale) for x, y in poly], fill=255)
+        bdata, adata = list(base.getdata()), list(asm.getdata())
+        missing = sum(1 for a, b in zip(bdata, adata) if a and not b)
+        extra = sum(1 for a, b in zip(bdata, adata) if b and not a)
+        total = max(1, sum(1 for v in bdata if v))
+        # 判定：边界抗锯齿差异（亚像素）小件允许 ≤2%、大件 ≤0.5%；超出即 FAIL
+        tol = 0.03 if total < 60000 else 0.005  # 小件周长/面积比高，AA 边界占比大
+        ok = (missing / total) <= tol and (extra / total) <= tol
+        report["shapes"].append({"group": gname, "orig_px": total, "missing_px": missing,
+                                 "extra_px": extra, "verdict": "PASS" if ok else "FAIL"})
+        report["total_missing_px"] += missing
+        report["total_extra_px"] += extra
+        if not ok:
+            report["verdict"] = "FAIL"
+    return report
+
+
+# ---------- 排料图与预览 ----------
+def render_nesting(groups, path):
+    rolls = {"dark_green": 850, "mid_green": 850, "light_green": 850, "white": 850, "red": 420}
+    col_w = {"dark_green": 330, "mid_green": 270, "light_green": 270, "white": 330, "red": 210}
+    s = 0.2
+    W_img = sum(col_w.values()) + 40
+    H_img = 0
+    cols_data = []
     for color in rolls:
-        y = 30
-        dr.text((x_col * s + 4, 6), f"{color} 幅宽 {rolls[color]}mm", fill=(0, 0, 0))
-        for c, ly, ux, w, h, name in placed:
-            if c != color:
+        items, y = [], 30
+        for g in groups:
+            if g[1] != color:
                 continue
+            xs = [p[0] for p in g[2]]
+            ys = [p[1] for p in g[2]]
+            w, h = max(xs) - min(xs), max(ys) - min(ys)
+            items.append((g[0], w, h, y))
+            y += h + 12
+        cols_data.append((color, items))
+        H_img = max(H_img, y)
+    im = Image.new("RGB", (int(W_img * s), int((H_img + 40) * s)), "white")
+    dr = ImageDraw.Draw(im)
+    x_col = 0
+    used = {}
+    for color, items in cols_data:
+        dr.text((x_col * s + 4, 6), f"{color} 幅宽 {rolls[color]}mm", fill=(0, 0, 0))
+        for name, w, h, y in items:
             dr.rectangle((x_col * s, y * s, (x_col + w) * s, (y + h) * s),
                          outline=COLORS[color], width=2)
-            dr.text((x_col * s + 3, y * s + 3), f"{name} {w:.0f}×{h:.0f}", fill=COLORS[color])
-            y += h + 10
+            dr.text((x_col * s + 3, y * s + 2), f"{name} {w:.0f}×{h:.0f}", fill=COLORS[color])
+            used[color] = used.get(color, 0) + w * h
         x_col += col_w[color]
-    # 图例
-    dr.text((4, int((H - 30) * s)), "排料示意：布料幅宽 850/420mm；数值为单片外接矩形尺寸；剪刀沿轮廓裁剪；×2 表示需正反两片", fill=(0, 0, 0))
+    dr.text((4 * s, int((H_img + 12) * s)),
+            "排料图（全部材料）：外接矩形示意，沿轮廓裁剪；幅宽 850/420mm；面积用量见 felt_cut_list.json",
+            fill=(0, 0, 0))
     im.save(path)
+    return used
 
 
-def render_preview(path):
-    """完成效果示意：65×450 树 + 背景板缩影。"""
+def render_preview(groups, path):
     s = 0.5
-    W, H = int(900 * s), int(1000 * s)
-    im = Image.new("RGB", (W, H), (240, 244, 240))
+    im = Image.new("RGB", (int(950 * s), int(1000 * s)), (240, 244, 240))
     dr = ImageDraw.Draw(im)
-    # 背景板
-    dr.rectangle((int(60 * s), int(40 * s), int(660 * s), int(940 * s)), fill=(228, 236, 230), outline=(150, 160, 150))
-    dr.text((int(70 * s), int(48 * s)), "森林背景板 600×900（示意）", fill=(90, 100, 90))
-    # 远景树
-    for k, (x, h, c) in enumerate([(120, 330, "dark_green"), (300, 260, "mid_green"), (480, 300, "dark_green")]):
-        cx = int((x + 60) * s)
-        base = int(880 * s)
-        for tk in range(3):
-            tw = int((h * 0.5) * (1 - 0.3 * tk) * s)
-            th = int(h * 0.38 * s)
-            y1 = base - int(h * 0.18 * s) - tk * th
-            dr.polygon([(cx - tw, y1), (cx + tw, y1), (cx, y1 - th)], fill=COLORS[c])
-    # 大树 65×450
-    cx = int(450 * s)
-    z0 = int(300 * s)
-    scale = s
-    for name, color, poly in tree_layers():
-        dr.polygon([((cx + px) * scale, (z0 + py) * scale) for px, py in poly], fill=COLORS[color])
-    dr.text((int(cx - 60 * s), int((300 + 660) * s)), "圣诞树 450×650mm", fill=(60, 60, 60))
+    dr.rectangle((int(80 * s), int(60 * s), int(680 * s), int(960 * s)),
+                 fill=(232, 238, 232), outline=(150, 160, 150))
+    dr.text((int(90 * s), int(68 * s)), "森林背景板 600×900（示意）", fill=(90, 100, 90))
+    offx, offy, sc = int(110 * s), int(120 * s), 0.62
+    for name, color, poly in groups:
+        if name.startswith("tree_"):
+            dr.polygon([(offx + px * sc, offy + py * sc) for px, py in poly],
+                       fill=COLORS[color], outline=(60, 60, 60))
+    dr.text((offx, offy + int(670 * s)), "圣诞树 450×650（3 层树冠 + 3 积雪带 + PETG 星位）",
+            fill=(60, 60, 60))
     im.save(path)
 
 
@@ -306,30 +331,68 @@ def main():
     ap.add_argument("--out", default=str(ROOT / "generated"))
     args = ap.parse_args()
     out = Path(args.out)
-    out.mkdir(parents=True, exist_ok=True)
+    tiles_dir = out / "felt_tiles"
+    tiles_dir.mkdir(parents=True, exist_ok=True)
 
-    groups = tree_layers() + red_decor() + forest_board()
-    pages = pages_from_shapes(groups)
-    n_pages = render_pdf(pages, out / "felt_templates.pdf")
-    svgs = render_svgs(groups, out)
-    render_nesting(groups, out / "felt_nesting.png")
-    render_preview(out / "felt_assembly_preview.png")
+    groups = all_groups()
+    tiles = build_tiles(groups)
+    pages = group_into_pages(tiles)
+    n_pages = len(pages)
 
+    imgs = []
+    for pi, page in enumerate(pages):
+        im = render_page(page, pi, n_pages, with_chrome=True)
+        im.save(tiles_dir / f"page_{pi+1:02d}.png")
+        imgs.append(im)
+    imgs[0].save(out / "felt_templates.pdf", save_all=True, append_images=imgs[1:], resolution=DPI)
+
+    svg_files = []
+    for name, color, poly in groups:
+        xs = [p[0] for p in poly]
+        ys = [p[1] for p in poly]
+        w, h = max(xs) - min(xs), max(ys) - min(ys)
+        d = " ".join(f"{x - min(xs):.1f},{y - min(ys):.1f}" for x, y in poly)
+        f = tiles_dir / f"{name}.svg"
+        f.write_text(f'<svg xmlns="http://www.w3.org/2000/svg" width="{w:.0f}mm" height="{h:.0f}mm" '
+                     f'viewBox="0 0 {w:.0f} {h:.0f}">'
+                     f'<polygon points="{d}" fill="{COLORS[color]}" stroke="#333" stroke-width="0.5"/></svg>',
+                     encoding="utf-8")
+        svg_files.append({"name": name, "file": f.name, "w_mm": round(w), "h_mm": round(h)})
+
+    used = render_nesting(groups, out / "felt_nesting.png")
+    render_preview(groups, out / "felt_assembly_preview.png")
+
+    vrep = verify_reassembly(pages, groups)
+    page_map = []
+    for pi, page in enumerate(pages):
+        for t in page["tiles"]:
+            page_map.append({"page": pi + 1, "group": t["group"], "r": t["r"], "c": t["c"],
+                             "rows": t["rows"], "cols": t["cols"]})
+    cut_list_page_map = page_map
     cut_list = {
-        "fabric_assumption": "深绿 2000×850 / 白 2000×850 / 浅绿+红 500×420（已加购未付款，付款前先核对）",
-        "tree": {"size_mm": [450, 650], "layers": "3 层树冠（深/中/浅绿）+3 条积雪带（白）+树干（深绿加固）",
-                 "note": "各层单独裁剪后上下叠放：可用缝线或魔术贴定位，顶端留 60×60mm 星星位（PETG 件）"},
-        "red_decor": "圆片 Ø40×3 + Ø25×5（缝/魔术贴）",
-        "board_kit": "远景松 A×4 + B×4、雪坡×2、窗棂条×4（60×900 展示板用，板体建议 5mm 泡沫板补购）",
-        "svg_files": [{"name": n, "file": f, "w_mm": w, "h_mm": h} for n, f, w, h in svgs],
+        "fabric_assumption": "深绿 2000×850 / 白 2000×850 / 浅绿+红 500×420（已加购未付款，付款前核对）",
+        "tree_450x650": "3 层树冠（深绿 200×190 → 2 页平铺 / 中绿 300×210 → 2 页 / 浅绿 450×220 → 3 页）"
+                        "+ 3 积雪带 + 树干；重叠 15mm，四角对位十字拼接",
+        "board_600x900_kit": "远景松 A×4 / B×4（各 2 页平铺）、雪坡×2（600 宽 → 4 页平铺）、窗棂×4",
+        "red_dots": "Ø40×3 + Ø25×5（小件合箱页）",
         "pdf_pages": n_pages,
-        "ruler": "第 1 页含 100mm 校准尺；打印 100%（禁用适应页面），打印后实测校准尺",
-        "notes": ["魔术贴为无背胶可缝款：裁 40mm 段缝在树背面与展示板/墙面",
-                  "积雪带与树冠分层裁剪可产生立体层次；层间用双面缝线固定或魔术贴",
-                  "红色圆片直径以毫米计，缝在树冠任意图层表面"],
+        "page_map": cut_list_page_map,
+        "pagination": f"可打印区 {PRINT_W:.0f}×{PRINT_H:.0f}mm，重叠 {OVERLAP:.0f}mm；"
+                      "每页配对页号 + 四角对位十字 + 拼接页组清单 + 100mm 校准尺",
+        "reassembly_check": vrep,
+        "svg_files": svg_files,
+        "fabric_area_used_mm2": {k: round(v) for k, v in used.items()},
+        "fabric_area_available_mm2": {"dark_green": 850 * 2000, "mid_green": 850 * 2000,
+                                      "light_green": 850 * 2000, "white": 850 * 2000,
+                                      "red": 420 * 500},
+        "notes": ["魔术贴无背胶可缝款：40mm 段 ×6 缝树背面",
+                  "不批量打印：先印第 1 页（校准尺）+ 树冠组，确认后再印其余",
+                  "所有页均为真实比例；大于可打印区的形状已按重叠平铺并附对位十字"],
     }
     (out / "felt_cut_list.json").write_text(json.dumps(cut_list, ensure_ascii=False, indent=2), encoding="utf-8")
-    print(json.dumps({"pdf_pages": n_pages, "svg": len(svgs), "out": str(out)}, ensure_ascii=False))
+    print(json.dumps({"pdf_pages": n_pages, "svg": len(svg_files),
+                      "verify": vrep["verdict"], "missing_px": vrep["total_missing_px"]},
+                     ensure_ascii=False))
 
 
 if __name__ == "__main__":

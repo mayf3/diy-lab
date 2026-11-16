@@ -1,10 +1,61 @@
 {
-    "error_string": "One of the plate is empty or has no object fully inside it. Please check that the 3mf contains no empty plate in Bambu Studio before uploading.",
+    "error_string": "Success.",
     "export_time": 0,
-    "layer_height": 0.0,
+    "layer_height": 0.20000000298023224,
     "plate_index": 1,
     "prepare_time": 4,
-    "return_code": -50,
-    "sparse_infill_density": 0.0,
-    "wall_loops": 0
+    "return_code": 0,
+    "sliced_plates": [
+        {
+            "feature_type_times": {
+                "Bottom surface": 162.45843505859375,
+                "Custom": 1.1067442893981934,
+                "Inner wall": 599.1680908203125,
+                "Internal solid infill": 469.37054443359375,
+                "Outer wall": 734.9029541015625,
+                "Skirt": 5.967522621154785,
+                "Sparse infill": 5374.623046875,
+                "Travel": 433.6280822753906,
+                "Undefined": 433.3091125488281
+            },
+            "filament_change_times": 0,
+            "filaments": [
+                {
+                    "filament_id": "",
+                    "id": 1,
+                    "main_used_g": 0.0,
+                    "total_used_g": 0.0
+                }
+            ],
+            "generate_support_material_time": 8,
+            "id": 1,
+            "infill_time": 20,
+            "layer_filament_change": 0,
+            "main_predication": 7780.46142578125,
+            "make_perimeters_time": 14,
+            "obj_cached_cnt": 0,
+            "objects": [
+                {
+                    "bbox": {
+                        "depth": 58.0,
+                        "height": 99.99999237060547,
+                        "width": 74.99999237060547,
+                        "x": 62.49999237060547,
+                        "y": 71.0,
+                        "z": 0.0
+                    },
+                    "id": 5,
+                    "name": "cottage_xmas_110.stl",
+                    "triangle_count": 16
+                }
+            ],
+            "sliced_time": 224,
+            "sliced_time_with_cache": 170,
+            "total_predication": 7781.2490234375,
+            "triangle_count": 16,
+            "warning_message": ""
+        }
+    ],
+    "sparse_infill_density": 20.0,
+    "wall_loops": 2
 }

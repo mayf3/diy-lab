@@ -1,8 +1,11 @@
 # forest-v1｜森林童话布置与第一批可制作件
 
-> **状态（2026-11-16）**：布局/日间/夜间渲染完成；毛毡裁剪 PDF（真实比例）+ SVG +
-> 排料图完成；PETG 三件建模完成，**其中 2 件已真实切片**（星星 9.4 g、森林小屋
-> 67.7 g），圣诞小屋被 Bambu CLI 导入拒绝（原因未明，见下）。**未采购、未打印。**
+> **状态（2026-11-17，v2 整改）**：三张渲染图重做（床架四柱开放矩形完整可见、
+> 构图聚焦森林布景）；毛毡 PDF 重做（**39 页真二维分页**，重叠 15mm + 配对页号 +
+> 对位十字 + 每页 100mm 校准尺 + **回拼自检 PASS**，felt_verify.json）；PETG 三件
+> **全部真实切片成功**（星 8.9g/14min42s、圣诞小屋 122g/2h9m、森林小屋 67.7g/1h15m，
+> 圣诞小屋定高 100mm 规避 CLI >100mm 拒绝 bug）+ **边审计全 OK**（0 开放边/0 共边）。
+> **未采购、未打印、未启动 P1S。**
 
 参考图说明：「森林童话」参考图片未随任务到达工作区，本轮渲染按文字要点
 （60–70cm 多层毛毡树、深绿森林背景、雪花、童话窗户、2–3 座 PETG 小屋、床外暖光）
@@ -36,9 +39,18 @@
 - 顶端 PETG 星星（`rounded_star_90.stl`，另印）；
 - 树干深绿双层加固（可选）。
 
-文件：`generated/felt_templates.pdf`（25 页真实比例，第 1 页含 100mm 校准尺）、
-`generated/felt_*.svg`（可编辑）、`generated/felt_nesting.png`（排料图）、
-`generated/felt_assembly_preview.png`（拼接预览）、`generated/felt_cut_list.json`。
+文件：`generated/felt_templates.pdf`（**39 页真实比例**，每页含 100mm 校准尺）、
+`generated/felt_tiles/*.svg`（29 个可编辑轮廓）、`generated/felt_nesting.png`（排料图，
+全部材料呈现）、`generated/felt_assembly_preview.png`（拼接预览）、
+`generated/felt_cut_list.json`（含 **page_map**：每图案的页号映射）。
+
+**分页与拼接**（v2 真二维分页，可打印区 190×263mm、重叠 15mm）：
+- 树冠顶层 200×190 → 2 页（页 1–2）；中层 300×210 → 2 页（页 3–4）；
+  底层 450×220 → 3 页（页 5–7）；积雪带/树干页 8–12；红圆片合箱页 38；
+- 雪坡 600 宽 → 每坡 4 页（页 29–36）；远景松 A/B 各 2 页（页 13–28）；窗棂小件合箱页 37；
+- 每个拼图页印配对页号（如 `tile row 1/2 col 1/3`）+ 四角对位十字 + 重叠带提示；
+- **回拼自检**：所有页片段按窗口偏移拼回完整轮廓，与原图逐像素比对
+  （缺失 ≤0.5% / 小件 ≤3% 抗锯齿容差），29 个形状全部 PASS（felt_verify.json）。
 
 ### 2. 森林背景 60×90 展示板套件
 
@@ -51,11 +63,17 @@
 （如 [Spinning Christmas Star](https://www.thingiverse.com/thing:1916114) 为
 NC-ND，禁改尺寸），需要缩放与入仓分发 → **不采用，自建**。
 
-| 件 | 尺寸 mm | 体积 | 切片（P1S · 0.20mm Standard · Generic PETG HF，CLI 真实切片 2026-11-16） |
+| 件 | 尺寸 mm | 边审计 | 真实切片（2026-11-16 CLI，P1S 0.4 · 0.20mm Standard · Generic PETG HF） |
 | --- | --- | --- | --- |
-| `rounded_star_90.stl` | 86×81×6 | 15.1 cm³ | **Success**：3025mm 耗材 ≈ **9.4 g** ≈ 14 min |
-| `cottage_forest_90.stl` | 60×48×80 | 201.6 cm³ | **Success**：22149mm ≈ **67.7 g** |
-| `cottage_xmas_110.stl` | 75×58×103 | 387.2 cm³ | **CLI 导入拒绝**（"Nothing to be sliced"，0.5×/0.99×/1.0×/1.25×/2.0× 一致失败；水密/体积/尺寸自检全部通过，原因未明）→ 在 Bambu Studio **GUI** 导入 STL 手动切片，或告知 Agent 换重建方案 |
+| `rounded_star_90.stl` | 86×91×6（含站立缺口） | 0 开放边 / 0 共边 | **Success**：2921mm ≈ **8.9 g** ≈ 14m42s |
+| `cottage_xmas_110.stl` | 75×58×**100** | 0 开放边 / 0 共边 | **Success**：39953mm ≈ **122.0 g** ≈ 2h9m |
+| `cottage_forest_90.stl` | 60×48×80 | 0 开放边 / 0 共边 | **Success**：22149mm ≈ **67.7 g** ≈ 1h15m |
+
+- 星星站立缺口改为**轮廓内建**（免布尔），消除 v1 的开放边/共边问题；
+- 圣诞小屋定高 **100mm**：CLI 实测 >100mm 对象被 "Nothing to be sliced" 拒绝
+  （0.5–2.0× 一致失败，原因未明），≤100mm 正常；门窗/侧树改为贴纸与不织布装饰；
+- **预设口径**：切片用 Generic PETG HF 预设仅为估算载体；用户确认的是**普通 PETG**，
+  实物打印前应在 Bambu Studio GUI 核对实际使用的普通 PETG 预设（克重/时间会略有差异）。
 
 文件：`generated/stl/*.stl`、`generated/3mf/*.3mf`、`generated/petg_decorations.blend`、
 `generated/renders/*.png`、`generated/petg_preprint_report.json`（打印前检查：水密性、
