@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.0",
+  "updated": "2026-11-17",
+  "source": {
+    "type": "user-provided current-room photo and conversation",
+    "stored_in_repo": false,
+    "scope": "space-use observations; no photo, personal details or location uploaded"
+  },
+  "bed": {
+    "model": "IKEA KURA 502.665.06",
+    "mode": "low",
+    "roof": false,
+    "open_rectangular_frame": true,
+    "reference_dimensions_mm": [
+      2090,
+      990,
+      1160
+    ],
+    "measured_dimensions": false
+  },
+  "observed": {
+    "mosquito_net_installed": true,
+    "net_top_and_mesh_occupied": true,
+    "behind_bed": "window and curtains",
+    "in_front_of_bed": "adult bed",
+    "wall_display_space": false,
+    "available_extra_floor_area": "not verified",
+    "safe_projector_surface": "not verified"
+  },
+  "stop_current_install": [
+    "roof/tent fabric, roof frame, overhead decorations",
+    "mount or wire on mosquito net or in sleeping area",
+    "60x90cm wall display board, added display table, freestanding large tree",
+    "assume window/glass/curtain supports adhesive or furniture"
+  ],
+  "implementation": {
+    "v1": "festive bedding; supervised paper/felt test outside bed, removed before sleep",
+    "v2": "standalone adult-controlled ambient/projected light only after stable placement and cable/glare check",
+    "v3": "enclosed adult-positioned button/PIR, optional and not installed",
+    "v4": "existing phone/computer push-to-talk story playback"
+  },
+  "evidence_status": {
+    "real_photo_seen": true,
+    "photo_stored": false,
+    "net_attachments_verified": false,
+    "external_light_location_verified": false,
+    "printed_or_installed": false
+  },
+  "purchasing": {
+    "felt_cart_seen_cny": 27,
+    "paid_unverified": true,
+    "p1s_and_petg_owned": true,
+    "new_electronics": "HOLD"
+  }
+}
