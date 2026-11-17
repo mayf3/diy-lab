@@ -15,3 +15,6 @@ test_g2
 video/remotion/props/
 video/remotion/public/images/
 video/remotion/out/
+source-data/christmas-magic-tent/kura-v1/renders_local/
+source-data/christmas-magic-tent/kura-v1/generated/*.blend1
+source-data/christmas-magic-tent/tree-v2/renders_local/
