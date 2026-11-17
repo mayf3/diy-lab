@@ -68,22 +68,24 @@ class TentPurchaseFacts(unittest.TestCase):
                          "帐篷未下单（READY_BUY）：不得标记 building")
 
     def test_description_claims_purchase_without_arrival_acceptance(self):
-        # 2026-11-13 用户确认已购买：描述可以声称已购买，但到货验收仍未发生
-        self.assertIn("已购买", self.tent["description"])
-        self.assertIn("尺寸待实测", self.tent["description"])
-        for word in ("已到货", "验收通过"):
+        # 2026-11-17 起基准迁移到 KURA 真实卧室：描述不得声称已安装/通电，
+        # 也不得把帐篷购买/退货说成已完成（退货决定≠退款完成）
+        self.assertIn("未实际安装或通电", self.tent["description"])
+        for word in ("已到货", "验收通过", "退款已完成", "退货完成"):
             self.assertNotIn(word, self.tent["description"],
-                             "到货验收未发生：不得声称已到货或已通过验收")
+                             "帐篷退货决定≠退款完成；安装/通电/验收均未发生")
 
     def test_index_header_no_longer_claims_no_purchase_planned(self):
         self.assertNotIn("规划中、明确暂不采购", self.index,
                          "采购决策已冻结：页首过期声明必须移除")
 
     def test_hellokitty_kept_as_history_but_marked_void(self):
-        first = self.index.find("299.52")
-        self.assertNotEqual(first, -1, "历史候选应保留可追溯记录")
-        window = self.index[max(0, first - 300): first + 400]
-        self.assertIn("作废", window, "HelloKitty 历史报价旁必须标注已作废")
+        # 历史比价记录已收敛到 tent-history 页（index 只保留指向它的链接）
+        history = (ROOT / "content/projects/christmas-magic-tent/tent-history.md").read_text(encoding="utf-8")
+        first = history.find("299.52")
+        self.assertNotEqual(first, -1, "HelloKitty 历史报价应在 tent-history 可追溯")
+        window = history[max(0, first - 300): first + 400]
+        self.assertIn("已作废", window, "HelloKitty 历史报价旁必须标注已作废")
 
     def test_final_sku_and_readiness_in_purchase_plan(self):
         self.assertIn("165cm", self.plan)
@@ -91,10 +93,11 @@ class TentPurchaseFacts(unittest.TestCase):
         self.assertNotIn("已购买", self.plan)
 
     def test_budget_field_separates_actual_planned_and_cap(self):
+        # 当前口径：无新增采购；¥27 布艺仅购物车、付款未核实；帐篷退货未结案
         budget = self.tent["budget"]
-        self.assertIn("已确认支出", budget, "预算字段必须写明实际支出口径")
-        self.assertIn("上限", budget, "预算字段必须写明总预算上限")
-        self.assertNotIn("非真实支出", budget, "旧的单一预算文案应已被三口径取代")
+        self.assertIn("¥27", budget, "预算字段必须保留 ¥27 购物车事实")
+        self.assertIn("未核实", budget, "购物车付款状态必须标注未核实")
+        self.assertNotIn("已付款", budget, "不得把购物车加购标为已付款")
 
     def test_arrival_checklist_stays_unchecked_until_it_happens(self):
         checklist = (ROOT / "source-data/christmas-magic-tent/arrival-acceptance-checklist.md").read_text(encoding="utf-8")

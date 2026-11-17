@@ -16,7 +16,7 @@
 > 这是概念效果图而非实拍。施工时以165cm实木杆款为基础，所有2D+3D装饰固定在可拆独立背板上，电子件和灯串与帐篷结构物理分离。
 
 
-> **帐篷已购买（2026-11-13 确认；订单截图待回填），尺寸待实测、到货验收未开始。** 目标预算 **≤¥500**。最终 SKU 决策：天猫哎哟宝贝 165cm 实木杆款（READY_BUY→已购，见[采购合并清单](/projects/christmas-magic-tent/consolidated-purchase-plan/)）；历史候选 HelloKitty ¥299.52 **已作废**。当前装饰、图案与结构件仍是设计目标，未打印、未试装。最终 SKU 决策：天猫哎哟宝贝 165cm 实木杆款 **¥210**（READY_BUY，见[采购合并清单](/projects/christmas-magic-tent/consolidated-purchase-plan/)）；历史候选 HelloKitty ¥299.52 **已作废**。当前尺寸、材料、电路仍是设计候选值与模拟结论，非实物结论。
+> **【2026-11-17 状态：本方案已暂停，帐篷决定退货（退款/物流状态未确认）。本页仅作历史追溯，当前方案见 [真实卧室适配 v1](/projects/christmas-magic-tent/real-room-v1/)。】** 历史 banner：帐篷曾于 2026-11-13 确认购买（订单截图待回填），尺寸待实测、到货验收未开始。 目标预算 **≤¥500**。最终 SKU 决策：天猫哎哟宝贝 165cm 实木杆款（READY_BUY→已购，见[采购合并清单](/projects/christmas-magic-tent/consolidated-purchase-plan/)）；历史候选 HelloKitty ¥299.52 **已作废**。当前装饰、图案与结构件仍是设计目标，未打印、未试装。最终 SKU 决策：天猫哎哟宝贝 165cm 实木杆款 **¥210**（READY_BUY，见[采购合并清单](/projects/christmas-magic-tent/consolidated-purchase-plan/)）；历史候选 HelloKitty ¥299.52 **已作废**。当前尺寸、材料、电路仍是设计候选值与模拟结论，非实物结论。
 
 ## V1 制作路线（主入口）
 
@@ -108,4 +108,4 @@ Blender 参数化模型已建成，A（110×160）/ B（160×110）两候选完�
 
 ## 帐篷采购放行（2026-11-07，用户拍板）
 
-> **【已作废·仅作历史记录】** 2026-11-09 曾决策：确定购买 HelloKitty 单帐篷款 160×100×130cm ¥299.52（京东 10234458195367，下单由用户执行）；同日晚被天猫 165cm 实木杆款 ¥210 方案取代，**本段全部内容不再有效**。原风险兜底（7 天无理由+免费上门退换，门净尺寸/檐口高/杆径疑点转为到货实测项，9 项清单见 [G1a 预算页](/projects/christmas-magic-tent/g1a-budget/)）与原预算口径（帐篷 299.52 + 固定 260 = 559.52）随之失效；现行口径见页首与[采购合并清单](/projects/christmas-magic-tent/consolidated-purchase-plan/)。
+> **【已作废·仅作历史记录】** 2026-11-09 曾决策：确定购买 HelloKitty 单帐篷款 160×100×130cm ¥299.52（京东订单号已脱敏，下单由用户执行）；同日晚被天猫 165cm 实木杆款 ¥210 方案取代，**本段全部内容不再有效**。原风险兜底（7 天无理由+免费上门退换，门净尺寸/檐口高/杆径疑点转为到货实测项，9 项清单见 [G1a 预算页](/projects/christmas-magic-tent/g1a-budget/)）与原预算口径（帐篷 299.52 + 固定 260 = 559.52）随之失效；现行口径见页首与[采购合并清单](/projects/christmas-magic-tent/consolidated-purchase-plan/)。
