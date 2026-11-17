@@ -14,6 +14,8 @@
 
 **正在准备的新项目**：[AI Robot Lab 01｜让 GPT 指挥 SO-101 机械臂画树](content/projects/robot-lab-draw-tree/index.md)：已按 DOAVR 创作原语提供 [人类制作版](content/projects/robot-lab-draw-tree/human-track.md) / [Agent 执行版](content/projects/robot-lab-draw-tree/agent-track.md) 两种视图，保留 G0–G6 详细教程、单臂 BOM 和离线计划校验器。尚未采购、尚未实物验证；跟踪 [Issue #3](https://github.com/mayf3/diy-lab/issues/3)。
 
+**新增待做想法（2026-11-18）**：[亲子教学随身记录器](content/projects/parent-child-recorder/index.md)：小型可佩戴鱼眼相机，考虑挂脖，尽可能完整记录亲子教学互动。与“口喷神器”分别设计和制作；当前为规划中，佩戴、收音、续航、存储及预算待设计。
+
 **2026-11-06 更新**：已由用户 GitHub 账户创建公开仓库 <https://github.com/mayf3/diy-lab>。网站已经通过 GitHub Pages 自动部署，并验证可访问：<https://mayf3.github.io/diy-lab/>。
 
 **2026-11-10 更新**：新增大陆加速镜像 **<https://diy-lab.mayf3.com/>**（阿里云 ECS，nginx 独立 vhost + Let's Encrypt 自动续期；DNS A 记录与证书 2026-11-10 配置）。发布流程：`git push`（Pages 自动部署）+ `bash scripts/deploy-aliyun.sh`（镜像原子换名同步，脚本内先跑 check.py 门禁）。
@@ -90,7 +92,8 @@ diy-lab/
 │       ├── halloween-costume/ # 已完成：待整理
 │       ├── halloween-door/    # 已完成：待整理
 │       ├── christmas-magic-tent/ # 规划中
-│       └── robot-lab-draw-tree/ # SO-101 机械臂画树：准备中
+│       ├── robot-lab-draw-tree/ # SO-101 机械臂画树：准备中
+│       └── parent-child-recorder/ # 亲子教学随身记录器：规划中
 ├── source-data/
 │   └── hachimodock/bom.csv    # 可在 Excel/Numbers 中编辑的材料表
 ├── public/media/             # 仅放有授权的小照片与缩略图
