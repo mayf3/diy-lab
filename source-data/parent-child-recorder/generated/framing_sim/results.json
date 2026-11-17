@@ -1,0 +1,1349 @@
+{
+ "model": "equidistant fisheye (OpenCV fisheye 同口径): r_px=R·θ/θ_max",
+ "label": "模拟预测：几何投影示意，非实拍；场景与阈值均为实验性假设",
+ "thresholds": {
+  "教学": 100,
+  "面部": 60,
+  "手部": 80
+ },
+ "runs": [
+  {
+   "scenario": "S1-side-reading",
+   "config": "stand-1.35-tilt00-fov180",
+   "height_m": 1.35,
+   "tilt_deg": 0,
+   "fov_deg": 180,
+   "targets": {
+    "课本/桌面": {
+     "visible": true,
+     "theta_deg": 52.5,
+     "distance_m": 0.85,
+     "px_width": 75,
+     "threshold_px": 100,
+     "readable": false
+    },
+    "家长双手": {
+     "visible": true,
+     "theta_deg": 53.5,
+     "distance_m": 0.67,
+     "px_width": 76,
+     "threshold_px": 80,
+     "readable": false
+    },
+    "孩子面部": {
+     "visible": true,
+     "theta_deg": 81.6,
+     "distance_m": 0.69,
+     "px_width": 42,
+     "threshold_px": 60,
+     "readable": false
+    }
+   },
+   "all_visible": true,
+   "all_readable": false,
+   "image": "generated/framing_sim/S1-side-reading_stand-1.35-tilt00-fov180.png"
+  },
+  {
+   "scenario": "S1-side-reading",
+   "config": "stand-1.35-tilt00-fov150",
+   "height_m": 1.35,
+   "tilt_deg": 0,
+   "fov_deg": 150,
+   "targets": {
+    "课本/桌面": {
+     "visible": true,
+     "theta_deg": 52.5,
+     "distance_m": 0.85,
+     "px_width": 90,
+     "threshold_px": 100,
+     "readable": false
+    },
+    "家长双手": {
+     "visible": true,
+     "theta_deg": 53.5,
+     "distance_m": 0.67,
+     "px_width": 91,
+     "threshold_px": 80,
+     "readable": true
+    },
+    "孩子面部": {
+     "visible": false,
+     "theta_deg": 81.6,
+     "distance_m": 0.69,
+     "px_width": 50,
+     "threshold_px": 60,
+     "readable": false
+    }
+   },
+   "all_visible": false,
+   "all_readable": false,
+   "image": "generated/framing_sim/S1-side-reading_stand-1.35-tilt00-fov150.png"
+  },
+  {
+   "scenario": "S1-side-reading",
+   "config": "stand-1.35-tilt20-fov180",
+   "height_m": 1.35,
+   "tilt_deg": 20,
+   "fov_deg": 180,
+   "targets": {
+    "课本/桌面": {
+     "visible": true,
+     "theta_deg": 36.4,
+     "distance_m": 0.85,
+     "px_width": 75,
+     "threshold_px": 100,
+     "readable": false
+    },
+    "家长双手": {
+     "visible": true,
+     "theta_deg": 38.0,
+     "distance_m": 0.67,
+     "px_width": 76,
+     "threshold_px": 80,
+     "readable": false
+    },
+    "孩子面部": {
+     "visible": true,
+     "theta_deg": 71.3,
+     "distance_m": 0.69,
+     "px_width": 42,
+     "threshold_px": 60,
+     "readable": false
+    }
+   },
+   "all_visible": true,
+   "all_readable": false,
+   "image": "generated/framing_sim/S1-side-reading_stand-1.35-tilt20-fov180.png"
+  },
+  {
+   "scenario": "S1-side-reading",
+   "config": "stand-1.35-tilt20-fov150",
+   "height_m": 1.35,
+   "tilt_deg": 20,
+   "fov_deg": 150,
+   "targets": {
+    "课本/桌面": {
+     "visible": true,
+     "theta_deg": 36.4,
+     "distance_m": 0.85,
+     "px_width": 90,
+     "threshold_px": 100,
+     "readable": false
+    },
+    "家长双手": {
+     "visible": true,
+     "theta_deg": 38.0,
+     "distance_m": 0.67,
+     "px_width": 91,
+     "threshold_px": 80,
+     "readable": true
+    },
+    "孩子面部": {
+     "visible": true,
+     "theta_deg": 71.3,
+     "distance_m": 0.69,
+     "px_width": 50,
+     "threshold_px": 60,
+     "readable": false
+    }
+   },
+   "all_visible": true,
+   "all_readable": false,
+   "image": "generated/framing_sim/S1-side-reading_stand-1.35-tilt20-fov150.png"
+  },
+  {
+   "scenario": "S1-side-reading",
+   "config": "stand-1.35-tilt35-fov180",
+   "height_m": 1.35,
+   "tilt_deg": 35,
+   "fov_deg": 180,
+   "targets": {
+    "课本/桌面": {
+     "visible": true,
+     "theta_deg": 27.3,
+     "distance_m": 0.85,
+     "px_width": 75,
+     "threshold_px": 100,
+     "readable": false
+    },
+    "家长双手": {
+     "visible": true,
+     "theta_deg": 29.4,
+     "distance_m": 0.67,
+     "px_width": 76,
+     "threshold_px": 80,
+     "readable": false
+    },
+    "孩子面部": {
+     "visible": true,
+     "theta_deg": 64.6,
+     "distance_m": 0.69,
+     "px_width": 42,
+     "threshold_px": 60,
+     "readable": false
+    }
+   },
+   "all_visible": true,
+   "all_readable": false,
+   "image": "generated/framing_sim/S1-side-reading_stand-1.35-tilt35-fov180.png"
+  },
+  {
+   "scenario": "S1-side-reading",
+   "config": "stand-1.35-tilt35-fov150",
+   "height_m": 1.35,
+   "tilt_deg": 35,
+   "fov_deg": 150,
+   "targets": {
+    "课本/桌面": {
+     "visible": true,
+     "theta_deg": 27.3,
+     "distance_m": 0.85,
+     "px_width": 90,
+     "threshold_px": 100,
+     "readable": false
+    },
+    "家长双手": {
+     "visible": true,
+     "theta_deg": 29.4,
+     "distance_m": 0.67,
+     "px_width": 91,
+     "threshold_px": 80,
+     "readable": true
+    },
+    "孩子面部": {
+     "visible": true,
+     "theta_deg": 64.6,
+     "distance_m": 0.69,
+     "px_width": 50,
+     "threshold_px": 60,
+     "readable": false
+    }
+   },
+   "all_visible": true,
+   "all_readable": false,
+   "image": "generated/framing_sim/S1-side-reading_stand-1.35-tilt35-fov150.png"
+  },
+  {
+   "scenario": "S1-side-reading",
+   "config": "seated-1.10-tilt00-fov180",
+   "height_m": 1.1,
+   "tilt_deg": 0,
+   "fov_deg": 180,
+   "targets": {
+    "课本/桌面": {
+     "visible": true,
+     "theta_deg": 42.8,
+     "distance_m": 0.71,
+     "px_width": 90,
+     "threshold_px": 100,
+     "readable": false
+    },
+    "家长双手": {
+     "visible": true,
+     "theta_deg": 42.0,
+     "distance_m": 0.54,
+     "px_width": 95,
+     "threshold_px": 80,
+     "readable": true
+    },
+    "孩子面部": {
+     "visible": true,
+     "theta_deg": 80.3,
+     "distance_m": 0.59,
+     "px_width": 49,
+     "threshold_px": 60,
+     "readable": false
+    }
+   },
+   "all_visible": true,
+   "all_readable": false,
+   "image": "generated/framing_sim/S1-side-reading_seated-1.10-tilt00-fov180.png"
+  },
+  {
+   "scenario": "S1-side-reading",
+   "config": "seated-1.10-tilt00-fov150",
+   "height_m": 1.1,
+   "tilt_deg": 0,
+   "fov_deg": 150,
+   "targets": {
+    "课本/桌面": {
+     "visible": true,
+     "theta_deg": 42.8,
+     "distance_m": 0.71,
+     "px_width": 108,
+     "threshold_px": 100,
+     "readable": true
+    },
+    "家长双手": {
+     "visible": true,
+     "theta_deg": 42.0,
+     "distance_m": 0.54,
+     "px_width": 114,
+     "threshold_px": 80,
+     "readable": true
+    },
+    "孩子面部": {
+     "visible": false,
+     "theta_deg": 80.3,
+     "distance_m": 0.59,
+     "px_width": 58,
+     "threshold_px": 60,
+     "readable": false
+    }
+   },
+   "all_visible": false,
+   "all_readable": false,
+   "image": "generated/framing_sim/S1-side-reading_seated-1.10-tilt00-fov150.png"
+  },
+  {
+   "scenario": "S1-side-reading",
+   "config": "seated-1.10-tilt20-fov180",
+   "height_m": 1.1,
+   "tilt_deg": 20,
+   "fov_deg": 180,
+   "targets": {
+    "课本/桌面": {
+     "visible": true,
+     "theta_deg": 31.9,
+     "distance_m": 0.71,
+     "px_width": 90,
+     "threshold_px": 100,
+     "readable": false
+    },
+    "家长双手": {
+     "visible": true,
+     "theta_deg": 34.4,
+     "distance_m": 0.54,
+     "px_width": 95,
+     "threshold_px": 80,
+     "readable": true
+    },
+    "孩子面部": {
+     "visible": true,
+     "theta_deg": 76.8,
+     "distance_m": 0.59,
+     "px_width": 49,
+     "threshold_px": 60,
+     "readable": false
+    }
+   },
+   "all_visible": true,
+   "all_readable": false,
+   "image": "generated/framing_sim/S1-side-reading_seated-1.10-tilt20-fov180.png"
+  },
+  {
+   "scenario": "S1-side-reading",
+   "config": "seated-1.10-tilt20-fov150",
+   "height_m": 1.1,
+   "tilt_deg": 20,
+   "fov_deg": 150,
+   "targets": {
+    "课本/桌面": {
+     "visible": true,
+     "theta_deg": 31.9,
+     "distance_m": 0.71,
+     "px_width": 108,
+     "threshold_px": 100,
+     "readable": true
+    },
+    "家长双手": {
+     "visible": true,
+     "theta_deg": 34.4,
+     "distance_m": 0.54,
+     "px_width": 114,
+     "threshold_px": 80,
+     "readable": true
+    },
+    "孩子面部": {
+     "visible": false,
+     "theta_deg": 76.8,
+     "distance_m": 0.59,
+     "px_width": 58,
+     "threshold_px": 60,
+     "readable": false
+    }
+   },
+   "all_visible": false,
+   "all_readable": false,
+   "image": "generated/framing_sim/S1-side-reading_seated-1.10-tilt20-fov150.png"
+  },
+  {
+   "scenario": "S1-side-reading",
+   "config": "seated-1.10-tilt35-fov180",
+   "height_m": 1.1,
+   "tilt_deg": 35,
+   "fov_deg": 180,
+   "targets": {
+    "课本/桌面": {
+     "visible": true,
+     "theta_deg": 29.7,
+     "distance_m": 0.71,
+     "px_width": 90,
+     "threshold_px": 100,
+     "readable": false
+    },
+    "家长双手": {
+     "visible": true,
+     "theta_deg": 34.8,
+     "distance_m": 0.54,
+     "px_width": 95,
+     "threshold_px": 80,
+     "readable": true
+    },
+    "孩子面部": {
+     "visible": true,
+     "theta_deg": 75.2,
+     "distance_m": 0.59,
+     "px_width": 49,
+     "threshold_px": 60,
+     "readable": false
+    }
+   },
+   "all_visible": true,
+   "all_readable": false,
+   "image": "generated/framing_sim/S1-side-reading_seated-1.10-tilt35-fov180.png"
+  },
+  {
+   "scenario": "S1-side-reading",
+   "config": "seated-1.10-tilt35-fov150",
+   "height_m": 1.1,
+   "tilt_deg": 35,
+   "fov_deg": 150,
+   "targets": {
+    "课本/桌面": {
+     "visible": true,
+     "theta_deg": 29.7,
+     "distance_m": 0.71,
+     "px_width": 108,
+     "threshold_px": 100,
+     "readable": true
+    },
+    "家长双手": {
+     "visible": true,
+     "theta_deg": 34.8,
+     "distance_m": 0.54,
+     "px_width": 114,
+     "threshold_px": 80,
+     "readable": true
+    },
+    "孩子面部": {
+     "visible": false,
+     "theta_deg": 75.2,
+     "distance_m": 0.59,
+     "px_width": 58,
+     "threshold_px": 60,
+     "readable": false
+    }
+   },
+   "all_visible": false,
+   "all_readable": false,
+   "image": "generated/framing_sim/S1-side-reading_seated-1.10-tilt35-fov150.png"
+  },
+  {
+   "scenario": "S2-face-to-face",
+   "config": "stand-1.35-tilt00-fov180",
+   "height_m": 1.35,
+   "tilt_deg": 0,
+   "fov_deg": 180,
+   "targets": {
+    "桌面玩具": {
+     "visible": true,
+     "theta_deg": 46.0,
+     "distance_m": 0.79,
+     "px_width": 56,
+     "threshold_px": 100,
+     "readable": false
+    },
+    "孩子面部": {
+     "visible": true,
+     "theta_deg": 18.6,
+     "distance_m": 1.16,
+     "px_width": 25,
+     "threshold_px": 60,
+     "readable": false
+    },
+    "家长双手": {
+     "visible": true,
+     "theta_deg": 48.4,
+     "distance_m": 0.6,
+     "px_width": 85,
+     "threshold_px": 80,
+     "readable": true
+    }
+   },
+   "all_visible": true,
+   "all_readable": false,
+   "image": "generated/framing_sim/S2-face-to-face_stand-1.35-tilt00-fov180.png"
+  },
+  {
+   "scenario": "S2-face-to-face",
+   "config": "stand-1.35-tilt00-fov150",
+   "height_m": 1.35,
+   "tilt_deg": 0,
+   "fov_deg": 150,
+   "targets": {
+    "桌面玩具": {
+     "visible": true,
+     "theta_deg": 46.0,
+     "distance_m": 0.79,
+     "px_width": 68,
+     "threshold_px": 100,
+     "readable": false
+    },
+    "孩子面部": {
+     "visible": true,
+     "theta_deg": 18.6,
+     "distance_m": 1.16,
+     "px_width": 30,
+     "threshold_px": 60,
+     "readable": false
+    },
+    "家长双手": {
+     "visible": true,
+     "theta_deg": 48.4,
+     "distance_m": 0.6,
+     "px_width": 102,
+     "threshold_px": 80,
+     "readable": true
+    }
+   },
+   "all_visible": true,
+   "all_readable": false,
+   "image": "generated/framing_sim/S2-face-to-face_stand-1.35-tilt00-fov150.png"
+  },
+  {
+   "scenario": "S2-face-to-face",
+   "config": "stand-1.35-tilt20-fov180",
+   "height_m": 1.35,
+   "tilt_deg": 20,
+   "fov_deg": 180,
+   "targets": {
+    "桌面玩具": {
+     "visible": true,
+     "theta_deg": 26.0,
+     "distance_m": 0.79,
+     "px_width": 56,
+     "threshold_px": 100,
+     "readable": false
+    },
+    "孩子面部": {
+     "visible": true,
+     "theta_deg": 1.4,
+     "distance_m": 1.16,
+     "px_width": 25,
+     "threshold_px": 60,
+     "readable": false
+    },
+    "家长双手": {
+     "visible": true,
+     "theta_deg": 28.4,
+     "distance_m": 0.6,
+     "px_width": 85,
+     "threshold_px": 80,
+     "readable": true
+    }
+   },
+   "all_visible": true,
+   "all_readable": false,
+   "image": "generated/framing_sim/S2-face-to-face_stand-1.35-tilt20-fov180.png"
+  },
+  {
+   "scenario": "S2-face-to-face",
+   "config": "stand-1.35-tilt20-fov150",
+   "height_m": 1.35,
+   "tilt_deg": 20,
+   "fov_deg": 150,
+   "targets": {
+    "桌面玩具": {
+     "visible": true,
+     "theta_deg": 26.0,
+     "distance_m": 0.79,
+     "px_width": 68,
+     "threshold_px": 100,
+     "readable": false
+    },
+    "孩子面部": {
+     "visible": true,
+     "theta_deg": 1.4,
+     "distance_m": 1.16,
+     "px_width": 30,
+     "threshold_px": 60,
+     "readable": false
+    },
+    "家长双手": {
+     "visible": true,
+     "theta_deg": 28.4,
+     "distance_m": 0.6,
+     "px_width": 102,
+     "threshold_px": 80,
+     "readable": true
+    }
+   },
+   "all_visible": true,
+   "all_readable": false,
+   "image": "generated/framing_sim/S2-face-to-face_stand-1.35-tilt20-fov150.png"
+  },
+  {
+   "scenario": "S2-face-to-face",
+   "config": "stand-1.35-tilt35-fov180",
+   "height_m": 1.35,
+   "tilt_deg": 35,
+   "fov_deg": 180,
+   "targets": {
+    "桌面玩具": {
+     "visible": true,
+     "theta_deg": 11.0,
+     "distance_m": 0.79,
+     "px_width": 56,
+     "threshold_px": 100,
+     "readable": false
+    },
+    "孩子面部": {
+     "visible": true,
+     "theta_deg": 16.4,
+     "distance_m": 1.16,
+     "px_width": 25,
+     "threshold_px": 60,
+     "readable": false
+    },
+    "家长双手": {
+     "visible": true,
+     "theta_deg": 13.4,
+     "distance_m": 0.6,
+     "px_width": 85,
+     "threshold_px": 80,
+     "readable": true
+    }
+   },
+   "all_visible": true,
+   "all_readable": false,
+   "image": "generated/framing_sim/S2-face-to-face_stand-1.35-tilt35-fov180.png"
+  },
+  {
+   "scenario": "S2-face-to-face",
+   "config": "stand-1.35-tilt35-fov150",
+   "height_m": 1.35,
+   "tilt_deg": 35,
+   "fov_deg": 150,
+   "targets": {
+    "桌面玩具": {
+     "visible": true,
+     "theta_deg": 11.0,
+     "distance_m": 0.79,
+     "px_width": 68,
+     "threshold_px": 100,
+     "readable": false
+    },
+    "孩子面部": {
+     "visible": true,
+     "theta_deg": 16.4,
+     "distance_m": 1.16,
+     "px_width": 30,
+     "threshold_px": 60,
+     "readable": false
+    },
+    "家长双手": {
+     "visible": true,
+     "theta_deg": 13.4,
+     "distance_m": 0.6,
+     "px_width": 102,
+     "threshold_px": 80,
+     "readable": true
+    }
+   },
+   "all_visible": true,
+   "all_readable": false,
+   "image": "generated/framing_sim/S2-face-to-face_stand-1.35-tilt35-fov150.png"
+  },
+  {
+   "scenario": "S2-face-to-face",
+   "config": "seated-1.10-tilt00-fov180",
+   "height_m": 1.1,
+   "tilt_deg": 0,
+   "fov_deg": 180,
+   "targets": {
+    "桌面玩具": {
+     "visible": true,
+     "theta_deg": 30.2,
+     "distance_m": 0.64,
+     "px_width": 70,
+     "threshold_px": 100,
+     "readable": false
+    },
+    "孩子面部": {
+     "visible": true,
+     "theta_deg": 6.2,
+     "distance_m": 1.11,
+     "px_width": 26,
+     "threshold_px": 60,
+     "readable": false
+    },
+    "家长双手": {
+     "visible": true,
+     "theta_deg": 26.6,
+     "distance_m": 0.45,
+     "px_width": 114,
+     "threshold_px": 80,
+     "readable": true
+    }
+   },
+   "all_visible": true,
+   "all_readable": false,
+   "image": "generated/framing_sim/S2-face-to-face_seated-1.10-tilt00-fov180.png"
+  },
+  {
+   "scenario": "S2-face-to-face",
+   "config": "seated-1.10-tilt00-fov150",
+   "height_m": 1.1,
+   "tilt_deg": 0,
+   "fov_deg": 150,
+   "targets": {
+    "桌面玩具": {
+     "visible": true,
+     "theta_deg": 30.2,
+     "distance_m": 0.64,
+     "px_width": 84,
+     "threshold_px": 100,
+     "readable": false
+    },
+    "孩子面部": {
+     "visible": true,
+     "theta_deg": 6.2,
+     "distance_m": 1.11,
+     "px_width": 31,
+     "threshold_px": 60,
+     "readable": false
+    },
+    "家长双手": {
+     "visible": true,
+     "theta_deg": 26.6,
+     "distance_m": 0.45,
+     "px_width": 137,
+     "threshold_px": 80,
+     "readable": true
+    }
+   },
+   "all_visible": true,
+   "all_readable": false,
+   "image": "generated/framing_sim/S2-face-to-face_seated-1.10-tilt00-fov150.png"
+  },
+  {
+   "scenario": "S2-face-to-face",
+   "config": "seated-1.10-tilt20-fov180",
+   "height_m": 1.1,
+   "tilt_deg": 20,
+   "fov_deg": 180,
+   "targets": {
+    "桌面玩具": {
+     "visible": true,
+     "theta_deg": 10.2,
+     "distance_m": 0.64,
+     "px_width": 70,
+     "threshold_px": 100,
+     "readable": false
+    },
+    "孩子面部": {
+     "visible": true,
+     "theta_deg": 13.8,
+     "distance_m": 1.11,
+     "px_width": 26,
+     "threshold_px": 60,
+     "readable": false
+    },
+    "家长双手": {
+     "visible": true,
+     "theta_deg": 6.6,
+     "distance_m": 0.45,
+     "px_width": 114,
+     "threshold_px": 80,
+     "readable": true
+    }
+   },
+   "all_visible": true,
+   "all_readable": false,
+   "image": "generated/framing_sim/S2-face-to-face_seated-1.10-tilt20-fov180.png"
+  },
+  {
+   "scenario": "S2-face-to-face",
+   "config": "seated-1.10-tilt20-fov150",
+   "height_m": 1.1,
+   "tilt_deg": 20,
+   "fov_deg": 150,
+   "targets": {
+    "桌面玩具": {
+     "visible": true,
+     "theta_deg": 10.2,
+     "distance_m": 0.64,
+     "px_width": 84,
+     "threshold_px": 100,
+     "readable": false
+    },
+    "孩子面部": {
+     "visible": true,
+     "theta_deg": 13.8,
+     "distance_m": 1.11,
+     "px_width": 31,
+     "threshold_px": 60,
+     "readable": false
+    },
+    "家长双手": {
+     "visible": true,
+     "theta_deg": 6.6,
+     "distance_m": 0.45,
+     "px_width": 137,
+     "threshold_px": 80,
+     "readable": true
+    }
+   },
+   "all_visible": true,
+   "all_readable": false,
+   "image": "generated/framing_sim/S2-face-to-face_seated-1.10-tilt20-fov150.png"
+  },
+  {
+   "scenario": "S2-face-to-face",
+   "config": "seated-1.10-tilt35-fov180",
+   "height_m": 1.1,
+   "tilt_deg": 35,
+   "fov_deg": 180,
+   "targets": {
+    "桌面玩具": {
+     "visible": true,
+     "theta_deg": 4.8,
+     "distance_m": 0.64,
+     "px_width": 70,
+     "threshold_px": 100,
+     "readable": false
+    },
+    "孩子面部": {
+     "visible": true,
+     "theta_deg": 28.8,
+     "distance_m": 1.11,
+     "px_width": 26,
+     "threshold_px": 60,
+     "readable": false
+    },
+    "家长双手": {
+     "visible": true,
+     "theta_deg": 8.4,
+     "distance_m": 0.45,
+     "px_width": 114,
+     "threshold_px": 80,
+     "readable": true
+    }
+   },
+   "all_visible": true,
+   "all_readable": false,
+   "image": "generated/framing_sim/S2-face-to-face_seated-1.10-tilt35-fov180.png"
+  },
+  {
+   "scenario": "S2-face-to-face",
+   "config": "seated-1.10-tilt35-fov150",
+   "height_m": 1.1,
+   "tilt_deg": 35,
+   "fov_deg": 150,
+   "targets": {
+    "桌面玩具": {
+     "visible": true,
+     "theta_deg": 4.8,
+     "distance_m": 0.64,
+     "px_width": 84,
+     "threshold_px": 100,
+     "readable": false
+    },
+    "孩子面部": {
+     "visible": true,
+     "theta_deg": 28.8,
+     "distance_m": 1.11,
+     "px_width": 31,
+     "threshold_px": 60,
+     "readable": false
+    },
+    "家长双手": {
+     "visible": true,
+     "theta_deg": 8.4,
+     "distance_m": 0.45,
+     "px_width": 137,
+     "threshold_px": 80,
+     "readable": true
+    }
+   },
+   "all_visible": true,
+   "all_readable": false,
+   "image": "generated/framing_sim/S2-face-to-face_seated-1.10-tilt35-fov150.png"
+  },
+  {
+   "scenario": "S3-desk-work",
+   "config": "stand-1.35-tilt00-fov180",
+   "height_m": 1.35,
+   "tilt_deg": 0,
+   "fov_deg": 180,
+   "targets": {
+    "操作工件": {
+     "visible": true,
+     "theta_deg": 52.2,
+     "distance_m": 0.73,
+     "px_width": 78,
+     "threshold_px": 100,
+     "readable": false
+    },
+    "家长双手": {
+     "visible": true,
+     "theta_deg": 52.4,
+     "distance_m": 0.66,
+     "px_width": 78,
+     "threshold_px": 80,
+     "readable": false
+    },
+    "孩子面部": {
+     "visible": true,
+     "theta_deg": 59.0,
+     "distance_m": 0.68,
+     "px_width": 42,
+     "threshold_px": 60,
+     "readable": false
+    }
+   },
+   "all_visible": true,
+   "all_readable": false,
+   "image": "generated/framing_sim/S3-desk-work_stand-1.35-tilt00-fov180.png"
+  },
+  {
+   "scenario": "S3-desk-work",
+   "config": "stand-1.35-tilt00-fov150",
+   "height_m": 1.35,
+   "tilt_deg": 0,
+   "fov_deg": 150,
+   "targets": {
+    "操作工件": {
+     "visible": true,
+     "theta_deg": 52.2,
+     "distance_m": 0.73,
+     "px_width": 94,
+     "threshold_px": 100,
+     "readable": false
+    },
+    "家长双手": {
+     "visible": true,
+     "theta_deg": 52.4,
+     "distance_m": 0.66,
+     "px_width": 94,
+     "threshold_px": 80,
+     "readable": true
+    },
+    "孩子面部": {
+     "visible": true,
+     "theta_deg": 59.0,
+     "distance_m": 0.68,
+     "px_width": 51,
+     "threshold_px": 60,
+     "readable": false
+    }
+   },
+   "all_visible": true,
+   "all_readable": false,
+   "image": "generated/framing_sim/S3-desk-work_stand-1.35-tilt00-fov150.png"
+  },
+  {
+   "scenario": "S3-desk-work",
+   "config": "stand-1.35-tilt20-fov180",
+   "height_m": 1.35,
+   "tilt_deg": 20,
+   "fov_deg": 180,
+   "targets": {
+    "操作工件": {
+     "visible": true,
+     "theta_deg": 32.2,
+     "distance_m": 0.73,
+     "px_width": 78,
+     "threshold_px": 100,
+     "readable": false
+    },
+    "家长双手": {
+     "visible": true,
+     "theta_deg": 32.4,
+     "distance_m": 0.66,
+     "px_width": 78,
+     "threshold_px": 80,
+     "readable": false
+    },
+    "孩子面部": {
+     "visible": true,
+     "theta_deg": 47.9,
+     "distance_m": 0.68,
+     "px_width": 42,
+     "threshold_px": 60,
+     "readable": false
+    }
+   },
+   "all_visible": true,
+   "all_readable": false,
+   "image": "generated/framing_sim/S3-desk-work_stand-1.35-tilt20-fov180.png"
+  },
+  {
+   "scenario": "S3-desk-work",
+   "config": "stand-1.35-tilt20-fov150",
+   "height_m": 1.35,
+   "tilt_deg": 20,
+   "fov_deg": 150,
+   "targets": {
+    "操作工件": {
+     "visible": true,
+     "theta_deg": 32.2,
+     "distance_m": 0.73,
+     "px_width": 94,
+     "threshold_px": 100,
+     "readable": false
+    },
+    "家长双手": {
+     "visible": true,
+     "theta_deg": 32.4,
+     "distance_m": 0.66,
+     "px_width": 94,
+     "threshold_px": 80,
+     "readable": true
+    },
+    "孩子面部": {
+     "visible": true,
+     "theta_deg": 47.9,
+     "distance_m": 0.68,
+     "px_width": 51,
+     "threshold_px": 60,
+     "readable": false
+    }
+   },
+   "all_visible": true,
+   "all_readable": false,
+   "image": "generated/framing_sim/S3-desk-work_stand-1.35-tilt20-fov150.png"
+  },
+  {
+   "scenario": "S3-desk-work",
+   "config": "stand-1.35-tilt35-fov180",
+   "height_m": 1.35,
+   "tilt_deg": 35,
+   "fov_deg": 180,
+   "targets": {
+    "操作工件": {
+     "visible": true,
+     "theta_deg": 17.2,
+     "distance_m": 0.73,
+     "px_width": 78,
+     "threshold_px": 100,
+     "readable": false
+    },
+    "家长双手": {
+     "visible": true,
+     "theta_deg": 17.4,
+     "distance_m": 0.66,
+     "px_width": 78,
+     "threshold_px": 80,
+     "readable": false
+    },
+    "孩子面部": {
+     "visible": true,
+     "theta_deg": 42.8,
+     "distance_m": 0.68,
+     "px_width": 42,
+     "threshold_px": 60,
+     "readable": false
+    }
+   },
+   "all_visible": true,
+   "all_readable": false,
+   "image": "generated/framing_sim/S3-desk-work_stand-1.35-tilt35-fov180.png"
+  },
+  {
+   "scenario": "S3-desk-work",
+   "config": "stand-1.35-tilt35-fov150",
+   "height_m": 1.35,
+   "tilt_deg": 35,
+   "fov_deg": 150,
+   "targets": {
+    "操作工件": {
+     "visible": true,
+     "theta_deg": 17.2,
+     "distance_m": 0.73,
+     "px_width": 94,
+     "threshold_px": 100,
+     "readable": false
+    },
+    "家长双手": {
+     "visible": true,
+     "theta_deg": 17.4,
+     "distance_m": 0.66,
+     "px_width": 94,
+     "threshold_px": 80,
+     "readable": true
+    },
+    "孩子面部": {
+     "visible": true,
+     "theta_deg": 42.8,
+     "distance_m": 0.68,
+     "px_width": 51,
+     "threshold_px": 60,
+     "readable": false
+    }
+   },
+   "all_visible": true,
+   "all_readable": false,
+   "image": "generated/framing_sim/S3-desk-work_stand-1.35-tilt35-fov150.png"
+  },
+  {
+   "scenario": "S3-desk-work",
+   "config": "seated-1.10-tilt00-fov180",
+   "height_m": 1.1,
+   "tilt_deg": 0,
+   "fov_deg": 180,
+   "targets": {
+    "操作工件": {
+     "visible": true,
+     "theta_deg": 36.3,
+     "distance_m": 0.56,
+     "px_width": 103,
+     "threshold_px": 100,
+     "readable": true
+    },
+    "家长双手": {
+     "visible": true,
+     "theta_deg": 34.0,
+     "distance_m": 0.48,
+     "px_width": 106,
+     "threshold_px": 80,
+     "readable": true
+    },
+    "孩子面部": {
+     "visible": true,
+     "theta_deg": 53.1,
+     "distance_m": 0.58,
+     "px_width": 49,
+     "threshold_px": 60,
+     "readable": false
+    }
+   },
+   "all_visible": true,
+   "all_readable": false,
+   "image": "generated/framing_sim/S3-desk-work_seated-1.10-tilt00-fov180.png"
+  },
+  {
+   "scenario": "S3-desk-work",
+   "config": "seated-1.10-tilt00-fov150",
+   "height_m": 1.1,
+   "tilt_deg": 0,
+   "fov_deg": 150,
+   "targets": {
+    "操作工件": {
+     "visible": true,
+     "theta_deg": 36.3,
+     "distance_m": 0.56,
+     "px_width": 124,
+     "threshold_px": 100,
+     "readable": true
+    },
+    "家长双手": {
+     "visible": true,
+     "theta_deg": 34.0,
+     "distance_m": 0.48,
+     "px_width": 127,
+     "threshold_px": 80,
+     "readable": true
+    },
+    "孩子面部": {
+     "visible": true,
+     "theta_deg": 53.1,
+     "distance_m": 0.58,
+     "px_width": 59,
+     "threshold_px": 60,
+     "readable": false
+    }
+   },
+   "all_visible": true,
+   "all_readable": false,
+   "image": "generated/framing_sim/S3-desk-work_seated-1.10-tilt00-fov150.png"
+  },
+  {
+   "scenario": "S3-desk-work",
+   "config": "seated-1.10-tilt20-fov180",
+   "height_m": 1.1,
+   "tilt_deg": 20,
+   "fov_deg": 180,
+   "targets": {
+    "操作工件": {
+     "visible": true,
+     "theta_deg": 16.3,
+     "distance_m": 0.56,
+     "px_width": 103,
+     "threshold_px": 100,
+     "readable": true
+    },
+    "家长双手": {
+     "visible": true,
+     "theta_deg": 14.0,
+     "distance_m": 0.48,
+     "px_width": 106,
+     "threshold_px": 80,
+     "readable": true
+    },
+    "孩子面部": {
+     "visible": true,
+     "theta_deg": 50.6,
+     "distance_m": 0.58,
+     "px_width": 49,
+     "threshold_px": 60,
+     "readable": false
+    }
+   },
+   "all_visible": true,
+   "all_readable": false,
+   "image": "generated/framing_sim/S3-desk-work_seated-1.10-tilt20-fov180.png"
+  },
+  {
+   "scenario": "S3-desk-work",
+   "config": "seated-1.10-tilt20-fov150",
+   "height_m": 1.1,
+   "tilt_deg": 20,
+   "fov_deg": 150,
+   "targets": {
+    "操作工件": {
+     "visible": true,
+     "theta_deg": 16.3,
+     "distance_m": 0.56,
+     "px_width": 124,
+     "threshold_px": 100,
+     "readable": true
+    },
+    "家长双手": {
+     "visible": true,
+     "theta_deg": 14.0,
+     "distance_m": 0.48,
+     "px_width": 127,
+     "threshold_px": 80,
+     "readable": true
+    },
+    "孩子面部": {
+     "visible": true,
+     "theta_deg": 50.6,
+     "distance_m": 0.58,
+     "px_width": 59,
+     "threshold_px": 60,
+     "readable": false
+    }
+   },
+   "all_visible": true,
+   "all_readable": false,
+   "image": "generated/framing_sim/S3-desk-work_seated-1.10-tilt20-fov150.png"
+  },
+  {
+   "scenario": "S3-desk-work",
+   "config": "seated-1.10-tilt35-fov180",
+   "height_m": 1.1,
+   "tilt_deg": 35,
+   "fov_deg": 180,
+   "targets": {
+    "操作工件": {
+     "visible": true,
+     "theta_deg": 1.3,
+     "distance_m": 0.56,
+     "px_width": 103,
+     "threshold_px": 100,
+     "readable": true
+    },
+    "家长双手": {
+     "visible": true,
+     "theta_deg": 1.0,
+     "distance_m": 0.48,
+     "px_width": 106,
+     "threshold_px": 80,
+     "readable": true
+    },
+    "孩子面部": {
+     "visible": true,
+     "theta_deg": 52.4,
+     "distance_m": 0.58,
+     "px_width": 49,
+     "threshold_px": 60,
+     "readable": false
+    }
+   },
+   "all_visible": true,
+   "all_readable": false,
+   "image": "generated/framing_sim/S3-desk-work_seated-1.10-tilt35-fov180.png"
+  },
+  {
+   "scenario": "S3-desk-work",
+   "config": "seated-1.10-tilt35-fov150",
+   "height_m": 1.1,
+   "tilt_deg": 35,
+   "fov_deg": 150,
+   "targets": {
+    "操作工件": {
+     "visible": true,
+     "theta_deg": 1.3,
+     "distance_m": 0.56,
+     "px_width": 124,
+     "threshold_px": 100,
+     "readable": true
+    },
+    "家长双手": {
+     "visible": true,
+     "theta_deg": 1.0,
+     "distance_m": 0.48,
+     "px_width": 127,
+     "threshold_px": 80,
+     "readable": true
+    },
+    "孩子面部": {
+     "visible": true,
+     "theta_deg": 52.4,
+     "distance_m": 0.58,
+     "px_width": 59,
+     "threshold_px": 60,
+     "readable": false
+    }
+   },
+   "all_visible": true,
+   "all_readable": false,
+   "image": "generated/framing_sim/S3-desk-work_seated-1.10-tilt35-fov150.png"
+  }
+ ],
+ "configs_covering_all_scenarios": [
+  {
+   "config": "stand-1.35-tilt35-fov150",
+   "scenarios_all_readable": 0,
+   "min_visible_px": 30
+  },
+  {
+   "config": "stand-1.35-tilt20-fov150",
+   "scenarios_all_readable": 0,
+   "min_visible_px": 30
+  },
+  {
+   "config": "seated-1.10-tilt00-fov180",
+   "scenarios_all_readable": 0,
+   "min_visible_px": 26
+  },
+  {
+   "config": "seated-1.10-tilt20-fov180",
+   "scenarios_all_readable": 0,
+   "min_visible_px": 26
+  },
+  {
+   "config": "seated-1.10-tilt35-fov180",
+   "scenarios_all_readable": 0,
+   "min_visible_px": 26
+  },
+  {
+   "config": "stand-1.35-tilt35-fov180",
+   "scenarios_all_readable": 0,
+   "min_visible_px": 25
+  },
+  {
+   "config": "stand-1.35-tilt00-fov180",
+   "scenarios_all_readable": 0,
+   "min_visible_px": 25
+  },
+  {
+   "config": "stand-1.35-tilt20-fov180",
+   "scenarios_all_readable": 0,
+   "min_visible_px": 25
+  }
+ ]
+}
