@@ -85,4 +85,4 @@
 
 **下一步**：A05 分钟级试录（需要你）；A06 设备实测（blocked，等路线与预算）。
 
-**版本：v0.6 · 2026-11-18。** 唯一规范源：`source-data/parent-child-recorder/workflow.json`。
+**版本：v0.7 · 2026-11-19。** 唯一规范源：`source-data/parent-child-recorder/workflow.json`。
