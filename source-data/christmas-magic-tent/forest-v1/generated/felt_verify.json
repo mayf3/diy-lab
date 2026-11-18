@@ -1,0 +1,214 @@
+{
+  "reassembly_check": {
+    "shapes": [
+      {
+        "group": "tree_crown_top",
+        "orig_px": 664253,
+        "missing_px": 1,
+        "extra_px": 0,
+        "verdict": "PASS"
+      },
+      {
+        "group": "tree_crown_mid",
+        "orig_px": 1100143,
+        "missing_px": 1,
+        "extra_px": 0,
+        "verdict": "PASS"
+      },
+      {
+        "group": "tree_crown_bottom",
+        "orig_px": 1728350,
+        "missing_px": 20,
+        "extra_px": 467,
+        "verdict": "PASS"
+      },
+      {
+        "group": "tree_snow_top",
+        "orig_px": 97944,
+        "missing_px": 24,
+        "extra_px": 24,
+        "verdict": "PASS"
+      },
+      {
+        "group": "tree_snow_mid",
+        "orig_px": 147976,
+        "missing_px": 156,
+        "extra_px": 86,
+        "verdict": "PASS"
+      },
+      {
+        "group": "tree_snow_bottom",
+        "orig_px": 223130,
+        "missing_px": 143,
+        "extra_px": 12,
+        "verdict": "PASS"
+      },
+      {
+        "group": "tree_trunk",
+        "orig_px": 195621,
+        "missing_px": 0,
+        "extra_px": 923,
+        "verdict": "PASS"
+      },
+      {
+        "group": "red_dot_d40_0",
+        "orig_px": 43087,
+        "missing_px": 308,
+        "extra_px": 67,
+        "verdict": "PASS"
+      },
+      {
+        "group": "red_dot_d40_1",
+        "orig_px": 43087,
+        "missing_px": 308,
+        "extra_px": 67,
+        "verdict": "PASS"
+      },
+      {
+        "group": "red_dot_d40_2",
+        "orig_px": 43087,
+        "missing_px": 308,
+        "extra_px": 67,
+        "verdict": "PASS"
+      },
+      {
+        "group": "red_dot_d25_3",
+        "orig_px": 16910,
+        "missing_px": 201,
+        "extra_px": 56,
+        "verdict": "PASS"
+      },
+      {
+        "group": "red_dot_d25_4",
+        "orig_px": 16910,
+        "missing_px": 206,
+        "extra_px": 57,
+        "verdict": "PASS"
+      },
+      {
+        "group": "red_dot_d25_5",
+        "orig_px": 16910,
+        "missing_px": 180,
+        "extra_px": 59,
+        "verdict": "PASS"
+      },
+      {
+        "group": "red_dot_d25_6",
+        "orig_px": 16910,
+        "missing_px": 121,
+        "extra_px": 35,
+        "verdict": "PASS"
+      },
+      {
+        "group": "red_dot_d25_7",
+        "orig_px": 16910,
+        "missing_px": 93,
+        "extra_px": 35,
+        "verdict": "PASS"
+      },
+      {
+        "group": "board_pine_a_0",
+        "orig_px": 349731,
+        "missing_px": 886,
+        "extra_px": 691,
+        "verdict": "PASS"
+      },
+      {
+        "group": "board_pine_a_1",
+        "orig_px": 349731,
+        "missing_px": 886,
+        "extra_px": 691,
+        "verdict": "PASS"
+      },
+      {
+        "group": "board_pine_a_2",
+        "orig_px": 349731,
+        "missing_px": 886,
+        "extra_px": 691,
+        "verdict": "PASS"
+      },
+      {
+        "group": "board_pine_a_3",
+        "orig_px": 349731,
+        "missing_px": 886,
+        "extra_px": 691,
+        "verdict": "PASS"
+      },
+      {
+        "group": "board_pine_b_0",
+        "orig_px": 221023,
+        "missing_px": 221,
+        "extra_px": 0,
+        "verdict": "PASS"
+      },
+      {
+        "group": "board_pine_b_1",
+        "orig_px": 221023,
+        "missing_px": 221,
+        "extra_px": 0,
+        "verdict": "PASS"
+      },
+      {
+        "group": "board_pine_b_2",
+        "orig_px": 221023,
+        "missing_px": 221,
+        "extra_px": 0,
+        "verdict": "PASS"
+      },
+      {
+        "group": "board_pine_b_3",
+        "orig_px": 221023,
+        "missing_px": 221,
+        "extra_px": 0,
+        "verdict": "PASS"
+      },
+      {
+        "group": "board_snow_0",
+        "orig_px": 1158658,
+        "missing_px": 135,
+        "extra_px": 0,
+        "verdict": "PASS"
+      },
+      {
+        "group": "board_snow_1",
+        "orig_px": 1345457,
+        "missing_px": 849,
+        "extra_px": 0,
+        "verdict": "PASS"
+      },
+      {
+        "group": "board_win_v1",
+        "orig_px": 154700,
+        "missing_px": 0,
+        "extra_px": 0,
+        "verdict": "PASS"
+      },
+      {
+        "group": "board_win_v2",
+        "orig_px": 154700,
+        "missing_px": 0,
+        "extra_px": 0,
+        "verdict": "PASS"
+      },
+      {
+        "group": "board_win_h1",
+        "orig_px": 154700,
+        "missing_px": 119,
+        "extra_px": 0,
+        "verdict": "PASS"
+      },
+      {
+        "group": "board_win_h2",
+        "orig_px": 112455,
+        "missing_px": 0,
+        "extra_px": 0,
+        "verdict": "PASS"
+      }
+    ],
+    "total_missing_px": 7601,
+    "total_extra_px": 4719,
+    "verdict": "PASS"
+  },
+  "note": "回拼自检：页片段按窗口偏移拼回，与原始轮廓逐像素比对（同一渲染管线）",
+  "threshold": "缺失 ≤0.5%（小件 <60000px ≤3%），额外同阈"
+}

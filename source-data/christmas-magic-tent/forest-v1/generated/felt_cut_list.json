@@ -1,0 +1,787 @@
+{
+  "fabric_assumption": "深绿 2000×850 / 白 2000×850 / 浅绿+红 500×420（已加购未付款，付款前核对）",
+  "tree_450x650": "3 层树冠（深绿 200×190 → 2 页平铺 / 中绿 300×210 → 2 页 / 浅绿 450×220 → 3 页）+ 3 积雪带 + 树干；重叠 15mm，四角对位十字拼接",
+  "board_600x900_kit": "远景松 A×4 / B×4（各 2 页平铺）、雪坡×2（600 宽 → 4 页平铺）、窗棂×4",
+  "red_dots": "Ø40×3 + Ø25×5（小件合箱页）",
+  "pdf_pages": 39,
+  "page_map": [
+    {
+      "page": 1,
+      "group": "tree_crown_bottom",
+      "r": 1,
+      "c": 1,
+      "rows": 1,
+      "cols": 3
+    },
+    {
+      "page": 2,
+      "group": "tree_crown_bottom",
+      "r": 1,
+      "c": 2,
+      "rows": 1,
+      "cols": 3
+    },
+    {
+      "page": 3,
+      "group": "tree_crown_bottom",
+      "r": 1,
+      "c": 3,
+      "rows": 1,
+      "cols": 3
+    },
+    {
+      "page": 4,
+      "group": "tree_crown_mid",
+      "r": 1,
+      "c": 1,
+      "rows": 1,
+      "cols": 2
+    },
+    {
+      "page": 5,
+      "group": "tree_crown_mid",
+      "r": 1,
+      "c": 2,
+      "rows": 1,
+      "cols": 2
+    },
+    {
+      "page": 6,
+      "group": "tree_crown_top",
+      "r": 1,
+      "c": 1,
+      "rows": 1,
+      "cols": 2
+    },
+    {
+      "page": 7,
+      "group": "tree_crown_top",
+      "r": 1,
+      "c": 2,
+      "rows": 1,
+      "cols": 2
+    },
+    {
+      "page": 8,
+      "group": "tree_snow_bottom",
+      "r": 1,
+      "c": 1,
+      "rows": 1,
+      "cols": 2
+    },
+    {
+      "page": 9,
+      "group": "tree_snow_bottom",
+      "r": 1,
+      "c": 2,
+      "rows": 1,
+      "cols": 2
+    },
+    {
+      "page": 10,
+      "group": "tree_snow_mid",
+      "r": 1,
+      "c": 1,
+      "rows": 1,
+      "cols": 2
+    },
+    {
+      "page": 11,
+      "group": "tree_snow_mid",
+      "r": 1,
+      "c": 2,
+      "rows": 1,
+      "cols": 2
+    },
+    {
+      "page": 12,
+      "group": "tree_snow_top",
+      "r": 1,
+      "c": 1,
+      "rows": 1,
+      "cols": 1
+    },
+    {
+      "page": 13,
+      "group": "board_pine_a_0",
+      "r": 1,
+      "c": 1,
+      "rows": 2,
+      "cols": 1
+    },
+    {
+      "page": 14,
+      "group": "board_pine_a_0",
+      "r": 2,
+      "c": 1,
+      "rows": 2,
+      "cols": 1
+    },
+    {
+      "page": 15,
+      "group": "board_pine_a_1",
+      "r": 1,
+      "c": 1,
+      "rows": 2,
+      "cols": 1
+    },
+    {
+      "page": 16,
+      "group": "board_pine_a_1",
+      "r": 2,
+      "c": 1,
+      "rows": 2,
+      "cols": 1
+    },
+    {
+      "page": 17,
+      "group": "board_pine_a_2",
+      "r": 1,
+      "c": 1,
+      "rows": 2,
+      "cols": 1
+    },
+    {
+      "page": 18,
+      "group": "board_pine_a_2",
+      "r": 2,
+      "c": 1,
+      "rows": 2,
+      "cols": 1
+    },
+    {
+      "page": 19,
+      "group": "board_pine_a_3",
+      "r": 1,
+      "c": 1,
+      "rows": 2,
+      "cols": 1
+    },
+    {
+      "page": 20,
+      "group": "board_pine_a_3",
+      "r": 2,
+      "c": 1,
+      "rows": 2,
+      "cols": 1
+    },
+    {
+      "page": 21,
+      "group": "board_pine_b_0",
+      "r": 1,
+      "c": 1,
+      "rows": 1,
+      "cols": 1
+    },
+    {
+      "page": 22,
+      "group": "board_pine_b_1",
+      "r": 1,
+      "c": 1,
+      "rows": 1,
+      "cols": 1
+    },
+    {
+      "page": 23,
+      "group": "board_pine_b_2",
+      "r": 1,
+      "c": 1,
+      "rows": 1,
+      "cols": 1
+    },
+    {
+      "page": 24,
+      "group": "board_pine_b_3",
+      "r": 1,
+      "c": 1,
+      "rows": 1,
+      "cols": 1
+    },
+    {
+      "page": 25,
+      "group": "board_snow_0",
+      "r": 1,
+      "c": 1,
+      "rows": 1,
+      "cols": 4
+    },
+    {
+      "page": 26,
+      "group": "board_snow_0",
+      "r": 1,
+      "c": 2,
+      "rows": 1,
+      "cols": 4
+    },
+    {
+      "page": 27,
+      "group": "board_snow_0",
+      "r": 1,
+      "c": 3,
+      "rows": 1,
+      "cols": 4
+    },
+    {
+      "page": 28,
+      "group": "board_snow_0",
+      "r": 1,
+      "c": 4,
+      "rows": 1,
+      "cols": 4
+    },
+    {
+      "page": 29,
+      "group": "board_snow_1",
+      "r": 1,
+      "c": 1,
+      "rows": 1,
+      "cols": 4
+    },
+    {
+      "page": 30,
+      "group": "board_snow_1",
+      "r": 1,
+      "c": 2,
+      "rows": 1,
+      "cols": 4
+    },
+    {
+      "page": 31,
+      "group": "board_snow_1",
+      "r": 1,
+      "c": 3,
+      "rows": 1,
+      "cols": 4
+    },
+    {
+      "page": 32,
+      "group": "board_snow_1",
+      "r": 1,
+      "c": 4,
+      "rows": 1,
+      "cols": 4
+    },
+    {
+      "page": 33,
+      "group": "board_win_h1",
+      "r": 1,
+      "c": 1,
+      "rows": 1,
+      "cols": 2
+    },
+    {
+      "page": 34,
+      "group": "board_win_h1",
+      "r": 1,
+      "c": 2,
+      "rows": 1,
+      "cols": 2
+    },
+    {
+      "page": 35,
+      "group": "board_win_h2",
+      "r": 1,
+      "c": 1,
+      "rows": 1,
+      "cols": 1
+    },
+    {
+      "page": 36,
+      "group": "board_win_v1",
+      "r": 1,
+      "c": 1,
+      "rows": 1,
+      "cols": 1
+    },
+    {
+      "page": 37,
+      "group": "board_win_v2",
+      "r": 1,
+      "c": 1,
+      "rows": 1,
+      "cols": 1
+    },
+    {
+      "page": 38,
+      "group": "tree_trunk",
+      "r": 1,
+      "c": 1,
+      "rows": 1,
+      "cols": 1
+    },
+    {
+      "page": 38,
+      "group": "red_dot_d25_3",
+      "r": 1,
+      "c": 1,
+      "rows": 1,
+      "cols": 1
+    },
+    {
+      "page": 38,
+      "group": "red_dot_d25_4",
+      "r": 1,
+      "c": 1,
+      "rows": 1,
+      "cols": 1
+    },
+    {
+      "page": 38,
+      "group": "red_dot_d25_5",
+      "r": 1,
+      "c": 1,
+      "rows": 1,
+      "cols": 1
+    },
+    {
+      "page": 38,
+      "group": "red_dot_d25_6",
+      "r": 1,
+      "c": 1,
+      "rows": 1,
+      "cols": 1
+    },
+    {
+      "page": 38,
+      "group": "red_dot_d25_7",
+      "r": 1,
+      "c": 1,
+      "rows": 1,
+      "cols": 1
+    },
+    {
+      "page": 39,
+      "group": "red_dot_d40_0",
+      "r": 1,
+      "c": 1,
+      "rows": 1,
+      "cols": 1
+    },
+    {
+      "page": 39,
+      "group": "red_dot_d40_1",
+      "r": 1,
+      "c": 1,
+      "rows": 1,
+      "cols": 1
+    },
+    {
+      "page": 39,
+      "group": "red_dot_d40_2",
+      "r": 1,
+      "c": 1,
+      "rows": 1,
+      "cols": 1
+    }
+  ],
+  "pagination": "可打印区 190×263mm，重叠 15mm；每页配对页号 + 四角对位十字 + 拼接页组清单 + 100mm 校准尺",
+  "reassembly_check": {
+    "shapes": [
+      {
+        "group": "tree_crown_top",
+        "orig_px": 664253,
+        "missing_px": 1,
+        "extra_px": 0,
+        "verdict": "PASS"
+      },
+      {
+        "group": "tree_crown_mid",
+        "orig_px": 1100143,
+        "missing_px": 1,
+        "extra_px": 0,
+        "verdict": "PASS"
+      },
+      {
+        "group": "tree_crown_bottom",
+        "orig_px": 1728350,
+        "missing_px": 20,
+        "extra_px": 467,
+        "verdict": "PASS"
+      },
+      {
+        "group": "tree_snow_top",
+        "orig_px": 97944,
+        "missing_px": 24,
+        "extra_px": 24,
+        "verdict": "PASS"
+      },
+      {
+        "group": "tree_snow_mid",
+        "orig_px": 147976,
+        "missing_px": 156,
+        "extra_px": 86,
+        "verdict": "PASS"
+      },
+      {
+        "group": "tree_snow_bottom",
+        "orig_px": 223130,
+        "missing_px": 143,
+        "extra_px": 12,
+        "verdict": "PASS"
+      },
+      {
+        "group": "tree_trunk",
+        "orig_px": 195621,
+        "missing_px": 0,
+        "extra_px": 923,
+        "verdict": "PASS"
+      },
+      {
+        "group": "red_dot_d40_0",
+        "orig_px": 43087,
+        "missing_px": 308,
+        "extra_px": 67,
+        "verdict": "PASS"
+      },
+      {
+        "group": "red_dot_d40_1",
+        "orig_px": 43087,
+        "missing_px": 308,
+        "extra_px": 67,
+        "verdict": "PASS"
+      },
+      {
+        "group": "red_dot_d40_2",
+        "orig_px": 43087,
+        "missing_px": 308,
+        "extra_px": 67,
+        "verdict": "PASS"
+      },
+      {
+        "group": "red_dot_d25_3",
+        "orig_px": 16910,
+        "missing_px": 201,
+        "extra_px": 56,
+        "verdict": "PASS"
+      },
+      {
+        "group": "red_dot_d25_4",
+        "orig_px": 16910,
+        "missing_px": 206,
+        "extra_px": 57,
+        "verdict": "PASS"
+      },
+      {
+        "group": "red_dot_d25_5",
+        "orig_px": 16910,
+        "missing_px": 180,
+        "extra_px": 59,
+        "verdict": "PASS"
+      },
+      {
+        "group": "red_dot_d25_6",
+        "orig_px": 16910,
+        "missing_px": 121,
+        "extra_px": 35,
+        "verdict": "PASS"
+      },
+      {
+        "group": "red_dot_d25_7",
+        "orig_px": 16910,
+        "missing_px": 93,
+        "extra_px": 35,
+        "verdict": "PASS"
+      },
+      {
+        "group": "board_pine_a_0",
+        "orig_px": 349731,
+        "missing_px": 886,
+        "extra_px": 691,
+        "verdict": "PASS"
+      },
+      {
+        "group": "board_pine_a_1",
+        "orig_px": 349731,
+        "missing_px": 886,
+        "extra_px": 691,
+        "verdict": "PASS"
+      },
+      {
+        "group": "board_pine_a_2",
+        "orig_px": 349731,
+        "missing_px": 886,
+        "extra_px": 691,
+        "verdict": "PASS"
+      },
+      {
+        "group": "board_pine_a_3",
+        "orig_px": 349731,
+        "missing_px": 886,
+        "extra_px": 691,
+        "verdict": "PASS"
+      },
+      {
+        "group": "board_pine_b_0",
+        "orig_px": 221023,
+        "missing_px": 221,
+        "extra_px": 0,
+        "verdict": "PASS"
+      },
+      {
+        "group": "board_pine_b_1",
+        "orig_px": 221023,
+        "missing_px": 221,
+        "extra_px": 0,
+        "verdict": "PASS"
+      },
+      {
+        "group": "board_pine_b_2",
+        "orig_px": 221023,
+        "missing_px": 221,
+        "extra_px": 0,
+        "verdict": "PASS"
+      },
+      {
+        "group": "board_pine_b_3",
+        "orig_px": 221023,
+        "missing_px": 221,
+        "extra_px": 0,
+        "verdict": "PASS"
+      },
+      {
+        "group": "board_snow_0",
+        "orig_px": 1158658,
+        "missing_px": 135,
+        "extra_px": 0,
+        "verdict": "PASS"
+      },
+      {
+        "group": "board_snow_1",
+        "orig_px": 1345457,
+        "missing_px": 849,
+        "extra_px": 0,
+        "verdict": "PASS"
+      },
+      {
+        "group": "board_win_v1",
+        "orig_px": 154700,
+        "missing_px": 0,
+        "extra_px": 0,
+        "verdict": "PASS"
+      },
+      {
+        "group": "board_win_v2",
+        "orig_px": 154700,
+        "missing_px": 0,
+        "extra_px": 0,
+        "verdict": "PASS"
+      },
+      {
+        "group": "board_win_h1",
+        "orig_px": 154700,
+        "missing_px": 119,
+        "extra_px": 0,
+        "verdict": "PASS"
+      },
+      {
+        "group": "board_win_h2",
+        "orig_px": 112455,
+        "missing_px": 0,
+        "extra_px": 0,
+        "verdict": "PASS"
+      }
+    ],
+    "total_missing_px": 7601,
+    "total_extra_px": 4719,
+    "verdict": "PASS"
+  },
+  "svg_files": [
+    {
+      "name": "tree_crown_top",
+      "file": "tree_crown_top.svg",
+      "w_mm": 200,
+      "h_mm": 190
+    },
+    {
+      "name": "tree_crown_mid",
+      "file": "tree_crown_mid.svg",
+      "w_mm": 300,
+      "h_mm": 210
+    },
+    {
+      "name": "tree_crown_bottom",
+      "file": "tree_crown_bottom.svg",
+      "w_mm": 450,
+      "h_mm": 220
+    },
+    {
+      "name": "tree_snow_top",
+      "file": "tree_snow_top.svg",
+      "w_mm": 156,
+      "h_mm": 22
+    },
+    {
+      "name": "tree_snow_mid",
+      "file": "tree_snow_mid.svg",
+      "w_mm": 236,
+      "h_mm": 22
+    },
+    {
+      "name": "tree_snow_bottom",
+      "file": "tree_snow_bottom.svg",
+      "w_mm": 356,
+      "h_mm": 22
+    },
+    {
+      "name": "tree_trunk",
+      "file": "tree_trunk.svg",
+      "w_mm": 56,
+      "h_mm": 100
+    },
+    {
+      "name": "red_dot_d40_0",
+      "file": "red_dot_d40_0.svg",
+      "w_mm": 40,
+      "h_mm": 40
+    },
+    {
+      "name": "red_dot_d40_1",
+      "file": "red_dot_d40_1.svg",
+      "w_mm": 40,
+      "h_mm": 40
+    },
+    {
+      "name": "red_dot_d40_2",
+      "file": "red_dot_d40_2.svg",
+      "w_mm": 40,
+      "h_mm": 40
+    },
+    {
+      "name": "red_dot_d25_3",
+      "file": "red_dot_d25_3.svg",
+      "w_mm": 25,
+      "h_mm": 25
+    },
+    {
+      "name": "red_dot_d25_4",
+      "file": "red_dot_d25_4.svg",
+      "w_mm": 25,
+      "h_mm": 25
+    },
+    {
+      "name": "red_dot_d25_5",
+      "file": "red_dot_d25_5.svg",
+      "w_mm": 25,
+      "h_mm": 25
+    },
+    {
+      "name": "red_dot_d25_6",
+      "file": "red_dot_d25_6.svg",
+      "w_mm": 25,
+      "h_mm": 25
+    },
+    {
+      "name": "red_dot_d25_7",
+      "file": "red_dot_d25_7.svg",
+      "w_mm": 25,
+      "h_mm": 25
+    },
+    {
+      "name": "board_pine_a_0",
+      "file": "board_pine_a_0.svg",
+      "w_mm": 150,
+      "h_mm": 330
+    },
+    {
+      "name": "board_pine_a_1",
+      "file": "board_pine_a_1.svg",
+      "w_mm": 150,
+      "h_mm": 330
+    },
+    {
+      "name": "board_pine_a_2",
+      "file": "board_pine_a_2.svg",
+      "w_mm": 150,
+      "h_mm": 330
+    },
+    {
+      "name": "board_pine_a_3",
+      "file": "board_pine_a_3.svg",
+      "w_mm": 150,
+      "h_mm": 330
+    },
+    {
+      "name": "board_pine_b_0",
+      "file": "board_pine_b_0.svg",
+      "w_mm": 120,
+      "h_mm": 260
+    },
+    {
+      "name": "board_pine_b_1",
+      "file": "board_pine_b_1.svg",
+      "w_mm": 120,
+      "h_mm": 260
+    },
+    {
+      "name": "board_pine_b_2",
+      "file": "board_pine_b_2.svg",
+      "w_mm": 120,
+      "h_mm": 260
+    },
+    {
+      "name": "board_pine_b_3",
+      "file": "board_pine_b_3.svg",
+      "w_mm": 120,
+      "h_mm": 260
+    },
+    {
+      "name": "board_snow_0",
+      "file": "board_snow_0.svg",
+      "w_mm": 600,
+      "h_mm": 76
+    },
+    {
+      "name": "board_snow_1",
+      "file": "board_snow_1.svg",
+      "w_mm": 600,
+      "h_mm": 90
+    },
+    {
+      "name": "board_win_v1",
+      "file": "board_win_v1.svg",
+      "w_mm": 20,
+      "h_mm": 220
+    },
+    {
+      "name": "board_win_v2",
+      "file": "board_win_v2.svg",
+      "w_mm": 20,
+      "h_mm": 220
+    },
+    {
+      "name": "board_win_h1",
+      "file": "board_win_h1.svg",
+      "w_mm": 220,
+      "h_mm": 20
+    },
+    {
+      "name": "board_win_h2",
+      "file": "board_win_h2.svg",
+      "w_mm": 160,
+      "h_mm": 20
+    }
+  ],
+  "fabric_area_used_mm2": {
+    "dark_green": 241600,
+    "mid_green": 187800,
+    "light_green": 99000,
+    "white": 132456,
+    "red": 7925
+  },
+  "fabric_area_available_mm2": {
+    "dark_green": 1700000,
+    "mid_green": 1700000,
+    "light_green": 1700000,
+    "white": 1700000,
+    "red": 210000
+  },
+  "outputs_pdf": [
+    "felt_templates.pdf（彩色填充版）",
+    "felt_templates_bw.pdf（黑白轮廓版：家庭打印机友好，填充留白沿黑线裁剪）"
+  ],
+  "notes": [
+    "魔术贴无背胶可缝款：40mm 段 ×6 缝树背面",
+    "不批量打印：先印第 1 页（校准尺）+ 树冠组，确认后再印其余",
+    "所有页均为真实比例；大于可打印区的形状已按重叠平铺并附对位十字"
+  ]
+}

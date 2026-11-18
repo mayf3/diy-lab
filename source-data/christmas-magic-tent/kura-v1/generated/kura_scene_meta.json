@@ -1,0 +1,28 @@
+{
+  "model": "IKEA KURA 502.665.06; LOW configuration; NO roof",
+  "reference_outer_mm": [
+    2090,
+    990,
+    1160
+  ],
+  "mattress_nominal_mm": [
+    2000,
+    900
+  ],
+  "model_warning": "床架细部/床垫高度是概念参数，非结构施工图；没有三角屋顶、斜梁、床篷",
+  "decorations": "外侧平面毛毡/纸样、床旁独立软质树；灯光仅后续阶段评估，当前无电器布线",
+  "safety": "概念图不证明外侧上横梁装饰安全；固定、抗拉、通风、睡眠及逃生空间均待实物评估",
+  "status": {
+    "modeled": true,
+    "rendered": true,
+    "sliced": false,
+    "printed": false,
+    "installed": false
+  },
+  "outputs": [
+    "kura_cottage.blend",
+    "kura_structure_labeled.png",
+    "kura_deco_minimal.png",
+    "kura_deco_fabric.png"
+  ]
+}

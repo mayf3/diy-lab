@@ -1,0 +1,98 @@
+{
+  "petg": "PETG 1.27g/cm³；几何估算克重（壁 2 面 + 20% 内填近似 ×0.32 实体系数）；真实克重/时间以 Bambu Studio 0.20mm PETG 切片为准（本轮未切片）",
+  "parts": [
+    {
+      "name": "rounded_star_90",
+      "stl": "generated/stl/rounded_star_90.stl",
+      "3mf": "generated/3mf/rounded_star_90.3mf",
+      "dims_mm": [
+        85.6,
+        91.0,
+        6.0
+      ],
+      "triangles": 36,
+      "volume_cm3": 13.5,
+      "grams_estimate_20pct": 5.5,
+      "grams_if_solid": 17.1,
+      "print": "平放 · PETG · 0.20mm · 2 壁 + 20% 内填（示意）；圆角星带 40×3.2 底槽可站立",
+      "slicing": {
+        "tool": "Bambu Studio CLI（--load-settings P1S 0.4 + 0.20mm Standard；--load-filaments Generic PETG HF @BBL P1S 0.4）",
+        "result": "Success",
+        "filament_len_mm": 2921.3,
+        "filament_vol_cm3": 7.0,
+        "grams_real": 8.9,
+        "model_time": "14m 42s"
+      }
+    },
+    {
+      "name": "cottage_xmas_110",
+      "stl": "generated/stl/cottage_xmas_110.stl",
+      "3mf": "generated/3mf/cottage_xmas_110.3mf",
+      "dims_mm": [
+        75.0,
+        58.0,
+        100.0
+      ],
+      "triangles": 9,
+      "volume_cm3": 380.6,
+      "grams_estimate_20pct": 154.7,
+      "grams_if_solid": 483.4,
+      "print": "平放 · PETG · 0.20mm · 2 壁 + 20% 内填（示意）；圆角星带 40×3.2 底槽可站立",
+      "slicing": {
+        "tool": "Bambu Studio CLI（--load-settings P1S 0.4 + 0.20mm Standard；--load-filaments Generic PETG HF @BBL P1S 0.4）",
+        "result": "Success",
+        "filament_len_mm": 39953.1,
+        "filament_vol_cm3": 96.1,
+        "grams_real": 122.0,
+        "model_time": "2h 9m 40s"
+      }
+    },
+    {
+      "name": "cottage_forest_90",
+      "stl": "generated/stl/cottage_forest_90.stl",
+      "3mf": "generated/3mf/cottage_forest_90.3mf",
+      "dims_mm": [
+        60.0,
+        48.0,
+        80.0
+      ],
+      "triangles": 9,
+      "volume_cm3": 201.6,
+      "grams_estimate_20pct": 81.9,
+      "grams_if_solid": 256.0,
+      "print": "平放 · PETG · 0.20mm · 2 壁 + 20% 内填（示意）；圆角星带 40×3.2 底槽可站立",
+      "slicing": {
+        "tool": "Bambu Studio CLI（--load-settings P1S 0.4 + 0.20mm Standard；--load-filaments Generic PETG HF @BBL P1S 0.4）",
+        "result": "Success",
+        "filament_len_mm": 22149.0,
+        "filament_vol_cm3": 53.3,
+        "grams_real": 67.7,
+        "model_time": "1h 14m 36s"
+      }
+    }
+  ],
+  "note": "PETG 1.27g/cm³；几何估算=壳近似（×0.32），真实克重/时间来自 Bambu Studio CLI 真实切片（2026-11-16，P1S 0.4 + 0.20mm Standard + Generic PETG HF 配置，return_code 0）。用户确认的是普通 PETG：HF 预设仅用于本轮切片估算，实物打印前应在 GUI 核对普通 PETG 预设。",
+  "cottage_xmas_note": "cottage_xmas_110 实际总高 100mm（名称沿用 110 为历史编号）；CLI 对 >100mm 对象以 'Nothing to be sliced' 拒绝（0.5–2.0× 缩放一致失败，原因未明），≤100mm 正常。门窗/侧树改为贴纸与不织布装饰（免布尔保证水密）。",
+  "edge_audit": {
+    "method": "STL 有向边统计（每条边应恰好被 2 个三角形共享）",
+    "date": "2026-11-17",
+    "rounded_star_90": {
+      "open": 0,
+      "three_face": 0,
+      "four_face": 0,
+      "verdict": "OK"
+    },
+    "cottage_xmas_110": {
+      "open": 0,
+      "three_face": 0,
+      "four_face": 0,
+      "verdict": "OK"
+    },
+    "cottage_forest_90": {
+      "open": 0,
+      "three_face": 0,
+      "four_face": 0,
+      "verdict": "OK"
+    }
+  }
+}
