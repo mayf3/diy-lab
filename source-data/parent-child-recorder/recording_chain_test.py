@@ -14,7 +14,12 @@
 用法：
   python3 recording_chain_test.py normal  --minutes 30            # 正常停止全链路
   python3 recording_chain_test.py crash   --format mp4|mpegts     # 进程崩溃恢复
+  python3 recording_chain_test.py negative-test                   # 损坏分段门禁负向测试
   python3 recording_chain_test.py probe-camera                    # 摄像头设备探测（不保证可采集）
+
+验收门禁（classify_segments）：无法探测（如 moov 缺失）、无法完整解码或缺失的
+分段一律判失败；成功探测且确实不足 1 秒的正常尾段单独豁免记录（waived_short_segments），
+不得因缺 duration 被静默过滤。
 
 输出：stdout 一份 JSON 结果；媒体文件写到 /tmp/recorder-test/（不进 Git 仓库）。
 """
@@ -64,10 +69,12 @@ def sample_cpu(pid: int) -> None:
 
 
 def probe_file(path: Path) -> dict:
-    """单文件回放验证：ffprobe 元数据 + 全量解码找错误。"""
+    """单文件探测与全量解码：playable 只反映「可探测+可完整解码」，
+    时长门禁在 classify_segments 里做（不足 1 秒的正常尾段单独豁免记录）。"""
     info: dict = {"file": path.name, "size_bytes": path.stat().st_size if path.exists() else 0}
     if not path.exists():
-        info.update({"exists": False, "playable": False, "error": "segment missing"})
+        info.update({"exists": False, "probe_ok": False, "playable": False,
+                     "error": "segment missing"})
         return info
     r = subprocess.run(
         ["ffprobe", "-v", "error", "-print_format", "json", "-show_format",
@@ -75,7 +82,8 @@ def probe_file(path: Path) -> dict:
         capture_output=True, text=True)
     if r.returncode != 0:
         first = next((l for l in r.stderr.splitlines() if l.strip()), "unknown error")
-        info.update({"exists": True, "playable": False, "error": first.strip()})
+        info.update({"exists": True, "probe_ok": False, "playable": False,
+                     "error": first.strip()})
         return info
     meta = json.loads(r.stdout)
     fmt_d = meta.get("format", {})
@@ -85,15 +93,31 @@ def probe_file(path: Path) -> dict:
         ["ffmpeg", "-v", "error", "-i", str(path), "-f", "null", "-"],
         capture_output=True, text=True)
     errs = [l for l in d.stderr.splitlines() if l.strip()]
+    probe_ok = True
+    decode_ok = d.returncode == 0 and not errs
     info.update({
-        "exists": True,
+        "exists": True, "probe_ok": probe_ok,
         "duration_s": round(dur, 2),
         "codec": vstream.get("codec_name"),
-        "decode_ok": d.returncode == 0 and not errs,
+        "decode_ok": decode_ok,
         "decode_errors": errs[:5],
-        "playable": d.returncode == 0 and not errs and dur > 1.0,
+        "playable": probe_ok and decode_ok,
     })
     return info
+
+
+def classify_segments(files: list[dict]) -> dict:
+    """验收门禁：无法探测 / 无法解码 / 缺失的片段一律失败；
+    成功探测且确实不足 1 秒的正常尾段单独豁免记录（不计失败也不计通过）。"""
+    passed, waived, failed = [], [], []
+    for f in files:
+        if not f.get("probe_ok") or not f.get("decode_ok") or not f.get("exists"):
+            failed.append(f)
+        elif f.get("duration_s", 0) < 1.0:
+            waived.append(f)
+        else:
+            passed.append(f)
+    return {"passed": passed, "waived_short": waived, "failed": failed}
 
 
 def run_segmented(out_dir: Path, fmt: str, stop: str, seconds: int) -> tuple[int, int]:
@@ -120,11 +144,12 @@ def report_normal(minutes: int) -> dict:
     pid, wall = run_segmented(out_dir, "mp4", "sigint", minutes * 60)
     segs = sorted(out_dir.glob("seg_*.mp4"))
     files = [probe_file(p) for p in segs]
+    verdict = classify_segments(files)
     total = sum(f["size_bytes"] for f in files)
     content_s = sum(f.get("duration_s") or 0 for f in files)
-    # 停止瞬间产生的 <1s 尾分段是边界产物，不算链路缺陷；
-    # 判定标准：所有 ≥1s 分段可完整解码 + 内容时长覆盖墙钟 ≥98%。
-    ok = bool(files) and all(f["playable"] for f in files if f.get("duration_s", 0) >= 1) \
+    # 门禁：任何无法探测/无法解码的片段都失败；不足 1 秒的正常尾段单独豁免记录；
+    # 另要求内容时长覆盖墙钟 ≥98%。
+    all_playable = bool(files) and not verdict["failed"] \
         and wall > 0 and content_s / wall >= 0.98
     return {
         "test": "normal-stop",
@@ -138,7 +163,14 @@ def report_normal(minutes: int) -> dict:
         "segment_count": len(segs),
         "content_seconds": round(content_s, 2),
         "content_coverage_percent": round(100 * content_s / wall, 1) if wall else None,
-        "all_playable": ok,
+        "passed_segments": [f["file"] for f in verdict["passed"]],
+        "waived_short_segments": [
+            {"file": f["file"], "duration_s": f.get("duration_s")}
+            for f in verdict["waived_short"]],
+        "failed_segments": [
+            {"file": f["file"], "error": f.get("error") or (f.get("decode_errors") or ["decode"])[0]}
+            for f in verdict["failed"]],
+        "all_playable": all_playable,
         "total_bytes": total,
         "avg_bitrate_mbps": round(total * 8 / wall / 1e6, 2) if wall else None,
         "storage_gb_per_30min": round(total * (1800 / wall) / 1e9, 2) if wall else None,
@@ -151,7 +183,9 @@ def report_crash(fmt: str, seconds: int = 150) -> dict:
     pid, wall = run_segmented(out_dir, fmt, "kill", seconds)
     segs = sorted(out_dir.glob("seg_*"))
     files = [probe_file(p) for p in segs]
+    verdict = classify_segments(files)
     usable = sum(1 for f in files if f.get("playable"))
+    completed = files[:-1]
     return {
         "test": f"crash-kill9-{fmt}",
         "label": "进程崩溃（kill -9）≠ 设备断电；目标设备断电仍属目标设备实测",
@@ -162,10 +196,98 @@ def report_crash(fmt: str, seconds: int = 150) -> dict:
         "segments": files,
         "segment_count": len(segs),
         "usable_segments_after_crash": usable,
-        "all_completed_segments_usable": all(
-            f.get("playable") for f in files[:-1]) if files else False,
+        "failed_segments": [
+            {"file": f["file"], "error": f.get("error") or (f.get("decode_errors") or ["decode"])[0]}
+            for f in verdict["failed"]],
+        "all_completed_segments_usable": bool(completed) and all(
+            f.get("playable") for f in completed),
         "last_segment_verdict": ("usable" if files and files[-1].get("playable")
                                  else (files[-1].get("error", "unusable") if files else "none")),
+    }
+
+
+def report_revalidate(out_dir: Path, wall_seconds: int, minutes: int) -> dict:
+    """对已录制的分段媒体重新执行「探测+全量解码+门禁分类」。
+    用于录制完成后仅报告层出错的补救：媒体与门禁结果与完整重跑等价
+    （探测/解码是确定性操作），JSON 中显式标注 revalidated 标记。"""
+    segs = sorted(out_dir.glob("seg_*.mp4"))
+    files = [probe_file(p) for p in segs]
+    verdict = classify_segments(files)
+    total = sum(f["size_bytes"] for f in files)
+    content_s = sum(f.get("duration_s") or 0 for f in files)
+    all_playable = bool(files) and not verdict["failed"] \
+        and wall_seconds > 0 and content_s / wall_seconds >= 0.98
+    return {
+        "test": "normal-stop",
+        "label": "电脑环境的软件验证（合成输入；非目标设备实测）",
+        "mode": "revalidate-existing-media",
+        "revalidate_note": "录制已完成（SIGINT 停止）；本 JSON 为对既有分段媒体"
+                          "重新探测+解码+门禁分类的结果，未重新录制",
+        "cmd": " ".join(ffmpeg_cmd(out_dir, "mp4")),
+        "params": {"resolution": f"{WIDTH}x{HEIGHT}", "fps": FPS,
+                   "video_bitrate": VIDEO_BITRATE, "audio_bitrate": AUDIO_BITRATE,
+                   "segment_time_s": 60, "minutes": minutes},
+        "wall_seconds": wall_seconds,
+        "segments": files,
+        "segment_count": len(segs),
+        "content_seconds": round(content_s, 2),
+        "content_coverage_percent": round(100 * content_s / wall_seconds, 1)
+        if wall_seconds else None,
+        "passed_segments": [f["file"] for f in verdict["passed"]],
+        "waived_short_segments": [
+            {"file": f["file"], "duration_s": f.get("duration_s")}
+            for f in verdict["waived_short"]],
+        "failed_segments": [
+            {"file": f["file"],
+             "error": f.get("error") or (f.get("decode_errors") or ["decode"])[0]}
+            for f in verdict["failed"]],
+        "all_playable": all_playable,
+        "total_bytes": total,
+        "avg_bitrate_mbps": round(total * 8 / wall_seconds / 1e6, 2)
+        if wall_seconds else None,
+        "storage_gb_per_30min": round(total * (1800 / wall_seconds) / 1e9, 2)
+        if wall_seconds else None,
+    }
+
+
+def negative_test() -> dict:
+    """负向测试：故意截断一个正常分段，门禁必须判失败（防止误通过）。"""
+    d = OUT_ROOT / "negative"
+    d.mkdir(parents=True, exist_ok=True)
+    for old in d.glob("seg_*"):
+        old.unlink()
+    subprocess.run(
+        ["ffmpeg", "-hide_banner", "-loglevel", "error",
+         "-f", "lavfi", "-i", f"testsrc2=size={WIDTH}x{HEIGHT}:rate={FPS}:duration=65",
+         "-f", "lavfi", "-i", "sine=frequency=440:sample_rate=44100:duration=65",
+         "-c:v", "h264_videotoolbox", "-b:v", VIDEO_BITRATE, "-pix_fmt", "yuv420p",
+         "-force_key_frames", "expr:gte(t,n_forced*60)",
+         "-c:a", "aac", "-b:a", AUDIO_BITRATE,
+         "-f", "segment", "-segment_time", "60", "-segment_format", "mp4",
+         "-reset_timestamps", "1", str(d / "seg_%03d.mp4")],
+        capture_output=True, timeout=300, check=True)
+    segs = sorted(d.glob("seg_*.mp4"))
+    target = segs[1] if len(segs) > 1 else segs[0]
+    orig_size = target.stat().st_size
+    raw = bytearray(target.read_bytes())
+    with target.open("wb") as fh:  # 截断至 40%：moov（位于尾部）丢失
+        fh.write(raw[: int(orig_size * 0.4)])
+    files = [probe_file(p) for p in segs]
+    verdict = classify_segments(files)
+    gate_failed = bool(verdict["failed"]) and any(
+        f["file"] == target.name for f in verdict["failed"])
+    return {
+        "test": "negative-corrupted-segment",
+        "label": "负向测试：截断损坏的分段必须导致验收失败，不允许被静默过滤",
+        "corrupted_file": target.name,
+        "original_bytes": orig_size,
+        "kept_bytes": int(orig_size * 0.4),
+        "segments": files,
+        "failed_segments": [
+            {"file": f["file"], "error": f.get("error") or (f.get("decode_errors") or ["decode"])[0]}
+            for f in verdict["failed"]],
+        "gate_failed_as_expected": gate_failed,
+        "gate_ok": gate_failed,
     }
 
 
@@ -216,11 +338,20 @@ def main() -> int:
     p_probe = sub.add_parser("probe-camera")
     p_probe.add_argument("--attempt", action="store_true",
                          help="除列设备外，尝试真实采集 1s（需要系统授权）")
+    sub.add_parser("negative-test")
+    p_rev = sub.add_parser("revalidate")
+    p_rev.add_argument("--dir", required=True, help="已录制分段所在目录")
+    p_rev.add_argument("--wall-seconds", type=int, required=True)
+    p_rev.add_argument("--minutes", type=int, default=30)
     args = ap.parse_args()
     if args.mode == "normal":
         result = report_normal(args.minutes)
     elif args.mode == "crash":
         result = report_crash(args.format, args.seconds)
+    elif args.mode == "negative-test":
+        result = negative_test()
+    elif args.mode == "revalidate":
+        result = report_revalidate(Path(args.dir), args.wall_seconds, args.minutes)
     else:
         result = report_camera_probe(args.attempt)
     print(json.dumps(result, ensure_ascii=False, indent=1))

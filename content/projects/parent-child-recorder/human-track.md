@@ -52,19 +52,19 @@
 
 **交给 Agent 完成**：
 
-取景模拟 v2 完成（模拟预测）：有效水平视场在常见「对角填充」安装下仅约 157°（标称 180°）；并排场景需转身约 45° 才能拍到孩子面部；单一挂脖机位拍不到家长自己的脸（θ≈115°+，位于相机后半球）。无需你操作。
+取景模拟 v2 完成（模拟预测，13 项自检全 PASS）：有效水平视场在「对角填充」安装下约 157°（标称 180°）；基线实验配置下并排场景需转身约 45° 才能把孩子面部带入画面（转身后就座判手臂遮挡、站立判可见但有遮挡风险，处于半径边界须试录确认）；单一挂脖机位拍不到家长自己的脸（相机后半球）。无需你操作。
 
 **你亲自做**：
 
 本关不要求你操作。
 
-**完成时应该有：** generated/framing_sim/results.json（v2 模型口径+384 组+自检）、generated/framing_sim/ 示意图；public/media/ 代表性图像。
+**完成时应该有：** generated/framing_sim/results.json（v2 模型口径+384 组+13 项自检）、generated/framing_sim/ 示意图；public/media/ 代表性图像。
 
-**怎样判断：** 脚本可重复运行；自检 6 例全 PASS；有效视场/裁切/遮挡/姿态结论与量化 px 分别落盘。
+**怎样判断：** 脚本可重复运行；13 项布尔自检全 PASS；有效视场/裁切/遮挡/姿态结论与量化 px 分别落盘。
 
 **作者进度（只读）**：**作者已完成数字模拟**（2026-11-18）；证据：source-data/parent-child-recorder/generated/framing_sim/results.json。换设备、房间或参数时需重新验证。**这不是你的进度**。
 
-**卡住或失败：** 几何覆盖≠光学画质：近距离对焦、室内噪点、运动模糊、边缘清晰度不在模型内，须资料核实或实拍；不把标称对角视场当各方向有效视场
+**卡住或失败：** 几何覆盖≠光学画质：近距离对焦、室内噪点、运动模糊、边缘清晰度不在模型内，须资料核实或实拍；不把标称对角视场当各方向有效视场；模拟只对假设的等距鱼眼模组成立，不适用于 GO 3S 等实际设备选型
 
 [展开这关的图文细节](/projects/parent-child-recorder/01-workflow/)
 
@@ -80,9 +80,9 @@
 
 本关不要求你操作。
 
-**完成时应该有：** generated/segment_continuity_test.py（可重复脚本）、generated/segment_continuity_results.json（三态收尾+连续性+容量）、generated/recording_chain_test.py 与 recording_normal_30min.json/recording_crash_*.json（既有）。
+**完成时应该有：** generated/segment_continuity_test.py（可重复脚本）、generated/segment_continuity_results.json（三态收尾+连续性+容量）、generated/recording_chain_test.py 与 recording_normal_30min.json/recording_crash_*.json/recording_negative_gate.json。
 
-**怎样判断：** 脚本可重复运行；三态收尾差异、分段连续性（帧数/时长/同步/concat）与容量估算（含输入假设与不确定性）落盘。
+**怎样判断：** 脚本可重复运行；三态收尾差异、分段连续性（帧数/时长/轨道时长差/concat）与容量估算（含输入假设与不确定性）落盘；损坏分段门禁负向测试通过。
 
 **作者进度（只读）**：**作者已完成数字模拟**（2026-11-18）；证据：source-data/parent-child-recorder/generated/segment_continuity_results.json。换设备、房间或参数时需重新验证。**这不是你的进度**。
 

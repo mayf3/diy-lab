@@ -2,18 +2,21 @@
  "capacity": {
   "test": "capacity_estimate_30min",
   "label": "估算（30 分钟容量估算），佐证为既有真实 30 分钟运行",
+  "unit_fix_note": "v2 首版 VIDEO_KBPS=\"4000\" 被 FFmpeg 按 bit/s 解析（=4kbps），其 1.4 Mbps 结果已作废并用本版重测替代",
   "prior_real_run": {
    "source": "recording_normal_30min.json (2026-11-18 真实 30 分钟实时运行)",
    "measured_bitrate_mbps": 8.14,
    "measured_gb_per_30min": 1.83
   },
   "extrapolation": {
-   "basis": "短测实测码率外推（testsrc2 合成源）；注意 -b:v 是上限，实际码率随内容运动复杂度变化",
+   "basis": "短测实测码率外推（testsrc2 合成源）；目标码率 -b:v 4M 为平均上限，实际码率随内容运动复杂度变化",
    "kbps_4mbps": {
-    "measured_mbps": 1.4,
-    "gb_per_30min": 0.32
+    "video_target": "4M",
+    "measured_mbps": 4.15,
+    "gb_per_30min": 0.93,
+    "stream_bit_rate_bps": 4035004
    },
-   "uncertainty": "低运动内容实测可低至目标码率的 1/3（本轮 4Mbps 档实测 1.4Mbps）；估算按 ±50% 起步，存储按估算值 1.5–2 倍预留"
+   "uncertainty": "码率随场景运动复杂度与编码器档位变化（±50% 起步）；存储按估算值 1.5–2 倍预留；主容量依据为既有真实 30 分钟运行"
   }
  },
  "short_realtime": {
@@ -22,7 +25,7 @@
   "runs": [
    {
     "mode": "natural",
-    "wall_s": 44.52,
+    "wall_s": 44.53,
     "segment_count": 3,
     "segment_durations": [
      15.023,
@@ -44,13 +47,13 @@
       "video": 0.0,
       "audio": 0.000159
      },
-     "size": 2653187
+     "size": 7752522
     },
     "decode_error_files": {}
    },
    {
     "mode": "sigint",
-    "wall_s": 40.04,
+    "wall_s": 40.05,
     "segment_count": 3,
     "segment_durations": [
      15.023,
@@ -66,12 +69,12 @@
      "ok": true,
      "duration": 10.5,
      "video_frames": 315,
-     "audio_samples": 460800,
+     "audio_samples": 461824,
      "start_times": {
       "video": 0.0,
       "audio": 0.000159
      },
-     "size": 1812299
+     "size": 5434943
     },
     "decode_error_files": {}
    },
@@ -91,7 +94,7 @@
     "last_segment": {
      "file": "seg_002.mp4",
      "ok": false,
-     "error": "[mov,mp4,m4a,3gp,3g2,mj2 @ 0x776c3c000] moov atom not found\n/tmp/recorder-test/rt-sigkill/seg_002.mp4: Invalid data found when processing input"
+     "error": "[mov,mp4,m4a,3gp,3g2,mj2 @ 0xb98c1c000] moov atom not found\n/tmp/recorder-test/rt-sigkill/seg_002.mp4: Invalid data found when processing input"
     },
     "decode_error_files": {}
    }
@@ -111,7 +114,7 @@
      "video": 0.023242,
      "audio": 0.0
     },
-    "size": 1775201
+    "size": 5202832
    },
    {
     "file": "seg_001.mp4",
@@ -123,7 +126,7 @@
      "video": 0.0,
      "audio": 0.007778
     },
-    "size": 1752925
+    "size": 5204151
    },
    {
     "file": "seg_002.mp4",
@@ -135,7 +138,7 @@
      "video": 0.0,
      "audio": 0.015578
     },
-    "size": 1714776
+    "size": 5188668
    },
    {
     "file": "seg_003.mp4",
@@ -147,7 +150,7 @@
      "video": 0.0,
      "audio": 0.000159
     },
-    "size": 1714056
+    "size": 5170990
    }
   ],
   "per_segment_frames_expected": 300,

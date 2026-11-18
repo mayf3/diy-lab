@@ -8,13 +8,14 @@
   "crash_at_s": 150,
   "signal": "SIGKILL"
  },
- "pid": 69889,
+ "pid": 24591,
  "wall_seconds": 150,
  "segments": [
   {
    "file": "seg_000.mp4",
    "size_bytes": 61102240,
    "exists": true,
+   "probe_ok": true,
    "duration_s": 60.02,
    "codec": "h264",
    "decode_ok": true,
@@ -25,6 +26,7 @@
    "file": "seg_001.mp4",
    "size_bytes": 61038709,
    "exists": true,
+   "probe_ok": true,
    "duration_s": 60.0,
    "codec": "h264",
    "decode_ok": true,
@@ -35,12 +37,19 @@
    "file": "seg_002.mp4",
    "size_bytes": 30408752,
    "exists": true,
+   "probe_ok": false,
    "playable": false,
-   "error": "[mov,mp4,m4a,3gp,3g2,mj2 @ 0x730408000] moov atom not found"
+   "error": "[mov,mp4,m4a,3gp,3g2,mj2 @ 0x7d5400000] moov atom not found"
   }
  ],
  "segment_count": 3,
  "usable_segments_after_crash": 2,
+ "failed_segments": [
+  {
+   "file": "seg_002.mp4",
+   "error": "[mov,mp4,m4a,3gp,3g2,mj2 @ 0x7d5400000] moov atom not found"
+  }
+ ],
  "all_completed_segments_usable": true,
- "last_segment_verdict": "[mov,mp4,m4a,3gp,3g2,mj2 @ 0x730408000] moov atom not found"
+ "last_segment_verdict": "[mov,mp4,m4a,3gp,3g2,mj2 @ 0x7d5400000] moov atom not found"
 }

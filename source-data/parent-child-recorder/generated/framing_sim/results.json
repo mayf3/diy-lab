@@ -39,11 +39,12 @@
    }
   },
   "domain_note": "模型有效域 θ∈[0, θ_max]；本轮结论不依赖 >180° 覆盖",
-  "occluders": "躯干盒+头球+手臂胶囊（简化假设尺寸）；衣物未建模",
+  "occluders": "躯干盒+头球+手臂胶囊（精确线段距离判定，双姿态；衣物未建模）",
   "posture": {
    "chest": "pitch 随前倾 0/15/30° 转动",
    "lanyard": "pitch 受摆动 {-10,0,+10}° 影响，位置随前倾少量前移"
-  }
+  },
+  "reproducibility": "evaluate() 不修改全局 SCENARIOS；结果与执行顺序无关（自检回归覆盖）"
  },
  "label": "模拟预测：几何投影+简化遮挡，非实拍；场景/阈值/姿态均为实验假设",
  "thresholds": {
@@ -319,7 +320,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 145.1,
+     "theta_deg": 140.3,
      "distance_m": 0.23
     }
    },
@@ -378,7 +379,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 145.1,
+     "theta_deg": 140.3,
      "distance_m": 0.23
     }
    },
@@ -437,7 +438,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 145.1,
+     "theta_deg": 140.3,
      "distance_m": 0.23
     }
    },
@@ -490,7 +491,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 145.1,
+     "theta_deg": 140.3,
      "distance_m": 0.23
     }
    },
@@ -548,8 +549,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 164.4,
-     "distance_m": 0.24
+     "theta_deg": 155.3,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -607,8 +608,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 164.4,
-     "distance_m": 0.24
+     "theta_deg": 155.3,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -666,8 +667,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 164.4,
-     "distance_m": 0.24
+     "theta_deg": 155.3,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -719,8 +720,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 164.4,
-     "distance_m": 0.24
+     "theta_deg": 155.3,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -777,8 +778,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 117.1,
-     "distance_m": 0.24
+     "theta_deg": 124.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -836,8 +837,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 117.1,
-     "distance_m": 0.24
+     "theta_deg": 124.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -889,8 +890,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 117.1,
-     "distance_m": 0.24
+     "theta_deg": 124.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -941,8 +942,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 117.1,
-     "distance_m": 0.24
+     "theta_deg": 124.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -999,8 +1000,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 107.1,
-     "distance_m": 0.24
+     "theta_deg": 114.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -1058,8 +1059,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 107.1,
-     "distance_m": 0.24
+     "theta_deg": 114.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -1111,8 +1112,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 107.1,
-     "distance_m": 0.24
+     "theta_deg": 114.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -1163,8 +1164,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 107.1,
-     "distance_m": 0.24
+     "theta_deg": 114.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -1221,8 +1222,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 127.1,
-     "distance_m": 0.24
+     "theta_deg": 134.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -1280,8 +1281,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 127.1,
-     "distance_m": 0.24
+     "theta_deg": 134.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -1339,8 +1340,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 127.1,
-     "distance_m": 0.24
+     "theta_deg": 134.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -1392,8 +1393,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 127.1,
-     "distance_m": 0.24
+     "theta_deg": 134.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -1450,8 +1451,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 120.1,
-     "distance_m": 0.24
+     "theta_deg": 124.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -1509,8 +1510,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 120.1,
-     "distance_m": 0.24
+     "theta_deg": 124.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -1562,8 +1563,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 120.1,
-     "distance_m": 0.24
+     "theta_deg": 124.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -1614,8 +1615,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 120.1,
-     "distance_m": 0.24
+     "theta_deg": 124.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -1672,8 +1673,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 110.1,
-     "distance_m": 0.24
+     "theta_deg": 114.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -1731,8 +1732,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 110.1,
-     "distance_m": 0.24
+     "theta_deg": 114.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -1784,8 +1785,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 110.1,
-     "distance_m": 0.24
+     "theta_deg": 114.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -1836,8 +1837,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 110.1,
-     "distance_m": 0.24
+     "theta_deg": 114.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -1894,8 +1895,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 130.1,
-     "distance_m": 0.24
+     "theta_deg": 134.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -1953,8 +1954,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 130.1,
-     "distance_m": 0.24
+     "theta_deg": 134.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -2012,8 +2013,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 130.1,
-     "distance_m": 0.24
+     "theta_deg": 134.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -2065,8 +2066,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 130.1,
-     "distance_m": 0.24
+     "theta_deg": 134.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -2123,7 +2124,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 122.9,
+     "theta_deg": 124.0,
      "distance_m": 0.25
     }
    },
@@ -2182,7 +2183,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 122.9,
+     "theta_deg": 124.0,
      "distance_m": 0.25
     }
    },
@@ -2235,7 +2236,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 122.9,
+     "theta_deg": 124.0,
      "distance_m": 0.25
     }
    },
@@ -2287,7 +2288,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 122.9,
+     "theta_deg": 124.0,
      "distance_m": 0.25
     }
    },
@@ -2345,7 +2346,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 112.9,
+     "theta_deg": 114.0,
      "distance_m": 0.25
     }
    },
@@ -2404,7 +2405,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 112.9,
+     "theta_deg": 114.0,
      "distance_m": 0.25
     }
    },
@@ -2457,7 +2458,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 112.9,
+     "theta_deg": 114.0,
      "distance_m": 0.25
     }
    },
@@ -2509,7 +2510,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 112.9,
+     "theta_deg": 114.0,
      "distance_m": 0.25
     }
    },
@@ -2567,7 +2568,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 132.9,
+     "theta_deg": 134.0,
      "distance_m": 0.25
     }
    },
@@ -2626,7 +2627,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 132.9,
+     "theta_deg": 134.0,
      "distance_m": 0.25
     }
    },
@@ -2685,7 +2686,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 132.9,
+     "theta_deg": 134.0,
      "distance_m": 0.25
     }
    },
@@ -2738,7 +2739,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 132.9,
+     "theta_deg": 134.0,
      "distance_m": 0.25
     }
    },
@@ -2793,8 +2794,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 117.3,
-     "distance_m": 0.47
+     "theta_deg": 125.3,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -2846,8 +2847,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 117.3,
-     "distance_m": 0.47
+     "theta_deg": 125.3,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -2899,8 +2900,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 117.3,
-     "distance_m": 0.47
+     "theta_deg": 125.3,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -2952,8 +2953,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 117.3,
-     "distance_m": 0.47
+     "theta_deg": 125.3,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -3008,8 +3009,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 134.7,
-     "distance_m": 0.48
+     "theta_deg": 140.3,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -3061,8 +3062,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 134.7,
-     "distance_m": 0.48
+     "theta_deg": 140.3,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -3114,8 +3115,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 134.7,
-     "distance_m": 0.48
+     "theta_deg": 140.3,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -3167,8 +3168,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 134.7,
-     "distance_m": 0.48
+     "theta_deg": 140.3,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -3223,8 +3224,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 152.0,
-     "distance_m": 0.48
+     "theta_deg": 155.3,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -3276,8 +3277,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 152.0,
-     "distance_m": 0.48
+     "theta_deg": 155.3,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -3329,8 +3330,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 152.0,
-     "distance_m": 0.48
+     "theta_deg": 155.3,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -3382,8 +3383,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 152.0,
-     "distance_m": 0.48
+     "theta_deg": 155.3,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -3438,8 +3439,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 113.5,
-     "distance_m": 0.49
+     "theta_deg": 124.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -3491,8 +3492,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 113.5,
-     "distance_m": 0.49
+     "theta_deg": 124.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -3544,8 +3545,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 113.5,
-     "distance_m": 0.49
+     "theta_deg": 124.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -3597,8 +3598,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 113.5,
-     "distance_m": 0.49
+     "theta_deg": 124.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -3653,8 +3654,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 103.5,
-     "distance_m": 0.49
+     "theta_deg": 114.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -3706,8 +3707,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 103.5,
-     "distance_m": 0.49
+     "theta_deg": 114.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -3759,8 +3760,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 103.5,
-     "distance_m": 0.49
+     "theta_deg": 114.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -3812,8 +3813,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 103.5,
-     "distance_m": 0.49
+     "theta_deg": 114.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -3868,8 +3869,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 123.5,
-     "distance_m": 0.49
+     "theta_deg": 134.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -3921,8 +3922,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 123.5,
-     "distance_m": 0.49
+     "theta_deg": 134.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -3974,8 +3975,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 123.5,
-     "distance_m": 0.49
+     "theta_deg": 134.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -4027,8 +4028,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 123.5,
-     "distance_m": 0.49
+     "theta_deg": 134.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -4083,8 +4084,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 115.0,
-     "distance_m": 0.49
+     "theta_deg": 124.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -4136,8 +4137,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 115.0,
-     "distance_m": 0.49
+     "theta_deg": 124.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -4189,8 +4190,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 115.0,
-     "distance_m": 0.49
+     "theta_deg": 124.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -4242,8 +4243,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 115.0,
-     "distance_m": 0.49
+     "theta_deg": 124.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -4298,8 +4299,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 105.0,
-     "distance_m": 0.49
+     "theta_deg": 114.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -4351,8 +4352,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 105.0,
-     "distance_m": 0.49
+     "theta_deg": 114.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -4404,8 +4405,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 105.0,
-     "distance_m": 0.49
+     "theta_deg": 114.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -4457,8 +4458,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 105.0,
-     "distance_m": 0.49
+     "theta_deg": 114.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -4513,8 +4514,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 125.0,
-     "distance_m": 0.49
+     "theta_deg": 134.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -4566,8 +4567,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 125.0,
-     "distance_m": 0.49
+     "theta_deg": 134.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -4619,8 +4620,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 125.0,
-     "distance_m": 0.49
+     "theta_deg": 134.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -4672,8 +4673,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 125.0,
-     "distance_m": 0.49
+     "theta_deg": 134.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -4728,8 +4729,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 116.4,
-     "distance_m": 0.49
+     "theta_deg": 124.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -4781,8 +4782,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 116.4,
-     "distance_m": 0.49
+     "theta_deg": 124.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -4834,8 +4835,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 116.4,
-     "distance_m": 0.49
+     "theta_deg": 124.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -4887,8 +4888,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 116.4,
-     "distance_m": 0.49
+     "theta_deg": 124.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -4943,8 +4944,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 106.4,
-     "distance_m": 0.49
+     "theta_deg": 114.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -4996,8 +4997,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 106.4,
-     "distance_m": 0.49
+     "theta_deg": 114.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -5049,8 +5050,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 106.4,
-     "distance_m": 0.49
+     "theta_deg": 114.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -5102,8 +5103,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 106.4,
-     "distance_m": 0.49
+     "theta_deg": 114.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -5158,8 +5159,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 126.4,
-     "distance_m": 0.49
+     "theta_deg": 134.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -5211,8 +5212,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 126.4,
-     "distance_m": 0.49
+     "theta_deg": 134.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -5264,8 +5265,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 126.4,
-     "distance_m": 0.49
+     "theta_deg": 134.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -5317,8 +5318,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 126.4,
-     "distance_m": 0.49
+     "theta_deg": 134.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -5612,7 +5613,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 137.6,
+     "theta_deg": 134.9,
      "distance_m": 0.23
     }
    },
@@ -5671,7 +5672,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 137.6,
+     "theta_deg": 134.9,
      "distance_m": 0.23
     }
    },
@@ -5730,7 +5731,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 137.6,
+     "theta_deg": 134.9,
      "distance_m": 0.23
     }
    },
@@ -5789,7 +5790,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 137.6,
+     "theta_deg": 134.9,
      "distance_m": 0.23
     }
    },
@@ -5848,8 +5849,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 152.3,
-     "distance_m": 0.24
+     "theta_deg": 149.2,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -5907,8 +5908,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 152.3,
-     "distance_m": 0.24
+     "theta_deg": 149.2,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -5966,8 +5967,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 152.3,
-     "distance_m": 0.24
+     "theta_deg": 149.2,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -6025,8 +6026,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 152.3,
-     "distance_m": 0.24
+     "theta_deg": 149.2,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -6084,8 +6085,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 114.9,
-     "distance_m": 0.24
+     "theta_deg": 119.5,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -6143,8 +6144,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 114.9,
-     "distance_m": 0.24
+     "theta_deg": 119.5,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -6202,8 +6203,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 114.9,
-     "distance_m": 0.24
+     "theta_deg": 119.5,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -6261,8 +6262,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 114.9,
-     "distance_m": 0.24
+     "theta_deg": 119.5,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -6320,8 +6321,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 105.0,
-     "distance_m": 0.24
+     "theta_deg": 109.7,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -6379,8 +6380,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 105.0,
-     "distance_m": 0.24
+     "theta_deg": 109.7,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -6438,8 +6439,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 105.0,
-     "distance_m": 0.24
+     "theta_deg": 109.7,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -6497,8 +6498,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 105.0,
-     "distance_m": 0.24
+     "theta_deg": 109.7,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -6556,8 +6557,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 124.9,
-     "distance_m": 0.24
+     "theta_deg": 129.3,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -6615,8 +6616,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 124.9,
-     "distance_m": 0.24
+     "theta_deg": 129.3,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -6674,8 +6675,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 124.9,
-     "distance_m": 0.24
+     "theta_deg": 129.3,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -6733,8 +6734,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 124.9,
-     "distance_m": 0.24
+     "theta_deg": 129.3,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -6792,8 +6793,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 117.0,
-     "distance_m": 0.24
+     "theta_deg": 119.5,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -6851,8 +6852,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 117.0,
-     "distance_m": 0.24
+     "theta_deg": 119.5,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -6910,8 +6911,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 117.0,
-     "distance_m": 0.24
+     "theta_deg": 119.5,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -6969,8 +6970,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 117.0,
-     "distance_m": 0.24
+     "theta_deg": 119.5,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -7028,8 +7029,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 107.1,
-     "distance_m": 0.24
+     "theta_deg": 109.7,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -7087,8 +7088,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 107.1,
-     "distance_m": 0.24
+     "theta_deg": 109.7,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -7146,8 +7147,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 107.1,
-     "distance_m": 0.24
+     "theta_deg": 109.7,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -7205,8 +7206,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 107.1,
-     "distance_m": 0.24
+     "theta_deg": 109.7,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -7264,8 +7265,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 126.9,
-     "distance_m": 0.24
+     "theta_deg": 129.3,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -7323,8 +7324,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 126.9,
-     "distance_m": 0.24
+     "theta_deg": 129.3,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -7382,8 +7383,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 126.9,
-     "distance_m": 0.24
+     "theta_deg": 129.3,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -7441,8 +7442,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 126.9,
-     "distance_m": 0.24
+     "theta_deg": 129.3,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -7500,7 +7501,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 118.8,
+     "theta_deg": 119.5,
      "distance_m": 0.25
     }
    },
@@ -7559,7 +7560,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 118.8,
+     "theta_deg": 119.5,
      "distance_m": 0.25
     }
    },
@@ -7618,7 +7619,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 118.8,
+     "theta_deg": 119.5,
      "distance_m": 0.25
     }
    },
@@ -7677,7 +7678,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 118.8,
+     "theta_deg": 119.5,
      "distance_m": 0.25
     }
    },
@@ -7736,7 +7737,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 109.0,
+     "theta_deg": 109.7,
      "distance_m": 0.25
     }
    },
@@ -7795,7 +7796,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 109.0,
+     "theta_deg": 109.7,
      "distance_m": 0.25
     }
    },
@@ -7854,7 +7855,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 109.0,
+     "theta_deg": 109.7,
      "distance_m": 0.25
     }
    },
@@ -7913,7 +7914,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 109.0,
+     "theta_deg": 109.7,
      "distance_m": 0.25
     }
    },
@@ -7972,7 +7973,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 128.6,
+     "theta_deg": 129.3,
      "distance_m": 0.25
     }
    },
@@ -8031,7 +8032,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 128.6,
+     "theta_deg": 129.3,
      "distance_m": 0.25
     }
    },
@@ -8090,7 +8091,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 128.6,
+     "theta_deg": 129.3,
      "distance_m": 0.25
     }
    },
@@ -8149,7 +8150,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 128.6,
+     "theta_deg": 129.3,
      "distance_m": 0.25
     }
    },
@@ -8205,8 +8206,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 115.1,
-     "distance_m": 0.47
+     "theta_deg": 120.3,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -8261,8 +8262,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 115.1,
-     "distance_m": 0.47
+     "theta_deg": 120.3,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -8317,8 +8318,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 115.1,
-     "distance_m": 0.47
+     "theta_deg": 120.3,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -8373,8 +8374,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 115.1,
-     "distance_m": 0.47
+     "theta_deg": 120.3,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -8429,8 +8430,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 131.6,
-     "distance_m": 0.48
+     "theta_deg": 134.9,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -8485,8 +8486,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 131.6,
-     "distance_m": 0.48
+     "theta_deg": 134.9,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -8541,8 +8542,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 131.6,
-     "distance_m": 0.48
+     "theta_deg": 134.9,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -8597,8 +8598,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 131.6,
-     "distance_m": 0.48
+     "theta_deg": 134.9,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -8653,8 +8654,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 147.6,
-     "distance_m": 0.48
+     "theta_deg": 149.2,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -8709,8 +8710,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 147.6,
-     "distance_m": 0.48
+     "theta_deg": 149.2,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -8765,8 +8766,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 147.6,
-     "distance_m": 0.48
+     "theta_deg": 149.2,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -8821,8 +8822,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 147.6,
-     "distance_m": 0.48
+     "theta_deg": 149.2,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -8877,8 +8878,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 112.5,
-     "distance_m": 0.49
+     "theta_deg": 119.5,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -8933,8 +8934,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 112.5,
-     "distance_m": 0.49
+     "theta_deg": 119.5,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -8989,8 +8990,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 112.5,
-     "distance_m": 0.49
+     "theta_deg": 119.5,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -9045,8 +9046,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 112.5,
-     "distance_m": 0.49
+     "theta_deg": 119.5,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -9101,8 +9102,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 102.5,
-     "distance_m": 0.49
+     "theta_deg": 109.7,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -9157,8 +9158,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 102.5,
-     "distance_m": 0.49
+     "theta_deg": 109.7,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -9213,8 +9214,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 102.5,
-     "distance_m": 0.49
+     "theta_deg": 109.7,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -9269,8 +9270,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 102.5,
-     "distance_m": 0.49
+     "theta_deg": 109.7,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -9325,8 +9326,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 122.4,
-     "distance_m": 0.49
+     "theta_deg": 129.3,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -9381,8 +9382,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 122.4,
-     "distance_m": 0.49
+     "theta_deg": 129.3,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -9437,8 +9438,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 122.4,
-     "distance_m": 0.49
+     "theta_deg": 129.3,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -9493,8 +9494,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 122.4,
-     "distance_m": 0.49
+     "theta_deg": 129.3,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -9549,8 +9550,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 113.5,
-     "distance_m": 0.49
+     "theta_deg": 119.5,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -9605,8 +9606,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 113.5,
-     "distance_m": 0.49
+     "theta_deg": 119.5,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -9661,8 +9662,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 113.5,
-     "distance_m": 0.49
+     "theta_deg": 119.5,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -9717,8 +9718,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 113.5,
-     "distance_m": 0.49
+     "theta_deg": 119.5,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -9773,8 +9774,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 103.5,
-     "distance_m": 0.49
+     "theta_deg": 109.7,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -9829,8 +9830,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 103.5,
-     "distance_m": 0.49
+     "theta_deg": 109.7,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -9885,8 +9886,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 103.5,
-     "distance_m": 0.49
+     "theta_deg": 109.7,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -9941,8 +9942,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 103.5,
-     "distance_m": 0.49
+     "theta_deg": 109.7,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -9997,8 +9998,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 123.5,
-     "distance_m": 0.49
+     "theta_deg": 129.3,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -10053,8 +10054,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 123.5,
-     "distance_m": 0.49
+     "theta_deg": 129.3,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -10109,8 +10110,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 123.5,
-     "distance_m": 0.49
+     "theta_deg": 129.3,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -10165,8 +10166,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 123.5,
-     "distance_m": 0.49
+     "theta_deg": 129.3,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -10221,8 +10222,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 114.5,
-     "distance_m": 0.49
+     "theta_deg": 119.5,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -10277,8 +10278,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 114.5,
-     "distance_m": 0.49
+     "theta_deg": 119.5,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -10333,8 +10334,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 114.5,
-     "distance_m": 0.49
+     "theta_deg": 119.5,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -10389,8 +10390,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 114.5,
-     "distance_m": 0.49
+     "theta_deg": 119.5,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -10445,8 +10446,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 104.5,
-     "distance_m": 0.49
+     "theta_deg": 109.7,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -10501,8 +10502,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 104.5,
-     "distance_m": 0.49
+     "theta_deg": 109.7,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -10557,8 +10558,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 104.5,
-     "distance_m": 0.49
+     "theta_deg": 109.7,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -10613,8 +10614,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 104.5,
-     "distance_m": 0.49
+     "theta_deg": 109.7,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -10669,8 +10670,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 124.4,
-     "distance_m": 0.49
+     "theta_deg": 129.3,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -10725,8 +10726,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 124.4,
-     "distance_m": 0.49
+     "theta_deg": 129.3,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -10781,8 +10782,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 124.4,
-     "distance_m": 0.49
+     "theta_deg": 129.3,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -10837,8 +10838,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 124.4,
-     "distance_m": 0.49
+     "theta_deg": 129.3,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -11133,7 +11134,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 145.1,
+     "theta_deg": 140.3,
      "distance_m": 0.23
     }
    },
@@ -11192,7 +11193,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 145.1,
+     "theta_deg": 140.3,
      "distance_m": 0.23
     }
    },
@@ -11252,7 +11253,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 145.1,
+     "theta_deg": 140.3,
      "distance_m": 0.23
     }
    },
@@ -11311,7 +11312,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 145.1,
+     "theta_deg": 140.3,
      "distance_m": 0.23
     }
    },
@@ -11371,8 +11372,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 164.4,
-     "distance_m": 0.24
+     "theta_deg": 155.3,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -11430,8 +11431,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 164.4,
-     "distance_m": 0.24
+     "theta_deg": 155.3,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -11490,8 +11491,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 164.4,
-     "distance_m": 0.24
+     "theta_deg": 155.3,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -11549,8 +11550,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 164.4,
-     "distance_m": 0.24
+     "theta_deg": 155.3,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -11609,8 +11610,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 117.1,
-     "distance_m": 0.24
+     "theta_deg": 124.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -11668,8 +11669,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 117.1,
-     "distance_m": 0.24
+     "theta_deg": 124.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -11727,8 +11728,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 117.1,
-     "distance_m": 0.24
+     "theta_deg": 124.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -11786,8 +11787,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 117.1,
-     "distance_m": 0.24
+     "theta_deg": 124.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -11846,8 +11847,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 107.1,
-     "distance_m": 0.24
+     "theta_deg": 114.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -11905,8 +11906,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 107.1,
-     "distance_m": 0.24
+     "theta_deg": 114.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -11964,8 +11965,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 107.1,
-     "distance_m": 0.24
+     "theta_deg": 114.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -12023,8 +12024,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 107.1,
-     "distance_m": 0.24
+     "theta_deg": 114.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -12083,8 +12084,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 127.1,
-     "distance_m": 0.24
+     "theta_deg": 134.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -12142,8 +12143,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 127.1,
-     "distance_m": 0.24
+     "theta_deg": 134.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -12201,8 +12202,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 127.1,
-     "distance_m": 0.24
+     "theta_deg": 134.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -12260,8 +12261,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 127.1,
-     "distance_m": 0.24
+     "theta_deg": 134.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -12320,8 +12321,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 120.1,
-     "distance_m": 0.24
+     "theta_deg": 124.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -12379,8 +12380,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 120.1,
-     "distance_m": 0.24
+     "theta_deg": 124.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -12438,8 +12439,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 120.1,
-     "distance_m": 0.24
+     "theta_deg": 124.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -12497,8 +12498,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 120.1,
-     "distance_m": 0.24
+     "theta_deg": 124.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -12557,8 +12558,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 110.1,
-     "distance_m": 0.24
+     "theta_deg": 114.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -12616,8 +12617,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 110.1,
-     "distance_m": 0.24
+     "theta_deg": 114.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -12675,8 +12676,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 110.1,
-     "distance_m": 0.24
+     "theta_deg": 114.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -12734,8 +12735,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 110.1,
-     "distance_m": 0.24
+     "theta_deg": 114.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -12794,8 +12795,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 130.1,
-     "distance_m": 0.24
+     "theta_deg": 134.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -12853,8 +12854,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 130.1,
-     "distance_m": 0.24
+     "theta_deg": 134.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -12912,8 +12913,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 130.1,
-     "distance_m": 0.24
+     "theta_deg": 134.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -12971,8 +12972,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 130.1,
-     "distance_m": 0.24
+     "theta_deg": 134.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -13031,7 +13032,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 122.9,
+     "theta_deg": 124.0,
      "distance_m": 0.25
     }
    },
@@ -13090,7 +13091,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 122.9,
+     "theta_deg": 124.0,
      "distance_m": 0.25
     }
    },
@@ -13149,7 +13150,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 122.9,
+     "theta_deg": 124.0,
      "distance_m": 0.25
     }
    },
@@ -13208,7 +13209,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 122.9,
+     "theta_deg": 124.0,
      "distance_m": 0.25
     }
    },
@@ -13268,7 +13269,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 112.9,
+     "theta_deg": 114.0,
      "distance_m": 0.25
     }
    },
@@ -13327,7 +13328,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 112.9,
+     "theta_deg": 114.0,
      "distance_m": 0.25
     }
    },
@@ -13386,7 +13387,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 112.9,
+     "theta_deg": 114.0,
      "distance_m": 0.25
     }
    },
@@ -13445,7 +13446,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 112.9,
+     "theta_deg": 114.0,
      "distance_m": 0.25
     }
    },
@@ -13505,7 +13506,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 132.9,
+     "theta_deg": 134.0,
      "distance_m": 0.25
     }
    },
@@ -13564,7 +13565,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 132.9,
+     "theta_deg": 134.0,
      "distance_m": 0.25
     }
    },
@@ -13623,7 +13624,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 132.9,
+     "theta_deg": 134.0,
      "distance_m": 0.25
     }
    },
@@ -13682,7 +13683,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 132.9,
+     "theta_deg": 134.0,
      "distance_m": 0.25
     }
    },
@@ -13742,8 +13743,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 117.3,
-     "distance_m": 0.47
+     "theta_deg": 125.3,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -13801,8 +13802,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 117.3,
-     "distance_m": 0.47
+     "theta_deg": 125.3,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -13862,8 +13863,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 117.3,
-     "distance_m": 0.47
+     "theta_deg": 125.3,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -13922,8 +13923,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 117.3,
-     "distance_m": 0.47
+     "theta_deg": 125.3,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -13983,8 +13984,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 134.7,
-     "distance_m": 0.48
+     "theta_deg": 140.3,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -14042,8 +14043,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 134.7,
-     "distance_m": 0.48
+     "theta_deg": 140.3,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -14102,8 +14103,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 134.7,
-     "distance_m": 0.48
+     "theta_deg": 140.3,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -14161,8 +14162,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 134.7,
-     "distance_m": 0.48
+     "theta_deg": 140.3,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -14221,8 +14222,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 152.0,
-     "distance_m": 0.48
+     "theta_deg": 155.3,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -14274,8 +14275,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 152.0,
-     "distance_m": 0.48
+     "theta_deg": 155.3,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -14332,8 +14333,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 152.0,
-     "distance_m": 0.48
+     "theta_deg": 155.3,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -14385,8 +14386,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 152.0,
-     "distance_m": 0.48
+     "theta_deg": 155.3,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -14443,8 +14444,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 113.5,
-     "distance_m": 0.49
+     "theta_deg": 124.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -14502,8 +14503,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 113.5,
-     "distance_m": 0.49
+     "theta_deg": 124.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -14562,8 +14563,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 113.5,
-     "distance_m": 0.49
+     "theta_deg": 124.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -14622,8 +14623,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 113.5,
-     "distance_m": 0.49
+     "theta_deg": 124.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -14683,8 +14684,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 103.5,
-     "distance_m": 0.49
+     "theta_deg": 114.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -14742,8 +14743,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 103.5,
-     "distance_m": 0.49
+     "theta_deg": 114.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -14802,8 +14803,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 103.5,
-     "distance_m": 0.49
+     "theta_deg": 114.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -14862,8 +14863,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 103.5,
-     "distance_m": 0.49
+     "theta_deg": 114.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -14923,8 +14924,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 123.5,
-     "distance_m": 0.49
+     "theta_deg": 134.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -14982,8 +14983,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 123.5,
-     "distance_m": 0.49
+     "theta_deg": 134.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -15042,8 +15043,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 123.5,
-     "distance_m": 0.49
+     "theta_deg": 134.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -15102,8 +15103,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 123.5,
-     "distance_m": 0.49
+     "theta_deg": 134.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -15163,8 +15164,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 115.0,
-     "distance_m": 0.49
+     "theta_deg": 124.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -15222,8 +15223,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 115.0,
-     "distance_m": 0.49
+     "theta_deg": 124.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -15282,8 +15283,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 115.0,
-     "distance_m": 0.49
+     "theta_deg": 124.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -15342,8 +15343,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 115.0,
-     "distance_m": 0.49
+     "theta_deg": 124.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -15403,8 +15404,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 105.0,
-     "distance_m": 0.49
+     "theta_deg": 114.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -15462,8 +15463,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 105.0,
-     "distance_m": 0.49
+     "theta_deg": 114.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -15522,8 +15523,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 105.0,
-     "distance_m": 0.49
+     "theta_deg": 114.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -15582,8 +15583,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 105.0,
-     "distance_m": 0.49
+     "theta_deg": 114.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -15643,8 +15644,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 125.0,
-     "distance_m": 0.49
+     "theta_deg": 134.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -15702,8 +15703,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 125.0,
-     "distance_m": 0.49
+     "theta_deg": 134.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -15762,8 +15763,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 125.0,
-     "distance_m": 0.49
+     "theta_deg": 134.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -15822,8 +15823,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 125.0,
-     "distance_m": 0.49
+     "theta_deg": 134.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -15883,8 +15884,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 116.4,
-     "distance_m": 0.49
+     "theta_deg": 124.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -15942,8 +15943,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 116.4,
-     "distance_m": 0.49
+     "theta_deg": 124.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -16003,8 +16004,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 116.4,
-     "distance_m": 0.49
+     "theta_deg": 124.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -16063,8 +16064,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 116.4,
-     "distance_m": 0.49
+     "theta_deg": 124.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -16124,8 +16125,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 106.4,
-     "distance_m": 0.49
+     "theta_deg": 114.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -16183,8 +16184,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 106.4,
-     "distance_m": 0.49
+     "theta_deg": 114.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -16244,8 +16245,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 106.4,
-     "distance_m": 0.49
+     "theta_deg": 114.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -16304,8 +16305,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 106.4,
-     "distance_m": 0.49
+     "theta_deg": 114.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -16365,8 +16366,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 126.4,
-     "distance_m": 0.49
+     "theta_deg": 134.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -16424,8 +16425,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 126.4,
-     "distance_m": 0.49
+     "theta_deg": 134.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -16485,8 +16486,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 126.4,
-     "distance_m": 0.49
+     "theta_deg": 134.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -16545,8 +16546,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 126.4,
-     "distance_m": 0.49
+     "theta_deg": 134.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -16842,7 +16843,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 145.1,
+     "theta_deg": 140.3,
      "distance_m": 0.23
     }
    },
@@ -16901,7 +16902,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 145.1,
+     "theta_deg": 140.3,
      "distance_m": 0.23
     }
    },
@@ -16960,7 +16961,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 145.1,
+     "theta_deg": 140.3,
      "distance_m": 0.23
     }
    },
@@ -17019,7 +17020,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 145.1,
+     "theta_deg": 140.3,
      "distance_m": 0.23
     }
    },
@@ -17078,8 +17079,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 164.4,
-     "distance_m": 0.24
+     "theta_deg": 155.3,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -17137,8 +17138,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 164.4,
-     "distance_m": 0.24
+     "theta_deg": 155.3,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -17196,8 +17197,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 164.4,
-     "distance_m": 0.24
+     "theta_deg": 155.3,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -17255,8 +17256,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 164.4,
-     "distance_m": 0.24
+     "theta_deg": 155.3,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -17314,8 +17315,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 117.1,
-     "distance_m": 0.24
+     "theta_deg": 124.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -17373,8 +17374,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 117.1,
-     "distance_m": 0.24
+     "theta_deg": 124.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -17432,8 +17433,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 117.1,
-     "distance_m": 0.24
+     "theta_deg": 124.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -17491,8 +17492,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 117.1,
-     "distance_m": 0.24
+     "theta_deg": 124.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -17550,8 +17551,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 107.1,
-     "distance_m": 0.24
+     "theta_deg": 114.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -17609,8 +17610,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 107.1,
-     "distance_m": 0.24
+     "theta_deg": 114.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -17668,8 +17669,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 107.1,
-     "distance_m": 0.24
+     "theta_deg": 114.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -17715,8 +17716,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 107.1,
-     "distance_m": 0.24
+     "theta_deg": 114.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -17770,8 +17771,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 127.1,
-     "distance_m": 0.24
+     "theta_deg": 134.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -17829,8 +17830,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 127.1,
-     "distance_m": 0.24
+     "theta_deg": 134.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -17888,8 +17889,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 127.1,
-     "distance_m": 0.24
+     "theta_deg": 134.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -17947,8 +17948,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 127.1,
-     "distance_m": 0.24
+     "theta_deg": 134.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -18006,8 +18007,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 120.1,
-     "distance_m": 0.24
+     "theta_deg": 124.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -18065,8 +18066,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 120.1,
-     "distance_m": 0.24
+     "theta_deg": 124.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -18124,8 +18125,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 120.1,
-     "distance_m": 0.24
+     "theta_deg": 124.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -18183,8 +18184,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 120.1,
-     "distance_m": 0.24
+     "theta_deg": 124.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -18242,8 +18243,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 110.1,
-     "distance_m": 0.24
+     "theta_deg": 114.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -18301,8 +18302,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 110.1,
-     "distance_m": 0.24
+     "theta_deg": 114.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -18360,8 +18361,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 110.1,
-     "distance_m": 0.24
+     "theta_deg": 114.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -18407,8 +18408,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 110.1,
-     "distance_m": 0.24
+     "theta_deg": 114.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -18462,8 +18463,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 130.1,
-     "distance_m": 0.24
+     "theta_deg": 134.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -18521,8 +18522,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 130.1,
-     "distance_m": 0.24
+     "theta_deg": 134.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -18580,8 +18581,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 130.1,
-     "distance_m": 0.24
+     "theta_deg": 134.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -18639,8 +18640,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 130.1,
-     "distance_m": 0.24
+     "theta_deg": 134.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -18698,7 +18699,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 122.9,
+     "theta_deg": 124.0,
      "distance_m": 0.25
     }
    },
@@ -18757,7 +18758,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 122.9,
+     "theta_deg": 124.0,
      "distance_m": 0.25
     }
    },
@@ -18816,7 +18817,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 122.9,
+     "theta_deg": 124.0,
      "distance_m": 0.25
     }
    },
@@ -18875,7 +18876,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 122.9,
+     "theta_deg": 124.0,
      "distance_m": 0.25
     }
    },
@@ -18934,7 +18935,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 112.9,
+     "theta_deg": 114.0,
      "distance_m": 0.25
     }
    },
@@ -18993,7 +18994,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 112.9,
+     "theta_deg": 114.0,
      "distance_m": 0.25
     }
    },
@@ -19052,7 +19053,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 112.9,
+     "theta_deg": 114.0,
      "distance_m": 0.25
     }
    },
@@ -19099,7 +19100,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 112.9,
+     "theta_deg": 114.0,
      "distance_m": 0.25
     }
    },
@@ -19154,7 +19155,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 132.9,
+     "theta_deg": 134.0,
      "distance_m": 0.25
     }
    },
@@ -19213,7 +19214,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 132.9,
+     "theta_deg": 134.0,
      "distance_m": 0.25
     }
    },
@@ -19272,7 +19273,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 132.9,
+     "theta_deg": 134.0,
      "distance_m": 0.25
     }
    },
@@ -19331,7 +19332,7 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 132.9,
+     "theta_deg": 134.0,
      "distance_m": 0.25
     }
    },
@@ -19390,8 +19391,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 117.3,
-     "distance_m": 0.47
+     "theta_deg": 125.3,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -19449,8 +19450,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 117.3,
-     "distance_m": 0.47
+     "theta_deg": 125.3,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -19508,8 +19509,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 117.3,
-     "distance_m": 0.47
+     "theta_deg": 125.3,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -19567,8 +19568,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 117.3,
-     "distance_m": 0.47
+     "theta_deg": 125.3,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -19626,8 +19627,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 134.7,
-     "distance_m": 0.48
+     "theta_deg": 140.3,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -19685,8 +19686,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 134.7,
-     "distance_m": 0.48
+     "theta_deg": 140.3,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -19744,8 +19745,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 134.7,
-     "distance_m": 0.48
+     "theta_deg": 140.3,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -19803,8 +19804,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 134.7,
-     "distance_m": 0.48
+     "theta_deg": 140.3,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -19862,8 +19863,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 152.0,
-     "distance_m": 0.48
+     "theta_deg": 155.3,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -19921,8 +19922,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 152.0,
-     "distance_m": 0.48
+     "theta_deg": 155.3,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -19980,8 +19981,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 152.0,
-     "distance_m": 0.48
+     "theta_deg": 155.3,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -20039,8 +20040,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 152.0,
-     "distance_m": 0.48
+     "theta_deg": 155.3,
+     "distance_m": 0.23
     }
    },
    "visible_targets": [
@@ -20098,8 +20099,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 113.5,
-     "distance_m": 0.49
+     "theta_deg": 124.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -20157,8 +20158,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 113.5,
-     "distance_m": 0.49
+     "theta_deg": 124.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -20216,8 +20217,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 113.5,
-     "distance_m": 0.49
+     "theta_deg": 124.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -20275,8 +20276,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 113.5,
-     "distance_m": 0.49
+     "theta_deg": 124.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -20334,8 +20335,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 103.5,
-     "distance_m": 0.49
+     "theta_deg": 114.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -20393,8 +20394,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 103.5,
-     "distance_m": 0.49
+     "theta_deg": 114.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -20452,8 +20453,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 103.5,
-     "distance_m": 0.49
+     "theta_deg": 114.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -20511,8 +20512,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 103.5,
-     "distance_m": 0.49
+     "theta_deg": 114.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -20570,8 +20571,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 123.5,
-     "distance_m": 0.49
+     "theta_deg": 134.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -20629,8 +20630,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 123.5,
-     "distance_m": 0.49
+     "theta_deg": 134.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -20688,8 +20689,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 123.5,
-     "distance_m": 0.49
+     "theta_deg": 134.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -20747,8 +20748,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 123.5,
-     "distance_m": 0.49
+     "theta_deg": 134.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -20806,8 +20807,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 115.0,
-     "distance_m": 0.49
+     "theta_deg": 124.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -20865,8 +20866,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 115.0,
-     "distance_m": 0.49
+     "theta_deg": 124.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -20924,8 +20925,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 115.0,
-     "distance_m": 0.49
+     "theta_deg": 124.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -20983,8 +20984,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 115.0,
-     "distance_m": 0.49
+     "theta_deg": 124.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -21042,8 +21043,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 105.0,
-     "distance_m": 0.49
+     "theta_deg": 114.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -21101,8 +21102,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 105.0,
-     "distance_m": 0.49
+     "theta_deg": 114.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -21160,8 +21161,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 105.0,
-     "distance_m": 0.49
+     "theta_deg": 114.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -21219,8 +21220,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 105.0,
-     "distance_m": 0.49
+     "theta_deg": 114.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -21278,8 +21279,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 125.0,
-     "distance_m": 0.49
+     "theta_deg": 134.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -21337,8 +21338,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 125.0,
-     "distance_m": 0.49
+     "theta_deg": 134.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -21396,8 +21397,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 125.0,
-     "distance_m": 0.49
+     "theta_deg": 134.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -21455,8 +21456,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 125.0,
-     "distance_m": 0.49
+     "theta_deg": 134.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -21514,8 +21515,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 116.4,
-     "distance_m": 0.49
+     "theta_deg": 124.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -21573,8 +21574,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 116.4,
-     "distance_m": 0.49
+     "theta_deg": 124.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -21632,8 +21633,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 116.4,
-     "distance_m": 0.49
+     "theta_deg": 124.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -21691,8 +21692,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 116.4,
-     "distance_m": 0.49
+     "theta_deg": 124.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -21750,8 +21751,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 106.4,
-     "distance_m": 0.49
+     "theta_deg": 114.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -21809,8 +21810,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 106.4,
-     "distance_m": 0.49
+     "theta_deg": 114.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -21868,8 +21869,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 106.4,
-     "distance_m": 0.49
+     "theta_deg": 114.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -21927,8 +21928,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 106.4,
-     "distance_m": 0.49
+     "theta_deg": 114.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -21986,8 +21987,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 126.4,
-     "distance_m": 0.49
+     "theta_deg": 134.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -22045,8 +22046,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 126.4,
-     "distance_m": 0.49
+     "theta_deg": 134.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -22104,8 +22105,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 126.4,
-     "distance_m": 0.49
+     "theta_deg": 134.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -22163,8 +22164,8 @@
     },
     "家长面部": {
      "status": "behind_camera",
-     "theta_deg": 126.4,
-     "distance_m": 0.49
+     "theta_deg": 134.0,
+     "distance_m": 0.25
     }
    },
    "visible_targets": [
@@ -22184,8 +22185,16 @@
   "beyond_150_domain": true,
   "beyond_hemisphere": true,
   "inframe_but_occluded": true,
-  "occluder_name": "手臂(抬起时)",
+  "diag_occluder_name": "手臂(抬起时)",
   "degenerate_handled": true,
+  "capsule_exact_matches_bruteforce": true,
+  "capsule_below_radius_hits": true,
+  "capsule_at_radius_strict_clear": true,
+  "capsule_above_radius_clear": true,
+  "order_independent": true,
+  "height_sensitive": true,
+  "scenarios_untouched": true,
+  "selftest_bool_count": 13,
   "all_pass": true
  },
  "posture_worst_case_summary": {

@@ -178,20 +178,48 @@ def ray_hits_sphere(cam, target, center, radius):
     return False
 
 
+def seg_seg_distance(p1, p2, q1, q2):
+    """两线段 p1-p2 与 q1-q2 的最短距离（Ericson《Real-Time Collision
+    Detection》5.1.9，含一点/两点退化为端点情形）。
+    历史：v2 首版用 100 点采样近似，曾与另一份临写的精确公式冲突
+    （0.0479 vs 0.1668）——对账后确认临写公式的端点钳制有错、采样与
+    暴力对拍一致；本版改为正确精确实现，并用密集采样对账兜底。"""
+    def sub(a, b):
+        return (a[0] - b[0], a[1] - b[1], a[2] - b[2])
+
+    def dot(a, b):
+        return a[0] * b[0] + a[1] * b[1] + a[2] * b[2]
+
+    d1, d2, r = sub(p2, p1), sub(q2, q1), sub(p1, q1)
+    a, e = dot(d1, d1), dot(d2, d2)
+    f = dot(d2, r)
+    eps = 1e-12
+    if a <= eps and e <= eps:
+        return math.sqrt(dot(r, r))
+    if a <= eps:
+        s, t = 0.0, min(1.0, max(0.0, f / e))
+    else:
+        c = dot(d1, r)
+        if e <= eps:
+            t, s = 0.0, min(1.0, max(0.0, -c / a))
+        else:
+            b = dot(d1, d2)
+            denom = a * e - b * b
+            s = min(1.0, max(0.0, (b * f - c * e) / denom)) if denom > eps else 0.0
+            t = (b * s + f) / e
+            if t < 0:
+                t, s = 0.0, min(1.0, max(0.0, -c / a))
+            elif t > 1:
+                t, s = 1.0, min(1.0, max(0.0, (b - c) / a))
+    cp = tuple(p1[i] + d1[i] * s for i in range(3))
+    cq = tuple(q1[i] + d2[i] * t for i in range(3))
+    return math.dist(cp, cq)
+
+
 def ray_hits_capsule(cam, target, seg_a, seg_b, radius):
-    """采样近似：相机→目标线段与肩→手线段的最小距离 < 半径即判遮挡。
-    手部目标自身不经过本函数（调用方排除）。"""
-    d = tuple(target[i] - cam[i] for i in range(3))
-    seg = tuple(seg_b[i] - seg_a[i] for i in range(3))
-    L2 = sum(x * x for x in seg) or 1e-12
-    for i in range(1, 101):
-        t = i / 101
-        p = tuple(cam[j] + d[j] * t for j in range(3))
-        s = max(0.0, min(1.0, sum((p[j] - seg_a[j]) * seg[j] for j in range(3)) / L2))
-        q = tuple(seg_a[j] + seg[j] * s for j in range(3))
-        if math.dist(p, q) < radius:
-            return True
-    return False
+    """相机→目标线段与肩→手线段（半径 radius 胶囊）的精确相交判定：
+    线段最短距离 < radius 判遮挡（边界恰好等于半径不判遮挡）。"""
+    return seg_seg_distance(cam, target, seg_a, seg_b) < radius
 
 
 def build_occluders(cam, hand_target):
@@ -315,14 +343,19 @@ def evaluate(scen_key, height_key, mount, lean, sway, fov_key, crop_key,
     radius_px = CROP[crop_key]
     fov = FOVS[fov_key]
     yaw = scen["camera_yaw"]
-    face = next(t for t in scen["targets"] if t["name"] == "家长面部")
-    if face["point"] == "parent_face":
-        face["point"] = (cam[0], height + 0.12, cam[2] + 0.06)
-    hand = next((t["point"] for t in scen["targets"] if t.get("hand")), None)
+    # 家长面部坐标按本配置局部计算（不修改全局 SCENARIOS——保证任意执行顺序
+    # 与调用组合下结果可重复，历史版本曾就地改写全局导致顺序依赖）
+    targets = []
+    for t in scen["targets"]:
+        if t["point"] == "parent_face":
+            targets.append({**t, "point": (cam[0], height + 0.12, cam[2] + 0.06)})
+        else:
+            targets.append(t)
+    hand = next((t["point"] for t in targets if t.get("hand")), None)
     occ = build_occluders(cam, hand)
 
     metrics = {}
-    for tgt in scen["targets"]:
+    for tgt in targets:
         p = tgt["point"]
         u, v, theta, status = project(p, cam, pitch, yaw, fov, radius_px)
         m = {"status": status, "theta_deg": None if theta is None else round(theta, 1),
@@ -489,7 +522,24 @@ def draw_frame(scen_key, height_key, mount, lean, sway, fov_key, crop_key,
     img.save(out)
 
 
-# ---------- 自检（关键错误验证例） ----------
+# ---------- 自检（关键错误验证例 + 胶囊对账/边界 + 可重复性回归） ----------
+def _brute_seg_distance(p1, p2, q1, q2, n=400):
+    """密集双向采样距离（自检对账基准，非生产路径）。"""
+    d1 = tuple(p2[i] - p1[i] for i in range(3))
+    d2 = tuple(q2[i] - q1[i] for i in range(3))
+    best = float("inf")
+    for i in range(n + 1):
+        s = i / n
+        p = tuple(p1[j] + d1[j] * s for j in range(3))
+        for k in range(n + 1):
+            t = k / n
+            q = tuple(q1[j] + d2[j] * t for j in range(3))
+            dist = math.dist(p, q)
+            if dist < best:
+                best = dist
+    return best
+
+
 def selftest() -> dict:
     cam, pitch = camera_for(SCENARIOS["S2-face-to-face"], 1.10, "chest", 0, None)
     yaw = 180.0
@@ -516,23 +566,62 @@ def selftest() -> dict:
     _, _, _, st = project(p95, cam, pitch, yaw, 180, 540)
     results["beyond_hemisphere"] = st == "behind_camera"
 
-    low_key = ("画幅内但被身体遮挡", None)                          # 4 手臂遮挡构造点
     hand = next(t["point"] for t in SCENARIOS["S1-side-reading"]["targets"]
                 if t.get("hand"))
     occ = build_occluders(cam, hand)
     arm_mid = tuple((occ["arm_r"][0][i] + occ["arm_r"][1][i]) / 2 for i in range(3))
-    tgt_below_arm = tuple(arm_mid[i] + (0, -0.03, 0)[i] for i in range(3))
+    tgt_below_arm = tuple(arm_mid[i] - (0.0, 0.03, 0.0)[i] for i in range(3))
     uu, vv, th, st = project(tgt_below_arm, cam, pitch, yaw, 180, 540)
     blocked = check_occlusion(tgt_below_arm, cam, occ, False)
     results["inframe_but_occluded"] = (st == "ok" and blocked is not None
                                        and uu is not None
                                        and 0 <= uu <= FRAME_W and 0 <= vv <= FRAME_H)
-    results["occluder_name"] = blocked or "none"
+    results["diag_occluder_name"] = blocked or "none"
 
     _, _, _, st = project(cam, cam, pitch, yaw, 180, 540)          # 5 退化输入
     results["degenerate_handled"] = st == "degenerate"
 
-    results["all_pass"] = all(results.values())
+    # 6 胶囊精确距离 vs 密集采样对账（相同输入逐例比较）
+    cases = [
+        (cam, tgt_below_arm, occ["arm_r"][0], occ["arm_r"][1]),   # 曾冲突的真实输入
+        (cam, hand, occ["arm_rest"][0], occ["arm_rest"][1]),
+        ((0.0, 0.0, 0.0), (0.0, 0.0, 1.0), (0.05, 0.0, 0.3), (0.05, 0.0, 0.5)),
+        ((0.0, 0.0, 0.0), (1.0, 0.0, 0.0), (0.5, 0.1, 0.0), (0.5, 0.1, 1.0)),
+    ]
+    results["capsule_exact_matches_bruteforce"] = all(
+        abs(seg_seg_distance(*c) - _brute_seg_distance(*c, n=200)) < 2e-3
+        for c in cases)
+
+    # 7 半径边界：射线沿 +Z，手臂段在 X=d 处平行 → 距离恰为 d
+    radius = 0.045
+    for key, d in (("capsule_below_radius_hits", 0.044),
+                   ("capsule_at_radius_strict_clear", 0.045),
+                   ("capsule_above_radius_clear", 0.046)):
+        results[key] = ray_hits_capsule(
+            (0.0, 0.0, 0.0), (0.0, 0.0, 1.0),
+            (d, 0.0, 0.3), (d, 0.0, 0.5), radius) == (d < radius)
+
+    # 8 可重复性回归：执行顺序无关 + 身高敏感 + 全局场景不可变
+    snap = json.dumps(SCENARIOS, sort_keys=True)
+    rA = evaluate("S2-face-to-face", "seated-1.10", "chest", 0, None,
+                  "180", "fit_diagonal")
+    _ = evaluate("S1-side-reading", "stand-1.35", "chest", 30, None,
+                 "180", "fit_height")
+    _ = evaluate("S2-face-to-face", "seated-1.10", "lanyard", 15, -10,
+                 "150", "fit_height")
+    rB = evaluate("S2-face-to-face", "seated-1.10", "chest", 0, None,
+                  "180", "fit_diagonal")
+    results["order_independent"] = rA == rB
+    h135 = evaluate("S2-face-to-face", "stand-1.35", "chest", 0, None,
+                    "180", "fit_diagonal")
+    results["height_sensitive"] = h135 != rA and (
+        h135["targets"]["孩子面部"]["theta_deg"]
+        != rA["targets"]["孩子面部"]["theta_deg"])
+    results["scenarios_untouched"] = json.dumps(SCENARIOS, sort_keys=True) == snap
+
+    bool_keys = [k for k, v in results.items() if isinstance(v, bool)]
+    results["selftest_bool_count"] = len(bool_keys)
+    results["all_pass"] = all(results[k] for k in bool_keys)
     return results
 
 
@@ -557,9 +646,11 @@ def main() -> None:
             "effective_fov": {f"{fk}/{ck}": effective_fov(FOVS[fk], CROP[ck])
                               for fk in FOVS for ck in CROP},
             "domain_note": "模型有效域 θ∈[0, θ_max]；本轮结论不依赖 >180° 覆盖",
-            "occluders": "躯干盒+头球+手臂胶囊（简化假设尺寸）；衣物未建模",
+            "occluders": "躯干盒+头球+手臂胶囊（精确线段距离判定，双姿态；衣物未建模）",
             "posture": {"chest": "pitch 随前倾 0/15/30° 转动",
                         "lanyard": "pitch 受摆动 {-10,0,+10}° 影响，位置随前倾少量前移"},
+            "reproducibility": "evaluate() 不修改全局 SCENARIOS；结果与执行顺序无关"
+                               "（自检回归覆盖）",
         },
         "label": "模拟预测：几何投影+简化遮挡，非实拍；场景/阈值/姿态均为实验假设",
         "thresholds": THRESHOLDS,

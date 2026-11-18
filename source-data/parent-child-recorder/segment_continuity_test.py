@@ -29,8 +29,10 @@ from pathlib import Path
 OUT = Path("/tmp/recorder-test")
 FPS = 30
 AUDIO_RATE = 44100
-VIDEO_KBPS = "4000"  # 4 Mbps：目标设备常见档位（可调基线，容量估算输入之一）
-AUDIO_KBPS = "128"
+# FFmpeg 码率必须带单位后缀：裸数字按 bit/s 解析（"4000" 实为 4 kbps）。
+# 显式写成 4M / 128k；命名同步改为 *_BITRATE 避免误读。
+VIDEO_BITRATE = "4M"
+AUDIO_BITRATE = "128k"
 
 
 def base_args(duration: float, realtime: bool) -> list[str]:
@@ -41,8 +43,8 @@ def base_args(duration: float, realtime: bool) -> list[str]:
         "-f", "lavfi", "-i", f"testsrc2=size=1920x1080:rate={FPS}:duration={duration}",
         "-f", "lavfi", "-i",
         f"sine=frequency=440:sample_rate={AUDIO_RATE}:duration={duration}",
-        "-c:v", "h264_videotoolbox", "-b:v", VIDEO_KBPS, "-pix_fmt", "yuv420p",
-        "-c:a", "aac", "-b:a", AUDIO_KBPS,
+        "-c:v", "h264_videotoolbox", "-b:v", VIDEO_BITRATE, "-pix_fmt", "yuv420p",
+        "-c:a", "aac", "-b:a", AUDIO_BITRATE,
     ]
 
 
@@ -170,7 +172,10 @@ def continuity() -> dict:
 
 
 def capacity() -> dict:
-    """30 分钟容量估算：短测码率外推 + 已有真实 30 分钟运行佐证。"""
+    """30 分钟容量估算：短测码率外推 + 已有真实 30 分钟运行佐证。
+    历史备注：v2 首版误用裸数字 "4000"（FFmpeg 按 4 kbps 解析），测得 1.4 Mbps
+    是编码器对异常低目标的下限行为，不能据此声称「内容简单导致降码率」；
+    本版已改为显式 4M 后重测。"""
     repo = Path(__file__).resolve().parent / "generated"
     prior = {}
     p = repo / "recording_normal_30min.json"
@@ -179,25 +184,39 @@ def capacity() -> dict:
         prior = {"source": "recording_normal_30min.json (2026-11-18 真实 30 分钟实时运行)",
                  "measured_bitrate_mbps": d.get("avg_bitrate_mbps"),
                  "measured_gb_per_30min": d.get("storage_gb_per_30min")}
-    # 本轮短测实测码率（8 Mbps 档）
-    d = OUT / "cap8"
+    # 本轮短测实测码率（4M 档）
+    d = OUT / "cap4m"
     d.mkdir(parents=True, exist_ok=True)
     for old in d.glob("seg_*"):
         old.unlink()
     run_ffmpeg_wait(segment_args(60, 15, d, realtime=False))
     segs = sorted(d.glob("seg_*.mp4"))
-    size8 = sum(f.stat().st_size for f in segs)
-    mbps8 = size8 * 8 / 60 / 1e6
+    size = sum(f.stat().st_size for f in segs)
+    mbps = size * 8 / 60 / 1e6
+    probe_note = {}
+    if segs:
+        pr = subprocess.run(
+            ["ffprobe", "-v", "error", "-select_streams", "v:0",
+             "-show_entries", "stream=bit_rate", "-print_format", "json",
+             str(segs[0])], capture_output=True, text=True)
+        try:
+            probe_note = {"stream_bit_rate_bps":
+                          int(json.loads(pr.stdout)["streams"][0].get("bit_rate") or 0)}
+        except (ValueError, KeyError, IndexError):
+            probe_note = {}
     est = {
-        "basis": "短测实测码率外推（testsrc2 合成源）；注意 -b:v 是上限，"
+        "basis": "短测实测码率外推（testsrc2 合成源）；目标码率 -b:v 4M 为平均上限，"
                  "实际码率随内容运动复杂度变化",
-        "kbps_4mbps": {"measured_mbps": round(mbps8, 2),
-                       "gb_per_30min": round(mbps8 * 1800 / 8 / 1000, 2)},
-        "uncertainty": "低运动内容实测可低至目标码率的 1/3（本轮 4Mbps 档实测"
-                       " 1.4Mbps）；估算按 ±50% 起步，存储按估算值 1.5–2 倍预留",
+        "kbps_4mbps": {"video_target": VIDEO_BITRATE, "measured_mbps": round(mbps, 2),
+                       "gb_per_30min": round(mbps * 1800 / 8 / 1000, 2),
+                       **probe_note},
+        "uncertainty": "码率随场景运动复杂度与编码器档位变化（±50% 起步）；"
+                       "存储按估算值 1.5–2 倍预留；主容量依据为既有真实 30 分钟运行",
     }
     return {"test": "capacity_estimate_30min",
             "label": "估算（30 分钟容量估算），佐证为既有真实 30 分钟运行",
+            "unit_fix_note": "v2 首版 VIDEO_KBPS=\"4000\" 被 FFmpeg 按 bit/s 解析"
+                            "（=4kbps），其 1.4 Mbps 结果已作废并用本版重测替代",
             "prior_real_run": prior, "extrapolation": est}
 
 
