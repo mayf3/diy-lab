@@ -61,7 +61,7 @@ CROP = {
     "fit_height": FRAME_H / 2,                    # 像圆直径=画幅高，R=540
     "fit_diagonal": math.hypot(FRAME_W, FRAME_H) / 2,  # 像圆直径=对角，R≈1101
 }
-FOVS = {"180": 180.0, "150": 150.0}
+FOVS = {"180": 180.0, "175": 175.0, "150": 150.0}  # 175°=V1 选型候选（Arducam IMX219 鱼眼档）
 THRESHOLDS = {"教学": 100, "面部": 60, "手部": 80}
 
 _FONT_CANDIDATES = [
