@@ -1,0 +1,36 @@
+{
+ "test": "negative-corrupted-segment",
+ "label": "负向测试：截断损坏的分段必须导致验收失败，不允许被静默过滤",
+ "corrupted_file": "seg_001.mp4",
+ "original_bytes": 5127880,
+ "kept_bytes": 2051152,
+ "segments": [
+  {
+   "file": "seg_000.mp4",
+   "size_bytes": 61102240,
+   "exists": true,
+   "probe_ok": true,
+   "duration_s": 60.02,
+   "codec": "h264",
+   "decode_ok": true,
+   "decode_errors": [],
+   "playable": true
+  },
+  {
+   "file": "seg_001.mp4",
+   "size_bytes": 2051152,
+   "exists": true,
+   "probe_ok": false,
+   "playable": false,
+   "error": "[mov,mp4,m4a,3gp,3g2,mj2 @ 0xba5050000] moov atom not found"
+  }
+ ],
+ "failed_segments": [
+  {
+   "file": "seg_001.mp4",
+   "error": "[mov,mp4,m4a,3gp,3g2,mj2 @ 0xba5050000] moov atom not found"
+  }
+ ],
+ "gate_failed_as_expected": true,
+ "gate_ok": true
+}

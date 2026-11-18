@@ -1,0 +1,55 @@
+{
+ "test": "crash-kill9-mp4",
+ "label": "进程崩溃（kill -9）≠ 设备断电；目标设备断电仍属目标设备实测",
+ "cmd": "ffmpeg -hide_banner -loglevel warning -re -f lavfi -i testsrc2=size=1920x1080:rate=30 -re -f lavfi -i sine=frequency=440:sample_rate=44100 -c:v h264_videotoolbox -b:v 8M -pix_fmt yuv420p -force_key_frames expr:gte(t,n_forced*60) -c:a aac -b:a 128k -f segment -segment_time 60 -segment_format mp4 -reset_timestamps 1 /tmp/recorder-test/crash-mp4/seg_%03d.mp4",
+ "params": {
+  "container": "mp4",
+  "segment_time_s": 60,
+  "crash_at_s": 150,
+  "signal": "SIGKILL"
+ },
+ "pid": 24591,
+ "wall_seconds": 150,
+ "segments": [
+  {
+   "file": "seg_000.mp4",
+   "size_bytes": 61102240,
+   "exists": true,
+   "probe_ok": true,
+   "duration_s": 60.02,
+   "codec": "h264",
+   "decode_ok": true,
+   "decode_errors": [],
+   "playable": true
+  },
+  {
+   "file": "seg_001.mp4",
+   "size_bytes": 61038709,
+   "exists": true,
+   "probe_ok": true,
+   "duration_s": 60.0,
+   "codec": "h264",
+   "decode_ok": true,
+   "decode_errors": [],
+   "playable": true
+  },
+  {
+   "file": "seg_002.mp4",
+   "size_bytes": 30408752,
+   "exists": true,
+   "probe_ok": false,
+   "playable": false,
+   "error": "[mov,mp4,m4a,3gp,3g2,mj2 @ 0x7d5400000] moov atom not found"
+  }
+ ],
+ "segment_count": 3,
+ "usable_segments_after_crash": 2,
+ "failed_segments": [
+  {
+   "file": "seg_002.mp4",
+   "error": "[mov,mp4,m4a,3gp,3g2,mj2 @ 0x7d5400000] moov atom not found"
+  }
+ ],
+ "all_completed_segments_usable": true,
+ "last_segment_verdict": "[mov,mp4,m4a,3gp,3g2,mj2 @ 0x7d5400000] moov atom not found"
+}
