@@ -1,0 +1,34 @@
+{
+  "date": "2026-11-26",
+  "state": "installed_pending_official_activation",
+  "application": "/Applications/嘉立创EDA(专业版).app",
+  "editor_cli_version": "4.1.105.0339a6cd",
+  "bundle_version": "2.2.32.4",
+  "architecture": "arm64",
+  "signature_verified": true,
+  "download_url": "https://image.lceda.cn/files/lceda-pro-mac-arm64-4.1.105.zip",
+  "download_sha256": "035b38df05d4c50b69f5a2e3d55ef951cefac1b397df50936198b879b4252a7e",
+  "cli_help": "passed",
+  "doctor_connected": true,
+  "doctor_version_match": true,
+  "mcp_stdio_handshake": "passed",
+  "mcp_protocol": "2025-06-18",
+  "mcp_tools_discovery": "passed",
+  "mcp_doctor_call": "passed",
+  "codex_mcp_config": "lceda-pro enabled stdio",
+  "skills": [
+    "lceda-pro-automation",
+    "pcb-product-delivery"
+  ],
+  "skill_locations": [
+    "Codex user skills",
+    "Claude Code user skills symlinks"
+  ],
+  "editor_round_trip": "blocked_by_first_activation",
+  "observed_window": "Regist / 激活客户端",
+  "official_activation_page": "https://lceda.cn/page/desktop-client-activation",
+  "observed_browser": "JLC sign-in page with QR/account/phone options",
+  "new_design_artifacts": [],
+  "manufacturing_order_submitted": false,
+  "remaining_action": "用户登录嘉立创官网，下载免费激活文件，在客户端导入并激活；随后再测编辑器API往返。"
+}

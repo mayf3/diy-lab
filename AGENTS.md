@@ -61,3 +61,11 @@ G0 示例用 source-data/christmas-magic-tent/video/g0-storyboard.json + scripts
 ## Remotion 视频输出（作者端）
 
 有 Remotion 工作时：读取 `content/guide/remotion.md` 和 `video/remotion/README.md`，维护唯一真实分镜 `source-data/*/video/*.json`，用 `python3 scripts/prepare_remotion.py` 校验来源、复制授权媒体并生成 props，`npm ci` 后可运行 Studio / render。外部 DIY 读者不需要安装 Node。严禁将用 SVG/Blender 做的步骤示意伪称实物测量、购买、装配已成功。视频以 Release 等非 Git 历史方式发布，真实软件/实物操作需实录并标注来源。仓库已有其他会话 worktree 时不要修改其未提交文件。
+
+## 硬件产品化目标（2026-11-26）
+
+遵循用户最新目标：交付可使用的硬件产品，配合 3D 打印外壳，尽量由工厂完成焊接；不要把用户学习手工接线或逐根连接杜邦线作为默认前置条件。对每个项目比较现成模块、预焊模块加定制载板、全定制 PCBA，以最终功能、装配负担、成本和风险选择路线，不强制所有 Lab 项目变成 PCB。
+
+电子项目使用 `pcb-product-delivery` 管理产品、装配和验收，用 `lceda-pro-automation` 执行实际 EDA 操作。读取真实分支与准确物料，沿用已有授权推进可逆工作；区分安装/连接成功、设计完成、可制造、已制造与实物验收。未经实际检查，不标记可下单，不生成虚假 Gerber 或成功回执。
+
+项目方向见 `docs/eda/README.md` 与 `source-data/productization/projects.json`。注意 Button Deck 方案目前在功能分支；记录器的最终部件遵循最新用户选择；KURA 圣诞布置以无屋顶方案为准，不沿用旧帐篷假设；SO101 优先保留现成控制板和线束。

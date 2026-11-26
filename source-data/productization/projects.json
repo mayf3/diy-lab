@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "updated_on": "2026-11-26",
+  "objective": "把合适的电子 Lab 项目做成可使用的硬件产品：尽量由工厂完成焊接，配合 3D 打印外壳，用户主要负责插接、固定和使用。",
+  "scope": "产品化方向记录；不代表已完成电路设计、可下单或已制造。",
+  "repository_baseline": {
+    "ref": "origin/main",
+    "commit": "370786b"
+  },
+  "projects": [
+    {
+      "id": "agent-button-deck",
+      "name": "四键 Button Deck",
+      "priority": "建议作为首个小型 PCBA 候选",
+      "source": {
+        "ref": "origin/feat/agent-button-deck-doavr",
+        "commit": "5654c5d",
+        "note": "源方案在功能分支，尚不在 main；本次未复制或重写该分支实现。"
+      },
+      "observed": [
+        "已有 ESP32-S3 DevKitC v1.1 方案和源码",
+        "四路按键使用 GPIO4–7，现有通信路径为 USB-UART",
+        "尚无实物验证"
+      ],
+      "recommended_route": "预焊开发板插入定制载板；由工厂焊接四个按键和主板插座，保持现有 USB-UART 路径，配合 P1S 外壳。",
+      "design_status": "candidate_not_designed",
+      "open_items": [
+        "准确开发板与预焊排针型号",
+        "四个按键的键型、规格、布局与手感",
+        "载板尺寸、排针间距、USB 插头空间和安装孔",
+        "工厂对按键、插座及全部焊点的装配范围",
+        "现有固件在最终主板上的编译、烧录和四键实测"
+      ],
+      "next_step": "核实实际模块与按键，再把现有 GPIO/固件接口转成载板连接表和机械尺寸依据。",
+      "constraint": "如改为全定制主板或原生 USB，必须同时评估并修改固件与主机端接口；不能默认与 USB-UART 方案兼容。"
+    },
+    {
+      "id": "hachimodock",
+      "name": "HachimoDock",
+      "priority": "先复审既有 PCB",
+      "observed": [
+        "已有 PCB 设计",
+        "四项已知疑点仍为 open"
+      ],
+      "recommended_route": "复用既有设计，先消除电气、屏幕接口与封装疑点，再判断修板和 PCBA 装配路径。",
+      "design_status": "existing_pcb_needs_review",
+      "open_items": [
+        "BK1：silicon / 实际芯片识别",
+        "BK2：屏幕 FFC",
+        "BK3：PCB_V1.2 网表与几何",
+        "BK4：键轴封装"
+      ],
+      "next_step": "逐项读回原始 PCB、网表、器件资料与接口尺寸，记录问题是否解决及对应设计版本。",
+      "constraint": "四项问题未解决前，不把已有 PCB 标记为可制造；本次不生成替代 Gerber。"
+    },
+    {
+      "id": "parent-child-recorder",
+      "name": "随身记录器",
+      "priority": "先模块集成与外壳",
+      "observed": [
+        "路线使用树莓派和摄像头模块",
+        "不同分支与后续用户口径中的模块或镜头型号存在变化"
+      ],
+      "recommended_route": "保留 Pi 与摄像头模块，先完成安装、接口、供电和外壳；仅在确有收益时增加低速接口或供电载板。",
+      "design_status": "module_integration_first",
+      "open_items": [
+        "当前最终采用的 Pi、摄像头与镜头准确型号",
+        "FFC 规格、朝向和实际安装空间",
+        "当前供电方案与散热空间",
+        "录像、存储及装壳后的实际功能验证"
+      ],
+      "next_step": "以最新用户选择和实际部件为准核实最终 BOM，再推进结构与装配。",
+      "constraint": "不替用户重新确定最终镜头，不为了做 PCB 而重做树莓派高速主板。"
+    },
+    {
+      "id": "christmas-magic-tent",
+      "name": "KURA 圣诞布置",
+      "priority": "按最新结构目标推进",
+      "observed": [
+        "最新用户目标是 KURA 床，无屋顶",
+        "main 中旧帐篷路线已过时"
+      ],
+      "recommended_route": "按 KURA 无屋顶方向处理展示板、装饰及 3D 打印结构；只有新增明确电子功能时再评估电路。",
+      "design_status": "mechanical_and_decoration",
+      "open_items": [
+        "当前 KURA 实际安装位置与尺寸",
+        "装饰件与打印件的固定方式"
+      ],
+      "next_step": "在后续制作中使用最新 KURA 无屋顶需求，不沿用旧帐篷假设。",
+      "constraint": "本项目不因本轮安装 EDA 而强制新增 PCB。"
+    },
+    {
+      "id": "robot-lab-draw-tree",
+      "name": "SO101",
+      "priority": "保留成熟控制方案",
+      "observed": [
+        "当前方向保留现成控制板和线束"
+      ],
+      "recommended_route": "继续使用现成控制板与线束，把精力放在装配、结构和功能验证；有明确连接或尺寸问题时再考虑局部转接板。",
+      "design_status": "preserve_existing_controller",
+      "open_items": [
+        "本次未重新核查控制板、线束和整机实物状态"
+      ],
+      "next_step": "依据实际装配问题决定是否需要局部转接，不预先重做控制板。",
+      "constraint": "不把减少手工接线理解为必须替换成熟控制系统。"
+    }
+  ]
+}
