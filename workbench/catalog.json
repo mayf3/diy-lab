@@ -1,0 +1,405 @@
+{
+  "projects": {
+    "agent-button-deck": {
+      "tagline": "把四个按键做成桌面小设备",
+      "category": "PCBA 首版",
+      "stage_label": "方案准备",
+      "workspace": "source-data/agent-button-deck/pcba-v1",
+      "source": {
+        "label": "现有固件与主机端 · 5654c5d",
+        "url": "https://github.com/mayf3/diy-lab/tree/5654c5dcd5b99d63f87167c4ed5d0f5ac1c97060/source-data/agent-button-deck"
+      },
+      "stages": [
+        {
+          "label": "需求与方案",
+          "status": "current",
+          "detail": "产品目标与现有接口已整理；开发板、按键和结构规格待核实。"
+        },
+        {
+          "label": "电路与载板",
+          "status": "pending",
+          "detail": "在嘉立创 EDA 建立真实工程，核查封装与接线后布板。"
+        },
+        {
+          "label": "板壳配合",
+          "status": "pending",
+          "detail": "按实际板边、接口和高度设计 P1S 可打印外壳。"
+        },
+        {
+          "label": "工厂装配",
+          "status": "pending",
+          "detail": "确认全部焊点、制造文件与报价后才进入打样。"
+        },
+        {
+          "label": "整机验收",
+          "status": "pending",
+          "detail": "四键、USB 重插、主机动作和装壳后的实测。"
+        }
+      ],
+      "artifacts": [
+        {
+          "name": "产品需求",
+          "group": "需求",
+          "status": "ready",
+          "detail": "目标、候选路线、待核实项与验收标准。",
+          "url": "/documents/button-brief"
+        },
+        {
+          "name": "接口与装配约定",
+          "group": "设计",
+          "status": "ready",
+          "detail": "GPIO4–7、常开按键接地、115200 串口；来自现有源码。",
+          "url": "/documents/button-interface"
+        },
+        {
+          "name": "现有按键固件",
+          "group": "固件",
+          "status": "ready",
+          "detail": "固定版本源码可读；最终板上的编译、烧录和实测仍待完成。",
+          "url": "https://github.com/mayf3/diy-lab/blob/5654c5dcd5b99d63f87167c4ed5d0f5ac1c97060/source-data/agent-button-deck/firmware/AgentButtonDeck.ino"
+        },
+        {
+          "name": "Mac 主机桥接",
+          "group": "固件",
+          "status": "ready",
+          "detail": "现有受限动作映射；Agent 会话适配器尚未实现。",
+          "url": "https://github.com/mayf3/diy-lab/blob/5654c5dcd5b99d63f87167c4ed5d0f5ac1c97060/source-data/agent-button-deck/host/agent_button_bridge.py"
+        },
+        {
+          "name": "原理图与 PCB",
+          "group": "设计",
+          "status": "pending",
+          "detail": "等待 EDA 激活与元件型号核实；尚无原生设计文件。"
+        },
+        {
+          "name": "Gerber / BOM / CPL",
+          "group": "制造",
+          "status": "pending",
+          "detail": "待电气、封装、布线与工厂装配范围验证。"
+        },
+        {
+          "name": "STEP / 打印外壳",
+          "group": "外壳",
+          "status": "pending",
+          "detail": "尺寸未冻结，尚无可用于装配的模型。"
+        },
+        {
+          "name": "实物验收记录",
+          "group": "制造",
+          "status": "pending",
+          "detail": "未打样、未下单、未通电实测。"
+        }
+      ]
+    },
+    "hachimodock": {
+      "tagline": "先把已有 PCB 的疑点查清楚",
+      "category": "已有 PCB",
+      "stage_label": "设计复审",
+      "workspace": "source-data/hachimodock",
+      "source": {
+        "label": "上游 HachimoDock",
+        "url": "https://github.com/YizhengWw/HachimoDock"
+      },
+      "stages": [
+        {
+          "label": "既有方案",
+          "status": "complete",
+          "detail": "已有上游 PCB 与本地研究资料。"
+        },
+        {
+          "label": "设计复审",
+          "status": "hold",
+          "detail": "四项已知疑点尚未关闭。"
+        },
+        {
+          "label": "板壳配合",
+          "status": "pending",
+          "detail": "需要确认具体 PCB 版本和器件几何。"
+        },
+        {
+          "label": "工厂装配",
+          "status": "pending",
+          "detail": "复审完成后再评估可制造与贴装范围。"
+        },
+        {
+          "label": "整机验收",
+          "status": "pending",
+          "detail": "尚不能根据文件推断实物兼容。"
+        }
+      ],
+      "artifacts": [
+        {
+          "name": "四项待核实清单",
+          "group": "设计",
+          "status": "ready",
+          "detail": "芯片版本、屏幕 FFC、PCB_V1.2 与键轴封装。",
+          "url": "/documents/hachimo-blockers"
+        },
+        {
+          "name": "上游 PCB 资料",
+          "group": "设计",
+          "status": "hold",
+          "detail": "存在设计不等于可以下单；先核对准确版本。",
+          "url": "https://github.com/YizhengWw/HachimoDock"
+        },
+        {
+          "name": "PCBA 制造资料",
+          "group": "制造",
+          "status": "pending",
+          "detail": "未完成复审，不生成替代 Gerber。"
+        },
+        {
+          "name": "精确装配与外壳",
+          "group": "外壳",
+          "status": "pending",
+          "detail": "待板材厚度、接口和器件位置确认。"
+        }
+      ]
+    },
+    "parent-child-recorder": {
+      "tagline": "保留成熟模块，把整机装配做好",
+      "category": "模块整合",
+      "stage_label": "部件确认",
+      "workspace": "source-data/parent-child-recorder",
+      "source": {
+        "label": "Lab 记录器资料",
+        "url": "https://github.com/mayf3/diy-lab/tree/370786b/source-data/parent-child-recorder"
+      },
+      "stages": [
+        {
+          "label": "产品方向",
+          "status": "complete",
+          "detail": "保留树莓派和摄像头，优先结构与连接。"
+        },
+        {
+          "label": "最终部件",
+          "status": "current",
+          "detail": "分支与后续需求中的镜头型号有变化，待核实。"
+        },
+        {
+          "label": "结构与供电",
+          "status": "pending",
+          "detail": "根据最终部件确定安装、FFC、散热和供电空间。"
+        },
+        {
+          "label": "整机装配",
+          "status": "pending",
+          "detail": "有明确收益才增加低速载板。"
+        },
+        {
+          "label": "实物验收",
+          "status": "pending",
+          "detail": "装壳后验证录像、存储与实际画面。"
+        }
+      ],
+      "artifacts": [
+        {
+          "name": "历史 BOM",
+          "group": "需求",
+          "status": "hold",
+          "detail": "仅作历史参考，不能据此替用户确定最终镜头。",
+          "url": "/documents/recorder-bom"
+        },
+        {
+          "name": "产品化路线",
+          "group": "需求",
+          "status": "ready",
+          "detail": "模块、接口与外壳优先。",
+          "url": "/documents/project-routes"
+        },
+        {
+          "name": "最终机械模型",
+          "group": "外壳",
+          "status": "pending",
+          "detail": "等待最终相机、镜头、FFC 和散热尺寸。"
+        },
+        {
+          "name": "定制载板",
+          "group": "设计",
+          "status": "pending",
+          "detail": "尚未确定是否需要；不重做树莓派高速主板。"
+        }
+      ]
+    },
+    "christmas-magic-tent": {
+      "tagline": "按 KURA 无屋顶方案继续制作",
+      "category": "结构与装饰",
+      "stage_label": "结构准备",
+      "workspace": "source-data/christmas-magic-tent",
+      "source": {
+        "label": "本轮产品化方向记录",
+        "url": "/documents/project-routes"
+      },
+      "stages": [
+        {
+          "label": "方向更新",
+          "status": "complete",
+          "detail": "使用 KURA 无屋顶目标，旧帐篷路线不作为本轮依据。"
+        },
+        {
+          "label": "安装与固定",
+          "status": "current",
+          "detail": "确认安装位置、实际尺寸和固定方式。"
+        },
+        {
+          "label": "打印与制作",
+          "status": "pending",
+          "detail": "按确认后的几何制作打印件与装饰。"
+        },
+        {
+          "label": "现场装配",
+          "status": "pending",
+          "detail": "需要真实床体和固定位置验收。"
+        }
+      ],
+      "artifacts": [
+        {
+          "name": "最新方向约定",
+          "group": "需求",
+          "status": "ready",
+          "detail": "KURA 床、无屋顶；不强制增加电路。",
+          "url": "/documents/project-routes"
+        },
+        {
+          "name": "本轮打印件",
+          "group": "外壳",
+          "status": "pending",
+          "detail": "此工作台尚未核实其他分支的模型，不把旧帐篷模型作为现成品。"
+        },
+        {
+          "name": "电子扩展",
+          "group": "设计",
+          "status": "pending",
+          "detail": "仅在明确需要灯光或控制功能时再评估。"
+        }
+      ]
+    },
+    "robot-lab-draw-tree": {
+      "tagline": "用成熟控制板与线束完成整机",
+      "category": "现成控制方案",
+      "stage_label": "按整机问题推进",
+      "workspace": "source-data/robot-lab-draw-tree",
+      "source": {
+        "label": "Lab SO101 工作流",
+        "url": "/documents/robot-workflow"
+      },
+      "stages": [
+        {
+          "label": "方案选择",
+          "status": "complete",
+          "detail": "保留成熟控制板和线束。"
+        },
+        {
+          "label": "实际装配",
+          "status": "current",
+          "detail": "本轮未重新核查实机状态，按实际问题推进。"
+        },
+        {
+          "label": "局部优化",
+          "status": "pending",
+          "detail": "只有明确连接或空间问题时才加转接板。"
+        },
+        {
+          "label": "功能验收",
+          "status": "pending",
+          "detail": "软件验证与实机动作分别记录。"
+        }
+      ],
+      "artifacts": [
+        {
+          "name": "已有工作流",
+          "group": "需求",
+          "status": "ready",
+          "detail": "查看计划、角色与证据；不等同于实机验收。",
+          "url": "/documents/robot-workflow"
+        },
+        {
+          "name": "定制转接板",
+          "group": "设计",
+          "status": "pending",
+          "detail": "没有明确需求前不替换现成控制系统。"
+        },
+        {
+          "name": "实机验收",
+          "group": "制造",
+          "status": "pending",
+          "detail": "此工作台没有新增实机观察记录。"
+        }
+      ]
+    }
+  },
+  "documents": [
+    {
+      "id": "button-brief",
+      "path": "source-data/agent-button-deck/pcba-v1/product-brief.md",
+      "name": "Button Deck 产品需求"
+    },
+    {
+      "id": "button-interface",
+      "path": "source-data/agent-button-deck/pcba-v1/interface-contract.md",
+      "name": "Button Deck 接口与装配约定"
+    },
+    {
+      "id": "project-routes",
+      "path": "source-data/productization/projects.json",
+      "name": "Lab 产品化路线"
+    },
+    {
+      "id": "eda-environment",
+      "path": "docs/eda/environment-status.json",
+      "name": "EDA 环境验证记录"
+    },
+    {
+      "id": "eda-handbook",
+      "path": "docs/eda/README.md",
+      "name": "EDA 工具链说明"
+    },
+    {
+      "id": "activation-guide",
+      "path": "workbench/activation.md",
+      "name": "在外面取得免费激活文件"
+    },
+    {
+      "id": "hachimo-blockers",
+      "path": "source-data/hachimodock/blockers.csv",
+      "name": "HachimoDock 待核实清单"
+    },
+    {
+      "id": "recorder-bom",
+      "path": "source-data/parent-child-recorder/bom.csv",
+      "name": "记录器历史 BOM（待确认最终部件）"
+    },
+    {
+      "id": "robot-workflow",
+      "path": "source-data/robot-lab-draw-tree/workflow.json",
+      "name": "SO101 工作流"
+    }
+  ],
+  "resources": [
+    {
+      "name": "免费激活文件",
+      "url": "https://lceda.cn/page/desktop-client-activation",
+      "detail": "登录本人账号获取；从手机取得文件后可交给我继续处理。"
+    },
+    {
+      "name": "官方激活说明",
+      "url": "https://prodocs.lceda.cn/cn/faq/client/",
+      "detail": "官方客户端支持导入文件或粘贴完整激活内容。"
+    },
+    {
+      "name": "嘉立创 EDA 文档",
+      "url": "https://prodocs.lceda.cn/cn/",
+      "detail": "原理图、PCB、工厂装配与导出说明。"
+    },
+    {
+      "name": "EDA 自动化 CLI",
+      "url": "https://prodocs.lceda.cn/cn/api/guide/cli.html",
+      "detail": "当前客户端的原生命令与 MCP 接口。"
+    },
+    {
+      "name": "原来的 Maker Lab",
+      "url": "https://diy-lab.mayf3.com/",
+      "detail": "继续查看教程和已有研究记录。"
+    }
+  ]
+}

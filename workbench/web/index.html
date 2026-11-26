@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f6f7f3" />
+    <meta name="description" content="Maker Lab 硬件工作台：项目、设计文件、工厂装配与打印外壳。" />
+    <title>硬件工作台 · Maker Lab</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script defer src="./app.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">跳到项目内容</a>
+    <div class="app-shell">
+      <aside class="sidebar" id="sidebar" aria-label="工作台导航">
+        <a class="brand" href="#overview" aria-label="Maker Lab 工作台总览">
+          <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><path d="M8 23V9l8 8 8-8v14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 7V3h4M25 3h4v4M29 25v4h-4M7 29H3v-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+          <span><strong>Maker Lab</strong><small>硬件工作台</small></span>
+        </a>
+        <nav class="primary-nav" id="primary-nav" aria-label="主要导航"></nav>
+        <div class="sidebar-project-heading"><span>我的项目</span><span id="project-count">—</span></div>
+        <nav class="project-nav" id="project-nav" aria-label="项目列表"><p class="loading-label">正在读取项目…</p></nav>
+        <div class="sidebar-bottom">
+          <div class="sidebar-purpose"><span class="tiny-square" aria-hidden="true"></span><span>少接线 · 工厂装配 · 打印外壳</span></div>
+          <button type="button" class="sidebar-environment" data-view="environment"><span class="status-dot" id="sidebar-status-dot"></span><span id="sidebar-status-text">正在检查环境</span></button>
+        </div>
+      </aside>
+      <button class="sidebar-scrim" id="sidebar-scrim" aria-label="关闭导航" hidden></button>
+      <div class="main-shell">
+        <header class="topbar">
+          <div class="topbar-location">
+            <button type="button" id="menu-toggle" class="icon-button mobile-menu" aria-label="打开导航" aria-controls="sidebar" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></button>
+            <span class="topbar-name">硬件工作台</span><span class="breadcrumb-divider" aria-hidden="true">/</span><span class="breadcrumb" id="breadcrumb">项目</span>
+          </div>
+          <div class="topbar-actions">
+            <button type="button" class="connection-indicator" id="connection-indicator" data-view="environment"><span class="status-dot"></span><span>正在检查 Mac</span></button>
+            <button type="button" class="button button-dark button-small" id="open-eda-top" data-action="open_eda" disabled><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="5" y="5" width="14" height="14" rx="3" stroke="currentColor" stroke-width="1.6"/><path d="M9 2v3m6-3v3M9 19v3m6-3v3M2 9h3m-3 6h3m14-6h3m-3 6h3M9 9h6v6H9z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span>打开 EDA</span></button>
+          </div>
+        </header>
+        <main id="main" class="main-content" tabindex="-1">
+          <div class="initial-state"><span class="loader" aria-hidden="true"></span><h1>正在读取工作台</h1><p>项目资料与这台 Mac 的运行状态会分别显示。</p></div>
+        </main>
+        <footer class="workspace-footer"><span>Maker Lab / 硬件工作区</span><span id="workspace-updated">读取项目记录中</span></footer>
+      </div>
+    </div>
+    <div class="toast-region" id="toast-region" aria-live="polite" aria-atomic="true"></div>
+    <noscript><div class="noscript">此工作台需要 JavaScript 才能浏览项目和保存备注。请启用后刷新页面。</div></noscript>
+  </body>
+</html>
