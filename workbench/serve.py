@@ -196,20 +196,62 @@ class Workbench:
                     bridge = {"state": "error", "detail": "当前电脑无法执行已记录的 EDA 命令行。"}
             recorded_state = str(evidence.get("state", ""))
             pending = ("activation" in recorded_state and ("pending" in recorded_state or "blocked" in recorded_state)) or evidence.get("editor_round_trip") == "blocked_by_first_activation"
-            activation = {
-                "state": "pending" if pending else "unverified",
-                "detail": "安装记录显示仍待本人完成官方激活；本次只检查桥接连接。" if pending else "本接口不读取激活文件，也不依据桥接连接推断激活结果。",
-            }
+            activation_accepted_at = evidence.get("activation_accepted_at")
+            round_trip_recorded = evidence.get("editor_round_trip") == "passed" and isinstance(evidence.get("editor_round_trip_passed_at"), str) and bool(evidence.get("editor_round_trip_passed_at"))
+            # 激活状态：verified 需要客户端接受激活 + 编辑器读写验收两类证据同时存在；
+            # 只有激活界面证据时仍显示 unverified，但说明已取得的进展。
+            if activation_accepted_at and round_trip_recorded:
+                activation = {
+                    "state": "verified", "accepted_at": activation_accepted_at,
+                    "detail": f"客户端已接受官方激活文件（{activation_accepted_at[:10]}），并以独立工程读写往返验收佐证。",
+                }
+            elif activation_accepted_at:
+                activation = {
+                    "state": "unverified", "accepted_at": activation_accepted_at,
+                    "detail": "客户端已进入已激活界面，但工程读写往返验收尚未记录；还不能视为完整可用。",
+                }
+            elif pending:
+                activation = {
+                    "state": "pending",
+                    "detail": "安装记录显示仍待本人完成官方激活；本次只检查桥接连接。",
+                }
+            else:
+                activation = {
+                    "state": "unverified",
+                    "detail": "本接口不读取激活文件，也不依据桥接连接推断激活结果。",
+                }
             skill_ids = evidence.get("skills", list(DEFAULT_SKILLS))
             if not isinstance(skill_ids, list):
                 skill_ids = list(DEFAULT_SKILLS)
             skill_ids = [s for s in skill_ids if isinstance(s, str) and ID_PATTERN.fullmatch(s)]
+            # 工程读写往返：历史证据 + 当前桥接在线 + 激活已验证，三者同时成立才显示 passed；
+            # 任一不成立时降级为 pending，历史通过时间保留在 editor_round_trip_evidence_at。
+            editor_round_trip = (
+                "passed" if round_trip_recorded and activation["state"] == "verified"
+                and bridge["state"] == "connected" else "pending")
+            conditions = {
+                "app_installed": app is not None,
+                "cli_available": cli_available,
+                "bridge_connected": bridge["state"] == "connected",
+                "activation_verified": activation["state"] == "verified",
+                "editor_round_trip_passed": editor_round_trip == "passed",
+            }
+            condition_labels = {
+                "app_installed": "EDA 客户端已安装",
+                "cli_available": "EDA 命令行可用",
+                "bridge_connected": "编辑器桥接已连接",
+                "activation_verified": "官方激活已验收",
+                "editor_round_trip_passed": "工程读写往返已通过",
+            }
+            blockers = [condition_labels[key] for key, ok in conditions.items() if not ok]
             return {
                 "mode": "local", "checked_at": utc_now(), "app_installed": app is not None,
                 "cli_available": cli_available,
                 "skills": [{"id": s, "installed": self.installed_skill(s)} for s in skill_ids],
                 "bridge": bridge, "activation": activation,
-                "editor_round_trip": "passed" if evidence.get("editor_round_trip") == "passed" and not pending and bridge["state"] == "connected" else "pending",
+                "editor_round_trip": editor_round_trip,
+                "editor_round_trip_evidence_at": evidence.get("editor_round_trip_passed_at"),
+                "ready": not blockers, "ready_blockers": blockers,
             }
 
     def _state(self):

@@ -8,6 +8,24 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def environment_checks(env: dict) -> list:
+    round_trip = env.get('editor_round_trip') == 'passed' and env.get('editor_round_trip_passed_at')
+    return [
+        {'label': '嘉立创 EDA 专业版', 'status': 'passed',
+         'detail': 'Apple silicon 客户端已安装，官方签名已验证。'},
+        {'label': '原生 MCP 连接', 'status': env['mcp_doctor_call'],
+         'detail': '握手、工具发现与 doctor 调用已通过。'},
+        {'label': '官方激活', 'status': 'passed' if env.get('activation_accepted_at') else 'pending',
+         'detail': (f"客户端已接受官方激活文件（{str(env.get('activation_accepted_at'))[:10]}），重启后保持。"
+                    if env.get('activation_accepted_at')
+                    else '等待本人账号的免费激活文件。')},
+        {'label': '编辑器工程读写往返', 'status': 'passed' if round_trip else 'pending',
+         'detail': (f"独立工程创建、保存、关闭重开与标记读回已于 "
+                    f"{str(env.get('editor_round_trip_passed_at'))[:10]} 通过。"
+                    if round_trip else '等待本人账号的免费激活文件；尚未完成工程创建验证。')},
+    ]
+
+
 def build() -> dict:
     source = json.loads((ROOT / 'source-data/productization/projects.json').read_text())
     env = json.loads((ROOT / 'docs/eda/environment-status.json').read_text())
@@ -22,6 +40,7 @@ def build() -> dict:
             'open_items': item['open_items'], 'constraint': item['constraint'],
             **presentation,
         })
+    checks = environment_checks(env)
     return {
         'schema_version': 1,
         'title': '硬件工作台',
@@ -32,20 +51,8 @@ def build() -> dict:
             'state': env['state'],
             'checked_at': env['date'],
             'activation_url': env['official_activation_page'],
-            'checks': [
-                {'label': '嘉立创 EDA 专业版', 'status': 'passed',
-                 'detail': 'Apple silicon 客户端已安装，官方签名已验证。'},
-                {'label': '原生 MCP 连接', 'status': env['mcp_doctor_call'],
-                 'detail': '握手、工具发现与 doctor 调用已通过。'},
-                {'label': '编辑器工程操作', 'status': 'pending',
-                 'detail': '等待本人账号的免费激活文件；尚未完成工程创建验证。'},
-            ],
-            'skills': [
-                {'id': 'lceda-pro-automation', 'name': '嘉立创 EDA 自动化',
-                 'detail': '操作原理图、PCB、检查与导出；已接入 Codex 和 Claude Code。'},
-                {'id': 'pcb-product-delivery', 'name': 'PCB 产品交付',
-                 'detail': '负责器件、工厂装配、固件、外壳及整机验收。'},
-            ],
+            'checks': checks,
+            'ready': all(check['status'] == 'passed' for check in checks),
         },
         'projects': projects,
         'documents': catalog['documents'],

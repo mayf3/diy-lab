@@ -65,7 +65,7 @@ X-Workbench-Request: 1
 
 浏览器同源 `fetch` 自动提供 Origin。Host 和 Origin 必须对应实际本机端口；不提供 CORS。备注最多 8000 个字符，请求体最多 64 KiB。非成功响应统一使用 `{error:{code,message}}`；前端应保留尚未保存的输入并展示错误。
 
-`bridge.state` 为 `connected`、`disconnected`、`unavailable`、`error` 或 `timeout`；`activation.state` 为 `pending` 或 `unverified`；`editor_round_trip` 为 `pending` 或 `passed`。状态响应不返回设备路径或许可证内容。
+`bridge.state` 为 `connected`、`disconnected`、`unavailable`、`error` 或 `timeout`；`activation.state` 为 `pending`、`unverified` 或 `verified`（verified 需要客户端接受官方激活与编辑器读写往返验收两类证据同时存在）；`editor_round_trip` 为 `pending` 或 `passed`——`passed` 要求历史验收记录（含 `editor_round_trip_passed_at`）、激活已验证且当前桥接在线三者同时成立，任一不成立时实时状态降级为 `pending`，历史通过时间保留在 `editor_round_trip_evidence_at`。状态响应额外包含 `ready`（上述全部条件与安装、命令行同时成立）与 `ready_blockers`（具体待处理项列表），不返回设备路径或许可证内容。
 
 静态文件仅从 `web/` 提供，不列目录，拒绝路径穿越和指向根目录外的符号链接。页面脚本应放在独立本地 JS 文件，内容安全策略不允许内联脚本。文档接口额外使用纯文本/下载与沙箱响应头。
 

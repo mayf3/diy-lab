@@ -79,6 +79,8 @@
     if (state.connection === 'checking') return { label: '正在检查 Mac', short: '正在检查环境', kind: 'checking' };
     if (!localAvailable()) return { label: '资料预览 · 未连接此Mac', short: '资料预览 · 未连接 Mac', kind: '' };
     if (!state.live.app_installed || !state.live.cli_available) return { label: 'Mac 已连接 · 环境待检查', short: 'Mac 已连接 · 待检查', kind: 'attention' };
+    if (state.live.bridge?.state && state.live.bridge.state !== 'connected') return { label: 'Mac 已连接 · 编辑器桥接未连接', short: '桥接未连接', kind: 'attention' };
+    if (state.live.activation?.state === 'verified' && state.live.editor_round_trip === 'passed') return { label: 'Mac 已连接 · EDA 可用', short: 'EDA 可用', kind: 'connected' };
     if (state.live.activation?.state === 'pending') return { label: 'Mac 已连接 · EDA 待激活', short: 'Mac 已连接 · 待激活', kind: 'attention' };
     if (state.live.editor_round_trip === 'passed') return { label: 'Mac 已连接 · 工程读写已验证', short: 'Mac 已连接', kind: 'connected' };
     return { label: 'Mac 已连接 · 编辑器待核验', short: 'Mac 已连接', kind: 'connected' };
@@ -181,18 +183,38 @@
       { label: 'EDA 客户端', value: live.app_installed ? '已安装' : '未检测到', kind: live.app_installed ? 'good' : 'attention', detail: `工程工具版本 ${state.data.environment?.version || '待核实'}` },
       { label: '原生命令工具', value: live.cli_available ? '可用' : '未检测到', kind: live.cli_available ? 'good' : 'attention', detail: '用于打开、检查和导出实际工程。' },
       { label: '编辑器连接', value: bridgeLabel, kind: bridge.state === 'connected' ? 'good' : 'attention', detail: `${bridge.detail || ''}${bridge.detail ? ' ' : ''}连接状态不代表激活或设计已完成。` },
-      { label: '官方激活', value: live.activation?.state === 'pending' ? '待本人账号激活' : '待核验', kind: 'attention', detail: live.activation?.detail || '使用官网下载的免费激活文件。' },
-      { label: '工程读写验证', value: live.editor_round_trip === 'passed' ? '已实测通过' : '待完成', kind: live.editor_round_trip === 'passed' ? 'good' : 'attention', detail: live.editor_round_trip === 'passed' ? '以本地服务记录的实际工程读写结果为准。' : '尚不能将安装和连接成功视为工程已可使用。' }
+      { label: '官方激活', value: live.activation?.state === 'verified' ? `已激活（${(live.activation.accepted_at || '').slice(0, 10) || '已验收'}）` : live.activation?.state === 'pending' ? '待本人账号激活' : '待核验', kind: live.activation?.state === 'verified' ? 'good' : 'attention', detail: live.activation?.detail || '使用官网下载的免费激活文件。' },
+      { label: '工程读写验证', value: live.editor_round_trip === 'passed' ? '已实测通过' : '待完成', kind: live.editor_round_trip === 'passed' ? 'good' : 'attention', detail: live.editor_round_trip === 'passed' ? `独立工程保存、关闭重开与标记读回已通过${live.editor_round_trip_evidence_at ? '（' + String(live.editor_round_trip_evidence_at).slice(0, 10) + '）' : ''}；当前以实时桥接状态为准。` : '尚不能将安装和连接成功视为工程已可使用。' }
     ];
+  }
+
+  function readinessSummary() {
+    if (!localAvailable() || !state.live) return { ready: null, blockers: [], note: '连接本地工作台后显示实时就绪状态。' };
+    const live = state.live;
+    const conditions = [
+      { ok: Boolean(live.app_installed), label: 'EDA 客户端已安装' },
+      { ok: Boolean(live.cli_available), label: 'EDA 命令行可用' },
+      { ok: live.bridge?.state === 'connected', label: '编辑器桥接已连接' },
+      { ok: live.activation?.state === 'verified', label: '官方激活已验收' },
+      { ok: live.editor_round_trip === 'passed', label: '工程读写往返已通过' },
+    ];
+    const blockers = conditions.filter((item) => !item.ok).map((item) => item.label);
+    return { ready: blockers.length === 0, blockers,
+             note: blockers.length ? `尚不能标记 EDA 可用：${blockers.join('、')}。` : '以上全部条件同时成立，可以开始实际设计。' };
   }
 
   function renderEnvironment() {
     const environment = state.data.environment || {};
     const live = localAvailable();
     const activationUrl = safeUrl(environment.activation_url);
+    const activationVerified = live && state.live.activation?.state === 'verified';
     const isPending = !live || state.live.activation?.state === 'pending';
-    const heading = live && !state.live.app_installed ? '当前未检测到 EDA 客户端' : isPending ? '工具已装好，编辑器还需官方激活' : 'Mac 已连接，继续核实编辑器状态';
-    return `<div class='page-heading'><div><div class='eyebrow'><span class='eyebrow-line'></span>本机工具</div><h1>运行环境</h1><p class='project-subtitle'>查看安装记录与实时状态，完成开始设计前的一步。</p></div><div class='page-heading-actions'><button type='button' class='button' data-refresh-status ${state.connection === 'checking' ? 'disabled' : ''}>${icon('refresh')}${state.connection === 'checking' ? '检查中…' : '刷新环境'}</button></div></div>${previewNotice()}<div class='environment-summary'><div><h2>${heading}</h2><p>${live ? '设计技能和软件安装是起点。激活后，还要以真实工程的打开与保存确认编辑器可用。' : '以下安装情况来自工作区记录，并非当前 Mac 的实时核验。连接本地工作台后可以刷新检查。'}</p></div></div><div class='environment-grid'><div><section class='panel'><div class='panel-heading'><h2>${live ? 'Mac 实时检查' : '已保存的安装记录'}</h2><span class='badge ${live ? 'ready' : 'neutral'}'>${live ? '本地服务' : '资料预览'}</span></div><div class='status-list'>${liveChecks().map((check) => `<div class='status-row'><span class='status-row-label'>${escapeHtml(check.label)}</span><div><div class='status-value ${check.kind}'>${escapeHtml(check.value)}</div><p class='status-row-detail'>${escapeHtml(check.detail)}</p></div></div>`).join('')}</div><div class='environment-check-time'>${live ? `最近检查：${formatTime(state.live.checked_at, true) || '刚刚'}` : `资料日期：${escapeHtml(environment.checked_at || state.data.updated_at || '待核实')}`}${state.statusError && !live ? ` · ${escapeHtml(state.statusError)}` : ''}</div></section><section class='activation-box'><h3>人在外面，也可以先取得激活文件</h3><ol class='activation-steps'><li>打开官方页面，登录你本人的嘉立创账号。</li><li>下载免费的客户端激活文件，并妥善保存。</li><li>下载后把原始 .txt 文件发到当前对话，由已授权的本地 Agent 导入，不必等回到 Mac。</li></ol>${activationUrl ? `<a class='button button-dark' href='${escapeHtml(activationUrl)}' target='_blank' rel='noopener noreferrer'>打开官方激活页</a>` : ''}<p class='helper'>激活文件包含账户信息，请勿放入公开仓库或公开备注。下载文件不等于此 Mac 已完成激活。</p><div style='margin-top:10px'>${link('/documents/activation-guide', '查看详细操作说明', 'button button-quiet', true)}</div></section></div><div class='environment-side'><section class='panel'><div class='panel-heading'><h2>已接入的技能</h2></div><div class='panel-body'>${(environment.skills || []).map((skill) => {
+    const readiness = readinessSummary();
+    const heading = live && !state.live.app_installed ? '当前未检测到 EDA 客户端' : readiness.ready ? 'EDA 工具链可用，可以开始设计' : isPending ? '工具已装好，编辑器还需官方激活' : 'Mac 已连接，继续核实编辑器状态';
+    const readinessBadge = readiness.ready === null ? '' : readiness.ready
+      ? `<span class='badge ready'><span class='status-dot connected'></span>EDA 可用</span>`
+      : `<span class='badge hold'><span class='status-dot attention'></span>待处理 ${readiness.blockers.length} 项</span>`;
+    return `<div class='page-heading'><div><div class='eyebrow'><span class='eyebrow-line'></span>本机工具</div><h1>运行环境</h1><p class='project-subtitle'>查看安装记录与实时状态，完成开始设计前的一步。</p></div><div class='page-heading-actions'><button type='button' class='button' data-refresh-status ${state.connection === 'checking' ? 'disabled' : ''}>${icon('refresh')}${state.connection === 'checking' ? '检查中…' : '刷新环境'}</button></div></div>${previewNotice()}<div class='environment-summary'><div><h2>${heading}</h2><p>${live ? `${escapeHtml(readiness.note)} 激活与工程读写是不同验收项，分别记录。` : '以下安装情况来自工作区记录，并非当前 Mac 的实时核验。连接本地工作台后可以刷新检查。'}</p></div>${readinessBadge}</div><div class='environment-grid'><div><section class='panel'><div class='panel-heading'><h2>${live ? 'Mac 实时检查' : '已保存的安装记录'}</h2><span class='badge ${live ? 'ready' : 'neutral'}'>${live ? '本地服务' : '资料预览'}</span></div><div class='status-list'>${liveChecks().map((check) => `<div class='status-row'><span class='status-row-label'>${escapeHtml(check.label)}</span><div><div class='status-value ${check.kind}'>${escapeHtml(check.value)}</div><p class='status-row-detail'>${escapeHtml(check.detail)}</p></div></div>`).join('')}</div><div class='environment-check-time'>${live ? `最近检查：${formatTime(state.live.checked_at, true) || '刚刚'}` : `资料日期：${escapeHtml(environment.checked_at || state.data.updated_at || '待核实')}`}${state.statusError && !live ? ` · ${escapeHtml(state.statusError)}` : ''}</div></section><section class='activation-box'><details ${activationVerified ? 'open' : ''}><summary>${activationVerified ? `官方激活已完成（${escapeHtml((state.live?.activation?.accepted_at || '').slice(0, 10))}）· 展开查看激活说明存档` : '人在外面，也可以先取得激活文件'}</summary><h3>取得并导入官方激活文件</h3><ol class='activation-steps'><li>打开官方页面，登录你本人的嘉立创账号。</li><li>下载免费的客户端激活文件，并妥善保存。</li><li>下载后把原始 .txt 文件发到当前对话，由已授权的本地 Agent 导入，不必等回到 Mac。</li></ol>${activationUrl ? `<a class='button button-dark' href='${escapeHtml(activationUrl)}' target='_blank' rel='noopener noreferrer'>打开官方激活页</a>` : ''}<p class='helper'>激活文件包含账户信息，请勿放入公开仓库或公开备注。下载文件不等于此 Mac 已完成激活；激活验收以客户端界面与编辑器读写往返记录为准。</p><div style='margin-top:10px'>${link('/documents/activation-guide', '查看详细操作说明', 'button button-quiet', true)}</div></details></section></div><div class='environment-side'><section class='panel'><div class='panel-heading'><h2>已接入的技能</h2></div><div class='panel-body'>${(environment.skills || []).map((skill) => {
       const observed = (state.live?.skills || []).find((item) => item.id === skill.id);
       const label = live && observed ? observed.installed ? '已检测到' : '未检测到' : '安装记录';
       return `<div class='skill-item'><div class='skill-name'><span>${escapeHtml(skill.name)}</span><span class='badge ${live && observed?.installed ? 'ready' : 'neutral'}'>${label}</span></div><p class='skill-detail'>${escapeHtml(skill.detail)}</p></div>`;

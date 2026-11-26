@@ -5,7 +5,7 @@
   "objective": "把合适的电子 Lab 项目做成可使用的硬件产品：尽量由工厂完成焊接，配合 3D 打印外壳，用户主要负责插接、固定和使用。",
   "environment": {
     "version": "4.1.105.0339a6cd",
-    "state": "installed_pending_official_activation",
+    "state": "activated_editor_round_trip_passed",
     "checked_at": "2026-11-26",
     "activation_url": "https://lceda.cn/page/desktop-client-activation",
     "checks": [
@@ -20,23 +20,17 @@
         "detail": "握手、工具发现与 doctor 调用已通过。"
       },
       {
-        "label": "编辑器工程操作",
-        "status": "pending",
-        "detail": "等待本人账号的免费激活文件；尚未完成工程创建验证。"
-      }
-    ],
-    "skills": [
-      {
-        "id": "lceda-pro-automation",
-        "name": "嘉立创 EDA 自动化",
-        "detail": "操作原理图、PCB、检查与导出；已接入 Codex 和 Claude Code。"
+        "label": "官方激活",
+        "status": "passed",
+        "detail": "客户端已接受官方激活文件（2026-11-26），重启后保持。"
       },
       {
-        "id": "pcb-product-delivery",
-        "name": "PCB 产品交付",
-        "detail": "负责器件、工厂装配、固件、外壳及整机验收。"
+        "label": "编辑器工程读写往返",
+        "status": "passed",
+        "detail": "独立工程创建、保存、关闭重开与标记读回已于 2026-11-26 通过。"
       }
-    ]
+    ],
+    "ready": true
   },
   "projects": [
     {

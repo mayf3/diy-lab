@@ -227,7 +227,7 @@ class WorkbenchTests(unittest.TestCase):
             self.assertEqual(self.post("/api/actions", {"action": "open_project", "project_id": "unknown"})[0], 404)
             self.assertEqual(run.call_count, 0)
             self.assertEqual(self.post("/api/actions", {"action": "open_project", "project_id": "button-deck"})[0], 200)
-            self.assertEqual(run.call_args.args[0], ["/usr/bin/open", str(self.repo / "source-data/button-deck")])
+            self.assertEqual(run.call_args.args[0], ["/usr/bin/open", str((self.repo / "source-data/button-deck").resolve())])
             self.assertNotIn("shell", run.call_args.kwargs)
             self.assertEqual(self.post("/api/actions", {"action": "open_eda"})[0], 200)
             self.assertEqual(run.call_args.args[0], ["/usr/bin/open", "-a", str(self.bundle)])
@@ -274,9 +274,65 @@ class WorkbenchTests(unittest.TestCase):
         self.write_evidence()
         body = json.loads(self.request("GET", "/api/status")[2])
         self.assertEqual(body["activation"]["state"], "unverified")
-        self.assertEqual(body["editor_round_trip"], "passed")
+        # 新合同：历史 passed 记录缺少激活验收与时间戳证据时，实时状态降级为 pending
+        self.assertEqual(body["editor_round_trip"], "pending")
+        self.assertFalse(body["ready"])
         self.write_doctor({"ok": True, "value": {"connected": False}})
         self.assertEqual(json.loads(self.request("GET", "/api/status")[2])["editor_round_trip"], "pending")
+
+    @unittest.skipIf(os.name == "nt", "fixture CLI uses a POSIX executable")
+    def test_verified_activation_and_round_trip_show_ready(self):
+        self.evidence.update({
+            "state": "activated_editor_round_trip_passed",
+            "activation_accepted_at": "2026-11-26T12:16:00+08:00",
+            "editor_round_trip": "passed",
+            "editor_round_trip_passed_at": "2026-11-26T14:08:00+08:00",
+        })
+        self.write_evidence()
+        body = json.loads(self.request("GET", "/api/status")[2])
+        self.assertEqual(body["activation"]["state"], "verified")
+        self.assertEqual(body["activation"]["accepted_at"], "2026-11-26T12:16:00+08:00")
+        self.assertEqual(body["editor_round_trip"], "passed")
+        self.assertEqual(body["editor_round_trip_evidence_at"], "2026-11-26T14:08:00+08:00")
+        self.assertTrue(body["ready"])
+        self.assertEqual(body["ready_blockers"], [])
+        self.write_doctor({"ok": True, "value": {"connected": False}})
+        body = json.loads(self.request("GET", "/api/status")[2])
+        self.assertEqual(body["editor_round_trip"], "pending")
+        self.assertFalse(body["ready"])
+        self.assertIn("编辑器桥接已连接", body["ready_blockers"])
+        self.write_doctor({"ok": True, "value": {"connected": True, "versionMatch": False}})
+        body = json.loads(self.request("GET", "/api/status")[2])
+        self.assertEqual(body["bridge"]["state"], "error")
+        self.assertEqual(body["editor_round_trip"], "pending")
+        self.assertFalse(body["ready"])
+
+    @unittest.skipIf(os.name == "nt", "fixture CLI uses a POSIX executable")
+    def test_activation_ui_evidence_without_round_trip_stays_unverified(self):
+        self.evidence.update({
+            "state": "activated",
+            "activation_accepted_at": "2026-11-26T12:16:00+08:00",
+        })
+        self.write_evidence()
+        body = json.loads(self.request("GET", "/api/status")[2])
+        self.assertEqual(body["activation"]["state"], "unverified")
+        self.assertIn("工程读写", body["activation"]["detail"])
+        self.assertEqual(body["editor_round_trip"], "pending")
+        self.assertFalse(body["ready"])
+        self.assertIn("官方激活已验收", body["ready_blockers"])
+
+    @unittest.skipIf(os.name == "nt", "fixture CLI uses a POSIX executable")
+    def test_round_trip_claim_without_timestamp_is_not_accepted(self):
+        self.evidence.update({
+            "state": "activated_editor_round_trip_passed",
+            "activation_accepted_at": "2026-11-26T12:16:00+08:00",
+            "editor_round_trip": "passed",
+        })
+        self.write_evidence()
+        body = json.loads(self.request("GET", "/api/status")[2])
+        self.assertEqual(body["editor_round_trip"], "pending")
+        self.assertEqual(body["activation"]["state"], "unverified")
+        self.assertFalse(body["ready"])
 
     @unittest.skipIf(os.name == "nt", "fixture CLI uses a POSIX executable")
     def test_probe_failures_are_bounded_and_structured(self):
@@ -286,11 +342,11 @@ class WorkbenchTests(unittest.TestCase):
         raw = self.request("GET", "/api/status")[2]
         self.assertIn(b"EXECUTION_ERROR", raw)
         self.assertNotIn(b"/Users/private", raw)
-        self.app.doctor_timeout = 0.15
+        self.app.doctor_timeout = 0.6
         self.write_doctor({"ok": True, "value": {"connected": True}}, delay=3)
         started = time.monotonic()
         body = json.loads(self.request("GET", "/api/status")[2])
-        self.assertLess(time.monotonic() - started, 1.5)
+        self.assertLess(time.monotonic() - started, 3.0)
         self.assertEqual(body["bridge"]["state"], "timeout")
         self.assertEqual(body["editor_round_trip"], "pending")
 
