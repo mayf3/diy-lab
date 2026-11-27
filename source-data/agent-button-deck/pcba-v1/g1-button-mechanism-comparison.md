@@ -38,6 +38,13 @@ G1 需要的方案必须满足：四键帽稳定垂直按压、不倾斜、不�
 - 固件无需修改（仍是 F13–F16）。
 - 标准 MX 五脚结构通常是 2 个金属电气触点 + 3 个塑料定位柱；三个塑料柱不是 LED 引脚。PCB 必须依据所选轴体准确 datasheet / footprint 定义开孔与焊盘，确认是否为 3-pin 或 5-pin 结构。LED 如需使用，另按准确轴体和 LED 方案设计；R1 暂不默认加入 LED。
 
+## 静音段落轴候选（2026-11-27 增补）
+
+按发起人 tactile-light + quiet 偏好筛选出的三款候选与样轴采购建议，
+见 [g1-silent-tactile-candidates.md](g1-silent-tactile-candidates.md)。
+推荐路径：先买 3 款样轴（Boba U4T 45–50g 档 + 国产静音段落 + 可选 Zilent 对照）
+试按定档，再冻结轴体 SKU 与 PCB footprint——不为了画 PCB 提前锁定未验证轴体。
+
 ## 待核实清单（G1 执行时）
 
 1. 可买轴体 SKU 与现价（LCSC/淘宝；库搜索恢复后核实，或按卖家页核对）。
