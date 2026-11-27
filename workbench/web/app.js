@@ -154,11 +154,37 @@
     return `<section class='panel notes-panel'><div class='panel-heading'><h2>项目备注</h2><span class='small-label'>${serverSelected ? 'Mac 工作区' : '此浏览器'}</span></div><div class='panel-body'><p class='note-storage'>${escapeHtml(location)}</p><label class='visually-hidden' for='project-note'>${escapeHtml(currentProject()?.name)}项目备注</label><textarea id='project-note' maxlength='8000' placeholder='记下想法、偏好，或下次继续时需要记住的事…' ${loading ? 'disabled' : ''}>${escapeHtml(note.text)}</textarea><div class='note-counter' id='note-counter'>${note.text.length} / 8000</div><div class='note-toolbar'><p class='note-save-status' id='note-save-status' aria-live='polite'></p><button type='button' class='button button-soft button-small' id='save-note' data-save-note ${loading || note.saving || (serverSelected && !localAvailable()) ? 'disabled' : ''}>${note.saving ? '保存中…' : serverSelected ? '保存备注' : '保存到浏览器'}</button></div><div class='note-switch'>${switchButton}</div></div></section>`;
   }
 
+  function renderStatusBlock(project) {
+    const sb = project.status_block;
+    if (!sb) return '';
+    const freeze = sb.freeze || {};
+    const freezeRow = [
+      `视觉方向：${freeze.visual || '待确认'}`,
+      `工程尺寸：${freeze.dimensions || '待确认'}`,
+      `制造：${freeze.manufacturing || '待确认'}`,
+    ];
+    const domains = Object.entries(sb.domain_status || {})
+      .map(([k, v]) => `<div class='status-row'><span class='status-row-label'>${escapeHtml(k)}</span><div class='status-value ${v.startsWith('ready') ? 'good' : v.startsWith('draft') ? 'attention' : ''}'>${escapeHtml(v)}</div></div>`).join('');
+    const decisions = (sb.decision_items || []).map(d => `<li>${escapeHtml(d)}</li>`).join('');
+    return `<section class='panel' aria-label='当前状态'><div class='panel-heading'><h2>当前状态</h2><span class='badge ${sb.needs_user_decision ? 'hold' : 'ready'}'>${sb.needs_user_decision ? '需要本人决策' : 'Agent 推进中'}</span></div><div class='status-list'>
+      <div class='status-row'><span class='status-row-label'>产品版本</span><div class='status-value good'>${escapeHtml(sb.version || '')}</div></div>
+      <div class='status-row'><span class='status-row-label'>当前 G 阶段</span><div><div class='status-value'>${escapeHtml(sb.g_stage || '')}</div></div></div>
+      <div class='status-row'><span class='status-row-label'>负责人</span><div class='status-value'>${escapeHtml(sb.owner || '')}</div></div>
+      <div class='status-row'><span class='status-row-label'>最近完成</span><div><div class='status-value'>${escapeHtml(sb.last_completed || '')}</div></div></div>
+      <div class='status-row'><span class='status-row-label'>下一项工作</span><div><div class='status-value'>${escapeHtml(sb.next_work || '')}</div></div></div>
+      ${(sb.blockers || []).length ? `<div class='status-row'><span class='status-row-label'>阻断</span><div><div class='status-value attention'>${sb.blockers.map(b => escapeHtml(b)).join('；')}</div></div></div>` : ''}
+      ${sb.needs_user_decision && decisions ? `<div class='status-row'><span class='status-row-label'>待你决策</span><div><ul class='open-items' style='margin:0'>${decisions}</ul></div></div>` : ''}
+      ${domains}
+      <div class='status-row'><span class='status-row-label'>冻结三态</span><div class='status-value'>${freezeRow.map(escapeHtml).join(' · ')}</div></div>
+      ${sb.product_ready === false ? `<div class='status-row'><span class='status-row-label'>产品就绪</span><div class='status-value attention'>未就绪——${escapeHtml(sb.product_ready_note || '')}</div></div>` : ''}
+    </div></section>`;
+  }
+
   function renderProject() {
     const project = currentProject();
     if (!project) return `<div class='initial-state'><h1>还没有项目记录</h1><p>工作台数据中尚未包含项目。</p></div>`;
     const source = project.source || {};
-    return `${previewNotice()}${projectHeading(project)}<section class='project-overview'><div><div class='info-label'>这次采用的路线</div><p class='route-text'>${escapeHtml(project.route)}</p></div><div class='next-action'><div class='next-label'>下一步</div><p>${escapeHtml(project.next_step)}</p></div></section>${renderStages(project)}<div class='project-grid'><div>${renderArtifacts(project)}${project.constraint ? `<p class='body-muted' style='margin-top:17px;font-size:14px'>${escapeHtml(project.constraint)}</p>` : ''}</div><div class='right-column'>${renderOpenItems(project)}${renderNotes()}</div></div><div class='source-row'><div>${source.url ? link(source.url, source.label || '查看项目来源', '', true) : ''}</div>${project.workspace ? `<details class='source-details'><summary>项目位置与现状</summary><code>${escapeHtml(project.workspace)}</code><p class='body-muted' style='margin-top:9px;font-size:14px'>${escapeHtml(project.summary)}</p></details>` : ''}</div>`;
+    return `${previewNotice()}${projectHeading(project)}${renderStatusBlock(project)}<section class='project-overview'><div><div class='info-label'>这次采用的路线</div><p class='route-text'>${escapeHtml(project.route)}</p></div><div class='next-action'><div class='next-label'>下一步</div><p>${escapeHtml(project.next_step)}</p></div></section>${renderStages(project)}<div class='project-grid'><div>${renderArtifacts(project)}${project.constraint ? `<p class='body-muted' style='margin-top:17px;font-size:14px'>${escapeHtml(project.constraint)}</p>` : ''}</div><div class='right-column'>${renderOpenItems(project)}${renderNotes()}</div></div><div class='source-row'><div>${source.url ? link(source.url, source.label || '查看项目来源', '', true) : ''}</div>${project.workspace ? `<details class='source-details'><summary>项目位置与现状</summary><code>${escapeHtml(project.workspace)}</code><p class='body-muted' style='margin-top:9px;font-size:14px'>${escapeHtml(project.summary)}</p></details>` : ''}</div>`;
   }
 
   function renderResources(items = state.data.resources || []) {

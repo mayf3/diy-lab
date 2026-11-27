@@ -119,3 +119,36 @@ class GeneratedWorkbenchConsistencyTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class StatusBlockTests(unittest.TestCase):
+    """工作台必须显示：版本/G 阶段/负责人/最近完成/下一项/阻断/需决策/各域状态。"""
+
+    def setUp(self):
+        self.catalog = load("workbench/catalog.json")
+        self.button = self.catalog["projects"]["agent-button-deck"]
+        self.generated = load("workbench/web/workbench.json")
+        self.gen_button = next(
+            (p for p in self.generated["projects"] if p["id"] == "agent-button-deck"), None)
+
+    def test_status_block_fields_complete(self):
+        sb = self.button.get("status_block")
+        self.assertIsInstance(sb, dict, "button-deck 缺少 status_block")
+        for field in ("version", "g_stage", "owner", "last_completed",
+                      "next_work", "blockers", "needs_user_decision",
+                      "freeze", "domain_status"):
+            self.assertIn(field, sb, f"status_block 缺少字段：{field}")
+        self.assertIn("visual", sb["freeze"])
+        self.assertIn("dimensions", sb["freeze"])
+        self.assertIn("manufacturing", sb["freeze"])
+
+    def test_status_block_flows_to_generated_data(self):
+        self.assertIsNotNone(self.gen_button)
+        self.assertEqual(self.gen_button.get("status_block"),
+                         self.button.get("status_block"))
+
+    def test_eda_ready_is_not_design_ready(self):
+        sb = self.button["status_block"]
+        self.assertFalse(sb["product_ready"],
+                         "EDA/设计数据不得把产品标为已就绪")
+        self.assertIn("EDA ready", sb["product_ready_note"])
