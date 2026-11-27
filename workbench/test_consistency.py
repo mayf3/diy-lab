@@ -152,3 +152,44 @@ class StatusBlockTests(unittest.TestCase):
         self.assertFalse(sb["product_ready"],
                          "EDA/设计数据不得把产品标为已就绪")
         self.assertIn("EDA ready", sb["product_ready_note"])
+
+
+class ReferenceStudiesTests(unittest.TestCase):
+    """参考工程研究区：只登记来源/许可/模式，不得把第三方文件登记为本地资产。"""
+
+    def setUp(self):
+        catalog = load("workbench/catalog.json")
+        self.studies = catalog["projects"]["agent-button-deck"].get("reference_studies")
+        generated = load("workbench/web/workbench.json")
+        gen_button = next(
+            (p for p in generated["projects"] if p["id"] == "agent-button-deck"), None)
+        self.gen_studies = gen_button.get("reference_studies") if gen_button else None
+
+    def test_hachimodock_study_registered_with_license_and_boundary(self):
+        self.assertIsInstance(self.studies, list, "button-deck 缺少 reference_studies 区")
+        study = next((s for s in self.studies if "HachimoDock" in s["name"]), None)
+        self.assertIsNotNone(study, "HachimoDock 参考研究未登记")
+        for field in ("url", "license", "study_doc", "completeness",
+                      "patterns", "tasks", "open_questions", "boundary"):
+            self.assertIn(field, study, f"参考研究缺少字段：{field}")
+        self.assertIn("SDFL-PPO", study["license"], "MakerWorld 仅限平台打印边界必须记录")
+        self.assertIn("非商业", study["license"], "仓库非商业许可边界必须记录")
+
+    def test_study_doc_exists_and_declares_no_copy_rule(self):
+        doc = ROOT / "source-data/agent-button-deck/pcba-v1/reference-studies/hachimodock-study.md"
+        self.assertTrue(doc.is_file(), "hachimodock-study.md 缺失")
+        text = doc.read_text(encoding="utf-8")
+        self.assertIn("SHA256", text)
+        self.assertIn("不复制", text)
+        self.assertIn("四列", text)
+
+    def test_reference_studies_flow_to_generated_data(self):
+        self.assertEqual(self.gen_studies, self.studies,
+                         "reference_studies 未透传到生成的 workbench.json")
+
+    def test_no_third_party_files_committed_into_repo(self):
+        ref_dir = ROOT / "source-data/agent-button-deck/pcba-v1/reference-studies"
+        allowed_ext = {".md"}
+        for f in ref_dir.iterdir():
+            self.assertIn(f.suffix, allowed_ext,
+                          f"参考研究目录出现非文档文件 {f.name}（不得复制第三方工程文件）")

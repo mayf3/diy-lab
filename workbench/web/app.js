@@ -180,11 +180,31 @@
     </div></section>`;
   }
 
+  function renderReferenceStudies(project) {
+    const studies = Array.isArray(project.reference_studies) ? project.reference_studies : [];
+    if (!studies.length) return '';
+    const cards = studies.map((study) => {
+      const patterns = (study.patterns || []).map(p => `<li>${escapeHtml(p)}</li>`).join('');
+      const tasks = (study.tasks || []).map(t => `<li>${escapeHtml(t)}</li>`).join('');
+      const open = (study.open_questions || []).map(q => `<li>${escapeHtml(q)}</li>`).join('');
+      return `<div class='reference-card'><div class='artifact-title'>${link(study.url, study.name, '', true)}</div>
+        <div class='status-row'><span class='status-row-label'>许可边界</span><div class='status-value attention'>${escapeHtml(study.license || '')}</div></div>
+        <div class='status-row'><span class='status-row-label'>研究完成度</span><div class='status-value good'>${escapeHtml(study.completeness || '')}</div></div>
+        ${study.studied_at ? `<div class='status-row'><span class='status-row-label'>研究日期</span><div class='status-value'>${escapeHtml(study.studied_at)}</div></div>` : ''}
+        ${study.study_doc ? `<div class='status-row'><span class='status-row-label'>研究文档</span><div class='status-value'><code>${escapeHtml(study.study_doc)}</code></div></div>` : ''}
+        ${patterns ? `<div class='status-row'><span class='status-row-label'>可借鉴模式</span><div><ul class='open-items' style='margin:0'>${patterns}</ul></div></div>` : ''}
+        ${tasks ? `<div class='status-row'><span class='status-row-label'>对应任务</span><div><ul class='open-items' style='margin:0'>${tasks}</ul></div></div>` : ''}
+        ${open ? `<div class='status-row'><span class='status-row-label'>待核实</span><div><ul class='open-items' style='margin:0'>${open}</ul></div></div>` : ''}
+        ${study.boundary ? `<p class='body-muted' style='margin:9px 0 0;font-size:13px'>${escapeHtml(study.boundary)}</p>` : ''}</div>`;
+    }).join('');
+    return `<section class='panel' aria-label='参考工程研究'><div class='panel-heading'><h2>参考工程研究</h2><span class='small-label'>只借鉴模式，不复制文件</span></div><div class='panel-body'>${cards}</div></section>`;
+  }
+
   function renderProject() {
     const project = currentProject();
     if (!project) return `<div class='initial-state'><h1>还没有项目记录</h1><p>工作台数据中尚未包含项目。</p></div>`;
     const source = project.source || {};
-    return `${previewNotice()}${projectHeading(project)}${renderStatusBlock(project)}<section class='project-overview'><div><div class='info-label'>这次采用的路线</div><p class='route-text'>${escapeHtml(project.route)}</p></div><div class='next-action'><div class='next-label'>下一步</div><p>${escapeHtml(project.next_step)}</p></div></section>${renderStages(project)}<div class='project-grid'><div>${renderArtifacts(project)}${project.constraint ? `<p class='body-muted' style='margin-top:17px;font-size:14px'>${escapeHtml(project.constraint)}</p>` : ''}</div><div class='right-column'>${renderOpenItems(project)}${renderNotes()}</div></div><div class='source-row'><div>${source.url ? link(source.url, source.label || '查看项目来源', '', true) : ''}</div>${project.workspace ? `<details class='source-details'><summary>项目位置与现状</summary><code>${escapeHtml(project.workspace)}</code><p class='body-muted' style='margin-top:9px;font-size:14px'>${escapeHtml(project.summary)}</p></details>` : ''}</div>`;
+    return `${previewNotice()}${projectHeading(project)}${renderStatusBlock(project)}${renderReferenceStudies(project)}<section class='project-overview'><div><div class='info-label'>这次采用的路线</div><p class='route-text'>${escapeHtml(project.route)}</p></div><div class='next-action'><div class='next-label'>下一步</div><p>${escapeHtml(project.next_step)}</p></div></section>${renderStages(project)}<div class='project-grid'><div>${renderArtifacts(project)}${project.constraint ? `<p class='body-muted' style='margin-top:17px;font-size:14px'>${escapeHtml(project.constraint)}</p>` : ''}</div><div class='right-column'>${renderOpenItems(project)}${renderNotes()}</div></div><div class='source-row'><div>${source.url ? link(source.url, source.label || '查看项目来源', '', true) : ''}</div>${project.workspace ? `<details class='source-details'><summary>项目位置与现状</summary><code>${escapeHtml(project.workspace)}</code><p class='body-muted' style='margin-top:9px;font-size:14px'>${escapeHtml(project.summary)}</p></details>` : ''}</div>`;
   }
 
   function renderResources(items = state.data.resources || []) {

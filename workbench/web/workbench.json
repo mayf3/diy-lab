@@ -167,7 +167,7 @@
         "version": "R1",
         "g_stage": "G0 视觉方向已冻结（2026-11-27）；G1 机构与型号核查进行中",
         "owner": "本地 Agent（ZCode 会话）",
-        "last_completed": "R1 概念效果图（2×2 宇航员版）保存为正式视觉基准；HID 固件草稿发布；EDA 工具链激活与往返验收通过",
+        "last_completed": "HachimoDock 参考工程研究完成（六方面+对照表，2026-11-27）；R1 概念效果图（2×2 宇航员版）保存为正式视觉基准；HID 固件草稿发布；EDA 工具链激活与往返验收通过",
         "next_work": "G1 机构比较定稿 + DevKitC/轴体 SKU 核实（元件库恢复后逐项核实现价库存）",
         "blockers": [
           "元件库搜索待恢复（现价库存核实）",
@@ -177,7 +177,8 @@
         "decision_items": [
           "四键用途与 F13–F16 绑定清单",
           "按键机构定档（推荐 MX 兼容轴，见 g1-button-mechanism-comparison）",
-          "键帽尺寸与手感偏好"
+          "键帽尺寸与手感偏好",
+          "键帽四色打印路线定档（分件分色/AMS/贴纸/嘉立创打印，G2 前决定）"
         ],
         "freeze": {
           "visual": "frozen 2026-11-27",
@@ -194,7 +195,35 @@
         },
         "product_ready": false,
         "product_ready_note": "EDA ready ≠ 设计 ready；设计完成 ≠ 可制造。"
-      }
+      },
+      "reference_studies": [
+        {
+          "name": "HachimoDock 嘉立创硬件复刻工程",
+          "url": "https://oshwhub.com/eda_gqvzlprk/project_cnbmkbjc",
+          "license": "OSHWHub 页标 GPL 3.0+禁转载；仓库 LICENSE 为非商业源码可见（明确非 GPL）；MakerWorld 外壳 SDFL-PPO 仅限平台打印",
+          "study_doc": "source-data/agent-button-deck/pcba-v1/reference-studies/hachimodock-study.md",
+          "studied_at": "2026-11-27",
+          "completeness": "six-aspects complete（资料核实级；.epro2/3MF/视频未下载——许可与不复制约束）",
+          "patterns": [
+            "成品开发板+排母插接简单载板（复杂工艺留原厂）",
+            "分件分色打印实现多色外观，零喷涂",
+            "M2.5 螺钉+热熔铜螺母两点固定 PCB",
+            "替代件适配工程：转接板+新壳 3MF+版本互斥声明",
+            "BOM 全带立创编号，下单零转译"
+          ],
+          "tasks": [
+            "G2 CAD：分色分盘输出、螺柱按热熔螺母设计、键帽孔版本占位",
+            "G4 PCB：BOM 模板加 LCSC 编号列；丝印含 R1 四元组",
+            "G6 制造：成套交付清单机器校验+装配说明声明依赖分叉"
+          ],
+          "open_questions": [
+            "主 PCB 层数/板厚/尺寸未取得（.epro2 未下载）",
+            "主板 SMT 用途未知（推测以插件为主）",
+            "上游疑点 BK1–BK4 保持 open（主仓登记）"
+          ],
+          "boundary": "只引用事实与模式；零文件复制进本仓库；不代关上游疑点；不据其下单"
+        }
+      ]
     },
     {
       "id": "hachimodock",
