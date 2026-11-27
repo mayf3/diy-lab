@@ -120,8 +120,8 @@
         "version": "R1",
         "g_stage": "G0 视觉方向已冻结（2026-11-27）；G1 机构与型号核查进行中",
         "owner": "本地 Agent（ZCode 会话）",
-        "last_completed": "G1/G2 落地轮：G2 外壳 CAD 任务书（G2-1～G2-3 展开）+ DevKitC SKU 官方谱系核实 + 样轴清单型号口径修正（Boba U4T=段落/U4=线性）；HachimoDock 参考工程研究完成（六方面+对照表，2026-11-27）；R1 概念效果图（2×2 宇航员版）保存为正式视觉基准；HID 固件草稿发布；EDA 工具链激活与往返验收通过",
-        "next_work": "G1 样轴到货实测定档；G2 外壳设计启动（G2-1～G2-3，见 hachimodock-study 任务映射）",
+        "last_completed": "零焊接交付方案轮：嘉立创 A–G 能力逐项取证（含客供邮寄代焊流程、标准型插件工艺）、factory-delivery-plan 落盘、G2-0 主体先行入任务书；G1/G2 落地轮：G2 外壳 CAD 任务书（G2-1～G2-3 展开）+ DevKitC SKU 官方谱系核实 + 样轴清单型号口径修正（Boba U4=静音段落 / U4T=非静音对照，T 指 thock；与 Codex 纠错提交及发起人指令对齐）；HachimoDock 参考工程研究完成（六方面+对照表，2026-11-27）；R1 概念效果图（2×2 宇航员版）保存为正式视觉基准；HID 固件草稿发布；EDA 工具链激活与往返验收通过",
+        "next_work": "G2-0 主体/底座先行建模（孔位参数化占位）；G1 样轴与预焊 DevKitC 六要素清单核实后交发起人确认",
         "blockers": [
           "元件库搜索待恢复（现价库存核实）",
           "DevKitC 预焊版 SKU 待锁定",
@@ -130,6 +130,7 @@
         "needs_user_decision": true,
         "decision_items": [
           "四键用途与 F13–F16 绑定清单",
+          "第一批采购确认（样轴 + 预焊排针 DevKitC N8R8，六要素清单齐备后）",
           "键帽四色打印路线定档（分件分色/AMS/贴纸/嘉立创打印，G2 前决定）"
         ],
         "freeze": {
@@ -436,6 +437,11 @@
       "id": "g2-case-taskbook",
       "path": "source-data/agent-button-deck/pcba-v1/g2-case-cad-taskbook.md",
       "name": "G2 外壳 CAD 任务书"
+    },
+    {
+      "id": "factory-delivery-plan",
+      "path": "source-data/agent-button-deck/pcba-v1/factory-delivery-plan.md",
+      "name": "工厂代制造交付方案（零焊接）"
     },
     {
       "id": "hachimodock-study",

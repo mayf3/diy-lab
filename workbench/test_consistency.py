@@ -117,6 +117,42 @@ class GeneratedWorkbenchConsistencyTests(unittest.TestCase):
                           f"生成数据缺少 R1 产物：{name}")
 
 
+class ZeroSolderConstraintTests(unittest.TestCase):
+    """零焊接核心约束必须贯穿 spec/模型/CAD 任务书/交付方案，防止工序转嫁给用户。"""
+
+    def setUp(self):
+        base = ROOT / "source-data/agent-button-deck/pcba-v1"
+        self.spec = (base / "space-buddy-r1-spec.md").read_text(encoding="utf-8")
+        self.models = (base / "models-r1.md").read_text(encoding="utf-8")
+        self.taskbook = (base / "g2-case-cad-taskbook.md").read_text(encoding="utf-8")
+        plan_path = base / "factory-delivery-plan.md"
+        self.assertTrue(plan_path.is_file(), "factory-delivery-plan.md 缺失")
+        self.plan = plan_path.read_text(encoding="utf-8")
+
+    def test_zero_solder_is_propagated_through_all_stages(self):
+        self.assertIn("零焊接核心约束", self.spec)
+        self.assertIn("G8 否决项", self.spec)
+        self.assertIn("零焊接（P0", self.models)
+        self.assertIn("免焊接独立复装", self.models)
+        self.assertIn("G2-0 主体与底座先行", self.taskbook)
+        self.assertIn("零焊接验证（P0）", self.taskbook)
+
+    def test_factory_plan_covers_all_seven_capabilities(self):
+        for capability in ("PCB 制板", "SMT 贴片", "MX 机械轴通孔插件焊",
+                           "排母/连接器插件焊", "客供特殊元件代焊",
+                           "外壳 3D 打印", "不同颜色零件分别制造"):
+            self.assertIn(capability, self.plan, f"能力表缺行：{capability}")
+        self.assertIn("SMT 能力 ≠ 插件焊接能力", self.plan,
+                      "不得把 SMT 能力等同于插件焊接能力")
+        self.assertIn("未上架的器件可以邮寄到嘉立创焊接", self.plan,
+                      "客供件代焊依据必须引用官方帮助文档")
+        self.assertIn("不得转嫁焊接给用户", self.plan)
+
+    def test_real_dimensions_gate_for_openings(self):
+        self.assertIn("必须由真实元件尺寸确定", self.taskbook,
+                      "键帽孔/轴孔/固定孔/USB 开孔必须由真实元件尺寸确定")
+
+
 if __name__ == "__main__":
     unittest.main()
 
