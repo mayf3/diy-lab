@@ -1,0 +1,14 @@
+{
+ "ok": true,
+ "failed": [],
+ "checks": {
+  "body_valid": true,
+  "base_valid": true,
+  "caps_valid": true,
+  "body_base_interference_vol": 0.0,
+  "body_caps_interference_vol": 0.0,
+  "base_caps_interference_vol": 0.0,
+  "usb_two_openings": true,
+  "assembly_body_in_base": true
+ }
+}

@@ -205,8 +205,28 @@ class CaseViewerAssetTests(unittest.TestCase):
                      "case-r1-cap-b", "case-r1-cap-c", "case-r1-cap-d"):
             self.assertTrue((out / f"{name}.step").is_file(), f"缺少 {name}.step")
             self.assertTrue((out / f"{name}.stl").is_file(), f"缺少 {name}.stl")
-        ph = json.loads((out / "placeholders.json").read_text(encoding="utf-8"))
-        self.assertIn("不冻结", ph["rule"], "占位尺寸必须声明不冻结")
+        dims = json.loads((out / "dims.json").read_text(encoding="utf-8"))
+        self.assertIn("不得标 Manufacturable", dims["rule"], "占位模型必须声明禁止标 Manufacturable")
+
+    def test_dimension_sources_are_typed_and_honest(self):
+        out = ROOT / "source-data/agent-button-deck/pcba-v1/cad/renders/case-r1"
+        dims = json.loads((out / "dims.json").read_text(encoding="utf-8"))["sources"]
+        self.assertEqual(dims["board"]["status"], "confirmed-official",
+                         "开发板尺寸应来自官方数据手册")
+        self.assertEqual(dims["usb_ports"]["status"], "awaiting-measure",
+                         "USB 口中心距为图纸估读，必须标待实测")
+        self.assertIn("Micro-USB", dims["usb_ports"]["value"], "UART/OTG 双口类型必须记录")
+        self.assertEqual(dims["keys"]["status"], "awaiting-measure", "键帽机构等样轴实测")
+        self.assertEqual(dims["boss"]["status"], "placeholder", "PCB 螺柱等 G4 板框")
+
+    def test_geometry_checks_all_green(self):
+        out = ROOT / "source-data/agent-button-deck/pcba-v1/cad/renders/case-r1"
+        checks = json.loads((out / "checks.json").read_text(encoding="utf-8"))
+        self.assertTrue(checks["ok"], f"几何检查未全绿：{checks['failed']}")
+        for key in ("body_base_interference_vol", "body_caps_interference_vol",
+                    "base_caps_interference_vol"):
+            self.assertEqual(checks["checks"][key], 0, f"{key} 必须为零干涉")
+        self.assertTrue(checks["checks"]["usb_two_openings"], "必须双 USB 独立开孔")
 
 
 if __name__ == "__main__":

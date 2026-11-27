@@ -18,6 +18,13 @@ border-top:1px solid var(--line)}
 button{background:#262a3d;color:var(--ink);border:1px solid var(--line);border-radius:9px;
 padding:7px 12px;font-size:13px;cursor:pointer}
 button.off{opacity:.35;text-decoration:line-through}
+#tables{padding:0 22px 28px;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:900px){#tables{grid-template-columns:1fr}}
+table{border-collapse:collapse;width:100%;font-size:13px;background:var(--panel);border-radius:10px;overflow:hidden}
+caption{text-align:left;font-weight:600;padding:10px 12px 6px;color:var(--ink)}
+th,td{text-align:left;padding:7px 10px;border-top:1px solid var(--line);vertical-align:top;color:var(--dim)}
+th{color:var(--ink);white-space:nowrap;font-weight:600}
+td.ok{color:#7fd39a}td.warn{color:#e8b96d}td.hold{color:#9aa0b5}
 @media print{#stage{height:auto}}
 </style>
 </head>
@@ -28,6 +35,7 @@ button.off{opacity:.35;text-decoration:line-through}
 </header>
 <div id="stage"><canvas id="cv"></canvas><div id="hud">鼠标拖动旋转，滚轮缩放</div></div>
 <div id="panel"></div>
+<div id="tables"></div>
 <script src="case-r1-viewer-data.js"></script>
 <script src="case-r1-viewer.js"></script>
 </body></html>

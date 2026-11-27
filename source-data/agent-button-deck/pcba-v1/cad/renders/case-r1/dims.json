@@ -1,0 +1,102 @@
+{
+  "generated_by": "g2-case-r1.py v2 (G2-1)",
+  "rule": "尺寸三态来源；占位/待实测项不得标 Manufacturable，不得下单打印（发起人 2026-11-28）",
+  "params": {
+    "body": {
+      "W": 88.0,
+      "D": 78.0,
+      "H": 26.0,
+      "R": 10.0,
+      "wall": 2.4,
+      "top": 2.4
+    },
+    "base": {
+      "W": 94.0,
+      "D": 84.0,
+      "H": 14.0,
+      "R": 8.0,
+      "floor": 2.4
+    },
+    "keys": {
+      "pitch_x": 33.0,
+      "pitch_y": 33.0,
+      "hole": 24.4,
+      "cap": 24.0,
+      "cap_h": 6.0,
+      "stub": 4.0
+    },
+    "usb": {
+      "count": 2,
+      "w": 12.0,
+      "h": 7.0,
+      "spacing": 12.5,
+      "z": 8.0,
+      "left": "UART(J2,Micro-USB)",
+      "right": "USB-OTG(J4,Micro-USB)"
+    },
+    "boss": {
+      "d": 6.0,
+      "h": 7.0,
+      "pos_x": 30.0,
+      "pos_y": 28.0,
+      "hole_d": 2.6
+    },
+    "relief": {
+      "helmet_r": 13.0,
+      "visor_r": 8.6,
+      "visor_off_y": 1.5,
+      "torso_w": 30.0,
+      "torso_h": 18.0,
+      "panel_w": 14.0,
+      "panel_h": 6.0,
+      "port_r": 10.0,
+      "port_hole": 7.6,
+      "recess": 0.6,
+      "star_out": 2.6,
+      "star_in": 1.1,
+      "h": 0.8
+    }
+  },
+  "sources": {
+    "board": {
+      "source": "official-doc",
+      "status": "confirmed-official",
+      "value": "ESP32-S3-DevKitC-1 v1.1：25.40 × 70.74 mm（62.74 + 8.00 USB 区）；J1/J3 2.54mm 间距",
+      "ref": "Espressif PCB 布局图 PCB_ESP32-S3-DevKitC-1_V1.1_20220429.pdf（SHA256 3f6716…）"
+    },
+    "usb_ports": {
+      "source": "official-doc",
+      "status": "awaiting-measure",
+      "value": "双口并排于板底短边：J2=UART(Micro-USB)、J4=USB-OTG(Micro-USB)；中心距 ≈12.5mm（图纸估读 ±1mm）",
+      "ref": "同上 PCB 图第 3 页丝印层 + v1.1 官方用户指南（USB-to-UART Port = Micro-USB）",
+      "awaiting": "DevKitC 到货实测：开口中心距/高度/左右序校核"
+    },
+    "usb_opening": {
+      "source": "official-doc",
+      "status": "confirmed-official",
+      "value": "每口开孔 12 × 7 mm（Micro-USB 插头外廓 ~11×7.5，留插拔间隙）",
+      "ref": "USB Micro-B 标准插头尺寸"
+    },
+    "body": {
+      "source": "placeholder",
+      "status": "placeholder",
+      "value": "外形 88×78×26 R10 壁厚 2.4 顶厚 2.4",
+      "ref": "G0 视觉基准比例",
+      "awaiting": "G4 板框 + DevKitC 载板高度定外形"
+    },
+    "keys": {
+      "source": "placeholder",
+      "status": "awaiting-measure",
+      "value": "键距 33×33；键帽孔 24.4 方孔；键帽 24×24；stub 为矩形占位（非 MX 十字）",
+      "ref": "视觉占位",
+      "awaiting": "样轴实测（Boba U4/国产静音段落）：十字孔、裙边、按压行程"
+    },
+    "boss": {
+      "source": "placeholder",
+      "status": "placeholder",
+      "value": "4×M2.5 螺柱（d6 孔 2.6），现位 ±30/±28（避让内腔 R7.6 圆角）",
+      "ref": "热熔铜螺母 M2.5×4×3.5 级（HachimoDock 参考用料）",
+      "awaiting": "G4 真实板框与安装孔位后冻结——当前坐标不得用于 PCB 布局"
+    }
+  }
+}

@@ -77,6 +77,32 @@ for(const k in DATA){
   b.onclick=()=>{visible[k]=!visible[k];b.classList.toggle('off');render();};
   panel.appendChild(b);
 }
+// 尺寸来源表 + 几何检查表（数据来自 dims.json / checks.json）
+(function(){
+  const host=document.getElementById('tables');
+  const tag={'confirmed-official':['已确认·官方','ok'],'awaiting-measure':['待实物实测','warn'],'placeholder':['视觉占位','hold']};
+  const names={'board':'开发板尺寸','usb_ports':'USB 口位置','usb_opening':'USB 开孔','body':'主体外形','keys':'键帽机构','boss':'PCB 螺柱','connector':'接口类型'};
+  let rows='';
+  for(const k in CASE_DIMS){
+    const d=CASE_DIMS[k],t=tag[d.status]||[d.status,'hold'];
+    rows+=`<tr><th>${names[k]||k}</th><td class='${t[1]}'>${t[0]}</td><td>${d.value||''}`;
+    if(d.awaiting)rows+=`<br><span style='opacity:.75'>等：${d.awaiting}</span>`;
+    rows+=`<br><span style='opacity:.6'>依据：${d.ref||''}</span></td></tr>`;
+  }
+  const C=CASE_CHECKS.checks||{};
+  let cells='';
+  for(const k in C){
+    const v=C[k];
+    const bad=(typeof v==='boolean')?(!v):(Math.abs(v)>1e-6);
+    cells+=`<td class='${bad?'warn':'ok'}'>${k} = ${v}${k.indexOf('interference')>=0?' mm³':''}</td>`;
+  }
+  let checkRows='';
+  const arr=cells.match(/<td[\s\S]*?<\/td>/g)||[];
+  for(let i=0;i<arr.length;i+=2)checkRows+='<tr>'+arr.slice(i,i+2).join('')+'</tr>';
+  host.innerHTML=
+    `<table><caption>哪些尺寸已确定、哪些在等实物（G2-1）</caption>${rows}</table>`+
+    `<table><caption>几何检查（每次修改自动重跑）</caption>${checkRows}</table>`;
+})();
 let drag=null;
 cv.addEventListener('pointerdown',e=>{drag={x:e.clientX,y:e.clientY};cv.setPointerCapture(e.pointerId);});
 cv.addEventListener('pointermove',e=>{if(!drag)return;

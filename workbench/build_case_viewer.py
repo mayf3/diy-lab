@@ -67,14 +67,18 @@ def build() -> None:
 
     placeholders = (SRC / "placeholders.json")
     place_note = json.loads(placeholders.read_text())["rule"] if placeholders.is_file() else ""
+    dims = json.loads((SRC / "dims.json").read_text()) if (SRC / "dims.json").is_file() else {}
+    checks = json.loads((SRC / "checks.json").read_text()) if (SRC / "checks.json").is_file() else {}
 
     # 工作台静态服务对页面启用 script-src 'self'，内联脚本会被拦——
     # 因此数据与渲染逻辑必须是同源外链文件。
     data_path = TARGET.with_name("case-r1-viewer-data.js")
     js_path = TARGET.with_name("case-r1-viewer.js")
     data_path.write_text(
-        "// 由 build_case_viewer.py 生成：G2-0 外壳网格数据（勿手改）\n"
-        "const CASE_DATA=" + json.dumps(meshes, separators=(",", ":")) + ";\n")
+        "// 由 build_case_viewer.py 生成：外壳网格/尺寸来源/检查结果（勿手改）\n"
+        "const CASE_DATA=" + json.dumps(meshes, separators=(",", ":")) + ";\n"
+        "const CASE_DIMS=" + json.dumps(dims.get("sources", {}), ensure_ascii=False, separators=(",", ":")) + ";\n"
+        "const CASE_CHECKS=" + json.dumps(checks, separators=(",", ":")) + ";\n")
     js_path.write_text(RENDERER_JS.replace("__PLACE__", place_note))
     page = TEMPLATE.replace("__PLACE__", place_note)
     TARGET.write_text(page)
@@ -102,6 +106,13 @@ border-top:1px solid var(--line)}
 button{background:#262a3d;color:var(--ink);border:1px solid var(--line);border-radius:9px;
 padding:7px 12px;font-size:13px;cursor:pointer}
 button.off{opacity:.35;text-decoration:line-through}
+#tables{padding:0 22px 28px;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:900px){#tables{grid-template-columns:1fr}}
+table{border-collapse:collapse;width:100%;font-size:13px;background:var(--panel);border-radius:10px;overflow:hidden}
+caption{text-align:left;font-weight:600;padding:10px 12px 6px;color:var(--ink)}
+th,td{text-align:left;padding:7px 10px;border-top:1px solid var(--line);vertical-align:top;color:var(--dim)}
+th{color:var(--ink);white-space:nowrap;font-weight:600}
+td.ok{color:#7fd39a}td.warn{color:#e8b96d}td.hold{color:#9aa0b5}
 @media print{#stage{height:auto}}
 </style>
 </head>
@@ -112,6 +123,7 @@ button.off{opacity:.35;text-decoration:line-through}
 </header>
 <div id="stage"><canvas id="cv"></canvas><div id="hud">鼠标拖动旋转，滚轮缩放</div></div>
 <div id="panel"></div>
+<div id="tables"></div>
 <script src="case-r1-viewer-data.js"></script>
 <script src="case-r1-viewer.js"></script>
 </body></html>
@@ -196,6 +208,32 @@ for(const k in DATA){
   b.onclick=()=>{visible[k]=!visible[k];b.classList.toggle('off');render();};
   panel.appendChild(b);
 }
+// 尺寸来源表 + 几何检查表（数据来自 dims.json / checks.json）
+(function(){
+  const host=document.getElementById('tables');
+  const tag={'confirmed-official':['已确认·官方','ok'],'awaiting-measure':['待实物实测','warn'],'placeholder':['视觉占位','hold']};
+  const names={'board':'开发板尺寸','usb_ports':'USB 口位置','usb_opening':'USB 开孔','body':'主体外形','keys':'键帽机构','boss':'PCB 螺柱','connector':'接口类型'};
+  let rows='';
+  for(const k in CASE_DIMS){
+    const d=CASE_DIMS[k],t=tag[d.status]||[d.status,'hold'];
+    rows+=`<tr><th>${names[k]||k}</th><td class='${t[1]}'>${t[0]}</td><td>${d.value||''}`;
+    if(d.awaiting)rows+=`<br><span style='opacity:.75'>等：${d.awaiting}</span>`;
+    rows+=`<br><span style='opacity:.6'>依据：${d.ref||''}</span></td></tr>`;
+  }
+  const C=CASE_CHECKS.checks||{};
+  let cells='';
+  for(const k in C){
+    const v=C[k];
+    const bad=(typeof v==='boolean')?(!v):(Math.abs(v)>1e-6);
+    cells+=`<td class='${bad?'warn':'ok'}'>${k} = ${v}${k.indexOf('interference')>=0?' mm³':''}</td>`;
+  }
+  let checkRows='';
+  const arr=cells.match(/<td[\\s\\S]*?<\\/td>/g)||[];
+  for(let i=0;i<arr.length;i+=2)checkRows+='<tr>'+arr.slice(i,i+2).join('')+'</tr>';
+  host.innerHTML=
+    `<table><caption>哪些尺寸已确定、哪些在等实物（G2-1）</caption>${rows}</table>`+
+    `<table><caption>几何检查（每次修改自动重跑）</caption>${checkRows}</table>`;
+})();
 let drag=null;
 cv.addEventListener('pointerdown',e=>{drag={x:e.clientX,y:e.clientY};cv.setPointerCapture(e.pointerId);});
 cv.addEventListener('pointermove',e=>{if(!drag)return;
