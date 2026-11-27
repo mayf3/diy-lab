@@ -167,7 +167,7 @@
         "version": "R1",
         "g_stage": "G0 视觉方向已冻结（2026-11-27）；G1 机构与型号核查进行中",
         "owner": "本地 Agent（ZCode 会话）",
-        "last_completed": "HachimoDock 参考工程研究完成（六方面+对照表，2026-11-27）；R1 概念效果图（2×2 宇航员版）保存为正式视觉基准；HID 固件草稿发布；EDA 工具链激活与往返验收通过",
+        "last_completed": "G1/G2 落地轮：G2 外壳 CAD 任务书（G2-1～G2-3 展开）+ DevKitC SKU 官方谱系核实 + 样轴清单型号口径修正（Boba U4T=段落/U4=线性）；HachimoDock 参考工程研究完成（六方面+对照表，2026-11-27）；R1 概念效果图（2×2 宇航员版）保存为正式视觉基准；HID 固件草稿发布；EDA 工具链激活与往返验收通过",
         "next_work": "G1 样轴到货实测定档；G2 外壳设计启动（G2-1～G2-3，见 hachimodock-study 任务映射）",
         "blockers": [
           "元件库搜索待恢复（现价库存核实）",
@@ -527,6 +527,11 @@
       "name": "Button Deck 接口与装配约定"
     },
     {
+      "id": "g2-case-taskbook",
+      "path": "source-data/agent-button-deck/pcba-v1/g2-case-cad-taskbook.md",
+      "name": "G2 外壳 CAD 任务书"
+    },
+    {
       "id": "hachimodock-study",
       "path": "source-data/agent-button-deck/pcba-v1/reference-studies/hachimodock-study.md",
       "name": "HachimoDock 参考工程研究"
@@ -580,6 +585,16 @@
       "id": "r1-revision",
       "path": "source-data/agent-button-deck/pcba-v1/revision-r1-usb-hid.md",
       "name": "R1 设计修订（USB HID）"
+    },
+    {
+      "id": "g1-devkitc-sku-check",
+      "path": "source-data/agent-button-deck/pcba-v1/g1-devkitc-sku-check.md",
+      "name": "G1 DevKitC SKU 核查"
+    },
+    {
+      "id": "g1-switch-candidates",
+      "path": "source-data/agent-button-deck/pcba-v1/g1-silent-tactile-candidates.md",
+      "name": "G1 静音段落轴候选与样轴清单"
     }
   ],
   "resources": [

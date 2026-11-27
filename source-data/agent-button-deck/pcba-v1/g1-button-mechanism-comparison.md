@@ -42,7 +42,7 @@ G1 需要的方案必须满足：四键帽稳定垂直按压、不倾斜、不�
 
 按发起人 tactile-light + quiet 偏好筛选出的三款候选与样轴采购建议，
 见 [g1-silent-tactile-candidates.md](g1-silent-tactile-candidates.md)。
-推荐路径：先买 3 款样轴（Boba U4T 45–50g 档 + 国产静音段落 + 可选 Zilent 对照）
+推荐路径：先买 3 款样轴（Boba U4T 静音段落 + 国产静音段落 + 可选 Zilent/Boba U4 线性对照）
 试按定档，再冻结轴体 SKU 与 PCB footprint——不为了画 PCB 提前锁定未验证轴体。
 
 ## 待核实清单（G1 执行时）
