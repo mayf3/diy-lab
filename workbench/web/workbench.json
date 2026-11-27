@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "title": "硬件工作台",
-  "updated_at": "2026-11-26",
+  "updated_at": "2026-11-27",
   "objective": "把合适的电子 Lab 项目做成可使用的硬件产品：尽量由工厂完成焊接，配合 3D 打印外壳，用户主要负责插接、固定和使用。",
   "environment": {
     "version": "4.1.105.0339a6cd",
@@ -35,22 +35,22 @@
   "projects": [
     {
       "id": "agent-button-deck",
-      "name": "四键 Button Deck",
+      "name": "Space Buddy Deck R1",
       "priority": "建议作为首个小型 PCBA 候选",
-      "summary": "已有 ESP32-S3 DevKitC v1.1 方案和源码；四路按键使用 GPIO4–7，现有通信路径为 USB-UART；尚无实物验证",
-      "route": "预焊开发板插入定制载板；由工厂焊接四个按键和主板插座，保持现有 USB-UART 路径，配合 P1S 外壳。",
-      "next_step": "核实实际模块与按键，再把现有 GPIO/固件接口转成载板连接表和机械尺寸依据。",
+      "summary": "发起人确认真键盘路线（R1）：原生 USB HID 键盘，F13–F16；官方核实：ESP32-S3-DevKitC-1 v1.1 J1/J3 各 22 针，GPIO4–7=J1.4–7，OTG 单口供电为官方推荐；载板方案：每侧 2×1×11P 排母拼 22 位；四键开关候选已有立创 C 号；HID 固件草稿与概念效果图已产出（未编译/尺寸未冻结）；EDA 工具链已激活并完成编辑器读写往返验收",
+      "route": "预焊开发板插入定制载板（工厂焊接四键与插座）+ 原生 USB HID 键盘（F13–F16）+ 嘉立创 PCB/PCBA 与 3D 打印外壳，P1S 用于原型与试装。",
+      "next_step": "发起人确认视觉冻结（G0）；随后锁定 DevKitC SKU 与元件（G1），进入原理图设计（G4 前置）。",
       "open_items": [
-        "准确开发板与预焊排针型号",
-        "四个按键的键型、规格、布局与手感",
-        "载板尺寸、排针间距、USB 插头空间和安装孔",
-        "工厂对按键、插座及全部焊点的装配范围",
-        "现有固件在最终主板上的编译、烧录和四键实测"
+        "四键用途确认与 F13–F16 绑定清单",
+        "按键手感与键帽定档（无声贴片 vs 插件段落感）",
+        "ESP32-S3-DevKitC-1 预焊版准确 SKU 与现价库存",
+        "OTG 口连接器实物类型与双 USB 口开孔尺寸",
+        "载板排距与板框尺寸（待官方尺寸图/实物核对）"
       ],
       "constraint": "如改为全定制主板或原生 USB，必须同时评估并修改固件与主机端接口；不能默认与 USB-UART 方案兼容。",
-      "tagline": "把四个按键做成桌面小设备",
-      "category": "PCBA 首版",
-      "stage_label": "方案准备",
+      "tagline": "宇航员主题四键 USB 快捷键盘",
+      "category": "PCBA 首版 · Space Buddy",
+      "stage_label": "G0 · 视觉冻结待确认",
       "workspace": "source-data/agent-button-deck/pcba-v1",
       "source": {
         "label": "现有固件与主机端 · 5654c5d",
@@ -58,32 +58,58 @@
       },
       "stages": [
         {
-          "label": "需求与方案",
+          "label": "G0 视觉与产品定义",
           "status": "current",
-          "detail": "产品目标与现有接口已整理；开发板、按键和结构规格待核实。"
+          "detail": "概念效果图已出；待发起人确认 2×2 布局、四色键帽与宇航员主题后冻结。"
         },
         {
-          "label": "电路与载板",
+          "label": "G1 硬件型号与尺寸",
           "status": "pending",
-          "detail": "在嘉立创 EDA 建立真实工程，核查封装与接线后布板。"
+          "detail": "锁定 DevKitC 预焊版 SKU、四键开关/11P 排母定档，核对实物与机械尺寸。"
         },
         {
-          "label": "板壳配合",
+          "label": "G2–G3 CAD 设计与验证",
           "status": "pending",
-          "detail": "按实际板边、接口和高度设计 P1S 可打印外壳。"
+          "detail": "参数化外壳与载板布局；渲染对照与干涉检查。"
         },
         {
-          "label": "工厂装配",
+          "label": "G4 原理图与 PCB",
           "status": "pending",
-          "detail": "确认全部焊点、制造文件与报价后才进入打样。"
+          "detail": "嘉立创原生工程：四开关+双排插座原理图、PCB 布局与 DRC。"
         },
         {
-          "label": "整机验收",
+          "label": "G5–G6 板壳验证与制造资料",
           "status": "pending",
-          "detail": "四键、USB 重插、主机动作和装壳后的实测。"
+          "detail": "板壳联合验证；Gerber/BOM/CPL/STEP 与工厂代焊范围确认。"
+        },
+        {
+          "label": "G7–G8 批准打样与实物验收",
+          "status": "pending",
+          "detail": "发起人批准报价与打样；到货组装、烧录、四键实测与装壳验收。"
         }
       ],
       "artifacts": [
+        {
+          "name": "R1 概念效果图",
+          "group": "设计",
+          "status": "ready",
+          "detail": "宇航员主题 2×2 概念示意（视觉基准，待 G0 确认）。",
+          "url": "/documents/button-concept"
+        },
+        {
+          "name": "HID 固件草稿",
+          "group": "固件",
+          "status": "ready",
+          "detail": "F13–F16 USBHIDKeyboard，35ms 去抖；未编译未烧录。",
+          "url": "/documents/button-firmware"
+        },
+        {
+          "name": "R1 设计修订记录",
+          "group": "需求",
+          "status": "ready",
+          "detail": "真键盘路线确认、官方引脚核对与待核实清单。",
+          "url": "/documents/r1-revision"
+        },
         {
           "name": "产品需求",
           "group": "需求",
@@ -116,7 +142,7 @@
           "name": "原理图与 PCB",
           "group": "设计",
           "status": "pending",
-          "detail": "等待 EDA 激活与元件型号核实；尚无原生设计文件。"
+          "detail": "G4 阶段执行；HID 路线已确认，待元件库恢复后建真实工程。"
         },
         {
           "name": "Gerber / BOM / CPL",
@@ -467,6 +493,21 @@
       "id": "robot-workflow",
       "path": "source-data/robot-lab-draw-tree/workflow.json",
       "name": "SO101 工作流"
+    },
+    {
+      "id": "button-concept",
+      "path": "source-data/agent-button-deck/pcba-v1/renders/concept-r1.png",
+      "name": "R1 概念效果图"
+    },
+    {
+      "id": "button-firmware",
+      "path": "source-data/agent-button-deck/pcba-v1/firmware-hid/AgentButtonDeckHID.ino",
+      "name": "HID 固件草稿"
+    },
+    {
+      "id": "r1-revision",
+      "path": "source-data/agent-button-deck/pcba-v1/revision-r1-usb-hid.md",
+      "name": "R1 设计修订（USB HID）"
     }
   ],
   "resources": [

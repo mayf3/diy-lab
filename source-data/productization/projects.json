@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_on": "2026-11-26",
+  "updated_on": "2026-11-27",
   "objective": "把合适的电子 Lab 项目做成可使用的硬件产品：尽量由工厂完成焊接，配合 3D 打印外壳，用户主要负责插接、固定和使用。",
   "scope": "产品化方向记录；不代表已完成电路设计、可下单或已制造。",
   "repository_baseline": {
@@ -10,7 +10,7 @@
   "projects": [
     {
       "id": "agent-button-deck",
-      "name": "四键 Button Deck",
+      "name": "Space Buddy Deck R1",
       "priority": "建议作为首个小型 PCBA 候选",
       "source": {
         "ref": "origin/feat/agent-button-deck-doavr",
@@ -18,20 +18,22 @@
         "note": "源方案在功能分支，尚不在 main；本次未复制或重写该分支实现。"
       },
       "observed": [
-        "已有 ESP32-S3 DevKitC v1.1 方案和源码",
-        "四路按键使用 GPIO4–7，现有通信路径为 USB-UART",
-        "尚无实物验证"
+        "发起人确认真键盘路线（R1）：原生 USB HID 键盘，F13–F16",
+        "官方核实：ESP32-S3-DevKitC-1 v1.1 J1/J3 各 22 针，GPIO4–7=J1.4–7，OTG 单口供电为官方推荐",
+        "载板方案：每侧 2×1×11P 排母拼 22 位；四键开关候选已有立创 C 号",
+        "HID 固件草稿与概念效果图已产出（未编译/尺寸未冻结）",
+        "EDA 工具链已激活并完成编辑器读写往返验收"
       ],
-      "recommended_route": "预焊开发板插入定制载板；由工厂焊接四个按键和主板插座，保持现有 USB-UART 路径，配合 P1S 外壳。",
-      "design_status": "candidate_not_designed",
+      "recommended_route": "预焊开发板插入定制载板（工厂焊接四键与插座）+ 原生 USB HID 键盘（F13–F16）+ 嘉立创 PCB/PCBA 与 3D 打印外壳，P1S 用于原型与试装。",
+      "design_status": "G0_visual_freeze_pending",
       "open_items": [
-        "准确开发板与预焊排针型号",
-        "四个按键的键型、规格、布局与手感",
-        "载板尺寸、排针间距、USB 插头空间和安装孔",
-        "工厂对按键、插座及全部焊点的装配范围",
-        "现有固件在最终主板上的编译、烧录和四键实测"
+        "四键用途确认与 F13–F16 绑定清单",
+        "按键手感与键帽定档（无声贴片 vs 插件段落感）",
+        "ESP32-S3-DevKitC-1 预焊版准确 SKU 与现价库存",
+        "OTG 口连接器实物类型与双 USB 口开孔尺寸",
+        "载板排距与板框尺寸（待官方尺寸图/实物核对）"
       ],
-      "next_step": "核实实际模块与按键，再把现有 GPIO/固件接口转成载板连接表和机械尺寸依据。",
+      "next_step": "发起人确认视觉冻结（G0）；随后锁定 DevKitC SKU 与元件（G1），进入原理图设计（G4 前置）。",
       "constraint": "如改为全定制主板或原生 USB，必须同时评估并修改固件与主机端接口；不能默认与 USB-UART 方案兼容。"
     },
     {
