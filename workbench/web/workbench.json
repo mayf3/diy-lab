@@ -167,8 +167,8 @@
         "version": "R1",
         "g_stage": "G0 视觉方向已冻结（2026-11-27）；G1 机构与型号核查进行中",
         "owner": "本地 Agent（ZCode 会话）",
-        "last_completed": "零焊接交付方案轮：嘉立创 A–G 能力逐项取证（含客供邮寄代焊流程、标准型插件工艺）、factory-delivery-plan 落盘、G2-0 主体先行入任务书；G1/G2 落地轮：G2 外壳 CAD 任务书（G2-1～G2-3 展开）+ DevKitC SKU 官方谱系核实 + 样轴清单型号口径修正（Boba U4=静音段落 / U4T=非静音对照，T 指 thock；与 Codex 纠错提交及发起人指令对齐）；HachimoDock 参考工程研究完成（六方面+对照表，2026-11-27）；R1 概念效果图（2×2 宇航员版）保存为正式视觉基准；HID 固件草稿发布；EDA 工具链激活与往返验收通过",
-        "next_work": "G2-0 主体/底座先行建模（孔位参数化占位）；G1 样轴与预焊 DevKitC 六要素清单核实后交发起人确认",
+        "last_completed": "真实交付轮：第一批采购清单（用户视角）、嘉立创确认话术、组装说明草稿（零焊接五步）、外壳工艺对比（SLA 外观首选候选）落盘；零焊接交付方案轮：嘉立创 A–G 能力逐项取证（含客供邮寄代焊流程、标准型插件工艺）、factory-delivery-plan 落盘、G2-0 主体先行入任务书；G1/G2 落地轮：G2 外壳 CAD 任务书（G2-1～G2-3 展开）+ DevKitC SKU 官方谱系核实 + 样轴清单型号口径修正（Boba U4=静音段落 / U4T=非静音对照，T 指 thock；与 Codex 纠错提交及发起人指令对齐）；HachimoDock 参考工程研究完成（六方面+对照表，2026-11-27）；R1 概念效果图（2×2 宇航员版）保存为正式视觉基准；HID 固件草稿发布；EDA 工具链激活与往返验收通过",
+        "next_work": "G2-0 外壳第一版 CAD 建模（FreeCAD 安装中→生成 STEP/STL+可旋转查看页）；样轴与 DevKitC 待您下单",
         "blockers": [
           "元件库搜索待恢复（现价库存核实）",
           "DevKitC 预焊版 SKU 待锁定",
@@ -188,7 +188,7 @@
         "domain_status": {
           "视觉": "ready（概念效果图 G0 冻结）",
           "固件": "draft（HID 草稿，未编译烧录）",
-          "CAD": "pending（待 G1 尺寸）",
+          "CAD": "G2-0 建模启动（占位参数版，孔位待真实元件）",
           "PCB": "pending（G4）",
           "制造": "pending（G6）",
           "实物验收": "pending（G8）"
@@ -601,6 +601,21 @@
       "id": "g1-switch-candidates",
       "path": "source-data/agent-button-deck/pcba-v1/g1-silent-tactile-candidates.md",
       "name": "G1 静音段落轴候选与样轴清单"
+    },
+    {
+      "id": "bom-batch1-user",
+      "path": "source-data/agent-button-deck/pcba-v1/bom-batch1-user.md",
+      "name": "第一批采购清单（用户视角）"
+    },
+    {
+      "id": "jlc-dfm-checklist",
+      "path": "source-data/agent-button-deck/pcba-v1/jlc-dfm-checklist.md",
+      "name": "嘉立创工艺确认话术"
+    },
+    {
+      "id": "assembly-guide-draft",
+      "path": "source-data/agent-button-deck/pcba-v1/assembly-guide-draft.md",
+      "name": "组装说明（用户视角草稿）"
     }
   ],
   "resources": [

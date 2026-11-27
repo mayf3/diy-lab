@@ -153,6 +153,35 @@ class ZeroSolderConstraintTests(unittest.TestCase):
                       "键帽孔/轴孔/固定孔/USB 开孔必须由真实元件尺寸确定")
 
 
+class UserFacingDeliveryTests(unittest.TestCase):
+    """用户视角交付物：采购与组装说明必须保持零焊接、不代付、无术语门槛。"""
+
+    def setUp(self):
+        base = ROOT / "source-data/agent-button-deck/pcba-v1"
+        self.batch1 = (base / "bom-batch1-user.md").read_text(encoding="utf-8")
+        self.guide = (base / "assembly-guide-draft.md").read_text(encoding="utf-8")
+        self.talk = (base / "jlc-dfm-checklist.md").read_text(encoding="utf-8")
+
+    def test_batch1_has_six_elements_and_no_auto_purchase(self):
+        for kw in ("SKU", "兼容性依据", "替代", "确认"):
+            self.assertIn(kw, self.batch1, f"第一批清单缺要素：{kw}")
+        self.assertIn("自己下单付款", self.batch1, "必须写明由负责人本人下单付款")
+        self.assertIn("U4", self.batch1)
+        self.assertIn("U4T 不是静音轴", self.batch1, "型号警示必须保留")
+
+    def test_assembly_guide_is_solder_free(self):
+        self.assertIn("全篇没有任何焊接", self.guide)
+        for banned in ("焊接步骤", "烙铁", "飞线"):
+            self.assertNotIn(banned, self.guide.split("维护")[1] if "维护" in self.guide else self.guide)
+        self.assertIn("维护", self.guide)
+        self.assertIn("不需要任何焊接工具", self.guide)
+
+    def test_dfm_script_covers_switch_and_materials(self):
+        self.assertIn("手插", self.talk)
+        self.assertIn("邮寄", self.talk)
+        self.assertIn("华秋", self.talk, "外部供应商预案必须留名")
+
+
 if __name__ == "__main__":
     unittest.main()
 
