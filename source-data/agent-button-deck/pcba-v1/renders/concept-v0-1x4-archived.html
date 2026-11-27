@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>Button Deck R1 · 概念效果图</title>
+<style>
+  body { margin: 0; background: #fff4dd; font-family: system-ui, "PingFang SC", sans-serif; color: #263f40; }
+  .wrap { padding: 24px 30px; }
+  h1 { font-size: 22px; font-weight: 900; margin: 0 0 4px; letter-spacing: .04em; }
+  .sub { font-size: 13px; color: rgba(38,63,64,.6); font-weight: 700; margin-bottom: 14px; }
+  .tag { display: inline-block; background: #ffe9b8; border-radius: 999px; padding: 3px 12px; font-size: 12px; font-weight: 900; color: #8a6a1c; margin-left: 8px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Button Deck R1 · 四键 USB 快捷键盘<span class="tag">概念效果图 · 尺寸未冻结</span></h1>
+  <div class="sub">R1 = 原生 USB 键盘模式（F13–F16）· 2026-11-26 · 比例与配色为示意，不作为装配依据</div>
+  <svg id="art" viewBox="0 0 1440 900" width="1440" height="900" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, PingFang SC, sans-serif">
+    <!-- 面板一：正面视图 -->
+    <g transform="translate(40, 90)">
+      <text x="0" y="-18" font-size="15" font-weight="900" fill="#263f40" opacity=".75">① 正面：你会拿到的样子</text>
+      <!-- 外壳 -->
+      <rect x="0" y="0" width="880" height="300" rx="40" fill="#fff9e9" stroke="#263f40" stroke-width="4"/>
+      <rect x="16" y="16" width="848" height="268" rx="30" fill="none" stroke="#263f40" stroke-width="1.5" opacity=".25"/>
+      <!-- 键帽 -->
+      <g font-weight="900" text-anchor="middle">
+        <g transform="translate(120,80)">
+          <rect width="130" height="130" rx="20" fill="#d9604d"/>
+          <rect x="8" y="8" width="114" height="114" rx="15" fill="#e57a67"/>
+          <text x="65" y="58" font-size="30" fill="#fff6d7">K1</text>
+          <text x="65" y="98" font-size="22" fill="#fff6d7" opacity=".9">F13</text>
+        </g>
+        <g transform="translate(280,80)">
+          <rect width="130" height="130" rx="20" fill="#307e72"/>
+          <rect x="8" y="8" width="114" height="114" rx="15" fill="#42968a"/>
+          <text x="65" y="58" font-size="30" fill="#fff6d7">K2</text>
+          <text x="65" y="98" font-size="22" fill="#fff6d7" opacity=".9">F14</text>
+        </g>
+        <g transform="translate(440,80)">
+          <rect width="130" height="130" rx="20" fill="#257d91"/>
+          <rect x="8" y="8" width="114" height="114" rx="15" fill="#3c98ac"/>
+          <text x="65" y="58" font-size="30" fill="#fff6d7">K3</text>
+          <text x="65" y="98" font-size="22" fill="#fff6d7" opacity=".9">F15</text>
+        </g>
+        <g transform="translate(600,80)">
+          <rect width="130" height="130" rx="20" fill="#e69b29"/>
+          <rect x="8" y="8" width="114" height="114" rx="15" fill="#f0b051"/>
+          <text x="65" y="58" font-size="30" fill="#fff6d7">K4</text>
+          <text x="65" y="98" font-size="22" fill="#fff6d7" opacity=".9">F16</text>
+        </g>
+      </g>
+      <!-- 丝印 -->
+      <text x="120" y="252" font-size="15" font-weight="900" fill="#263f40" opacity=".45" letter-spacing="4">BUTTON DECK · R1 · 摇一下不如按一下</text>
+      <!-- USB 口（右边缘上下两个） -->
+      <g transform="translate(880,60)">
+        <rect x="-14" y="0" width="26" height="34" rx="6" fill="#263f40"/>
+        <rect x="-10" y="6" width="20" height="22" rx="4" fill="#fff6d7"/>
+        <text x="-30" y="24" font-size="13" font-weight="900" text-anchor="end" fill="#263f40" opacity=".6">OTG口·键盘</text>
+      </g>
+      <g transform="translate(880,206)">
+        <rect x="-14" y="0" width="26" height="34" rx="6" fill="#263f40"/>
+        <rect x="-10" y="6" width="20" height="22" rx="4" fill="#fff6d7"/>
+        <text x="-30" y="24" font-size="13" font-weight="900" text-anchor="end" fill="#263f40" opacity=".6">UART口·烧录</text>
+      </g>
+      <!-- 使用链条 -->
+      <g transform="translate(0,352)" font-size="16" font-weight="800">
+        <text x="0" y="26" fill="#263f40">按 K1</text>
+        <line x1="66" y1="20" x2="140" y2="20" stroke="#263f40" stroke-width="2.5" marker-end="url(#arw)"/>
+        <text x="150" y="26" fill="#263f40">USB 键盘信号</text>
+        <line x1="308" y1="20" x2="392" y2="20" stroke="#263f40" stroke-width="2.5" marker-end="url(#arw)"/>
+        <text x="402" y="26" fill="#263f40">Mac 收到 F13</text>
+        <line x1="566" y1="20" x2="650" y2="20" stroke="#263f40" stroke-width="2.5" marker-end="url(#arw)"/>
+        <text x="660" y="26" fill="#263f40">你绑定的动作发生（无需装任何程序）</text>
+      </g>
+    </g>
+
+    <!-- 面板二：爆炸图 -->
+    <g transform="translate(1010, 90)">
+      <text x="0" y="-18" font-size="15" font-weight="900" fill="#263f40" opacity=".75">② 里面：四层结构（爆炸示意）</text>
+      <g stroke="#263f40" stroke-width="1.2" font-size="13" font-weight="800">
+        <!-- 层1 上盖 -->
+        <g transform="translate(0,0)">
+          <path d="M30 20 L260 20 L300 52 L70 52 Z" fill="#fff9e9"/>
+          <circle cx="112" cy="36" r="13" fill="#d9604d"/><circle cx="167" cy="36" r="13" fill="#307e72"/>
+          <circle cx="222" cy="36" r="13" fill="#257d91"/><circle cx="262" cy="36" r="11" fill="#e69b29"/>
+          <text x="318" y="42" fill="#263f40">上盖（键帽孔）</text>
+        </g>
+        <!-- 层2 键帽 -->
+        <g transform="translate(0,86)">
+          <path d="M30 20 L260 20 L300 52 L70 52 Z" fill="#f7ecd0"/>
+          <circle cx="112" cy="36" r="12" fill="#d9604d"/><circle cx="167" cy="36" r="12" fill="#307e72"/>
+          <circle cx="222" cy="36" r="12" fill="#257d91"/><circle cx="262" cy="36" r="10" fill="#e69b29"/>
+          <text x="318" y="42" fill="#263f40">键帽 ×4（P1S）</text>
+        </g>
+        <!-- 层3 载板 -->
+        <g transform="translate(0,172)">
+          <path d="M30 20 L260 20 L300 52 L70 52 Z" fill="#2a6e5a"/>
+          <rect x="96" y="24" width="150" height="24" rx="4" fill="#1d5f4a" opacity=".5"/>
+          <circle cx="112" cy="36" r="11" fill="#111" opacity=".65"/><circle cx="167" cy="36" r="11" fill="#111" opacity=".65"/>
+          <circle cx="222" cy="36" r="11" fill="#111" opacity=".65"/><circle cx="262" cy="36" r="10" fill="#111" opacity=".65"/>
+          <rect x="34" y="30" width="18" height="12" rx="2" fill="#c9a227"/>
+          <text x="318" y="42" fill="#263f40">载板 PCB（工厂焊）</text>
+        </g>
+        <!-- 层4 DevKitC -->
+        <g transform="translate(0,258)">
+          <path d="M30 20 L260 20 L300 52 L70 52 Z" fill="#263f40"/>
+          <rect x="216" y="26" width="44" height="20" rx="3" fill="#3d5a5b"/>
+          <rect x="34" y="30" width="16" height="12" rx="2" fill="#c9a227"/>
+          <circle cx="70" cy="36" r="6" fill="#4fae7c"/>
+          <text x="318" y="42" fill="#263f40">ESP32-S3 开发板</text>
+        </g>
+        <!-- 层5 下盖 -->
+        <g transform="translate(0,344)">
+          <path d="M30 20 L260 20 L300 52 L70 52 Z" fill="#fff9e9"/>
+          <circle cx="70" cy="36" r="4" fill="#263f40"/><circle cx="262" cy="36" r="4" fill="#263f40"/>
+          <text x="318" y="42" fill="#263f40">下盖（防滑脚垫）</text>
+        </g>
+      </g>
+    </g>
+
+    <!-- 面板三：要不要加板块 -->
+    <g transform="translate(40, 610)">
+      <text x="0" y="-18" font-size="15" font-weight="900" fill="#263f40" opacity=".75">③ 要不要再加板块？V1 不加——能省则省，理由如下</text>
+      <g font-size="15" font-weight="800">
+        <rect x="0" y="0" width="430" height="130" rx="14" fill="#fff9e9"/>
+        <text x="18" y="30" fill="#2a8a5a">✔ 不需要加</text>
+        <text x="18" y="56" fill="#263f40">键盘功能 = 开发板原生能力，载板只负责</text>
+        <text x="18" y="78" fill="#263f40">“四个开关 + 两排插座”，无芯片、无转接。</text>
+        <text x="18" y="104" fill="#263f40">按键反馈用开发板自带的 RGB 灯，零成本。</text>
+        <rect x="450" y="0" width="430" height="130" rx="14" fill="#fff9e9"/>
+        <text x="468" y="30" fill="#b0701c">◐ 可选，V1 先不做</text>
+        <text x="468" y="56" fill="#263f40">状态 LED（连上常亮/按键闪烁）、蜂鸣器、</text>
+        <text x="468" y="78" fill="#263f40">更多按键、电池无线——都属 V1.1 修订，</text>
+        <text x="468" y="104" fill="#263f40">要加会另立设计修订并重新验收。</text>
+        <rect x="900" y="0" width="430" height="130" rx="14" fill="#fff9e9"/>
+        <text x="918" y="30" fill="#c4604d">✘ 明确不做</text>
+        <text x="918" y="56" fill="#263f40">驱动板/转接板/二次降压——HID 键盘模式</text>
+        <text x="918" y="78" fill="#263f40">用不上；加得多=焊点多=工厂装配范围大。</text>
+        <text x="918" y="104" fill="#263f40">结构件（键帽/挂绳孔/脚垫）由 P1S 打印。</text>
+      </g>
+      <text x="0" y="168" font-size="13" font-weight="800" fill="rgba(38,63,64,.55)">概念效果图 · 结构与配色为示意 · 板框/孔位/键间距未冻结 · 不作为装配与下单依据 · 2026-11-26</text>
+    </g>
+    <defs>
+      <marker id="arw" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+        <path d="M0 0 L8 4 L0 8 Z" fill="#263f40"/>
+      </marker>
+    </defs>
+  </svg>
+</div>
+</body>
+</html>

@@ -74,21 +74,21 @@
           "name": "接口与装配约定",
           "group": "设计",
           "status": "ready",
-          "detail": "GPIO4–7、常开按键接地、115200 串口；来自现有源码。",
+          "detail": "GPIO4–7、常开按键接地、内部上拉（源码 5654c5d）。R1 按键信号改走原生 USB HID（OTG 口）；串口链路仅保留为烧录/维护通道。",
           "url": "/documents/button-interface"
         },
         {
-          "name": "现有按键固件",
+          "name": "旧串口固件（5654c5d 基线）",
           "group": "固件",
-          "status": "ready",
-          "detail": "固定版本源码可读；最终板上的编译、烧录和实测仍待完成。",
+          "status": "hold",
+          "detail": "串口事件版基线源码；R1 产品改用 HID 固件（F13–F16），此基线仅作历史对照。",
           "url": "https://github.com/mayf3/diy-lab/blob/5654c5dcd5b99d63f87167c4ed5d0f5ac1c97060/source-data/agent-button-deck/firmware/AgentButtonDeck.ino"
         },
         {
-          "name": "Mac 主机桥接",
+          "name": "Mac 主机桥接（串口版基线）",
           "group": "固件",
-          "status": "ready",
-          "detail": "现有受限动作映射；Agent 会话适配器尚未实现。",
+          "status": "hold",
+          "detail": "串口版基线组件；R1 产品运行时不依赖常驻 bridge。adapter 仍未实现。",
           "url": "https://github.com/mayf3/diy-lab/blob/5654c5dcd5b99d63f87167c4ed5d0f5ac1c97060/source-data/agent-button-deck/host/agent_button_bridge.py"
         },
         {

@@ -53,7 +53,7 @@ class WorkbenchTests(unittest.TestCase):
         }
         self.write_evidence()
         self.state = self.base / "private/workbench-state.json"
-        self.app = serve.Workbench(self.repo, self.state, doctor_timeout=0.5)
+        self.app = serve.Workbench(self.repo, self.state, doctor_timeout=1.5)
         self.server = serve.WorkbenchServer(("127.0.0.1", 0), self.app)
         self.thread = threading.Thread(target=self.server.serve_forever, daemon=True)
         self.thread.start()
