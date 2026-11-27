@@ -7,11 +7,9 @@
 
 ## 三款候选（参数均为「资料核实→待核实」等级，下单前以卖家页/实测为准）
 
-### 候选 1：Gazzew Boba U4T（TTC 代工，静音段落标杆）
+### 候选 1：Gazzew Boba U4（静音段落）
 
-**型号命名警示（2026-11-27 增补）**：Gazzew Boba 系列中 **U4T = 静音段落（T = tactile）**，
-**U4（无 T）= 静音线性**——后者不满足 `tactile-light` 段落偏好，仅可作为声音对照样，
-采购时以商品页「tactile」字样为准，勿凭「U4」简称下单。
+**型号命名纠错（2026-11-27）**：**Boba U4 = 静音段落轴（silent tactile）**；**Boba U4T = 非静音段落轴（thocky tactile）**。字母 T 不是 tactile 的“静音”标记。两者都具有段落感，但只有 U4 有静音阻尼结构。Boba U4 是本项目真正符合 `tactile-light + quiet` 方向的 Gazzew 候选；U4T 只能作为非静音段落声音对照，不可列作静音候选。
 
 | 维度 | 资料（待核实） |
 | --- | --- |
@@ -24,19 +22,19 @@
 | 装配 | TH 直插，嘉立创插件工序常见能力； boutique 开关需确认代焊覆盖 |
 | 购买 | 海外店（kebo.store / thoccestore 系）或淘宝代理；现价待核实 |
 
-### 候选 2：Zilent V2 65g（Zeal PC，高端静音段落）
+### 候选 2：Zeal Zilent V2 62g（高端静音段落对照）
 
 | 维度 | 资料（待核实） |
 | --- | --- |
 | 类型 | 静音段落（阻尼触底） |
-| 力度 | 65g（**偏重**——与 tactile-light 目标相反方向，仅作对照） |
+| 力度 | 62g（需核对具体版本的力值定义；不可直接等同触发力） |
 | 段落感 | 圆润、浦发感低 |
 | 声音 | 同级静音表现 |
 | 引脚 | 5-pin |
 | 装配 | TH 直插 |
 | 购买 | zealpc.io 海外直购，价格高（约 $1.5–2/键） |
 
-对照结论：**若追求"轻柔"，65g 档不占优**；候选 1 的 45–50g 档更贴合 tactile-light。
+对照结论：Zilent V2 62g 作为高端静音段落对照；其触底力度定义与 U4 的供应商标注需分别核实。
 
 ### 候选 3：国产静音段落轴（待核实具体 SKU——本候选的意义就是把它查清）
 
@@ -51,9 +49,9 @@
 
 | 款 | 数量 | 预算口径 |
 | --- | --- | --- |
-| Gazzew Boba U4T（62g 标准档；卖家页确有 45g/50g 轻档则加购一颗对比） | 4 颗 | 海外店约 $3–5/4 颗 + 运费 |
+| Gazzew Boba U4（核实 62g/68g 版本及力值口径后选样） | 4 颗 | 海外店约 $3–5/4 颗 + 运费 |
 | 国产静音段落（凯华/佳达隆/TTC/高特 任一可买型号） | 4 颗 | ≈¥5–20 |
-| （对照）Boba U4 静音线性 | 2 颗（可选） | 仅听声音对照，不做手感定档依据 |
+| （对照）Boba U4T 非静音段落 | 2 颗（可选） | 仅作非静音声音对照，不作为 quiet 候选 |
 | （对照）Zilent V2 65g | 2 颗（可选） | 海外 |
 
 到货后实测四个维度：初始/触发压力手感、段落轻柔度、触底与回弹声音（录屏对比）、
@@ -63,3 +61,10 @@
 
 样轴实测达标 → 冻结轴体 SKU → PCB footprint 与外壳键帽孔按实物 datasheet 定稿 → 才进 G4 PCB 布局。
 **在样轴确认前，不画正式 PCB，不购买批量轴体。**
+
+
+## 型号事实来源与证据边界
+
+- Boba U4 是静音段落；Boba U4T 是非静音、强调 thock 的段落轴。可交叉核对的资料：Switch and Click 对 U4/U4T 的区分；RNDKBD 的 U4 商品页明确称 silent tactile，并将 U4T 指向 thocky 版本；AKIBA PC Hotline 将 Boba Black U4 记为静音段落、U4T 记为普通段落。
+- 参考链接： https://switchandclick.com/gazzews-boba-u4-silent-tactile-switch-review-silent-uprising/ ; https://rndkbd.com/collections/bfcm/products/gazzew-u4-boba-switches ; https://akiba-pc.watch.impress.co.jp/docs/news/news/1472898.html
+- 以上为第三方评测/零售商/媒体交叉证据，不等于本次已取得 Gazzew 官方数据手册；具体颜色、重量、弹簧版本和批次仍需按实际卖家页面确认。
