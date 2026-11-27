@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>Space Buddy Deck R1 · 概念效果图（正式视觉基准）</title>
+<style>
+  body { margin: 0; background: #f2eee7; font-family: system-ui, "PingFang SC", sans-serif; color: #263f40; }
+  .wrap { padding: 24px 30px; }
+  h1 { font-size: 22px; font-weight: 900; margin: 0 0 4px; letter-spacing: .04em; }
+  .sub { font-size: 13px; color: rgba(38,63,64,.6); font-weight: 700; margin-bottom: 14px; }
+  .frozen { display: inline-block; background: #d9f0e2; color: #1d7a4f; border-radius: 999px; padding: 3px 12px; font-size: 12px; font-weight: 900; margin-left: 8px; }
+  .unfrozen { display: inline-block; background: #ffe9b8; color: #8a6a1c; border-radius: 999px; padding: 3px 12px; font-size: 12px; font-weight: 900; margin-left: 6px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Space Buddy Deck R1 · 四键太空舱快捷键盘<span class="frozen">视觉方向已冻结 · G0 · 2026-11-27</span><span class="unfrozen">工程尺寸未冻结</span><span class="unfrozen">制造未冻结</span></h1>
+  <div class="sub">R1 = 原生 USB 键盘模式（F13–F16）· 发起人已确认宇航员太空舱风格 · 本页为正式视觉参考基准 · 尺寸/比例示意，不作为装配依据</div>
+  <svg id="art" viewBox="0 0 1440 980" width="1440" height="980" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, PingFang SC, sans-serif">
+    <defs>
+      <marker id="arw" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+        <path d="M0 0 L8 4 L0 8 Z" fill="#263f40"/>
+      </marker>
+    </defs>
+
+    <!-- ① 正面效果图 -->
+    <g transform="translate(30, 96)">
+      <text x="0" y="-18" font-size="15" font-weight="900" fill="#263f40" opacity=".75">① 正面：宇航员太空舱 · 2×2 四键</text>
+      <!-- 薰衣草紫底座 -->
+      <rect x="-16" y="414" width="912" height="64" rx="18" fill="#b7a4e3"/>
+      <rect x="-8" y="414" width="896" height="30" rx="14" fill="#c8b8ee"/>
+      <circle cx="60" cy="446" r="9" fill="#8f7cc4" stroke="#6f5ea0" stroke-width="2"/>
+      <circle cx="836" cy="446" r="9" fill="#8f7cc4" stroke="#6f5ea0" stroke-width="2"/>
+      <text x="450" y="452" font-size="12" font-weight="900" fill="#57498a" text-anchor="middle" letter-spacing="3">螺丝固定 ×4 · 防滑脚垫 ×2（底面）</text>
+      <!-- 奶油白主体 -->
+      <rect x="0" y="0" width="880" height="420" rx="36" fill="#fff9e9" stroke="#263f40" stroke-width="4"/>
+      <rect x="14" y="14" width="852" height="392" rx="28" fill="none" stroke="#263f40" stroke-width="1.4" opacity=".22"/>
+      <!-- 星星装饰 -->
+      <g fill="#e8d9ff" opacity=".85">
+        <path d="M60 60 l5 12 12 5 -12 5 -5 12 -5 -12 -12 -5 12 -5 Z"/>
+        <path d="M120 330 l4 10 10 4 -10 4 -4 10 -4 -10 -10 -4 10 -4 Z" opacity=".6"/>
+        <path d="M820 330 l4 10 10 4 -10 4 -4 10 -4 -10 -10 -4 10 -4 Z" opacity=".6"/>
+        <path d="M770 60 l4 10 10 4 -10 4 -4 10 -4 -10 -10 -4 10 -4 Z"/>
+      </g>
+      <!-- 2×2 键帽 -->
+      <g font-weight="900" text-anchor="middle">
+        <!-- K1 火箭 · 珊瑚橙 -->
+        <g transform="translate(128,66)">
+          <rect width="200" height="200" rx="26" fill="#f4795b"/>
+          <rect x="10" y="10" width="180" height="180" rx="20" fill="#f68d72"/>
+          <g transform="translate(100,86)">
+            <path d="M0 -44 C16 -28 20 -6 14 18 L-14 18 C-20 -6 -16 -28 0 -44 Z" fill="#fff6d7"/>
+            <circle cx="0" cy="-16" r="9" fill="#f4795b"/>
+            <path d="M-14 2 L-30 22 L-12 18 Z" fill="#fff6d7"/>
+            <path d="M14 2 L30 22 L12 18 Z" fill="#fff6d7"/>
+            <path d="M-8 20 L0 44 L8 20 Z" fill="#ffd27f"/>
+          </g>
+          <text x="100" y="168" font-size="21" fill="#fff6d7" opacity=".95">K1 · F13</text>
+        </g>
+        <!-- K2 星球 · 星空蓝 -->
+        <g transform="translate(376,66)">
+          <rect width="200" height="200" rx="26" fill="#4a7fb5"/>
+          <rect x="10" y="10" width="180" height="180" rx="20" fill="#5c92c4"/>
+          <g transform="translate(100,88)">
+            <circle cx="0" cy="0" r="30" fill="#fff6d7"/>
+            <circle cx="-8" cy="-6" r="6" fill="#cfd8e8"/>
+            <circle cx="10" cy="8" r="4" fill="#cfd8e8"/>
+            <ellipse cx="0" cy="4" rx="48" ry="12" fill="none" stroke="#ffd27f" stroke-width="5" transform="rotate(-14)"/>
+          </g>
+          <text x="100" y="168" font-size="21" fill="#fff6d7" opacity=".95">K2 · F14</text>
+        </g>
+        <!-- K3 星星 · 薄荷绿 -->
+        <g transform="translate(128,282)">
+          <rect width="200" height="200" rx="26" fill="#5fce9e"/>
+          <rect x="10" y="10" width="180" height="180" rx="20" fill="#74dcad"/>
+          <g transform="translate(100,92)" fill="#fff6d7">
+            <path d="M0 -46 L13 -14 L47 -14 L20 7 L30 40 L0 20 L-30 40 L-20 7 L-47 -14 L-13 -14 Z"/>
+          </g>
+          <text x="100" y="168" font-size="21" fill="#fff6d7" opacity=".95">K3 · F15</text>
+        </g>
+        <!-- K4 月亮 · 暖黄 -->
+        <g transform="translate(376,282)">
+          <rect width="200" height="200" rx="26" fill="#f2c14e"/>
+          <rect x="10" y="10" width="180" height="180" rx="20" fill="#f5cd6c"/>
+          <g transform="translate(100,88)">
+            <path d="M6 -46 A46 46 0 1 0 46 2 A36 36 0 1 1 6 -46 Z" fill="#fff6d7"/>
+            <circle cx="26" cy="-26" r="4" fill="#fff6d7"/>
+            <circle cx="34" cy="-12" r="2.6" fill="#fff6d7"/>
+          </g>
+          <text x="100" y="168" font-size="21" fill="#fff6d7" opacity=".95">K4 · F16</text>
+        </g>
+      </g>
+      <!-- 宇航员头像（正面） -->
+      <g transform="translate(680,300)">
+        <!-- 宇航员：头盔+面罩+躯干 -->
+        <rect x="-44" y="58" width="88" height="70" rx="24" fill="#fff9e9" stroke="#263f40" stroke-width="5"/>
+        <rect x="-24" y="76" width="48" height="34" rx="10" fill="#4a7fb5"/>
+        <rect x="-14" y="84" width="12" height="8" rx="4" fill="#fff6d7"/>
+        <rect x="2" y="84" width="12" height="8" rx="4" fill="#fff6d7"/>
+        <circle cx="0" cy="0" r="58" fill="#fff9e9" stroke="#263f40" stroke-width="5"/>
+        <rect x="-38" y="-24" width="76" height="50" rx="25" fill="#263f40"/>
+        <rect x="-28" y="-16" width="24" height="34" rx="11" fill="#4a7fb5" opacity=".9"/>
+        <circle cx="-15" cy="2" r="5" fill="#fff6d7"/>
+        <rect x="12" y="-4" width="16" height="6" rx="3" fill="#fff6d7" opacity=".8"/>
+        <circle cx="0" cy="-58" r="5" fill="#f4795b"/>
+        <text x="0" y="158" font-size="15" font-weight="900" text-anchor="middle" fill="#263f40" opacity=".7">SPACE BUDDY</text>
+      </g>
+      <!-- 舷窗（左右装饰） -->
+      <g transform="translate(46,96)">
+        <circle cx="0" cy="120" r="42" fill="#2b3a67" stroke="#263f40" stroke-width="4"/>
+        <circle cx="0" cy="120" r="30" fill="#4a7fb5"/>
+        <circle cx="-8" cy="110" r="7" fill="#fff6d7" opacity=".8"/>
+        <line x1="-46" y1="120" x2="46" y2="120" stroke="#263f40" stroke-width="3"/>
+        <line x1="0" y1="74" x2="0" y2="166" stroke="#263f40" stroke-width="3"/>
+        <circle cx="-14" cy="92" r="2.5" fill="#fff6d7"/><circle cx="16" cy="140" r="2" fill="#fff6d7"/>
+      </g>
+      <g transform="translate(834,96)">
+        <circle cx="0" cy="120" r="42" fill="#2b3a67" stroke="#263f40" stroke-width="4"/>
+        <circle cx="0" cy="120" r="30" fill="#4a7fb5"/>
+        <circle cx="8" cy="108" r="6" fill="#fff6d7" opacity=".8"/>
+        <line x1="-46" y1="120" x2="46" y2="120" stroke="#263f40" stroke-width="3"/>
+        <line x1="0" y1="74" x2="0" y2="166" stroke="#263f40" stroke-width="3"/>
+        <circle cx="-16" cy="140" r="2.5" fill="#fff6d7"/><circle cx="12" cy="96" r="2" fill="#fff6d7"/>
+      </g>
+      <!-- 丝印 -->
+      <text x="450" y="392" font-size="14" font-weight="900" fill="#263f40" opacity=".4" text-anchor="middle" letter-spacing="5">SPACE BUDDY DECK · R1</text>
+    </g>
+
+    <!-- ② 后部接口与底部 -->
+    <g transform="translate(30, 640)">
+      <text x="0" y="-18" font-size="15" font-weight="900" fill="#263f40" opacity=".75">② 后部接口与底部结构（后置双 USB · 螺丝+防滑）</text>
+      <rect x="0" y="0" width="620" height="150" rx="16" fill="#fff9e9"/>
+      <rect x="24" y="34" width="572" height="82" rx="12" fill="#c8b8ee"/>
+      <g transform="translate(150,52)">
+        <rect width="90" height="46" rx="8" fill="#263f40"/>
+        <rect x="12" y="10" width="66" height="26" rx="5" fill="#fff6d7"/>
+        <text x="45" y="76" font-size="13" font-weight="900" text-anchor="middle" fill="#263f40">OTG 口 · 键盘信号（F13–F16）</text>
+      </g>
+      <g transform="translate(360,52)">
+        <rect width="90" height="46" rx="8" fill="#263f40"/>
+        <rect x="12" y="10" width="66" height="26" rx="5" fill="#fff6d7"/>
+        <text x="45" y="76" font-size="13" font-weight="900" text-anchor="middle" fill="#263f40">UART 口 · 烧录维护</text>
+      </g>
+      <rect x="300" y="30" width="8" height="90" rx="3" fill="#9a8cc9"/>
+      <text x="510" y="24" font-size="12" font-weight="900" fill="#57498a">后置双口 · 朝向与开孔尺寸待 G1 实物核对</text>
+      <rect x="660" y="0" width="620" height="150" rx="16" fill="#fff9e9"/>
+      <rect x="686" y="30" width="120" height="90" rx="10" fill="#b7a4e3"/>
+      <circle cx="716" cy="52" r="8" fill="#8f7cc4" stroke="#6f5ea0" stroke-width="2"/>
+      <circle cx="786" cy="52" r="8" fill="#8f7cc4" stroke="#6f5ea0" stroke-width="2"/>
+      <rect x="700" y="86" width="44" height="16" rx="8" fill="#57498a"/>
+      <rect x="758" y="86" width="44" height="16" rx="8" fill="#57498a"/>
+      <text x="880" y="58" font-size="14" font-weight="900" fill="#263f40">底部：螺丝固定柱 ×4 + 防滑脚垫 ×2</text>
+      <text x="880" y="82" font-size="13" fill="#263f40" opacity=".6" font-weight="800">薰衣草紫底座包胶成型，键帽行程由内部柱导向</text>
+      <text x="880" y="106" font-size="13" fill="#263f40" opacity=".6" font-weight="800">机构方案在 G1 比较：轻触+导向柱 vs 机械轴 vs 低轴</text>
+    </g>
+
+    <!-- ③ 状态口径 -->
+    <g transform="translate(30, 828)">
+      <text x="0" y="-14" font-size="15" font-weight="900" fill="#263f40" opacity=".75">③ 冻结状态与板块口径</text>
+      <g font-size="14" font-weight="800">
+        <rect x="0" y="0" width="430" height="96" rx="14" fill="#d9f0e2"/>
+        <text x="16" y="28" fill="#1d7a4f">✔ 已冻结：视觉方向（G0）</text>
+        <text x="16" y="54" fill="#263f40">2×2 布局、四色键帽、宇航员头像、舷窗、</text>
+        <text x="16" y="76" fill="#263f40">薰衣草紫底座、后置双 USB、底部螺丝脚垫。</text>
+        <rect x="450" y="0" width="430" height="96" rx="14" fill="#fff2cf"/>
+        <text x="466" y="28" fill="#a06a14">◐ 未冻结：工程尺寸</text>
+        <text x="466" y="54" fill="#263f40">板框/孔距/键间距/壁厚/USB 开孔——待 G1</text>
+        <text x="466" y="76" fill="#263f40">实物与尺寸图核对后再冻结。</text>
+        <rect x="900" y="0" width="430" height="96" rx="14" fill="#f7e3d8"/>
+        <text x="916" y="28" fill="#b04a3a">✘ 未冻结：制造</text>
+        <text x="916" y="54" fill="#263f40">未下单、未付款；制造冻结需完成 G2–G6</text>
+        <text x="916" y="76" fill="#263f40">设计检查与工厂代焊范围确认。</text>
+      </g>
+      <text x="0" y="132" font-size="13" font-weight="800" fill="rgba(38,63,64,.55)">板块口径：V1 不加驱动板/转接板（HID 用不上）；可选状态 LED/蜂鸣器留 V1.1；键帽由 P1S 打印。 · 概念效果图 2026-11-27</text>
+    </g>
+  </svg>
+</div>
+</body>
+</html>

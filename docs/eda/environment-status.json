@@ -1,0 +1,59 @@
+{
+  "date": "2026-11-26",
+  "state": "activated_editor_round_trip_passed",
+  "application": "/Applications/嘉立创EDA(专业版).app",
+  "editor_cli_version": "4.1.105.0339a6cd",
+  "bundle_version": "2.2.32.4",
+  "architecture": "arm64",
+  "signature_verified": true,
+  "download_url": "https://image.lceda.cn/files/lceda-pro-mac-arm64-4.1.105.zip",
+  "download_sha256": "035b38df05d4c50b69f5a2e3d55ef951cefac1b397df50936198b879b4252a7e",
+  "cli_help": "passed",
+  "doctor_connected": true,
+  "doctor_version_match": true,
+  "mcp_stdio_handshake": "passed",
+  "mcp_protocol": "2025-06-18",
+  "mcp_tools_discovery": "passed",
+  "mcp_doctor_call": "passed",
+  "codex_mcp_config": "lceda-pro enabled stdio",
+  "skills": [
+    "lceda-pro-automation",
+    "pcb-product-delivery"
+  ],
+  "skill_locations": [
+    "Codex user skills",
+    "Claude Code user skills symlinks"
+  ],
+  "editor_round_trip": "passed",
+  "observed_window": "嘉立创EDA(专业版) - V4.1.105（已从 Regist 激活页进入编辑器主界面）",
+  "official_activation_page": "https://lceda.cn/page/desktop-client-activation",
+  "observed_browser": "JLC sign-in page with QR/account/phone options",
+  "new_design_artifacts": [],
+  "manufacturing_order_submitted": false,
+  "remaining_action": "工具链无阻塞；下一步按 Button Deck 产品需求开始真实设计（元件型号核实、原理图、PCB）。",
+  "doctor_checked_at": "2026-11-26T14:12:37+08:00",
+  "activation_accepted_at": "2026-11-26T12:16:00+08:00",
+  "activation_method": "在客户端“激活客户端”对话框粘贴本人官方激活文件全部内容并点击“激活”；窗口标题由 Regist 变为 嘉立创EDA(专业版) - V4.1.105；正常退出并重启后激活保持，未修改许可证文件或系统安全设置。",
+  "editor_round_trip_passed_at": "2026-11-26T14:08:00+08:00",
+  "editor_round_trip_evidence": {
+    "project_name": "MakerLab-EDA-Check-20261126",
+    "project_path": "/Users/yanfenma/Documents/LCEDA-Pro/projects/MakerLab-EDA-Check-20261126/MakerLab-EDA-Check-20261126.eprj3",
+    "project_uuid": "6eabcf2b101ceb9c7473bdff924fd00beec7f8af4d0bf2d3943c202e5b6cff31",
+    "file_format": "eprj3（文件夹工程）",
+    "board_name": "Board1",
+    "schematic_uuid": "8157dffc6edbcbb2",
+    "pcb_uuid": "ff63bf7bc927e2e3",
+    "marker": "API persistence check only; NOT FOR FABRICATION - MakerLab-EDA-Check-20261126",
+    "schematic_save_method_result": true,
+    "pcb_save_method_result": true,
+    "disk_files": [
+      "sch/Schematic1/P1.esch2 (78060 bytes)",
+      "pcb/PCB1.epcb2 (31870 bytes)",
+      "MakerLab-EDA-Check-20261126.eprj3 (3377 bytes)"
+    ],
+    "cli_session_closed_then_reopened_by_path": true,
+    "readback_schematic_marker_found": true,
+    "readback_pcb_marker_found": true,
+    "note": "验收工程与文字标记仅用于工具链验证，不得进入产品制造包。"
+  }
+}

@@ -1,0 +1,100 @@
+{
+  "checked_at": "2026-11-26T03:28:56+00:00",
+  "local_url": "http://127.0.0.1:8135/",
+  "project_count": 5,
+  "documents": [
+    {
+      "id": "button-brief",
+      "http_status": 200,
+      "sha256": "bd7f8ab1b1a5dfdfd4741e6153a73ee5e6972ce4a24ef341a4151c21ddbf10a0"
+    },
+    {
+      "id": "button-interface",
+      "http_status": 200,
+      "sha256": "28819fb3b7beb4fe97dc12cfff7f36a460f06f58b979763466e1002f675d71c4"
+    },
+    {
+      "id": "project-routes",
+      "http_status": 200,
+      "sha256": "a3f53af63603940b1d2379b7de9a29892e96bf16993a35722628a983593a32ae"
+    },
+    {
+      "id": "eda-environment",
+      "http_status": 200,
+      "sha256": "fcda0bf223f168bbfd9a1ea7bea1c17530845dd0c1409f1c3bbedf59469daaf8"
+    },
+    {
+      "id": "eda-handbook",
+      "http_status": 200,
+      "sha256": "d6f7fd7f4251c430bab32fdbe990e05159efd24e57a28f1f439dfa3813d35ea7"
+    },
+    {
+      "id": "activation-guide",
+      "http_status": 200,
+      "sha256": "c18e999811e0e486b05313f7289034301b0ba97ba6de6116b38527dae08ca06a"
+    },
+    {
+      "id": "hachimo-blockers",
+      "http_status": 200,
+      "sha256": "22c9e5bc05e4b9d052da53a526095f9eaaa77ecacc4ac5f6e857e46542ae398d"
+    },
+    {
+      "id": "recorder-bom",
+      "http_status": 200,
+      "sha256": "24de70f7b94ab6d7b5c5fbc74c609b3031a329b94da1983a7c1d5b54c6b4aff7"
+    },
+    {
+      "id": "robot-workflow",
+      "http_status": 200,
+      "sha256": "b7a978e70bfa2c09d22ed01fd434c47871a046be05b2cad223bfd49cfccf9d0c"
+    }
+  ],
+  "actual_mac_status": {
+    "mode": "local",
+    "checked_at": "2026-11-26T03:28:56+00:00",
+    "app_installed": true,
+    "cli_available": true,
+    "skills": [
+      {
+        "id": "lceda-pro-automation",
+        "installed": true
+      },
+      {
+        "id": "pcb-product-delivery",
+        "installed": true
+      }
+    ],
+    "bridge": {
+      "state": "connected",
+      "detail": "本机桥接已连接；这不代表已激活或编辑器任务已通过。"
+    },
+    "activation": {
+      "state": "pending",
+      "detail": "安装记录显示仍待本人完成官方激活；本次只检查桥接连接。"
+    },
+    "editor_round_trip": "pending"
+  },
+  "mac_open_eda_action": "http_200_system_accepted",
+  "mac_open_project_action": "http_200_system_accepted",
+  "desktop_shortcut_present": true,
+  "login_service_present": true,
+  "legacy_site_http_status": 200,
+  "backend_tests": {
+    "environment": "Linux development checkout",
+    "passed": 18,
+    "real_eda_in_tests": false
+  },
+  "browser_qa": {
+    "environment": "cloud static preview",
+    "project_navigation": "passed",
+    "artifact_filtering": "passed",
+    "browser_note_save_reload": "passed",
+    "desktop_layout": "reviewed",
+    "mobile_frame_css_width": 390,
+    "mobile_content_css_width": 375,
+    "horizontal_overflow": false,
+    "mobile_menu_selection": "passed"
+  },
+  "manufacturing_artifacts_created": false,
+  "manufacturing_order_submitted": false
+}
