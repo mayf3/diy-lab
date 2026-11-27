@@ -212,7 +212,7 @@ for(const k in DATA){
 (function(){
   const host=document.getElementById('tables');
   const tag={'confirmed-official':['已确认·官方','ok'],'awaiting-measure':['待实物实测','warn'],'placeholder':['视觉占位','hold']};
-  const names={'board':'开发板尺寸','usb_ports':'USB 口位置','usb_opening':'USB 开孔','body':'主体外形','keys':'键帽机构','boss':'PCB 螺柱','connector':'接口类型'};
+  const names={'board_outline':'PCB 板框','usb_zone_8mm':'图纸 8.00mm 含义','connector_protrusion':'连接器板外突出','board_envelope':'整板最大包络','usb_types':'接口类型（J2/J4）','usb_ports':'USB 口中心距','usb_opening':'USB 开孔','usb_plug_envelope':'插头通过包络','skirt_usb_clearance':'裙壁避让','body':'主体外形','keys':'键帽机构','boss':'PCB 螺柱'};
   let rows='';
   for(const k in CASE_DIMS){
     const d=CASE_DIMS[k],t=tag[d.status]||[d.status,'hold'];

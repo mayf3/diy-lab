@@ -1,6 +1,6 @@
 {
-  "generated_by": "g2-case-r1.py v2 (G2-1)",
-  "rule": "尺寸三态来源；占位/待实测项不得标 Manufacturable，不得下单打印（发起人 2026-11-28）",
+  "generated_by": "g2-case-r1.py v3 (G2-1)",
+  "rule": "尺寸三态来源（confirmed-official / awaiting-measure / placeholder），逐项登记文档页码、测量方式与冻结状态；占位/待实测模型不得标 Manufacturable，不得下单打印（发起人 2026-11-28）",
   "params": {
     "body": {
       "W": 88.0,
@@ -13,7 +13,7 @@
     "base": {
       "W": 94.0,
       "D": 84.0,
-      "H": 14.0,
+      "H": 9.5,
       "R": 8.0,
       "floor": 2.4
     },
@@ -27,12 +27,16 @@
     },
     "usb": {
       "count": 2,
-      "w": 12.0,
-      "h": 7.0,
+      "w": 11.2,
+      "h": 8.5,
       "spacing": 12.5,
       "z": 8.0,
       "left": "UART(J2,Micro-USB)",
       "right": "USB-OTG(J4,Micro-USB)"
+    },
+    "usb_plug_env": {
+      "w": 10.6,
+      "h": 8.0
     },
     "boss": {
       "d": 6.0,
@@ -58,44 +62,109 @@
     }
   },
   "sources": {
-    "board": {
+    "board_outline": {
+      "value": "PCB 板框 25.40 × 62.74 mm（62.74 尺寸线两端=板框上/下边，含 USB 区段在内）",
       "source": "official-doc",
       "status": "confirmed-official",
-      "value": "ESP32-S3-DevKitC-1 v1.1：25.40 × 70.74 mm（62.74 + 8.00 USB 区）；J1/J3 2.54mm 间距",
-      "ref": "Espressif PCB 布局图 PCB_ESP32-S3-DevKitC-1_V1.1_20220429.pdf（SHA256 3f6716…）"
+      "doc": "Espressif PCB_ESP32-S3-DevKitC-1_V1.1_20220429.pdf 第 1 页（正面铜层图，SHA256 3f6716…）",
+      "measure": "图纸标注值；矢量重建复核（标注线端点=板框边）",
+      "freeze": "unfrozen（到货实测终判）"
+    },
+    "usb_zone_8mm": {
+      "value": "8.00 mm = 板框内 USB 连接器区段（连接器区顶边→板框底边）——与 62.74 同在板框内，不可与 62.74 相加",
+      "source": "official-doc",
+      "status": "confirmed-official",
+      "doc": "同上第 1 页（8.00 延伸线端点：连接器区顶边/板框底边）",
+      "measure": "图纸标注值；延伸线端点矢量复核",
+      "freeze": "unfrozen"
+    },
+    "connector_protrusion": {
+      "value": "≈8 mm：Micro-USB 壳体与焊盘悬出板框底边之外（板外另绘有连接器外形线，几何读数 8.1mm）",
+      "source": "official-drawing-read",
+      "status": "awaiting-measure",
+      "doc": "同上第 1 页（连接器外形线在板框外 ≈8mm；焊盘行跨板底边）",
+      "measure": "图纸比例读数（该 PDF 渲染与标注存在约 4% 比例偏差，估读须实测）",
+      "freeze": "unfrozen",
+      "awaiting": "DevKitC 到货卡尺实测突出长度"
+    },
+    "board_envelope": {
+      "value": "整板最大包络 ≈25.40 × ≈70.7 mm（板框 62.74 + 连接器板外突出 ≈8，综合估读）",
+      "source": "official-drawing-read",
+      "status": "awaiting-measure",
+      "doc": "同上第 1 页几何重建综合",
+      "measure": "图纸估读综合（非标注值）",
+      "freeze": "unfrozen",
+      "awaiting": "到货实测"
+    },
+    "usb_types": {
+      "value": "J2 = USB-to-UART（Micro-USB，5 脚+屏蔽壳）；J4 = ESP32-S3 原生 USB/OTG（Micro-USB）",
+      "source": "official-doc",
+      "status": "confirmed-official",
+      "doc": "Espressif SCH_ESP32-S3-DevKitC-1_V1.1_20220413.pdf（SHA256 5f25ae…）原理图：J2 挂 USB-to-UART 桥网络、J4 挂 ESP USB(GPIO19/20) 网络，两符号均标 MICRO USB",
+      "measure": "原理图符号与网络提取（pdftotext）",
+      "freeze": "unfrozen"
     },
     "usb_ports": {
-      "source": "official-doc",
+      "value": "双口并排于板底短边，中心距 ≈12.5 mm（图纸丝印层估读 ±1mm）",
+      "source": "official-drawing-read",
       "status": "awaiting-measure",
-      "value": "双口并排于板底短边：J2=UART(Micro-USB)、J4=USB-OTG(Micro-USB)；中心距 ≈12.5mm（图纸估读 ±1mm）",
-      "ref": "同上 PCB 图第 3 页丝印层 + v1.1 官方用户指南（USB-to-UART Port = Micro-USB）",
-      "awaiting": "DevKitC 到货实测：开口中心距/高度/左右序校核"
+      "doc": "同上 PCB 图第 3 页丝印层（J2 左 / J4 右）",
+      "measure": "图纸比例读数",
+      "freeze": "unfrozen",
+      "awaiting": "DevKitC 到货实测：中心距/高度/左右序校核"
     },
     "usb_opening": {
-      "source": "official-doc",
-      "status": "confirmed-official",
-      "value": "每口开孔 12 × 7 mm（Micro-USB 插头外廓 ~11×7.5，留插拔间隙）",
-      "ref": "USB Micro-B 标准插头尺寸"
+      "value": "每口 11.2 × 8.5 mm——开孔宽必须 < 中心距 12.5（两孔间留 1.3 mm 壁）；初版 13.5 宽使两孔重叠合并为单一开口，几何检查器检出后修正",
+      "source": "standard-plus-tolerance",
+      "status": "awaiting-measure",
+      "doc": "USB Micro-B 插头外廓推算 + FDM/SLA 公差；与 usb_ports 中心距 12.5（图纸估读）联动约束",
+      "measure": "标准外廓推算 + 经验公差 + 几何检查器验证两孔分离",
+      "freeze": "unfrozen——占位开孔，不冻结不下单",
+      "awaiting": "DevKitC 实物插拔验证后定稿；若插头宽 >11.2 需改为单 elongated 开口并重新评审"
+    },
+    "usb_plug_envelope": {
+      "value": "单插头通过包络 10.6 × 8.0 mm（Micro-B 插头外廓 ≈10.2 宽 × 7.5 高 + 公差；须窄/矮于开孔 11.2×8.5）",
+      "source": "standard-plus-tolerance",
+      "status": "awaiting-measure",
+      "doc": "USB Micro-B 标准插头公称外廓",
+      "measure": "标准外廓推算（非实测）",
+      "freeze": "unfrozen",
+      "awaiting": "插头实物卡尺测量校核"
+    },
+    "skirt_usb_clearance": {
+      "value": "底座改托盘式总高 9.5（floor 2.4 + 裙壁 7.1）：裙壁顶 9.5 < USB 插拔包络下缘 9.77——检查器检出裙壁后角挡插头后修正（初版总高 14）",
+      "source": "placeholder",
+      "status": "awaiting-measure",
+      "doc": "包络下缘 = 开孔 z 10.52 − 0.75 插拔角余量；裙壁高度按此避让",
+      "measure": "几何检查验证零干涉；高度选择无实物依据",
+      "freeze": "unfrozen",
+      "awaiting": "DevKitC 实测插座高度与插头外形后复核裙壁高度与外观比例"
     },
     "body": {
+      "value": "外形 88×78×26 R10，壁厚 2.4，顶厚 2.4",
       "source": "placeholder",
       "status": "placeholder",
-      "value": "外形 88×78×26 R10 壁厚 2.4 顶厚 2.4",
-      "ref": "G0 视觉基准比例",
+      "doc": "G0 视觉基准比例",
+      "measure": "参数设定（无实物依据）",
+      "freeze": "unfrozen",
       "awaiting": "G4 板框 + DevKitC 载板高度定外形"
     },
     "keys": {
+      "value": "键距 33×33；键帽孔 24.4 方孔；键帽 24×24；stub 为矩形占位（非 MX 十字）",
       "source": "placeholder",
       "status": "awaiting-measure",
-      "value": "键距 33×33；键帽孔 24.4 方孔；键帽 24×24；stub 为矩形占位（非 MX 十字）",
-      "ref": "视觉占位",
+      "doc": "视觉占位",
+      "measure": "参数设定",
+      "freeze": "unfrozen",
       "awaiting": "样轴实测（Boba U4/国产静音段落）：十字孔、裙边、按压行程"
     },
     "boss": {
+      "value": "4×M2.5 螺柱（d6 孔 2.6），现位 ±30/±28（避让内腔 R7.6 圆角）",
       "source": "placeholder",
       "status": "placeholder",
-      "value": "4×M2.5 螺柱（d6 孔 2.6），现位 ±30/±28（避让内腔 R7.6 圆角）",
-      "ref": "热熔铜螺母 M2.5×4×3.5 级（HachimoDock 参考用料）",
+      "doc": "热熔铜螺母 M2.5×4×3.5 级（HachimoDock 参考用料）",
+      "measure": "参数设定",
+      "freeze": "unfrozen",
       "awaiting": "G4 真实板框与安装孔位后冻结——当前坐标不得用于 PCB 布局"
     }
   }

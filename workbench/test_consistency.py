@@ -211,11 +211,26 @@ class CaseViewerAssetTests(unittest.TestCase):
     def test_dimension_sources_are_typed_and_honest(self):
         out = ROOT / "source-data/agent-button-deck/pcba-v1/cad/renders/case-r1"
         dims = json.loads((out / "dims.json").read_text(encoding="utf-8"))["sources"]
-        self.assertEqual(dims["board"]["status"], "confirmed-official",
-                         "开发板尺寸应来自官方数据手册")
-        self.assertEqual(dims["usb_ports"]["status"], "awaiting-measure",
-                         "USB 口中心距为图纸估读，必须标待实测")
-        self.assertIn("Micro-USB", dims["usb_ports"]["value"], "UART/OTG 双口类型必须记录")
+        # 三态分级 + 页码/测量方式/冻结状态登记
+        for key, d in dims.items():
+            self.assertIn(d["status"], ("confirmed-official", "awaiting-measure", "placeholder"),
+                          f"{key} 的状态必须是三态之一")
+            for field in ("doc", "measure", "freeze"):
+                self.assertIn(field, d, f"{key} 缺少 {field} 登记")
+        # 官方标注 vs 图纸估读 vs 占位 三类必须区分
+        self.assertEqual(dims["board_outline"]["source"], "official-doc")
+        self.assertIn("62.74", dims["board_outline"]["value"])
+        self.assertEqual(dims["usb_zone_8mm"]["source"], "official-doc")
+        self.assertIn("不可与 62.74 相加", dims["usb_zone_8mm"]["value"],
+                      "8.00mm 的含义必须显式声明，禁止直接相加成总长")
+        self.assertIn("≈70.7", dims["board_envelope"]["value"])
+        self.assertEqual(dims["board_envelope"]["source"], "official-drawing-read",
+                         "整板包络是估读综合，不得标 official-doc")
+        self.assertEqual(dims["usb_types"]["source"], "official-doc")
+        self.assertIn("J2", dims["usb_types"]["value"])
+        self.assertIn("J4", dims["usb_types"]["value"])
+        self.assertEqual(dims["usb_ports"]["source"], "official-drawing-read",
+                         "中心距是图纸估读")
         self.assertEqual(dims["keys"]["status"], "awaiting-measure", "键帽机构等样轴实测")
         self.assertEqual(dims["boss"]["status"], "placeholder", "PCB 螺柱等 G4 板框")
 
@@ -226,7 +241,27 @@ class CaseViewerAssetTests(unittest.TestCase):
         for key in ("body_base_interference_vol", "body_caps_interference_vol",
                     "base_caps_interference_vol"):
             self.assertEqual(checks["checks"][key], 0, f"{key} 必须为零干涉")
-        self.assertTrue(checks["checks"]["usb_two_openings"], "必须双 USB 独立开孔")
+        # 双开口必须是真实几何结论（截面分段+中心距+贯穿），不是参数复读
+        self.assertTrue(checks["checks"]["rear_wall_two_openings"], "背壁截面必须有两个分离开口")
+        self.assertTrue(checks["checks"]["usb_two_openings_geometric"])
+        self.assertEqual(checks["measured"]["usb_center_distance"], 12.5)
+        self.assertEqual(checks["measured"]["usb_opening_widths"], [11.2, 11.2])
+        self.assertTrue(checks["checks"]["usb_holes_through_wall"], "开孔必须贯穿背壁")
+        self.assertTrue(checks["checks"]["usb_plug_envelope_passes"], "插头包络必须可通过")
+        self.assertTrue(checks["checks"]["usb_envelope_vs_base_clear"], "包络不得撞底座裙壁")
+        self.assertTrue(checks["checks"]["assembly_body_in_base"], "主体必须完整落入底座开口")
+        self.assertIn("check_case.py", checks.get("note", ""), "checks 必须声明由 STEP 重算")
+
+    def test_checker_negative_selftest_is_documented_and_runnable(self):
+        checker = (ROOT / "source-data/agent-button-deck/pcba-v1/cad/check_case.py")
+        text = checker.read_text(encoding="utf-8")
+        self.assertIn("G2_OUT", text, "检查器必须支持环境变量指定产物目录")
+        self.assertIn("self_test", text, "检查器必须内置负向自检")
+        self.assertIn("neg_boss_corner_collision_detected", text)
+        self.assertIn("neg_small_pocket_detected", text)
+        run_doc = (ROOT / "source-data/agent-button-deck/pcba-v1/cad/g2-case-r1.py").read_text(encoding="utf-8")
+        # 运行方式必须写进脚本头注释（freecadcmd 对部分目录静默不执行，用捆绑 python 直跑）
+        self.assertIn("PYTHONPATH", run_doc + text, "运行方式文档必须存在")
 
 
 if __name__ == "__main__":
