@@ -1,0 +1,56 @@
+{
+  "generated_by": "g2-case-r1.py v1 (G2-0)",
+  "rule": "PLACE 尺寸为视觉占位，不冻结；待样轴/DevKitC实测/G4板框更新",
+  "params": {
+    "body": {
+      "W": 88.0,
+      "D": 78.0,
+      "H": 26.0,
+      "R": 10.0,
+      "wall": 2.4,
+      "top": 2.4
+    },
+    "base": {
+      "W": 94.0,
+      "D": 84.0,
+      "H": 14.0,
+      "R": 8.0,
+      "pocket": 6.0,
+      "floor": 2.4,
+      "skirt": 6.0
+    },
+    "keys": {
+      "pitch_x": 33.0,
+      "pitch_y": 33.0,
+      "hole": 24.4,
+      "cap": 24.0,
+      "cap_h": 6.0,
+      "stub": 4.0
+    },
+    "usb": {
+      "w": 18.0,
+      "h": 7.5,
+      "y": 6.0
+    },
+    "boss": {
+      "d": 6.0,
+      "h": 7.0,
+      "inset": 9.0,
+      "hole_d": 2.6
+    },
+    "relief": {
+      "helmet_r": 13.0,
+      "visor_r": 8.6,
+      "visor_off": [
+        0.0,
+        1.5
+      ],
+      "torso_w": 30.0,
+      "torso_h": 18.0,
+      "port_r": 10.0,
+      "port_hole": 7.6,
+      "star_r": 1.6,
+      "h": 0.8
+    }
+  }
+}

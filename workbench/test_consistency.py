@@ -183,6 +183,32 @@ class UserFacingDeliveryTests(unittest.TestCase):
         self.assertIn("华秋", self.talk, "外部供应商预案必须留名")
 
 
+class CaseViewerAssetTests(unittest.TestCase):
+    """G2-0 外壳查看器三件套必须存在且互相引用（防生成产物漂移）。"""
+
+    def test_viewer_files_exist_and_reference_each_other(self):
+        web = ROOT / "workbench/web"
+        html = web / "case-r1-viewer.html"
+        js = web / "case-r1-viewer.js"
+        data = web / "case-r1-viewer-data.js"
+        for f in (html, js, data):
+            self.assertTrue(f.is_file(), f"缺少 {f.name}")
+        text = html.read_text(encoding="utf-8")
+        self.assertIn("case-r1-viewer-data.js", text)
+        self.assertIn("case-r1-viewer.js", text)
+        self.assertGreater(data.stat().st_size, 100_000, "网格数据过小，疑似生成失败")
+        self.assertIn("CASE_DATA", data.read_text(encoding="utf-8")[:200])
+
+    def test_case_model_and_placeholders_exist(self):
+        out = ROOT / "source-data/agent-button-deck/pcba-v1/cad/renders/case-r1"
+        for name in ("case-r1-body", "case-r1-base", "case-r1-cap-a",
+                     "case-r1-cap-b", "case-r1-cap-c", "case-r1-cap-d"):
+            self.assertTrue((out / f"{name}.step").is_file(), f"缺少 {name}.step")
+            self.assertTrue((out / f"{name}.stl").is_file(), f"缺少 {name}.stl")
+        ph = json.loads((out / "placeholders.json").read_text(encoding="utf-8"))
+        self.assertIn("不冻结", ph["rule"], "占位尺寸必须声明不冻结")
+
+
 if __name__ == "__main__":
     unittest.main()
 
