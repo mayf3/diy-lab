@@ -163,10 +163,11 @@ class UserFacingDeliveryTests(unittest.TestCase):
         self.talk = (base / "jlc-dfm-checklist.md").read_text(encoding="utf-8")
 
     def test_batch1_has_six_elements_and_no_auto_purchase(self):
-        for kw in ("SKU", "兼容性依据", "替代", "确认"):
+        for kw in ("兼容性依据", "替代", "参考链接", "大概花费", "确认"):
             self.assertIn(kw, self.batch1, f"第一批清单缺要素：{kw}")
+        for sku in ("Gazzew Boba U4", "ESP32-S3-DevKitC-1-N8R8"):
+            self.assertIn(sku, self.batch1, f"第一批清单缺准确 SKU：{sku}")
         self.assertIn("自己下单付款", self.batch1, "必须写明由负责人本人下单付款")
-        self.assertIn("U4", self.batch1)
         self.assertIn("U4T 不是静音轴", self.batch1, "型号警示必须保留")
 
     def test_assembly_guide_is_solder_free(self):
