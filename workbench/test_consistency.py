@@ -159,21 +159,64 @@ class ReferenceStudiesTests(unittest.TestCase):
 
     def setUp(self):
         catalog = load("workbench/catalog.json")
+        self.catalog = catalog
         self.studies = catalog["projects"]["agent-button-deck"].get("reference_studies")
         generated = load("workbench/web/workbench.json")
         gen_button = next(
             (p for p in generated["projects"] if p["id"] == "agent-button-deck"), None)
         self.gen_studies = gen_button.get("reference_studies") if gen_button else None
 
-    def test_hachimodock_study_registered_with_license_and_boundary(self):
+    def _study(self):
         self.assertIsInstance(self.studies, list, "button-deck 缺少 reference_studies 区")
         study = next((s for s in self.studies if "HachimoDock" in s["name"]), None)
         self.assertIsNotNone(study, "HachimoDock 参考研究未登记")
+        return study
+
+    def test_hachimodock_study_registered_with_license_and_boundary(self):
+        study = self._study()
         for field in ("url", "license", "study_doc", "completeness",
                       "patterns", "tasks", "open_questions", "boundary"):
             self.assertIn(field, study, f"参考研究缺少字段：{field}")
         self.assertIn("SDFL-PPO", study["license"], "MakerWorld 仅限平台打印边界必须记录")
         self.assertIn("非商业", study["license"], "仓库非商业许可边界必须记录")
+
+    def test_completeness_is_four_state_and_honest(self):
+        completeness = self._study()["completeness"]
+        self.assertIsInstance(completeness, dict, "完成度必须是四态结构")
+        expected = {
+            "来源与许可审计": "完成",
+            "六方面资料研究": "完成",
+            "原始 PCB/EDA/STEP 工程直接审查": "未完成",
+            "实物制造复现": "未完成",
+        }
+        self.assertEqual(completeness, expected,
+                         "完成度四态口径漂移：未下载的工程文件与未复现的实物不得标为完成")
+
+    def test_study_doc_is_in_documents_allowlist(self):
+        study = self._study()
+        allowlisted = [d for d in self.catalog["documents"]
+                       if d.get("path") == study["study_doc"]]
+        self.assertTrue(allowlisted,
+                        "study_doc 必须登记进 documents allowlist 才能成为文档链接")
+        self.assertEqual(allowlisted[0]["id"], "hachimodock-study")
+        self.assertTrue((ROOT / study["study_doc"]).is_file(),
+                        "allowlist 指向的研究文档实际不存在")
+
+    def test_g1_decision_items_match_confirmed_preferences(self):
+        decisions = " | ".join(
+            self.catalog["projects"]["agent-button-deck"]["status_block"]["decision_items"])
+        self.assertNotIn("手感", decisions, "tactile-light+quiet 已确认，不得再列为待决策")
+        self.assertNotIn("机构定档", decisions, "按键机构偏好已确认，不得再列为待决策")
+        self.assertIn("键帽四色打印路线", decisions, "四色打印路线保留为 G2 前待决策")
+        self.assertIn("F13", decisions)
+        blockers = " | ".join(
+            self.catalog["projects"]["agent-button-deck"]["status_block"]["blockers"])
+        self.assertIn("样轴", blockers, "轴体 SKU 等待样轴验证，应登记为阻断")
+
+    def test_tasks_map_to_g2_g4_g6_without_new_gates(self):
+        tasks = " | ".join(self._study()["tasks"])
+        for gate in ("G2-", "G4-", "G6-"):
+            self.assertIn(gate, tasks, f"缺少 {gate} 显式任务映射")
 
     def test_study_doc_exists_and_declares_no_copy_rule(self):
         doc = ROOT / "source-data/agent-button-deck/pcba-v1/reference-studies/hachimodock-study.md"
@@ -182,6 +225,7 @@ class ReferenceStudiesTests(unittest.TestCase):
         self.assertIn("SHA256", text)
         self.assertIn("不复制", text)
         self.assertIn("四列", text)
+        self.assertIn("完成度四态", text)
 
     def test_reference_studies_flow_to_generated_data(self):
         self.assertEqual(self.gen_studies, self.studies,

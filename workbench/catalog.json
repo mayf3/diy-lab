@@ -121,16 +121,15 @@
         "g_stage": "G0 视觉方向已冻结（2026-11-27）；G1 机构与型号核查进行中",
         "owner": "本地 Agent（ZCode 会话）",
         "last_completed": "HachimoDock 参考工程研究完成（六方面+对照表，2026-11-27）；R1 概念效果图（2×2 宇航员版）保存为正式视觉基准；HID 固件草稿发布；EDA 工具链激活与往返验收通过",
-        "next_work": "G1 机构比较定稿 + DevKitC/轴体 SKU 核实（元件库恢复后逐项核实现价库存）",
+        "next_work": "G1 样轴到货实测定档；G2 外壳设计启动（G2-1～G2-3，见 hachimodock-study 任务映射）",
         "blockers": [
           "元件库搜索待恢复（现价库存核实）",
-          "DevKitC 预焊版 SKU 待锁定"
+          "DevKitC 预焊版 SKU 待锁定",
+          "样轴到货实测（购买由发起人执行）——轴体 SKU、键帽尺寸待验证后冻结"
         ],
         "needs_user_decision": true,
         "decision_items": [
           "四键用途与 F13–F16 绑定清单",
-          "按键机构定档（推荐 MX 兼容轴，见 g1-button-mechanism-comparison）",
-          "键帽尺寸与手感偏好",
           "键帽四色打印路线定档（分件分色/AMS/贴纸/嘉立创打印，G2 前决定）"
         ],
         "freeze": {
@@ -156,7 +155,12 @@
           "license": "OSHWHub 页标 GPL 3.0+禁转载；仓库 LICENSE 为非商业源码可见（明确非 GPL）；MakerWorld 外壳 SDFL-PPO 仅限平台打印",
           "study_doc": "source-data/agent-button-deck/pcba-v1/reference-studies/hachimodock-study.md",
           "studied_at": "2026-11-27",
-          "completeness": "six-aspects complete（资料核实级；.epro2/3MF/视频未下载——许可与不复制约束）",
+          "completeness": {
+            "来源与许可审计": "完成",
+            "六方面资料研究": "完成",
+            "原始 PCB/EDA/STEP 工程直接审查": "未完成",
+            "实物制造复现": "未完成"
+          },
           "patterns": [
             "成品开发板+排母插接简单载板（复杂工艺留原厂）",
             "分件分色打印实现多色外观，零喷涂",
@@ -165,9 +169,11 @@
             "BOM 全带立创编号，下单零转译"
           ],
           "tasks": [
-            "G2 CAD：分色分盘输出、螺柱按热熔螺母设计、键帽孔版本占位",
-            "G4 PCB：BOM 模板加 LCSC 编号列；丝印含 R1 四元组",
-            "G6 制造：成套交付清单机器校验+装配说明声明依赖分叉"
+            "G2-1 外壳 CAD：分色分盘输出（奶油白主体/薰衣草紫底座/四色键帽各自成件）",
+            "G2-2 外壳 CAD：4 螺柱按 M2.5+热熔铜螺母设计并标注孔公差与压入深度；键帽孔留版本占位（轴体定档前不画最终孔）",
+            "G2-3 外壳 CAD：装饰浮雕（宇航员/舷窗/星星）打印方向与支撑评估",
+            "G4-1 载板 PCB：BOM 模板加 LCSC 编号列与查看日期列；丝印含 R1 四元组；轴体 footprint 仅在样轴实测后定稿",
+            "G6-1 制造资料：成套交付清单（Gerber/BOM/CPL/STEP/外壳 3MF/装配说明/许可页）逐项机器校验；替代件路径显式版本互斥；装配说明开头声明依赖分叉"
           ],
           "open_questions": [
             "主 PCB 层数/板厚/尺寸未取得（.epro2 未下载）",
@@ -425,6 +431,11 @@
       "id": "button-interface",
       "path": "source-data/agent-button-deck/pcba-v1/interface-contract.md",
       "name": "Button Deck 接口与装配约定"
+    },
+    {
+      "id": "hachimodock-study",
+      "path": "source-data/agent-button-deck/pcba-v1/reference-studies/hachimodock-study.md",
+      "name": "HachimoDock 参考工程研究"
     },
     {
       "id": "project-routes",
