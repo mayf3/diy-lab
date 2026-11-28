@@ -479,9 +479,12 @@ class NetlistClosureTests(unittest.TestCase):
                 self.assertEqual(rec.get("supplier_part"), "TBD-MECH-AXIS",
                                  f"{des} Supplier Part 必须=TBD-MECH-AXIS")
         bom = ev.get("bom_export", {})
-        self.assertFalse(bom.get("switch_present"), "BOM 真实导出不得含开关")
-        self.assertEqual([r.get("supplier_part") for r in bom.get("rows", [])],
+        self.assertFalse(bom.get("switch_present"))
+        # rows 是真实 CSV 的机器解析结果（列名→值），仅 J1/J3 一行
+        self.assertEqual([r.get("Supplier Part") for r in bom.get("rows", [])],
                          ["C18078140"], "BOM 行应仅 J1,J3（C18078140）")
+        self.assertEqual([r.get("Designator") for r in bom.get("rows", [])],
+                         ["J1,J3"])
         self.assertIn("TBD", ev.get("switch_footprint", ""))
 
     def test_switch_has_exactly_two_electrical_pins(self):
@@ -545,15 +548,94 @@ class NetlistClosureTests(unittest.TestCase):
             code, out = run_validator(project=pjs)
             self.assertNotEqual(code, 0, "同步哈希后的语义篡改不得通过校验器")
             joined = json.dumps(out, ensure_ascii=False)
-            self.assertIn("网表语义断言失败", joined, "失败原因必须是语义断言而非哈希不符")
+            self.assertIn("语义断言失败", joined, "失败原因必须是语义断言而非哈希不符")
         finally:
             shutil.rmtree(tmp, ignore_errors=True)
 
     def test_validator_runs_semantic_assertions_on_real_project(self):
-        # 正向：校验器对真实工程运行语义断言且通过
+        # 正向：校验器对真实工程运行语义断言（网表+BOM）且通过
         code, out = run_validator()
         self.assertEqual(code, 0, f"校验器失败: {out.get('failures')}")
         self.assertTrue(out["ok"])
+
+    def test_bom_evidence_parsed_from_real_file(self):
+        # BOM 证据必须来自真实导出文件的机器解析（bom_export.rows=真实 CSV 内容）
+        ev = json.loads(self.EVIDENCE.read_text(encoding="utf-8"))
+        bom_path = ROOT / "hardware/space-buddy-r1/bom-evidence.csv"
+        raw = bom_path.read_bytes()
+        bom = ev.get("bom_export", {})
+        self.assertEqual(bom.get("sha256"), hashlib.sha256(raw).hexdigest(),
+                         "bom_export.sha256 与真实 CSV 不符")
+        self.assertEqual(bom.get("size"), bom_path.stat().st_size)
+        rows = bom.get("rows", [])
+        self.assertEqual(len(rows), 1, "BOM 应恰好一行数据行")
+        self.assertEqual(rows[0].get("Designator"), "J1,J3")
+        self.assertEqual(rows[0].get("Supplier Part"), "C18078140")
+        self.assertEqual(rows[0].get("Quantity"), "2")
+        self.assertFalse(bom.get("switch_present"))
+        # 证据登记：project.json 必须有真实 path+digest 的 bom 产物条目
+        p = json.loads(PROJECT.read_text(encoding="utf-8"))
+        bom_out = [o for o in p["domains"]["eda"]["outputs_present"] if o.get("type") == "bom"]
+        self.assertTrue(bom_out, "project.json 缺 bom 产物条目")
+        self.assertEqual(bom_out[0].get("path"), "hardware/space-buddy-r1/bom-evidence.csv")
+        self.assertEqual(bom_out[0].get("digest"), hashlib.sha256(raw).hexdigest())
+        self.assertTrue(bom_out[0].get("assert_script"))
+
+    def test_bom_assertions_direct_pass_and_tamper_fails(self):
+        # --kind bom 正向通过
+        bom_proc = subprocess.run([sys.executable, str(self.ASSERT), "--check",
+                                   "--kind", "bom",
+                                   "--bom", str(ROOT / "hardware/space-buddy-r1/bom-evidence.csv"),
+                                   "--json", str(self.EVIDENCE)],
+                                  capture_output=True, text=True, timeout=30, cwd=str(ROOT))
+        self.assertEqual(bom_proc.returncode, 0, f"BOM 断言失败: {bom_proc.stdout[:200]}")
+        # 负向：BOM 增加开关行 → 断言拒绝
+        tmp = Path(tempfile.mkdtemp())
+        try:
+            tampered = (ROOT / "hardware/space-buddy-r1/bom-evidence.csv").read_text(encoding="utf-8") \
+                + "2\t4\t通用两脚常开\tK1,K2,K3,K4\tTBD-MECH-AXIS\t\t通用两脚常开\t\tTBD-MECH-AXIS\t\n"
+            tb = tmp / "tampered-bom.csv"
+            tb.write_text(tampered, encoding="utf-8")
+            r = subprocess.run([sys.executable, str(self.ASSERT), "--check", "--kind", "bom",
+                                "--bom", str(tb), "--json", str(tmp / "ev.json")],
+                               capture_output=True, text=True, timeout=30, cwd=str(ROOT))
+            self.assertEqual(r.returncode, 2, "BOM 篡改必须被断言拒绝")
+            out = json.loads(r.stdout)
+            self.assertTrue(any("K1" in f for f in out.get("failed", [])),
+                            "失败项应指出 BOM 含 K1")
+        finally:
+            shutil.rmtree(tmp, ignore_errors=True)
+
+    def test_bom_tamper_with_synced_hash_still_fails_validator(self):
+        # 反例：BOM 增加开关行 + 同步哈希/证据/digest → 校验器仍必须失败
+        tmp = Path(tempfile.mkdtemp())
+        try:
+            tb = tmp / "tampered-bom.csv"
+            tb.write_text((ROOT / "hardware/space-buddy-r1/bom-evidence.csv").read_text(encoding="utf-8")
+                          + "2\t4\t通用两脚常开\tK1,K2,K3,K4\tTBD-MECH-AXIS\t\t通用两脚常开\t\tTBD-MECH-AXIS\t\n",
+                          encoding="utf-8")
+            sha = hashlib.sha256(tb.read_bytes()).hexdigest()
+            ev = json.loads(self.EVIDENCE.read_text(encoding="utf-8"))
+            ev["bom_export"]["sha256"] = sha
+            ev["bom_export"]["size"] = tb.stat().st_size
+            evj = tmp / "tampered-evidence.json"
+            evj.write_text(json.dumps(ev, ensure_ascii=False, indent=1), encoding="utf-8")
+            pj = json.loads(PROJECT.read_text(encoding="utf-8"))
+            for o in pj["domains"]["eda"]["outputs_present"]:
+                if o.get("type") == "bom":
+                    o["path"] = str(tb)
+                    o["evidence"] = str(evj)
+                    o["digest"] = sha
+                if o.get("type") == "netlist":
+                    o["evidence"] = str(evj)
+            pjs = tmp / "tampered-bom-project.json"
+            pjs.write_text(json.dumps(pj, ensure_ascii=False, indent=2), encoding="utf-8")
+            code, out = run_validator(project=pjs)
+            self.assertNotEqual(code, 0, "同步哈希后的 BOM 篡改不得通过校验器")
+            joined = json.dumps(out, ensure_ascii=False)
+            self.assertIn("语义断言失败", joined)
+        finally:
+            shutil.rmtree(tmp, ignore_errors=True)
 
     def test_designators_unified_in_project_records(self):
         p = json.loads(PROJECT.read_text(encoding="utf-8"))

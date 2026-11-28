@@ -568,7 +568,7 @@
       "quad": {
         "pcb": null,
         "cad": 3,
-        "fw": "draft",
+        "fw": "compiled-untested-1",
         "bom": "batch1-v3"
       },
       "missing_files": [],
@@ -592,7 +592,7 @@
       "pcb_object_verified": true,
       "pcb_layout_started": false,
       "pcb_design_verified": false,
-      "joint_status": "未开始（等：轴体实测→键帽冻结；DevKitC 实测→USB 校核；G4 板框→螺柱）",
+      "joint_status": "草案冲突已量化：K3/K4 键区×插座区重叠（见 domains.pcb.joint_conflict_exposed）；等：实物测量 → G4 联合检查三选一 → 板框冻结",
       "package_complete": false,
       "package_missing": [
         "EDA 原生工程",
@@ -632,16 +632,17 @@
     "factory_can": "待 DFM 答复（话术已备，等轴体 SKU 定档）",
     "blockers": [
       "样轴与 DevKitC 未到货（第一批采购由负责人执行）",
-      "PCB 未开始（等 G4 输入）"
+      "PCB EDA 原生放置待画布可用（importChanges 需确认对话框）；G4 联合检查三选一未定",
+      "固件已编译未烧录（等 DevKitC 到货实测）"
     ],
     "next_owner": [
       {
         "who": "负责人",
-        "what": "第一批下单（清单已终版）"
+        "what": "第一批下单（清单已终版）+ PR #31 复核合并"
       },
       {
         "who": "Agent",
-        "what": "到货实测回填+冻结+DFM 发询+EDA 原理图（PR-B）"
+        "what": "到货实测回填+样轴封装绑定+G4 联合检查+EDA 原生 PCB 放置"
       }
     ],
     "needs_user": [

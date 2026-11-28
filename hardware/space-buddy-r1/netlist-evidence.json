@@ -1,8 +1,8 @@
 {
- "format": "PROTEL NETLIST 2.0",
+ "format": "PROTEL NETLIST 2.0 + 嘉立创 BOM CSV",
  "exported_at": "2026-11-28",
- "source": "eda.sch_ManufactureData.getNetlistFile('space-buddy-r1','Protel2') 真实导出（非手写）",
- "session": "626b439c (headless，保存→关闭→重开后稳定导出)",
+ "source": "eda.sch_ManufactureData.getNetlistFile('space-buddy-r1','Protel2') 与 getBomFile('space-buddy-r1-bom','csv') 真实导出（非手写；bom_export 由真实 CSV 解析）",
+ "session": "537481b9 (headless，保存→关闭→重开后稳定导出)",
  "project_uuid": "4ab9e52666a4fc7fe9b1d0c7c4c4263444d972eb139973d04478d976200a78b8",
  "schematic_uuid": "7415725566084bd0",
  "size": 6437,
@@ -80,13 +80,23 @@
   }
  },
  "switch_symbol": "两电气脚常开（YD-3410 器件承载通用开关符号，pin1/pin2；MX 机械轴=2 金属触点，塑料定位脚不属于电气引脚）",
- "switch_footprint": "TBD（样轴确认后绑定 Boba U4 或实际 SKU 准确封装）。EDA 占位绑定 SW-SMD_L3.9-W2.9-LS4.8-EH-A 已被 Convert to PCB=no 语义隔离：无法进入 PCB；Add into BOM=no 隔离：无法进入 BOM（BOM 真实导出仅 J1,J3 一行）",
+ "switch_footprint": "TBD（样轴确认后替换为真正机械轴封装，不复用 YD-3410 的 SMD 占位）。EDA 占位绑定 SW-SMD_L3.9-W2.9-LS4.8-EH-A 已被 Convert to PCB=no 语义隔离：无法进入 PCB；Add into BOM=no 隔离：无法进入 BOM。PCB 转换前必须重新检查 K1–K4 Convert to PCB=no（本项目工程约束）",
  "bom_export": {
+  "file": "hardware/space-buddy-r1/bom-evidence.csv",
+  "size": 198,
+  "sha256": "327f8e17fe71774ff33bb14ac8248049fca116a382c1af96f38e4e5fdf6ced7f",
   "rows": [
    {
-    "designator": "J1,J3",
-    "part": "BX-PM2.54-1-22PY",
-    "supplier_part": "C18078140"
+    "No.": "1",
+    "Quantity": "2",
+    "Comment": "BX-PM2.54-1-22PY",
+    "Designator": "J1,J3",
+    "Footprint": "HDR-TH_22P-P2.54-V-F",
+    "Value": "",
+    "Manufacturer Part": "BX-PM2.54-1-22PY",
+    "Manufacturer": "Bossie(博锡)",
+    "Supplier Part": "C18078140",
+    "Supplier": "LCSC"
    }
   ],
   "switch_present": false
@@ -105,7 +115,15 @@
  },
  "assertions": {
   "ok": true,
-  "failed": []
+  "failed": [],
+  "netlist": {
+   "ok": true,
+   "failed": []
+  },
+  "bom": {
+   "ok": true,
+   "failed": []
+  }
  },
  "note": "本 JSON 由 eda-assert-netlist.py 自动生成；禁止手改哈希或大小"
 }

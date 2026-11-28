@@ -1,0 +1,50 @@
+time="2026-11-28T23:57:16+08:00" level=info msg="arduino-cli version 1.6.0"
+time="2026-11-28T23:57:16+08:00" level=info msg="Using config file: /Users/yanfenma/Library/Arduino15/arduino-cli.yaml"
+time="2026-11-28T23:57:16+08:00" level=info msg="Executing `arduino-cli compile`"
+time="2026-11-28T23:57:16+08:00" level=info msg="Checking signature" index=/Users/yanfenma/Library/Arduino15/package_index.json signatureFile=/Users/yanfenma/Library/Arduino15/package_index.json.sig trusted=true
+time="2026-11-28T23:57:16+08:00" level=info msg="Loading hardware from: /Users/yanfenma/Library/Arduino15/packages"
+time="2026-11-28T23:57:16+08:00" level=info msg="Loading package arduino from: /Users/yanfenma/Library/Arduino15/packages/arduino"
+time="2026-11-28T23:57:16+08:00" level=info msg="Checking existence of 'tools' path: /Users/yanfenma/Library/Arduino15/packages/arduino/tools"
+time="2026-11-28T23:57:16+08:00" level=info msg="Loading tools from dir: /Users/yanfenma/Library/Arduino15/packages/arduino/tools"
+time="2026-11-28T23:57:16+08:00" level=info msg="Loaded tool" tool="arduino:dfu-util@0.11.0-arduino5"
+time="2026-11-28T23:57:16+08:00" level=info msg="Loading package builtin from: /Users/yanfenma/Library/Arduino15/packages/builtin"
+time="2026-11-28T23:57:16+08:00" level=info msg="Checking existence of 'tools' path: /Users/yanfenma/Library/Arduino15/packages/builtin/tools"
+time="2026-11-28T23:57:16+08:00" level=info msg="Loading tools from dir: /Users/yanfenma/Library/Arduino15/packages/builtin/tools"
+time="2026-11-28T23:57:16+08:00" level=info msg="Loaded tool" tool="builtin:ctags@5.8-arduino12"
+time="2026-11-28T23:57:16+08:00" level=info msg="Loaded tool" tool="builtin:dfu-discovery@0.1.2"
+time="2026-11-28T23:57:16+08:00" level=info msg="Loaded tool" tool="builtin:mdns-discovery@1.1.0"
+time="2026-11-28T23:57:16+08:00" level=info msg="Loaded tool" tool="builtin:serial-discovery@1.5.2"
+time="2026-11-28T23:57:16+08:00" level=info msg="Loaded tool" tool="builtin:serial-monitor@0.15.0"
+time="2026-11-28T23:57:16+08:00" level=info msg="Loading package esp32 from: /Users/yanfenma/Library/Arduino15/packages/esp32/hardware"
+time="2026-11-28T23:57:16+08:00" level=info msg="Missing signature file" index=/Users/yanfenma/Library/Arduino15/packages/esp32/hardware/esp32/4.0.0/installed.json
+time="2026-11-28T23:57:16+08:00" level=info msg="Adding monitor tool" protocol=serial tool="builtin:serial-monitor"
+time="2026-11-28T23:57:16+08:00" level=info msg="Loaded platform" platform="esp32:esp32@4.0.0"
+time="2026-11-28T23:57:16+08:00" level=info msg="Checking existence of 'tools' path: /Users/yanfenma/Library/Arduino15/packages/esp32/tools"
+time="2026-11-28T23:57:16+08:00" level=info msg="Loading tools from dir: /Users/yanfenma/Library/Arduino15/packages/esp32/tools"
+time="2026-11-28T23:57:16+08:00" level=info msg="Loaded tool" tool="esp32:esp-rv32@2512"
+time="2026-11-28T23:57:16+08:00" level=info msg="Loaded tool" tool="esp32:esp-x32@2512"
+time="2026-11-28T23:57:16+08:00" level=info msg="Loaded tool" tool="esp32:esp32-libs@4.0.0"
+time="2026-11-28T23:57:16+08:00" level=info msg="Loaded tool" tool="esp32:esp32c3-libs@4.0.0"
+time="2026-11-28T23:57:16+08:00" level=info msg="Loaded tool" tool="esp32:esp32c5-libs@4.0.0"
+time="2026-11-28T23:57:16+08:00" level=info msg="Loaded tool" tool="esp32:esp32c6-libs@4.0.0"
+time="2026-11-28T23:57:16+08:00" level=info msg="Loaded tool" tool="esp32:esp32h2-libs@4.0.0"
+time="2026-11-28T23:57:16+08:00" level=info msg="Loaded tool" tool="esp32:esp32p4-libs@4.0.0"
+time="2026-11-28T23:57:16+08:00" level=info msg="Loaded tool" tool="esp32:esp32p4_es-libs@4.0.0"
+time="2026-11-28T23:57:16+08:00" level=info msg="Loaded tool" tool="esp32:esp32s2-libs@4.0.0"
+time="2026-11-28T23:57:16+08:00" level=info msg="Loaded tool" tool="esp32:esp32s3-libs@4.0.0"
+time="2026-11-28T23:57:16+08:00" level=info msg="Loaded tool" tool="esp32:esp32s31-libs@4.0.0"
+time="2026-11-28T23:57:16+08:00" level=info msg="Loaded tool" tool="esp32:esptool_py@5.3.1"
+time="2026-11-28T23:57:16+08:00" level=info msg="Loaded tool" tool="esp32:mklittlefs@4.0.2-db0513a"
+time="2026-11-28T23:57:16+08:00" level=info msg="Loaded tool" tool="esp32:mkspiffs@0.2.3"
+time="2026-11-28T23:57:16+08:00" level=info msg="Loaded tool" tool="esp32:openocd-esp32@v0.12.0-esp32-20260831"
+time="2026-11-28T23:57:16+08:00" level=info msg="Loaded tool" tool="esp32:riscv32-esp-elf-gdb@17.1_20260402"
+time="2026-11-28T23:57:16+08:00" level=info msg="Loaded tool" tool="esp32:xtensa-esp-elf-gdb@17.1_20260402"
+time="2026-11-28T23:57:16+08:00" level=info msg="Adding libraries dir" dir=/Users/yanfenma/Library/Arduino15/packages/esp32/hardware/esp32/4.0.0/libraries isSingleLibrary=false location=platform
+time="2026-11-28T23:57:16+08:00" level=info msg="Loading libraries index file" index=/Users/yanfenma/Library/Arduino15/library_index.json
+time="2026-11-28T23:57:16+08:00" level=info msg="Adding libraries dir" dir=/Users/yanfenma/Documents/Arduino/libraries isSingleLibrary=false location=user
+time="2026-11-28T23:57:16+08:00" level=info msg="Adding libraries dir" dir=/Users/yanfenma/Library/Arduino15/packages/esp32/hardware/esp32/4.0.0/libraries isSingleLibrary=false location=platform
+time="2026-11-28T23:57:16+08:00" level=info msg="Adding libraries dir" dir=/Users/yanfenma/Documents/Arduino/libraries isSingleLibrary=false location=user
+time="2026-11-28T23:57:21+08:00" level=info msg="Resolving include USBHIDKeyboard.h for arch esp32"
+time="2026-11-28T23:57:21+08:00" level=info msg="  found better lib" lib=USB prio=3F4
+time="2026-11-28T23:57:22+08:00" level=info msg="Resolving include FS.h for arch esp32"
+time="2026-11-28T23:57:22+08:00" level=info msg="  found better lib" lib=FS prio=6B0

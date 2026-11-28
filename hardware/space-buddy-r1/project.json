@@ -6,7 +6,7 @@
     "revisions": {
       "pcb": null,
       "cad": 3,
-      "fw": "draft",
+      "fw": "compiled-untested-1",
       "bom": "batch1-v3"
     },
     "rule": "任一影响接口或尺寸的变更：递增对应段与整体版本，并按 dependency_graph 将下游证据标记 stale（需重新验证）。禁止只声明部分段的版本。"
@@ -74,6 +74,14 @@
           "evidence": "hardware/space-buddy-r1/netlist-evidence.json",
           "path": "hardware/space-buddy-r1/netlist-evidence.net",
           "digest": "d3f46041f40113632179f7cd62b1f6383d0e01591703b33399d015f5681dba50",
+          "assert_script": "hardware/space-buddy-r1/eda-assert-netlist.py"
+        },
+        {
+          "name": "BOM 真实导出（CSV，仅 J1/J3 一行；含语义断言）",
+          "type": "bom",
+          "path": "hardware/space-buddy-r1/bom-evidence.csv",
+          "digest": "327f8e17fe71774ff33bb14ac8248049fca116a382c1af96f38e4e5fdf6ced7f",
+          "evidence": "hardware/space-buddy-r1/netlist-evidence.json",
           "assert_script": "hardware/space-buddy-r1/eda-assert-netlist.py"
         }
       ],
@@ -158,12 +166,32 @@
       }
     },
     "firmware": {
-      "status": "draft（未编译烧录）",
-      "entry": "source-data/agent-button-deck/pcba-v1/firmware-hid/AgentButtonDeckHID.ino"
+      "status": "已真实编译（esp32:esp32 4.0.0 锁定；未烧录、未实测）",
+      "entry": "source-data/agent-button-deck/pcba-v1/firmware-hid/AgentButtonDeckHID.ino",
+      "evidence": "source-data/agent-button-deck/pcba-v1/firmware-hid/build-evidence.json",
+      "log": "source-data/agent-button-deck/pcba-v1/firmware-hid/compile-2026-11-28.log",
+      "toolchain": {
+        "arduino_cli": "1.6.0",
+        "core": "esp32:esp32@4.0.0",
+        "index": "https://espressif.github.io/arduino-esp32/package_esp32_index.json"
+      },
+      "fqbn": "esp32:esp32:esp32s3:USBMode=default,CDCOnBoot=default,FlashSize=8M,PSRAM=opi",
+      "result": {
+        "program": "371961/1310720 (28%)",
+        "global": "56108/327680 (17%)",
+        "app_bin_sha256": "66c55a3996f5b9f5393a2380e683d3febe027953460b7c3253c32af2b8f40ee5"
+      },
+      "boundary": "只编译：不烧录；USB 枚举/按键行为待到货实测验收（§固件/主机与整机验收）"
     },
     "bom": {
       "status": "batch1 采购清单（UNKNOWN 项待用户核对）",
-      "entry": "source-data/agent-button-deck/pcba-v1/bom-batch1-user.md"
+      "entry": "source-data/agent-button-deck/pcba-v1/bom-batch1-user.md",
+      "electrical_bom_evidence": {
+        "file": "hardware/space-buddy-r1/bom-evidence.csv",
+        "sha256": "327f8e17fe71774f…（完整值见 netlist-evidence.json bom_export.sha256）",
+        "note": "真实导出（getBomFile CSV）：仅 J1,J3 一行（C18078140×2）；K1–K4/TBD-MECH-AXIS 零出现；语义断言强制",
+        "raw_rows_source": "netlist-evidence.json bom_export.rows（真实 CSV 机器解析，非构造）"
+      }
     },
     "manufacturing": {
       "status": "未授权（未冻结不下单）",
@@ -192,6 +220,39 @@
       "status": "未开始",
       "criteria": "factory-delivery-plan §6 七条（免焊接为否决项）",
       "evidence": null
+    },
+    "pcb": {
+      "status": "Layout 草案进行中（参数化草案已建档；EDA 原生画布放置被阻断——已登记；不冻结、不导 Gerber）",
+      "draft_entry": "source-data/agent-button-deck/pcba-v1/pcb/g3-pcb-draft-r1.py",
+      "draft_outputs": [
+        "source-data/agent-button-deck/pcba-v1/pcb/draft/pcb-draft-r1.json",
+        "source-data/agent-button-deck/pcba-v1/pcb/draft/pcb-draft-r1.svg"
+      ],
+      "official_basis": "PCB_ESP32-S3-DevKitC-1_V1.1_20220429.pdf 第1页标注（SHA256 3f6716…，2026-11-29 重下载核验一致）：排距 22.86=25.40−2×1.27、间距 2.54、板框 25.40×62.74、USB 区 8.00",
+      "draft_contents": [
+        "J1/J3 1×22P 母排焊盘坐标（排距 22.86 官方；pin1=3V3 远 USB 端，pin22=GND 近 USB 端）",
+        "GPIO4–7 引出焊盘定位（J1.4–7 顶部远端）",
+        "DevKitC 包络 + USB 区悬出载板底边 2.74（草案）",
+        "四键 2×2 区域映射壳体键距 33（placeholder，等样轴）",
+        "GND 规划：底面覆铜草案待 EDA 原生放置后实施"
+      ],
+      "joint_conflict_exposed": "K3/K4 键区与插座区在当前壳体坐标下重叠——G4 联合检查三选一（双层载板/调键距/竖置 DevKitC）；草案不隐瞒不冻结",
+      "eda_canvas_blocker": "pcb_Document.importChanges 需画布确认对话框，自动环境下 PCB 文档无法就绪（getDocumentReadyState=notLoaded，tab 已建但画布不加载）；EDA 原生放置等画布可用或人工确认一次",
+      "preconditions_before_pcb_convert": [
+        "PCB 转换前必须重新检查 K1–K4 Convert to PCB=no（eda-assert-netlist.py 已强制）",
+        "DevKitC 实物实测：排距/USB 中心距/板框终判",
+        "样轴确认后绑定真正机械轴封装（不复用 YD-3410 SMD 占位）",
+        "G4 联合检查选定冲突解除方案后冻结板框"
+      ],
+      "not_frozen": [
+        "载板外形 76×62",
+        "焊排起点",
+        "键距 33",
+        "键孔 15.6",
+        "螺柱",
+        "USB 中心距",
+        "排距实测终判"
+      ]
     }
   },
   "dependency_graph": {
@@ -256,7 +317,7 @@
     }
   },
   "joint_check": {
-    "status": "未开始（等：轴体实测→键帽冻结；DevKitC 实测→USB 校核；G4 板框→螺柱）",
+    "status": "草案冲突已量化：K3/K4 键区×插座区重叠（见 domains.pcb.joint_conflict_exposed）；等：实物测量 → G4 联合检查三选一 → 板框冻结",
     "contract": "PCB 板框/安装孔/排母高度/开关高度/USB 连接器位置 × 外壳开孔/螺柱/键帽行程/维修空间，共同机械坐标原点=底座地板上表面"
   },
   "workbench_nine": {
@@ -265,16 +326,17 @@
     "factory_can": "待 DFM 答复（话术已备，等轴体 SKU 定档）",
     "blockers": [
       "样轴与 DevKitC 未到货（第一批采购由负责人执行）",
-      "PCB 未开始（等 G4 输入）"
+      "PCB EDA 原生放置待画布可用（importChanges 需确认对话框）；G4 联合检查三选一未定",
+      "固件已编译未烧录（等 DevKitC 到货实测）"
     ],
     "next_owner": [
       {
         "who": "负责人",
-        "what": "第一批下单（清单已终版）"
+        "what": "第一批下单（清单已终版）+ PR #31 复核合并"
       },
       {
         "who": "Agent",
-        "what": "到货实测回填+冻结+DFM 发询+EDA 原理图（PR-B）"
+        "what": "到货实测回填+样轴封装绑定+G4 联合检查+EDA 原生 PCB 放置"
       }
     ],
     "needs_user": [

@@ -7,7 +7,7 @@
  *   - HID 通过 ESP32-S3 原生 USB OTG 口（USB-C/Micro 以实物为准）连接电脑
  *   - Micro-USB（USB-to-UART）口保留为烧录与维护口
  *
- * 状态：草稿，未编译、未烧录、未实测。首次编译时锁定并记录：
+ * 状态：已编译（2026-11-28，esp32:esp32 4.0.0），未烧录、未实测。编译锁定并记录：
  *   - arduino-esp32 Core 版本与 FQBN（板型 esp32s3，USB CDC On Boot = Disabled）
  *   - USBHIDKeyboard 所需的 USB 模式菜单项与编译日志
  * 参考基线：origin/feat/agent-button-deck-doavr@5654c5d 的 AgentButtonDeck.ino
@@ -41,6 +41,7 @@ void setup() {
     states[i].lastEdgeMs = millis();
   }
   Keyboard.begin();
+  USB.begin();  // TinyUSB 栈启动（USBHIDKeyboard 规范用法；未烧录实测，枚举时序以到货实测为准）
   // 等待主机完成 USB 枚举（首次插拔以实测为准；此延时不是已测得的最短枚举时间）
   delay(1500);
 }

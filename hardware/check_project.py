@@ -234,16 +234,19 @@ def validate(project_path: Path, changed: list[str] | None = None) -> dict:
                     bad_outputs.append((name, f"产物真实路径不存在 {opath}"))
                 elif sha256_file(pp) != digest:
                     bad_outputs.append((name, f"产物内容摘要不符 {opath}"))
-        # 网表语义断言：哈希一致 ≠ 语义正确——同步更新哈希不能绕过电气/隔离检查
-        if otype == "netlist" and opath and o.get("assert_script"):
+        # 语义断言（网表+BOM）：哈希一致 ≠ 语义正确——同步更新哈希不能绕过电气/隔离检查
+        if otype in ("netlist", "bom") and opath and o.get("assert_script"):
             spath = ROOT / o["assert_script"]
             if not spath.is_file():
                 bad_outputs.append((name, f"语义断言脚本缺失 {o['assert_script']}"))
             else:
+                kind_args = (["--kind", "netlist", "--net", str(ROOT / opath)]
+                             if otype == "netlist"
+                             else ["--kind", "bom", "--bom", str(ROOT / opath)])
                 try:
                     proc = subprocess.run(
-                        [sys.executable, str(spath), "--check",
-                         "--net", str(ROOT / opath), "--json", str(ROOT / ev)],
+                        [sys.executable, str(spath), "--check", *kind_args,
+                         "--json", str(ROOT / ev)],
                         capture_output=True, text=True, timeout=60, cwd=str(ROOT))
                     if proc.returncode != 0:
                         detail = ""
@@ -251,7 +254,7 @@ def validate(project_path: Path, changed: list[str] | None = None) -> dict:
                             detail = "；".join(json.loads(proc.stdout).get("failed", [])[:3])
                         except Exception:
                             detail = (proc.stderr or proc.stdout or "无输出")[:200]
-                        bad_outputs.append((name, f"网表语义断言失败：{detail}"))
+                        bad_outputs.append((name, f"语义断言失败：{detail}"))
                 except Exception as exc:
                     bad_outputs.append((name, f"语义断言执行异常：{str(exc)[:120]}"))
         ev_text = (ROOT / ev).read_text(encoding="utf-8", errors="ignore")
