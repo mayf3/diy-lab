@@ -50,19 +50,23 @@ def verify_c1(wp: cq.Workplane) -> list[dict]:
                                       bh - GC.C1["slot_depth"]))
         v = reimport_volume(wp, pin)
         add(f"R2 槽位存在 x={x} w={w}", v <= 1e-6, f"槽针干涉 {v:.3f}mm³")
-    # 逐槽位底板探针：每槽正下方的底板必须全程有材料（切穿检测的敏感判据）
+    # R3（Batch4 P0-2）：按每槽实际宽度逐槽计算三维体积期望（含 10% 测量容差）。
+    # 审查反例：最宽槽期望 107.1mm³，旧统一阈值 45.9mm³ 会让半切底板误 PASS。
     floor_ok = True
     bad = []
-    nominal = (GC.C1["slot_len"] - 1) * (GC.C1["floor"] - 0.6)
     for (x, w) in GC.C1_SLOTS:
-        probe = cq.Solid.makeBox(w - 0.3, GC.C1["slot_len"] - 1, GC.C1["floor"] - 0.6,
-                                 Vector(x - (w - 0.3) / 2, -(GC.C1["slot_len"] - 1) / 2, 0.3))
+        probe_w = w - 0.3
+        probe_len = GC.C1["slot_len"] - 1
+        probe_h = GC.C1["floor"] - 0.6
+        nominal = probe_w * probe_len * probe_h          # 期望体积 = 探针几何体积
+        probe = cq.Solid.makeBox(probe_w, probe_len, probe_h,
+                                 Vector(x - probe_w / 2, -probe_len / 2, 0.3))
         v = reimport_volume(wp, probe)
-        if v < nominal * 0.9:
+        if v < nominal * 0.9 or v > nominal * 1.02:
             floor_ok = False
-            bad.append(f"x={x}: {v:.1f}<{nominal:.0f}mm³")
-    add("R3 底板完整（逐槽位探针）", floor_ok,
-        "每槽下方底板材料全程连续" if floor_ok else f"底板被切穿：{bad[:3]}")
+            bad.append(f"x={x}(w={w}): {v:.1f} vs 期望 {nominal:.1f}mm³")
+    add("R3 底板完整（逐槽位三维体积，按槽宽独立阈值）", floor_ok,
+        "每槽底板体积=探针体积（全实心）" if floor_ok else f"底板异常：{bad[:3]}")
     return checks
 
 def verify_c2(wp: cq.Workplane) -> list[dict]:
@@ -89,10 +93,18 @@ def verify_c3(wp: cq.Workplane) -> list[dict]:
                        "basis": "STEP-geometry(coupon)"})
     n = solid_count(wp)
     add("R1 连通性（1 solid）", n == 1, f"solids={n}")
-    bh = GC.C3["block"][2]
-    plug = cq.Solid.makeBox(12.0, 20.0, 6.0, Vector(-6.0, -10.0, bh / 2 - 3.0))
+    # 封闭孔验证：孔中心 z=0，四周保留实体
+    plug = cq.Solid.makeBox(12.0, 20.0, 6.0, Vector(-6.0, -10.0, -3.0))
     v = reimport_volume(wp, plug)
-    add("R6 插头包络贯穿（12×6 通过壁体）", v <= 1e-6, f"包络干涉 {v:.3f}mm³")
+    add("R6 插头包络贯穿（12×6 通过封闭孔）", v <= 1e-6, f"包络干涉 {v:.3f}mm³")
+    # R7 孔四周实体保留：孔中心上下各偏移 ±(oh/2+1.5) 的探针必须撞到材料
+    oh = GC.C3["opening"][1]
+    for tag, dz in (("孔上方", oh / 2 + 1.5), ("孔下方", -(oh / 2 + 1.5))):
+        guard = cq.Solid.makeBox(12.0, 20.0, 1.0, Vector(-6.0, -10.0, dz - 0.5))
+        v2 = reimport_volume(wp, guard)
+        nominal = 12.0 * GC.C3["block"][1] * 1.0      # 12×壁厚×1mm 探针全实心
+        add(f"R7 孔{tag}实体保留（封闭孔，非缺口）", v2 >= nominal * 0.9,
+            f"实体 {v2:.1f}mm³ ≥ 期望 {nominal:.1f}mm³")
     return checks
 
 # ---- 正向链：构建 → 导出 STEP → 重导入 → 验证 ----
