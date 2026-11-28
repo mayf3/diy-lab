@@ -557,6 +557,7 @@
       "artifacts_present": true,
       "cad_evidence_state": "valid",
       "cad_geometry_green": true,
+      "eda_project_verified": true,
       "joint_verified": false,
       "package_complete": false,
       "acceptance_done": false,
@@ -608,12 +609,12 @@
       "product_ready_reasons": [
         "CAD 设计检查未有效通过（尺寸存在占位/待实测项：connector_protrusion,board_envelope,usb_ports,usb_opening,usb_plug_envelope,skirt_usb_clearance,body,keys,boss）",
         "PCB 版本未冻结",
-        "EDA 原生工程产物不足（原理图/DRC/BOM/CPL/Gerber 等）",
         "板壳联合验证未完成",
-        "制造包缺件：EDA 原生工程、Gerber、BOM（LCSC 编号）、CPL、PCB STEP、外壳 STEP、分件 STL、外壳 3MF、装配说明、零件清单、版本清单",
-        "制造下单未获授权（正常状态，非设计错误）",
-        "实物验收未完成（最终验收项，非首次打样前置）"
+        "制造包缺件：EDA 原生工程、Gerber、BOM（LCSC 编号）、CPL、PCB STEP、外壳 STEP、分件 STL、外壳 3MF、装配说明、零件清单、版本清单"
       ],
+      "design_ready": false,
+      "manufacturing_authorized": false,
+      "product_accepted": false,
       "product_ready": false,
       "eda_environment_note": "EDA 环境已激活且读写往返验收（2026-11-26，MakerLab-EDA-Check-20261126.eprj3）——环境可用 ≠ 产品 PCB 存在"
     },

@@ -1,0 +1,11 @@
+{
+ "project_uuid": "4ab9e52666a4fc7fe9b1d0c7c4c4263444d972eb139973d04478d976200a78b8",
+ "schematic_uuid": "7415725566084bd0",
+ "schematic_name": "Schematic1",
+ "page": [
+  "P1"
+ ],
+ "read_at": "2026-11-28T03:47:05.269Z",
+ "session": "a9a1f285-b60e-4dd6-97f1-7135ecec0a96 (headless)",
+ "note": "EDA 会话读回身份（真实编辑器 API 读回，非人工填写）"
+}
