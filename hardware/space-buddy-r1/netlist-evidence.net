@@ -1,0 +1,420 @@
+PROTEL NETLIST 2.0
+[
+DESIGNATOR
+U1
+FOOTPRINT
+SW-SMD_C9900017374
+PARTTYPE
+轻触开关
+DESCRIPTION
+
+Component Kind
+Standard
+Add into BOM
+yes
+Convert to PCB
+yes
+Device
+轻触开关
+PCB Layer
+Default
+Symbol
+轻触开关_C9900017374
+Designator
+U1
+Unique ID
+gge3
+LCSC Part Name
+轻触开关
+Supplier Part
+C9900017374
+Manufacturer
+
+Manufacturer Part
+轻触开关
+Supplier Footprint
+4.5*4.5 前插后贴片 -20~55°C PPA 铜镀银
+JLCPCB Part Class
+Extended Part
+Datasheet
+
+Supplier
+LCSC
+3D Model Title
+SW-SMD_C9900017374
+Name
+轻触开关
+Description
+
+Reuse Block
+
+Group ID
+
+Channel ID
+
+
+*
+]
+[
+DESIGNATOR
+U2
+FOOTPRINT
+SW-SMD_C9900017374
+PARTTYPE
+轻触开关
+DESCRIPTION
+
+Component Kind
+Standard
+Add into BOM
+yes
+Convert to PCB
+yes
+Device
+轻触开关
+PCB Layer
+Default
+Symbol
+轻触开关_C9900017374
+Designator
+U2
+Unique ID
+gge4
+LCSC Part Name
+轻触开关
+Supplier Part
+C9900017374
+Manufacturer
+
+Manufacturer Part
+轻触开关
+Supplier Footprint
+4.5*4.5 前插后贴片 -20~55°C PPA 铜镀银
+JLCPCB Part Class
+Extended Part
+Datasheet
+
+Supplier
+LCSC
+3D Model Title
+SW-SMD_C9900017374
+Name
+轻触开关
+Description
+
+Reuse Block
+
+Group ID
+
+Channel ID
+
+
+*
+]
+[
+DESIGNATOR
+U3
+FOOTPRINT
+SW-SMD_C9900017374
+PARTTYPE
+轻触开关
+DESCRIPTION
+
+Component Kind
+Standard
+Add into BOM
+yes
+Convert to PCB
+yes
+Device
+轻触开关
+PCB Layer
+Default
+Symbol
+轻触开关_C9900017374
+Designator
+U3
+Unique ID
+gge5
+LCSC Part Name
+轻触开关
+Supplier Part
+C9900017374
+Manufacturer
+
+Manufacturer Part
+轻触开关
+Supplier Footprint
+4.5*4.5 前插后贴片 -20~55°C PPA 铜镀银
+JLCPCB Part Class
+Extended Part
+Datasheet
+
+Supplier
+LCSC
+3D Model Title
+SW-SMD_C9900017374
+Name
+轻触开关
+Description
+
+Reuse Block
+
+Group ID
+
+Channel ID
+
+
+*
+]
+[
+DESIGNATOR
+U4
+FOOTPRINT
+SW-SMD_C9900017374
+PARTTYPE
+轻触开关
+DESCRIPTION
+
+Component Kind
+Standard
+Add into BOM
+yes
+Convert to PCB
+yes
+Device
+轻触开关
+PCB Layer
+Default
+Symbol
+轻触开关_C9900017374
+Designator
+U4
+Unique ID
+gge6
+LCSC Part Name
+轻触开关
+Supplier Part
+C9900017374
+Manufacturer
+
+Manufacturer Part
+轻触开关
+Supplier Footprint
+4.5*4.5 前插后贴片 -20~55°C PPA 铜镀银
+JLCPCB Part Class
+Extended Part
+Datasheet
+
+Supplier
+LCSC
+3D Model Title
+SW-SMD_C9900017374
+Name
+轻触开关
+Description
+
+Reuse Block
+
+Group ID
+
+Channel ID
+
+
+*
+]
+[
+DESIGNATOR
+H1
+FOOTPRINT
+HDR-TH_22P-P2.54-V-F
+PARTTYPE
+BX-PM2.54-1-22PY
+DESCRIPTION
+插孔结构:1x22P;间距:2.54mm;行距:-;圆孔/方孔:方孔;安装方式:直插;排数:单排;总孔位数:22P;额定电流:3A;额定电压:-;插孔方向:顶部;塑高:8.5mm;触头材质:黄铜;触头镀层:金;工作温度:-40℃~+105℃;
+Component Kind
+Standard
+Add into BOM
+yes
+Convert to PCB
+yes
+Device
+BX-PM2.54-1-22PY
+PCB Layer
+Default
+Symbol
+BX-PM2.54-1-22PY
+Designator
+H1
+Unique ID
+gge7
+LCSC Part Name
+1x22P 间距:2.54mm 直插
+Supplier Part
+C18078140
+Manufacturer
+Bossie(博锡)
+Manufacturer Part
+BX-PM2.54-1-22PY
+Supplier Footprint
+插件,P=2.54mm
+JLCPCB Part Class
+Extended Part
+Datasheet
+https://item.szlcsc.com/datasheet/BX-PM2.54-1-22PY/19218541.html
+Supplier
+LCSC
+3D Model Title
+HDR-TH_22P-P2.54-V-F
+Holes Structure
+1x22P
+Pitch
+2.54mm
+Row Spacing
+-
+Circular Hole / Square Hole
+方孔
+Mounting Type
+直插
+Number of Rows
+单排
+Number of Positions
+22P
+Current Rating
+3A
+Voltage Rating (Max)
+-
+Holes Direction
+顶部
+Insulation Height
+8.5mm
+Contact Material
+黄铜
+Contact Plating
+金
+Operating Temperature
+-40℃~+105℃
+PIN Length
+3.2mm
+Name
+BX-PM2.54-1-22PY
+Description
+插孔结构:1x22P;间距:2.54mm;行距:-;圆孔/方孔:方孔;安装方式:直插;排数:单排;总孔位数:22P;额定电流:3A;额定电压:-;插孔方向:顶部;塑高:8.5mm;触头材质:黄铜;触头镀层:金;工作温度:-40℃~+105℃;
+Reuse Block
+
+Group ID
+
+Channel ID
+
+
+*
+]
+[
+DESIGNATOR
+H2
+FOOTPRINT
+HDR-TH_22P-P2.54-V-F
+PARTTYPE
+BX-PM2.54-1-22PY
+DESCRIPTION
+插孔结构:1x22P;间距:2.54mm;行距:-;圆孔/方孔:方孔;安装方式:直插;排数:单排;总孔位数:22P;额定电流:3A;额定电压:-;插孔方向:顶部;塑高:8.5mm;触头材质:黄铜;触头镀层:金;工作温度:-40℃~+105℃;
+Component Kind
+Standard
+Add into BOM
+yes
+Convert to PCB
+yes
+Device
+BX-PM2.54-1-22PY
+PCB Layer
+Default
+Symbol
+BX-PM2.54-1-22PY
+Designator
+H2
+Unique ID
+gge8
+LCSC Part Name
+1x22P 间距:2.54mm 直插
+Supplier Part
+C18078140
+Manufacturer
+Bossie(博锡)
+Manufacturer Part
+BX-PM2.54-1-22PY
+Supplier Footprint
+插件,P=2.54mm
+JLCPCB Part Class
+Extended Part
+Datasheet
+https://item.szlcsc.com/datasheet/BX-PM2.54-1-22PY/19218541.html
+Supplier
+LCSC
+3D Model Title
+HDR-TH_22P-P2.54-V-F
+Holes Structure
+1x22P
+Pitch
+2.54mm
+Row Spacing
+-
+Circular Hole / Square Hole
+方孔
+Mounting Type
+直插
+Number of Rows
+单排
+Number of Positions
+22P
+Current Rating
+3A
+Voltage Rating (Max)
+-
+Holes Direction
+顶部
+Insulation Height
+8.5mm
+Contact Material
+黄铜
+Contact Plating
+金
+Operating Temperature
+-40℃~+105℃
+PIN Length
+3.2mm
+Name
+BX-PM2.54-1-22PY
+Description
+插孔结构:1x22P;间距:2.54mm;行距:-;圆孔/方孔:方孔;安装方式:直插;排数:单排;总孔位数:22P;额定电流:3A;额定电压:-;插孔方向:顶部;塑高:8.5mm;触头材质:黄铜;触头镀层:金;工作温度:-40℃~+105℃;
+Reuse Block
+
+Group ID
+
+Channel ID
+
+
+*
+]
+(
+GPIO4 
+U1-1 轻触开关-1 Passive 
+)
+(
+GND 
+U1-2 轻触开关-2 Passive 
+U2-2 轻触开关-2 Passive 
+U3-2 轻触开关-2 Passive 
+U4-2 轻触开关-2 Passive 
+)
+(
+GPIO5 
+U2-1 轻触开关-1 Passive 
+)
+(
+GPIO6 
+U3-1 轻触开关-1 Passive 
+)
+(
+GPIO7 
+U4-1 轻触开关-1 Passive 
+)
