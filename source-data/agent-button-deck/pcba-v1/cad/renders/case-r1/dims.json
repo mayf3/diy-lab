@@ -47,17 +47,30 @@
     },
     "relief": {
       "helmet_r": 13.0,
-      "visor_r": 8.6,
-      "visor_off_y": 1.5,
+      "helmet_band": 2.2,
+      "helmet_ring2_r": 9.6,
+      "helmet_ring2_band": 1.4,
+      "visor_rx": 8.2,
+      "visor_ry": 6.8,
+      "visor_off_z": 1.5,
       "torso_w": 30.0,
       "torso_h": 18.0,
+      "arm_r": 4.5,
       "panel_w": 14.0,
       "panel_h": 6.0,
       "port_r": 10.0,
       "port_hole": 7.6,
-      "recess": 0.6,
+      "cross_bar_t": 1.6,
       "star_out": 2.6,
       "star_in": 1.1,
+      "star_scale": [
+        1.0,
+        0.72,
+        1.25,
+        0.9,
+        1.12,
+        0.8
+      ],
       "h": 0.8
     }
   },

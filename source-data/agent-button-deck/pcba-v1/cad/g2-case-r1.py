@@ -26,9 +26,11 @@ USB = dict(count=2, w=11.2, h=8.5, spacing=12.5, z=8.0,   # 开孔 11.2<中心�
            left="UART(J2,Micro-USB)", right="USB-OTG(J4,Micro-USB)")
 PLUG_ENV = dict(w=10.6, h=8.0)   # 单插头通过包络（须窄且矮于开孔 11.2×8.5）——待插头实物测量校核
 BOSS = dict(d=6.0, h=7.0, pos_x=30.0, pos_y=28.0, hole_d=2.6)  # 位置避让内腔 R7.6 圆角，待 G4 板框定稿
-RELIEF = dict(helmet_r=13.0, visor_r=8.6, visor_off_y=1.5, torso_w=30.0, torso_h=18.0,
-              panel_w=14.0, panel_h=6.0, port_r=10.0, port_hole=7.6, recess=0.6,
-              star_out=2.6, star_in=1.1, h=0.8)
+RELIEF = dict(helmet_r=13.0, helmet_band=2.2, helmet_ring2_r=9.6, helmet_ring2_band=1.4,
+              visor_rx=8.2, visor_ry=6.8, visor_off_z=1.5, torso_w=30.0, torso_h=18.0,
+              arm_r=4.5, panel_w=14.0, panel_h=6.0,
+              port_r=10.0, port_hole=7.6, cross_bar_t=1.6,
+              star_out=2.6, star_in=1.1, star_scale=(1.0, 0.72, 1.25, 0.9, 1.12, 0.8), h=0.8)
 
 SOURCES = {
     "board_outline": {
@@ -159,28 +161,47 @@ body_in = rr(B["W"] - 2 * B["wall"], B["D"] - 2 * B["wall"],
 body = body_out.cut(body_in)
 front = B["D"] / 2
 
-# 正面浮雕（+y 向外）：头盔环 + 面罩 + 躯干面板 + 舷窗（环凸+窗凹）+ 五角星
+# 正面浮雕（+y 向外）：头盔双环 + 椭圆面罩 + 躯干圆肩双臂 + 胸前面板 +
+# 舷窗（凸环+凹窗+十字框）+ 大小节奏五角星 —— G2-2 儿童产品精致感精修（视觉评审项）
 dec = []
-helmet_o = cyl(S["helmet_r"], S["h"], 0, front - 0.01, FLOOR + B["H"] * 0.55, dir_y=True)
-helmet_i = cyl(S["helmet_r"] - 2.2, S["h"] * 2, 0, front - 0.02, FLOOR + B["H"] * 0.55, dir_y=True)
-dec.append(helmet_o.cut(helmet_i))                                   # 头盔环
-dec.append(cyl(S["visor_r"], S["h"], 0, front - 0.01,
-               FLOOR + B["H"] * 0.55 - S["visor_off_y"], dir_y=True))  # 面罩（单层 0.8，凸出不超裙壁开口）
-dec.append(rr(S["torso_w"], S["h"], S["torso_h"], 4, z=FLOOR + B["H"] * 0.16, x=0, y=front - S["h"] / 2))
+zc = FLOOR + B["H"] * 0.55
+helmet_o = cyl(S["helmet_r"], S["h"], 0, front - 0.01, zc, dir_y=True)
+helmet_i = cyl(S["helmet_r"] - S["helmet_band"], S["h"] * 2, 0, front - 0.02, zc, dir_y=True)
+dec.append(helmet_o.cut(helmet_i))                                   # 头盔外环
+ring2_o = cyl(S["helmet_ring2_r"], S["h"], 0, front - 0.01, zc, dir_y=True)
+ring2_i = cyl(S["helmet_ring2_r"] - S["helmet_ring2_band"], S["h"] * 2, 0, front - 0.02, zc, dir_y=True)
+dec.append(ring2_o.cut(ring2_i))                                     # 头盔内环
+try:                                                                 # 椭圆面罩（儿童圆润感）
+    el = Part.makeEllipse(S["visor_rx"], S["visor_ry"], App.Vector(0, front - 0.01, zc - S["visor_off_z"]),
+                          App.Vector(0, 1, 0), App.Vector(1, 0, 0))
+    dec.append(Part.Face(Part.Wire([el.toShape()])).extrude(App.Vector(0, S["h"], 0)))
+except Exception:
+    dec.append(cyl(S["visor_rx"], S["h"], 0, front - 0.01, zc - S["visor_off_z"], dir_y=True))
+torso_z = FLOOR + B["H"] * 0.16
+dec.append(rr(S["torso_w"], S["h"], S["torso_h"], 4, z=torso_z, x=0, y=front - S["h"] / 2))
+for sx in (-1, 1):                                                   # 圆肩双臂（竖直圆柱截面，凸出 0.8）
+    dec.append(cyl(S["arm_r"], S["h"], sx * (S["torso_w"] / 2 + 2.5),
+                   front - 0.01, torso_z + 3.0, dir_y=True))
 dec.append(rr(S["panel_w"], S["h"] * 1.4, S["panel_h"], 1.5,
               z=FLOOR + B["H"] * 0.30, x=0, y=front - S["h"] * 0.7))   # 胸前面板
-for dx in (-S["port_r"] * 2.6, S["port_r"] * 2.6):
-    ring_o = cyl(S["port_r"], S["h"], dx, front - 0.01, FLOOR + B["H"] * 0.52, dir_y=True)
-    ring_i = cyl(S["port_hole"], S["h"] * 2, dx, front - 0.02, FLOOR + B["H"] * 0.52, dir_y=True)
+for dx in (-S["port_r"] * 2.6, S["port_r"] * 2.6):                   # 舷窗：凸环+凹窗+十字框
+    pcz = FLOOR + B["H"] * 0.52
+    ring_o = cyl(S["port_r"], S["h"], dx, front - 0.01, pcz, dir_y=True)
+    ring_i = cyl(S["port_hole"], S["h"] * 2, dx, front - 0.02, pcz, dir_y=True)
     dec.append(ring_o.cut(ring_i))
     dec.append(rr(S["port_hole"] * 1.5, S["h"], S["port_hole"] * 1.5, 1.0,
-                  z=FLOOR + B["H"] * 0.52 - S["port_hole"] * 0.75, x=dx, y=front - S["h"] / 2))
-for i in range(6):  # 五角星（真实星形轮廓，两种尺寸）
+                  z=pcz - S["port_hole"] * 0.75, x=dx, y=front - S["h"] / 2))
+    bar_v = rr(S["cross_bar_t"], S["h"], S["port_hole"] * 1.9, 0.6,
+               z=pcz - S["port_hole"] * 0.95, x=dx, y=front - S["h"] / 2)
+    bar_h = rr(S["port_hole"] * 1.9, S["h"], S["cross_bar_t"], 0.6,
+               z=pcz - S["cross_bar_t"] / 2, x=dx, y=front - S["h"] / 2)
+    dec += [bar_v, bar_h]
+for i in range(6):  # 大小节奏五角星
     ang = i * math.pi / 3
-    sx = math.cos(ang) * (B["W"] / 2 - 9)
-    sz = FLOOR + B["H"] * (0.30 + 0.38 * (i % 2))
-    dec.append(star_prism(S["star_out"] * (1.25 if i % 2 else 1.0), S["star_in"],
-                          S["h"], sx, sz, front - 0.01))
+    sc = S["star_scale"][i % len(S["star_scale"])]
+    dec.append(star_prism(S["star_out"] * sc, S["star_in"] * sc,
+                          S["h"], math.cos(ang) * (B["W"] / 2 - 9),
+                          FLOOR + B["H"] * (0.30 + 0.38 * (i % 2)), front - 0.01))
 body = body.fuse(dec)
 
 # 顶部 2×2 键帽孔（占位方孔，待样轴定稿）

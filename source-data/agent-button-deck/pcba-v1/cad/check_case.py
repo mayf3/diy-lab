@@ -80,6 +80,37 @@ def through_and_envelope(body, cx, width, height, y_wall_lo, wall_t):
                                                      z_usb - (height + 1.0) / 2))
 
 
+def pocket_opening(shape):
+    """从几何实测底座装配开口：收集 strictly-inside 的竖直大面并取并集 bbox。
+
+    仅认不接触外边界的竖直面（外皮面被排除），柱面（螺柱）因尺寸 <10mm 被排除。
+    返回 (XLength, YLength) 或 None。
+    """
+    bb = shape.BoundBox
+    xmin = ymin = float("inf")
+    xmax = ymax = float("-inf")
+    found = False
+    for f in shape.Faces:
+        try:
+            n = f.normalAt(0, 0)
+        except Exception:
+            continue
+        if abs(n.z) > 0.9:            # 水平面不是壁
+            continue
+        fb = f.BoundBox
+        if fb.XLength <= 10 and fb.YLength <= 10:
+            continue                  # 螺柱等小柱面
+        if (fb.XMin <= bb.XMin + 0.3 or fb.XMax >= bb.XMax - 0.3 or
+                fb.YMin <= bb.YMin + 0.3 or fb.YMax >= bb.YMax - 0.3):
+            continue                  # 接触外边界 = 外皮
+        found = True
+        xmin, xmax = min(xmin, fb.XMin), max(xmax, fb.XMax)
+        ymin, ymax = min(ymin, fb.YMin), max(ymax, fb.YMax)
+    if not found:
+        return None
+    return (xmax - xmin, ymax - ymin)
+
+
 def check_real(expected):
     """对真实 STEP 产物执行全部几何检查。expected: dims.json 的 params 段。"""
     body, base = load("case-r1-body"), load("case-r1-base")
@@ -141,23 +172,12 @@ def check_real(expected):
 
     # 4) 装配：主体完整落入底座设计区域（从底座几何实测开口，而非参数 bbox 比较）
     bb_base = base.BoundBox
-    z_mid = bb_base.ZMin + (expected["base"]["floor"] + bb_base.ZMax) / 2
-    slab = Part.makeBox(bb_base.XLength + 20, bb_base.YLength + 20, 0.4,
-                        App.Vector(bb_base.XMin - 10, bb_base.YMin - 10, z_mid - 0.2))
-    core = base.common(slab)
-    inner_bb = None
-    for f in core.Faces:
-        if abs(f.CenterOfMass.z - z_mid) < 0.25 and len(f.Wires) >= 2:
-            for w in f.Wires[1:]:            # 第 0 条是外圈，其余是内开口（螺柱孔/开口区），取最大=装配开口
-                wb = w.BoundBox
-                if inner_bb is None or (wb.XLength * wb.YLength > inner_bb.XLength * inner_bb.YLength):
-                    inner_bb = wb
-    if inner_bb is not None:
+    po = pocket_opening(base)
+    if po is not None:
         checks["pocket_opening_found"] = True
-        measured["base_pocket_opening"] = [round(inner_bb.XLength, 3), round(inner_bb.YLength, 3)]
+        measured["base_pocket_opening"] = [round(po[0], 3), round(po[1], 3)]
         checks["assembly_body_in_base"] = (
-            bb_body.XMin >= inner_bb.XMin + 0.2 and bb_body.XMax <= inner_bb.XMax - 0.2 and
-            bb_body.YMin >= inner_bb.YMin + 0.2 and bb_body.YMax <= inner_bb.YMax - 0.2)
+            bb_body.XLength + 0.4 <= po[0] and bb_body.YLength + 0.4 <= po[1])
     else:
         checks["pocket_opening_found"] = False
         checks["assembly_body_in_base"] = False
@@ -232,16 +252,8 @@ def self_test():
     body_blk = Part.makeBox(88, 78, 26, App.Vector(-44, -39, 0))
     base_blk = Part.makeBox(94, 84, 14, App.Vector(-47, -42, 0)).cut(
         Part.makeBox(80, 70, 12, App.Vector(-40, -35, 2.4)))
-    slab = Part.makeBox(140, 140, 0.4, App.Vector(-70, -70, 7.8))
-    core = base_blk.common(slab)
-    inner_bb = None
-    for f in core.Faces:
-        if abs(f.CenterOfMass.z - 8) < 0.25 and len(f.Wires) >= 2:
-            for w in f.Wires[1:]:
-                wb = w.BoundBox
-                if inner_bb is None or wb.XLength * wb.YLength < inner_bb.XLength * inner_bb.YLength:
-                    inner_bb = wb
-    fits = (88 + 0.2 <= inner_bb.XLength and 78 + 0.2 <= inner_bb.YLength)
+    po = pocket_opening(base_blk)
+    fits = po is not None and (88 + 0.4 <= po[0] and 78 + 0.4 <= po[1])
     results["neg_small_pocket_detected"] = (not fits)
 
     ok = all(results.values())

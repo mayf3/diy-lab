@@ -163,7 +163,7 @@ class UserFacingDeliveryTests(unittest.TestCase):
         self.talk = (base / "jlc-dfm-checklist.md").read_text(encoding="utf-8")
 
     def test_batch1_has_six_elements_and_no_auto_purchase(self):
-        for kw in ("兼容性依据", "替代", "参考链接", "大概花费", "确认"):
+        for kw in ("兼容性依据", "替代", "参考链接", "实时价格", "确认"):
             self.assertIn(kw, self.batch1, f"第一批清单缺要素：{kw}")
         for sku in ("Gazzew Boba U4", "ESP32-S3-DevKitC-1-N8R8"):
             self.assertIn(sku, self.batch1, f"第一批清单缺准确 SKU：{sku}")
@@ -384,3 +384,35 @@ class ReferenceStudiesTests(unittest.TestCase):
         for f in ref_dir.iterdir():
             self.assertIn(f.suffix, allowed_ext,
                           f"参考研究目录出现非文档文件 {f.name}（不得复制第三方工程文件）")
+
+class ComponentRegistryTests(unittest.TestCase):
+    """实物尺寸统一登记表必须存在且区分来源等级；DFM 话术必须具体到 SKU。"""
+
+    def setUp(self):
+        base = ROOT / "source-data/agent-button-deck/pcba-v1"
+        self.registry = (base / "component-dimensions-registry.md").read_text(encoding="utf-8")
+        self.dfm = (base / "jlc-dfm-checklist.md").read_text(encoding="utf-8")
+        self.batch1 = (base / "bom-batch1-user.md").read_text(encoding="utf-8")
+
+    def test_registry_covers_all_components_with_graded_sources(self):
+        for comp in ("ESP32-S3-DevKitC-1", "机械轴", "排母", "PCB 载板"):
+            self.assertIn(comp, self.registry, f"登记表缺部件：{comp}")
+        for level in ("官方文档", "官方图纸估读", "标准推算", "实物测量", "待定"):
+            self.assertIn(level, self.registry, f"登记表缺来源等级：{level}")
+        self.assertIn("不能改标为「实物测量」", self.registry,
+                      "估读与实测的边界必须显式声明")
+
+    def test_dfm_inquiry_names_specific_switch_not_generic(self):
+        self.assertIn("Boba U4", self.dfm, "DFM 询问必须点名具体轴体候选")
+        self.assertIn("15.6×15.6", self.dfm, "DFM 询问必须给出轴体外廓")
+        self.assertIn("不能仅凭", self.dfm, "通用插件声明不构成轴体代焊证据")
+        self.assertIn("手插 + 后焊", self.dfm)
+
+    def test_batch1_marks_unverified_items_honestly(self):
+        self.assertIn("待核对", self.batch1, "未抓到实时价格的项必须标待核对")
+        self.assertIn("预焊排针照片", self.batch1, "预焊排针必须要求照片核对")
+        self.assertIn("U4T 不是静音轴", self.batch1)
+
+
+if __name__ == "__main__":
+    unittest.main()
