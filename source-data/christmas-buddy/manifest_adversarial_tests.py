@@ -37,6 +37,7 @@ def fresh_tree() -> Path:
     (tmp / "manufacturing/gerber").mkdir(parents=True, exist_ok=True)
     (tmp / "manufacturing/gerber/top.gbr").write_bytes(b"G04 top v1\n")
     (tmp / "manufacturing/gerber/bottom.gbr").write_bytes(b"G04 bottom v1\n")
+    shutil.copy2(SRC / "release-spec.json", tmp / "release-spec.json")  # 受控版本输入
     M5.build(tmp)
     return tmp
 
@@ -232,7 +233,7 @@ def main() -> int:
             rc["approval_state"] = "APPROVED"
             rc["approver"] = "alice"
             rc["approval_records"] = [
-                {"release": rc["tuple"], "manifest_hash": "stale-hash", "approver": "mallory"}]
+                {"release": rc["tuple"], "releaseHash": "stale-release-hash", "approver": "mallory"}]
             (tmp / "m5_manifest.json").write_text(json.dumps(man, ensure_ascii=False, indent=2),
                                                   encoding="utf-8")
             out = run_check(tmp)
@@ -260,7 +261,7 @@ def main() -> int:
             rc = man["release_candidate"]
             rc["approval_records"] = [
                 {"release": {"pcb": 1, "cad": 1, "fw": 1, "bom": 1},
-                 "manifest_hash": rc["manifest_hash"], "approver": "alice"}]
+                 "releaseHash": rc["release_hash"], "approver": "alice"}]
             (tmp / "m5_manifest.json").write_text(json.dumps(man, ensure_ascii=False, indent=2),
                                                   encoding="utf-8")
             out = run_check(tmp)

@@ -1,0 +1,24 @@
+{
+  "schema": "release-spec/1.0",
+  "product": "christmas-buddy-v1",
+  "tuple": {
+    "pcb": null,
+    "cad": null,
+    "fw": null,
+    "bom": null
+  },
+  "frozen_registry": [],
+  "approval_state": "UNAPPROVED",
+  "approver": null,
+  "approval_records": [],
+  "field_semantics": {
+    "tuple": "当前候选四元组（pcb/cad/fw/bom 各组件独立演进；null=未冻结段）",
+    "frozen_registry": "冻结注册表：GATE 只能冻结完整四元组；制造资格要求候选精确在册",
+    "approval_state": "UNAPPROVED | APPROVED（新候选默认 UNAPPROVED）",
+    "approver": "候选宣称批准人（APPROVED 时为非空字符串）",
+    "approval_records": "受信任批准注册表：每条绑定 {release, releaseHash, approver}；releaseHash 为产品内容身份（release_hash），不是 manifest_hash（封套）"
+  },
+  "rule": "本文件是受控版本输入（M5 build 唯一读取来源）：工件/四元组变化 → release_hash 变 → 旧批准失效（同 release_hash 的合法批准可被核验）；批准元数据变化 → manifest_hash 变。禁止手工编辑自动生成的 m5_manifest.json 伪造冻结版本（check 与 release-spec 比对）。真实生产批准必须经工作台 GATE。",
+  "trust_boundary": "本文件与脚本只承载记录的结构一致性；现实中批准人的身份与授权真实性由工作台 GATE 门禁负责。",
+  "note": "本文件不进 M5 ARTIFACT_TABLE：批准元数据不得进入 release_hash 基线（否则哈希固定点回归，PR#37 Review #4727422072）；其完整性由 m5 check 的 spec↔manifest 一致性比对承担。"
+}

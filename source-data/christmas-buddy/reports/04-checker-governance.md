@@ -51,3 +51,16 @@ Lean/脚本验证了「现实中的人」的身份。
 
 生产注册表现状：`release_candidate.approval_records = []`（保持为空），真实候选 UNAPPROVED；
 测试只使用隔离注册表（isolatedTestRegistry / 临时 Manifest），不写真实文件。
+
+## Batch4.3 双层哈希解环与动态冻结（PR #37 Review #4727422072）
+
+| 检查器 | 正向 | 负向 | 故障注入 | 证据 |
+|---|---|---|---|---|
+| release_hash（内容身份） | 定版 UNAPPROVED → 批准 → 重建：release_hash 逐位稳定 | N2 PCB/N3 BOM 漂移 → 实时重算不一致；N5 四元组变化 → 旧批准失效（含冻结缺失诊断） | —（实时扫描与 build 共用 scan_artifacts 唯一实现） | gen 测试「解环」案例 + N2/N3/N5 |
+| manifest_hash（封套） | 批准元数据变化 → 封套变化而内容身份稳定 | N7 手改登记值 → 重算不一致 FAIL | — | gen 测试 N7 + 解环案例 |
+| 合法批准全链 | **POS-B：spec → release_hash → 绑定记录 → 重建 → M5.check PASS → Lean 编译 PASS → 公理审计 PASS**（旧模型数学上不可完成，修复 #4727422072） | N1 旧 release_hash / N4 批准人 / N6 删记录 / N8 改状态各自精确 FAIL | FI 禁用 approval_consistency 后治理诊断消失 | manifest_lean_gen_tests 13 案 |
+| 动态冻结注册表 | 混合版本 PCB=2/CAD=1/FW=3/BOM=2 合法冻结+批准 → Python check 与 Lean（thm_mixed_version_* / reg_mixed_exact_match）双 PASS | reg_mixed_not_frozen / reg_mixed_empty_frozen（Lean）；N5 冻结缺失诊断（Python） | — | Version.lean v6 + 生成文件 14 定理 |
+| release-spec 受控输入 | build 从 spec 读取（不再硬编码空四元组）；spec↔manifest 一致性比对 | 缺失/结构非法 → build 异常拒绝；手改 manifest 伪造冻结 → spec 不一致 FAIL | — | load_release_spec + check |
+
+生产现状：release-spec.json（UNAPPROVED / 空冻结注册表 / 空批准注册表）；双层哈希规范全文见
+`reports/06-two-layer-release-hash.md`。本批后制造验证框架冻结，转入真实 EDA 工程与 PCB Layout。

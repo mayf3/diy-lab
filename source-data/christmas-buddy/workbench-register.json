@@ -75,7 +75,12 @@
     {
       "name": "m5_manifest",
       "cmd": "python3 source-data/christmas-buddy/m5_manifest.py check",
-      "note": "漂移即 FAIL=新候选；NOT_YET 不带哈希"
+      "note": "v6 双层哈希：release_hash（内容身份/批准绑定）+ manifest_hash（封套）；漂移即 FAIL=新候选；NOT_YET 不带哈希；版本输入来自 release-spec.json"
+    },
+    {
+      "name": "release_spec",
+      "cmd": "python3 -c \"import json,sys; s=json.load(open('source-data/christmas-buddy/release-spec.json')); assert s['schema']=='release-spec/1.0'; print('release-spec OK:', s['approval_state'], s['tuple'])\"",
+      "note": "受控版本输入（GATE 唯一写入口）；真实生产批准必须经工作台 GATE"
     },
     {
       "name": "coupon_forward",
@@ -93,7 +98,7 @@
     {
       "name": "manifest_lean_gen",
       "cmd": "python3 source-data/christmas-buddy/manifest_lean_gen_tests.py",
-      "note": "Batch4.2：gen_lean 从 Manifest 真实生成（P1-2）+ 批准治理故障注入（P1-1）；临时目录隔离"
+      "note": "Batch4.3：合法批准全链（spec→release_hash→绑定→重建→check+编译+公理审计）+ N1-N8 负向 + FI + 解环验证；临时目录隔离"
     },
     {
       "name": "verify_all_chain",
@@ -132,7 +137,7 @@
       "state": "测件已备（print-coupon/），待人打印测量"
     }
   ],
-  "release_candidate_status": "UNAPPROVED（候选哈希见 m5_manifest.json；漂移由 m5 check 即时提示）",
+  "release_candidate_status": "UNAPPROVED（双层哈希见 m5_manifest.json：release_hash=内容身份/批准绑定，manifest_hash=封套；版本输入 release-spec.json 由 GATE 控制；漂移由 m5 check 即时提示）",
   "workbench_hooks": [
     {
       "hook": "Manifest 漂移提示",
