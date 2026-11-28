@@ -34,7 +34,7 @@
       "evidence": "checks.json ok=true 且负向自检通过（check_case.py 每次建模后必跑）"
     },
     "eda": {
-      "status": "进行中（原理图元件布局完成：J1/J3/K1–K4 + GPIO4–7/GND 网络全部连通，ERC 0 错误；位号改写待续）",
+      "status": "进行中（原理图 J1/J3/K1–K4 放置+GPIO4–7/GND 网络全部连通；ERC 0 error/6 warn；位号 U1–U4 待改 K1–K4）",
       "editor_note": "EDA 环境已激活且读写往返验收（2026-11-26，MakerLab-EDA-Check-20261126.eprj3）——环境可用 ≠ 产品 PCB 存在",
       "project": {
         "kind": "cloud-workspace + 本地会话",
@@ -71,19 +71,22 @@
           "name": "网表导出（PROTEL 5856B）",
           "type": "netlist",
           "uuid": "7415725566084bd0",
-          "evidence": "hardware/space-buddy-r1/netlist-evidence.json"
+          "evidence": "hardware/space-buddy-r1/netlist-evidence.json",
+          "path": "hardware/space-buddy-r1/netlist-evidence.net",
+          "digest": "5651b0a2edf5446cd9f994857bfb9718595d1c84cbce2c831e5538c4d9c2cf3b"
         }
       ],
       "schematic_progress": {
         "components_placed": true,
-        "component_ids": {
-          "J1": "9219a882acbb9928",
-          "J3": "dd09a31e60381e2c",
-          "K1": "15eb568866d1c5e4",
-          "K2": "d2021d0f73c9658a",
-          "K3": "ce954863ed464ffb",
-          "K4": "82f2e5a85940f6bb"
+        "component_designators": {
+          "header_left": "H1",
+          "header_right": "H2",
+          "switch_1": "U1",
+          "switch_2": "U2",
+          "switch_3": "U3",
+          "switch_4": "U4"
         },
+        "designator_issue": "updateAttribute Designator 未生效（OK 但读回仍旧值）；网表电气正确，仅命名待改",
         "nets": {
           "GPIO4": [
             "U1-1"
@@ -104,13 +107,14 @@
             "U4-2"
           ]
         },
+        "connector": "BX-PM2.54-1-22PY（替换 KH-2.54PH90 公排针）",
         "erc": {
           "error": 0,
-          "warning": 10,
-          "note": "SHOWDANDLING×8（排母未接线，预期）+ CHECKFLOATPIN×2（开关 NC 脚）"
+          "warning": 6,
+          "detail": "SHOWDANDLING×4 + CHECKFLOATPIN×2（均预期）"
         },
         "netlist_exported": true,
-        "netlist_sha256_first20": "7fbff02ffe7f01c6d203"
+        "netlist_sha256": "1c9eb168300594db7c8f1d8b6be1dce1794383820ace96eca2cbb76c9acae601"
       }
     },
     "firmware": {
