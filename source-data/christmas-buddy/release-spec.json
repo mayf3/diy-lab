@@ -1,6 +1,7 @@
 {
   "schema": "release-spec/1.0",
   "product": "christmas-buddy-v1",
+  "source_commit": "626981a34cc8d6bc9d8d61081eb5254e129daaa8",
   "tuple": {
     "pcb": null,
     "cad": null,
@@ -12,13 +13,14 @@
   "approver": null,
   "approval_records": [],
   "field_semantics": {
+    "source_commit": "本次产品内容候选的基准提交（受控固定的不可变 Git commit SHA，必须在仓库历史中可达）；不是批准记录最后一次提交的 HEAD，也不随 build 自动取当前 HEAD",
     "tuple": "当前候选四元组（pcb/cad/fw/bom 各组件独立演进；null=未冻结段）",
     "frozen_registry": "冻结注册表：GATE 只能冻结完整四元组；制造资格要求候选精确在册",
     "approval_state": "UNAPPROVED | APPROVED（新候选默认 UNAPPROVED）",
     "approver": "候选宣称批准人（APPROVED 时为非空字符串）",
     "approval_records": "受信任批准注册表：每条绑定 {release, releaseHash, approver}；releaseHash 为产品内容身份（release_hash），不是 manifest_hash（封套）"
   },
-  "rule": "本文件是受控版本输入（M5 build 唯一读取来源）：工件/四元组变化 → release_hash 变 → 旧批准失效（同 release_hash 的合法批准可被核验）；批准元数据变化 → manifest_hash 变。禁止手工编辑自动生成的 m5_manifest.json 伪造冻结版本（check 与 release-spec 比对）。真实生产批准必须经工作台 GATE。",
+  "rule": "本文件是受控版本输入（M5 build 唯一读取来源）：工件/四元组/source_commit 变化 → release_hash 变 → 旧批准失效（同 release_hash 的合法批准可被核验）；批准元数据变化 → manifest_hash 变。禁止手工编辑自动生成的 m5_manifest.json 伪造冻结版本或 source_commit（check 与 release-spec 比对 + 历史可达性校验）。真实生产批准必须经工作台 GATE。",
   "trust_boundary": "本文件与脚本只承载记录的结构一致性；现实中批准人的身份与授权真实性由工作台 GATE 门禁负责。",
   "note": "本文件不进 M5 ARTIFACT_TABLE：批准元数据不得进入 release_hash 基线（否则哈希固定点回归，PR#37 Review #4727422072）；其完整性由 m5 check 的 spec↔manifest 一致性比对承担。"
 }

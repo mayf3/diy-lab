@@ -59,6 +59,18 @@ GEN_THEOREMS = [
     "ChristmasBuddy.reg_bom_bump_invalidates",
 ]
 
+def git_commit_all(tmp: Path, msg: str = "content") -> str:
+    """临时一次性 Git 仓提交（非共享工作区，全量暂存安全）；返回 HEAD SHA。
+    Batch4.3.1：source_commit 是 build 的必填受控字段（历史可达），临时树须自建提交基准。"""
+    def g(*args):
+        return subprocess.run(
+            ["git", "-c", "user.name=cbu-test", "-c", "user.email=cbu-test@test", *args],
+            cwd=tmp, capture_output=True, text=True, timeout=60)
+    assert g("init", "-b", "main").returncode == 0
+    add, c = g("add", "-A"), g("commit", "-m", msg)
+    assert add.returncode == 0 and c.returncode == 0, (add.stderr, c.stderr)
+    return g("rev-parse", "HEAD").stdout.strip()
+
 def fresh_tree() -> Path:
     tmp = Path(tempfile.mkdtemp(prefix="cbu_leangen_"))
     for row in M5.ARTIFACT_TABLE:
@@ -70,6 +82,9 @@ def fresh_tree() -> Path:
     (tmp / "manufacturing/gerber/top.gbr").write_bytes(b"G04 top v1\n")
     (tmp / "manufacturing/gerber/bottom.gbr").write_bytes(b"G04 bottom v1\n")
     shutil.copy2(SRC / "release-spec.json", tmp / "release-spec.json")
+    spec = load_json(tmp / "release-spec.json")
+    spec["source_commit"] = git_commit_all(tmp)  # 临时仓自身的内容提交基准
+    write_spec(tmp, spec)
     return tmp
 
 def gen_file(tmp: Path) -> Path:
@@ -314,6 +329,57 @@ def main() -> int:
         finally:
             shutil.rmtree(tmp, ignore_errors=True)
     case_no_cycle()
+
+    # —— P1（Batch4.3.1）：ReleaseCurrent 精确生成一致性——五项手改全部必须 FAIL
+    #    （保留正确的 release_hash/manifest_hash 字符串，仅篡改其他内容）——
+    def case_regen() -> None:
+        mutations = [
+            ("R-currentTuple", "Release := ⟨none, none, none, none⟩",
+             "Release := ⟨some 1, some 1, some 1, some 1⟩"),
+            ("R-currentFrozenRegistry",
+             "currentFrozenRegistry : List ChristmasBuddy.Version.Release := []",
+             "currentFrozenRegistry : List ChristmasBuddy.Version.Release := [⟨some 1, some 1, some 1, some 1⟩]"),
+            ("R-currentRegistry",
+             "currentRegistry : List ChristmasBuddy.Version.ApprovalRecord := []",
+             'currentRegistry : List ChristmasBuddy.Version.ApprovalRecord := [⟨⟨some 1, some 1, some 1, some 1⟩, "x", "y"⟩]'),
+            ("R-R1定理", "= currentApproved := by decide", "= false := by decide"),
+            ("R-currentApproved", "currentApproved : Bool := false", "currentApproved : Bool := true"),
+        ]
+        for tag, old, new in mutations:
+            tmp = fresh_tree()
+            try:
+                M5.build(tmp)
+                lean_path = gen_file(tmp)
+                content = lean_path.read_text(encoding="utf-8")
+                assert old in content, f"{tag}: 基准串缺失"
+                lean_path.write_text(content.replace(old, new), encoding="utf-8")
+                out = run_check(tmp)
+                hashes_kept = True  # 篡改不触及哈希字符串（替换目标均不含哈希字面量）
+                record(f"{tag} 手改 → check FAIL（精确生成一致性）",
+                       hashes_kept and "m5_manifest check: FAIL" in out
+                       and "ReleaseCurrent.lean 与受控生成不一致" in out)
+            finally:
+                shutil.rmtree(tmp, ignore_errors=True)
+    case_regen()
+
+    # —— 正向回归：手改后重新 build 即自愈（render_lean 落盘一致 → check PASS）——
+    def case_regen_heal() -> None:
+        tmp = fresh_tree()
+        try:
+            M5.build(tmp)
+            lean_path = gen_file(tmp)
+            content = lean_path.read_text(encoding="utf-8")
+            lean_path.write_text(content.replace(
+                "currentApproved : Bool := false", "currentApproved : Bool := true"),
+                encoding="utf-8")
+            tampered = run_check(tmp)
+            M5.build(tmp)                     # 重新受控生成
+            healed = run_check(tmp)
+            record("R-heal 手改后重新 build 自愈（逐字节一致 → check PASS）",
+                   "m5_manifest check: FAIL" in tampered and "m5_manifest check: PASS" in healed)
+        finally:
+            shutil.rmtree(tmp, ignore_errors=True)
+    case_regen_heal()
 
     # —— 守卫：真实树未被触碰 ——
     def case_real_guard() -> None:
