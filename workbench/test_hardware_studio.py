@@ -135,7 +135,7 @@ class ProductReadyEvidenceTests(unittest.TestCase):
         self.assertTrue(any("人工声明与证据冲突" in f for f in out["failures"]))
         self.assertTrue(facts["product_ready_reasons"], "必须列出具体未就绪原因")
         # 各领域独立表达，不互相冒充
-        self.assertIn("未开始", facts["pcb_status"])
+        self.assertFalse(facts["pcb_frozen"], "版本号填数字不等于冻结（EDA 产物仍不足）")
         self.assertFalse(facts["package_complete"])
         self.assertFalse(facts["acceptance_done"])
         self.assertFalse(facts["order_authorized"])

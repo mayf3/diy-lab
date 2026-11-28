@@ -34,9 +34,19 @@
       "evidence": "checks.json ok=true 且负向自检通过（check_case.py 每次建模后必跑）"
     },
     "eda": {
-      "status": "未开始（R1 无原生工程）",
+      "status": "进行中（原生工程+原理图页已建立；元件/网络/检查未开始）",
       "editor_note": "EDA 环境已激活且读写往返验收（2026-11-26，MakerLab-EDA-Check-20261126.eprj3）——环境可用 ≠ 产品 PCB 存在",
-      "project": null,
+      "project": {
+        "kind": "cloud-workspace（会话内）",
+        "project_uuid": "4ab9e52666a4fc7fe9b1d0c7c4c4263444d972eb139973d04478d976200a78b8",
+        "local_session_path": "/Users/yanfenma/Documents/LCEDA-Pro/projects/SpaceBuddy-R1/SpaceBuddy-R1.eprj3（.eprj3 双向同步待首次落盘）",
+        "session": "headless a9a1f285（lceda-pro CLI）",
+        "schematic_uuid": "7415725566084bd0",
+        "page": "P1",
+        "board": "Board1（含 PCB1）",
+        "created_at": "2026-11-28",
+        "note": "Schematic1 待改名 Carrier；元件布局（2×排母/4 键/网络）未开始——PR-B 继续"
+      },
       "expected_outputs": [
         "原理图",
         "PCB",
@@ -46,7 +56,9 @@
         "Gerber",
         "PCB STEP"
       ],
-      "outputs_present": []
+      "outputs_present": [
+        "原理图（Schematic1/P1，无元件）"
+      ]
     },
     "firmware": {
       "status": "draft（未编译烧录）",

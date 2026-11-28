@@ -43,6 +43,14 @@ def build() -> dict:
             **presentation,
         })
     checks = environment_checks(env)
+    nine = {}
+    try:
+        prj_full = json.loads((ROOT / 'hardware/space-buddy-r1/project.json').read_text())
+        nine = dict(prj_full.get('workbench_nine', {}))
+        nine.setdefault('appearance_progress',
+                        prj_full.get('appearance', {}).get('g2_3_refinements', '见项目记录'))
+    except Exception:
+        nine = {}
     # Hardware Studio（PR-A）：统一项目模型校验器作为唯一真源（子进程，失败如实呈现）
     hardware = None
     try:
@@ -77,8 +85,7 @@ def build() -> dict:
         },
         'projects': projects,
         'hardware': hardware,
-        'hardware_next': (json.loads((ROOT / 'hardware/space-buddy-r1/project.json').read_text()).get('workbench_nine', {})
-                          if (ROOT / 'hardware/space-buddy-r1/project.json').is_file() else {}),
+        'hardware_next': nine,
         'documents': catalog['documents'],
         'resources': catalog['resources'],
     }
