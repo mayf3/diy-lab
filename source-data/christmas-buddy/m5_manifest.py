@@ -1,5 +1,13 @@
 #!/usr/bin/env python3
-"""M5 制造发布合同 · Manifest Checker v2（P1 升级）。
+"""M5 制造发布合同 · Manifest Checker v3（Batch3）。
+
+v3 变更（Batch3 审查修复）：
+  - bom.csv 纳入 BOUND（遗漏修复）；BOM 变更 = Release 候选失效。
+  - BOM↔网表一致性检查（映射表驱动：每个 BOM 项必须对应存在的网表器件，反之关键器件必须有 BOM 行）。
+  - 目录确定性哈希 directory_manifest()：Gerber 等目录工件按规范化相对路径排序、
+    逐文件 sha256、排除临时文件、空目录有定义、符号链接跳过并记录、顺序无关。
+  - 检查器自身源码纳入 BOUND（检查器是受验证的软件产品）。
+  - BASE 可参数化（对抗测试在临时副本树上运行，绝不碰真实文件）。
 
 职责（governance MAP 的实现层）：
 1. build：扫描设计/制造工件，计算 sha256，生成 m5_manifest.json（release 候选）。
@@ -25,6 +33,36 @@ from pathlib import Path
 BASE = Path(__file__).parent
 LEAN_OUT = BASE / "proof/src/ChristmasBuddy/ReleaseCurrent.lean"
 
+# 目录工件的临时文件排除规则（确定性：不随枚举顺序变化）
+DIR_EXCLUDE = {".DS_Store", "Thumbs.db"}
+DIR_EXCLUDE_SUFFIX = (".log", ".tmp", "~", ".bak", ".swp")
+
+def directory_manifest(d: Path, base: Path) -> dict:
+    """确定性目录哈希。
+    规范：相对路径 POSIX 正斜杠、按 Unicode codepoint 排序、逐文件 sha256、
+    排除 DIR_EXCLUDE/后缀与隐藏点文件、空目录 → files=[] + dir_sha256=sha256(b"")、
+    符号链接一律跳过并登记（不跟随）、大小写保留不折叠、输入枚举顺序不影响结果。"""
+    files, skipped = [], []
+    if d.exists():
+        for f in sorted(d.rglob("*"), key=lambda q: q.name):
+            if f.is_symlink():
+                skipped.append(str(f.relative_to(base)).replace("\\", "/"))
+                continue
+            if not f.is_file():
+                continue
+            rel = f.relative_to(base).as_posix()
+            name = f.name
+            if name in DIR_EXCLUDE or name.startswith(".") or name.endswith(DIR_EXCLUDE_SUFFIX):
+                continue
+            files.append({"path": rel, "bytes": f.stat().st_size, "sha256": sha256(f)})
+    files.sort(key=lambda e: e["path"])
+    h = hashlib.sha256()
+    for e in files:  # 空列表 → sha256(b"")，有定义
+        h.update(e["path"].encode())
+        h.update(str(e["bytes"]).encode())
+        h.update(e["sha256"].encode())
+    return {"files": files, "dir_sha256": h.hexdigest(), "skipped_symlinks": skipped}
+
 # (相对路径, 逻辑名, 工具, 版本槽)  version_slot: pcb/cad/fw/bom/design
 ARTIFACT_TABLE = [
     ("power/budget.json",                       "电源预算",            "power_budget.py", "design"),
@@ -35,15 +73,24 @@ ARTIFACT_TABLE = [
     ("eda/netlist.json",                        "网表",                "netlist.py",      "pcb"),
     ("eda/erc_report.md",                       "ERC 报告",            "netlist.py",      "pcb"),
     ("eda/environment-status.json",             "EDA 环境证据",        "人工登记",         "pcb"),
+    ("bom.csv",                                 "采购 BOM",            "采购执行轮",       "bom"),
     ("visual/visual-specs.json",                "视觉约束",            "visual_specs.py", "design"),
     ("tasks/christmas-buddy-v1.tasks.json",     "工程任务书",          "gen_eng_tasks.py","design"),
     ("proof/src/ChristmasBuddy/StateMachine.lean", "M2 状态机证明",    "lean 4.19.0",     "fw"),
     ("proof/src/ChristmasBuddy/Power.lean",     "M1 电源证明",         "lean 4.19.0",     "fw"),
     ("proof/src/ChristmasBuddy/Version.lean",   "M5 发布合同证明",      "lean 4.19.0",     "fw"),
     ("proof/verification.json",                 "Lean 验证回执",       "verify_proof.py", "fw"),
+    ("eda/netlist.py",                          "网表检查器源码",       "python3",        "pcb"),
+    ("eda/netlist_tests.py",                    "网表负向测试源码",     "python3",        "pcb"),
+    ("mech/build_mech.py",                      "机械检查器源码",       "python3",        "cad"),
+    ("mech/openings.py",                        "开孔几何检查源码",     "python3",        "cad"),
+    ("mech/mech_tests.py",                      "机械负向测试源码",     "python3",        "cad"),
+    ("mech/coupon_verify.py",                   "测件验证器源码",       "python3",        "cad"),
+    ("mech/coupon_tests.py",                    "测件负向测试源码",     "python3",        "cad"),
+    ("m5_manifest.py",                          "Manifest 检查器源码",  "python3",        "bom"),
     # —— 尚不存在的制造工件：显式 NOT_YET ——
     ("eda/project/PCB1_1.epcb2",                "PCB 源文件",          "嘉立创EDA 4.1.x", "pcb"),
-    ("manufacturing/gerber/",                   "Gerber 包",           "pcb_ManufactureData", "pcb"),
+    ("manufacturing/gerber/",                   "Gerber 包",           "pcb_ManufactureData", "pcb", "dir"),
     ("manufacturing/bom.xlsx",                  "贴片 BOM",            "sch_ManufactureData", "bom"),
     ("manufacturing/cpl.xlsx",                  "坐标文件",            "pcb_ManufactureData", "pcb"),
     ("manufacturing/pcb.step",                  "PCB STEP",            "pcb_ManufactureData", "cad"),
@@ -69,12 +116,23 @@ def tool_version(tool: str) -> str:
         return "leanprover/lean4:v4.19.0"
     return tool  # 工具版本随工件自身登记；未实测版本如实保留工具名
 
-def build() -> dict:
+def build(base: Path = BASE) -> dict:
     now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     artifacts, not_yet = [], []
-    for rel, name, tool, slot in ARTIFACT_TABLE:
-        p = BASE / rel
-        if p.exists():
+    for row in ARTIFACT_TABLE:
+        rel, name, tool, slot = row[:4]
+        is_dir = len(row) > 4 and row[4] == "dir"
+        p = base / rel
+        if is_dir and p.exists():
+            dm = directory_manifest(p, base)
+            artifacts.append({
+                "path": rel, "logical_name": name, "kind": "directory",
+                "sha256": dm["dir_sha256"], "bytes": sum(e["bytes"] for e in dm["files"]),
+                "files": dm["files"], "skipped_symlinks": dm["skipped_symlinks"],
+                "version_slot": slot, "tool": tool, "tool_version": tool_version(tool),
+                "status": "BOUND",
+            })
+        elif p.exists():
             artifacts.append({
                 "path": rel, "logical_name": name, "sha256": sha256(p),
                 "bytes": p.stat().st_size, "version_slot": slot,
@@ -86,6 +144,11 @@ def build() -> dict:
                 "path": rel, "logical_name": name, "version_slot": slot,
                 "status": "NOT_YET", "sha256": None,
             })
+    consistency = bom_netlist_consistency(base)
+    if consistency:
+        not_yet.append({"path": "BOM_NETLIST_CONSISTENCY", "logical_name": "BOM↔网表一致性",
+                        "version_slot": "bom", "status": "FAIL",
+                        "errors": consistency})
     artifacts.sort(key=lambda a: a["path"])
     manifest_hash_src = json.dumps([a["sha256"] for a in artifacts], sort_keys=True)
     manifest_hash = hashlib.sha256(manifest_hash_src.encode()).hexdigest()
@@ -107,14 +170,43 @@ def build() -> dict:
         "not_yet": not_yet,
         "note": "NOT_YET 工件不携带任何哈希（禁止虚构占位）；OB-1 义务待真实 EDA 工程产出解除。",
     }
-    (BASE / "m5_manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n",
-                                           encoding="utf-8")
-    gen_lean(manifest)
+    (base / "m5_manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n",
+                                            encoding="utf-8")
+    gen_lean(manifest, base)
     print(f"m5_manifest build: {len(artifacts)} BOUND, {len(not_yet)} NOT_YET, "
           f"manifest_hash={manifest_hash[:12]}…")
     return manifest
 
-def gen_lean(manifest: dict) -> None:
+def bom_netlist_consistency(base: Path) -> list[str]:
+    """BOM↔网表一致性：BOM_NETWORK 映射表中每一项必须同时存在于 bom.csv 与网表 devices。"""
+    mapping = {  # bom.csv id → netlist refs（一个 BOM 项可覆盖多个器件位号）
+        "B01": [], "B02": [], "B03": ["U1"], "B04": ["U2"], "B05": ["U3"],
+        "B06": ["U4"], "B08": ["U5"], "B09": ["U6"], "B10": ["Q1"], "B11": ["D1"],
+        "B12": ["F1", "F2", "F3"], "B13": ["SW5"], "B14": ["SW1", "SW2", "SW3", "SW4", "SW6"],
+        "B15": ["J1"], "B17": ["J4", "J5", "J6", "J7", "J8"], "B18": ["J9"],
+    }
+    errors = []
+    nl_path = base / "eda/netlist.json"
+    bom_path = base / "bom.csv"
+    if not nl_path.exists() or not bom_path.exists():
+        return errors
+    try:
+        refs = {d["ref"] for d in json.loads(nl_path.read_text(encoding="utf-8"))["devices"]}
+    except (json.JSONDecodeError, KeyError) as e:
+        return [f"netlist.json 无法解析（工件损坏，按 FAIL 处理）: {e}"]
+    bom_ids = set()
+    for line in bom_path.read_text(encoding="utf-8").splitlines()[1:]:
+        if line.strip():
+            bom_ids.add(line.split(",")[0])
+    for bom_id, need in mapping.items():
+        if bom_id not in bom_ids:
+            errors.append(f"BOM 缺行 {bom_id}")
+        for ref in need:
+            if ref not in refs:
+                errors.append(f"BOM {bom_id} 映射的网表器件 {ref} 不存在")
+    return errors
+
+def gen_lean(manifest: dict, base: Path = BASE) -> None:
     """受控转换：manifest → Lean 常量文件（checker 与 Lean 同一版本语义）。"""
     rc = manifest["release_candidate"]
     tpl = f"""import ChristmasBuddy.Version
@@ -135,26 +227,38 @@ def currentApproved : Bool := false
 /-- 生成即验证：当前候选（未冻结、未批准）不可制造——由合同定理直接给出。 -/
 example : ChristmasBuddy.Version.manufacturable currentTuple = false := by rfl
 """
-    LEAN_OUT.parent.mkdir(parents=True, exist_ok=True)
-    LEAN_OUT.write_text(tpl + "\n", encoding="utf-8")
+    out = base / "proof/src/ChristmasBuddy/ReleaseCurrent.lean"
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(tpl + "\n", encoding="utf-8")
 
 def load() -> dict:
     return json.loads((BASE / "m5_manifest.json").read_text(encoding="utf-8"))
 
-def check() -> None:
-    m = load()
+def check(base: Path = BASE, manifest_path: Path | None = None) -> None:
+    m = json.loads((manifest_path or (base / "m5_manifest.json")).read_text(encoding="utf-8"))
     bad = []
     for it in m["artifacts"]:
-        p = BASE / it["path"]
+        p = base / it["path"]
+        if it.get("kind") == "directory":
+            if not p.exists():
+                bad.append(f"{it['path']}: 目录工件丢失")
+            else:
+                cur = directory_manifest(p, base)["dir_sha256"]
+                if cur != it["sha256"]:
+                    bad.append(f"{it['path']}: 目录哈希漂移（→ 新候选）")
+            continue
         if not p.exists():
             bad.append(f"{it['path']}: 已登记工件丢失")
         elif sha256(p) != it["sha256"]:
             bad.append(f"{it['path']}: 哈希漂移（→ 新 release 候选，须重建 + 重新门禁）")
-    appeared = [it["path"] for it in m["not_yet"] if (BASE / it["path"]).exists()]
+    for e in bom_netlist_consistency(base):
+        bad.append(f"BOM↔网表一致性: {e}")
+    appeared = [it["path"] for it in m["not_yet"] if (base / it["path"]).exists()]
     if appeared:
         bad.append(f"NOT_YET 工件已出现（须重跑 build 升级为 BOUND）: {appeared[:3]}")
-    if LEAN_OUT.exists():
-        lean = LEAN_OUT.read_text(encoding="utf-8")
+    lean_out = base / "proof/src/ChristmasBuddy/ReleaseCurrent.lean"
+    if lean_out.exists():
+        lean = lean_out.read_text(encoding="utf-8")
         want = m["release_candidate"]["manifest_hash"]
         if f'"{want}"' not in lean:
             bad.append("ReleaseCurrent.lean 与 manifest_hash 不一致（须重新 gen-lean）")

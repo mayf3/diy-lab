@@ -22,27 +22,52 @@ from cadquery import Vector
 
 OUT = Path(__file__).parent / "outputs/print-coupon"
 
-def coupon_c1() -> cq.Workplane:
-    """PCB 槽公差梯：4 槽，槽宽递增，深 6mm，板厚 4mm。"""
-    wp = cq.Workplane("XY").box(60, 12, 4)
-    for i, w in enumerate((1.8, 2.0, 2.2, 2.4)):
-        slot = cq.Workplane("XY").box(w, 30, 8).translate((10 + i * 12, 0, 2))
+# C1/C2/C3 修复（Batch3 审查）：槽位全部位于块内、保留 4mm 连续底板、孔真正贯穿。
+C1_SLOTS = [(x, w) for x, w in zip((-21.0, -7.0, 7.0, 21.0), (1.8, 2.0, 2.2, 2.4))]
+C1 = {"block": (60.0, 24.0, 10.0), "slot_len": 16.0, "slot_depth": 6.0, "floor": 4.0}
+C2_HOLES = [(x, d) for x, d in zip((-15.0, -5.0, 5.0, 15.0), (2.0, 2.2, 2.4, 2.6))]
+C2 = {"block": (40.0, 12.0, 3.0)}
+C3 = {"block": (30.0, 2.8, 16.0), "opening": (13.4, 7.4)}
+
+def coupon_c1(mode: str = "full") -> cq.Workplane:
+    """PCB 槽公差梯：4 槽全部在块内，槽深 6mm（不切穿 4mm 底板）。mode 供负向测试。"""
+    bw, bd, bh = C1["block"]
+    wp = cq.Workplane("XY").box(bw, bd, bh).translate((0, 0, bh / 2))   # z 0..10
+    for i, (x, w) in enumerate(C1_SLOTS):
+        xx = x
+        if mode == "outside":            # 负向：第一槽移出边界
+            xx = x + (bw / 2 + 10 if i == 0 else 0)
+        depth = C1["slot_depth"] if mode != "through" else bh + 2   # 负向：切穿
+        length = C1["slot_len"] if mode != "oversize_len" else bd + 20
+        slot = cq.Workplane("XY").box(w, length, depth).translate(
+            (xx, 0, bh - depth / 2))                                   # 顶部开槽 depth=6，底板 4mm 完整
         wp = wp.cut(slot)
-    return wp.translate((0, 0, 2))
+    return wp
 
-def coupon_c2() -> cq.Workplane:
-    """孔径阶梯：4 通孔。"""
-    wp = cq.Workplane("XY").box(40, 12, 3)
-    for i, d in enumerate((2.0, 2.2, 2.4, 2.6)):
-        hole = cq.Solid.makeCylinder(d / 2, 10, Vector(-15 + i * 10, 0, -1), Vector(0, 0, 1))
+def coupon_c2(mode: str = "full") -> cq.Workplane:
+    """孔径阶梯：4 通孔，切割体越出实体两端保证贯穿。"""
+    bw, bd, bh = C2["block"]
+    wp = cq.Workplane("XY").box(bw, bd, bh).translate((0, 0, bh / 2))   # z 0..3
+    holes = C2_HOLES if mode != "missing" else C2_HOLES[:3]
+    for i, (x, d) in enumerate(holes):
+        dd = d if mode != "shrunk" else d * 0.55
+        z0 = -1.5 if mode != "blind" else bh - 1.0   # 全程低于块底=真贯穿；盲孔从顶刻 1mm
+        depth = bh + 3.0 if mode != "blind" else 1.0
+        hole = cq.Solid.makeCylinder(dd / 2, depth, Vector(x, 0, z0), Vector(0, 0, 1))
         wp = wp.cut(cq.Workplane(obj=hole))
-    return wp.translate((0, 0, 1.5))
+    return wp
 
-def coupon_c3() -> cq.Workplane:
-    """USB-C 开孔试件：13.4×7.4 通孔 + 壁厚 2.8mm（与外壳一致）。"""
-    wall = cq.Workplane("XY").box(30, 2.8, 16)
-    hole = cq.Workplane("XY").box(13.4, 40, 7.4).translate((0, 0, 4))
-    return wall.cut(hole).translate((0, -1.4, 0))
+def coupon_c3(mode: str = "full") -> cq.Workplane:
+    """USB-C 开孔试件：13.4×7.4 径向通孔（壁 2.8mm）。"""
+    bw, bt, bh = C3["block"]
+    ow, oh = C3["opening"]
+    wall = cq.Workplane("XY").box(bw, bt, bh)
+    hole = cq.Workplane("XY").box(ow, 40, oh).translate((0, 0, bh / 2))
+    wp = wall.cut(hole)
+    if mode == "shrunk":
+        hole2 = cq.Workplane("XY").box(ow - 4, 40, oh - 2).translate((0, 0, bh / 2))
+        wp = cq.Workplane("XY").box(bw, bt, bh).cut(hole2)
+    return wp
 
 def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
