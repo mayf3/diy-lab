@@ -1,230 +1,6 @@
 PROTEL NETLIST 2.0
 [
 DESIGNATOR
-K1
-FOOTPRINT
-SW-SMD_C9900017374
-PARTTYPE
-轻触开关
-DESCRIPTION
-
-Component Kind
-Standard
-Add into BOM
-yes
-Convert to PCB
-yes
-Device
-轻触开关
-PCB Layer
-Default
-Symbol
-轻触开关_C9900017374
-Designator
-K1
-Channel ID
-
-Group ID
-
-Reuse Block
-
-Description
-
-Name
-通用两脚常开开关
-Supplier
-LCSC
-Datasheet
-
-Manufacturer
-
-Unique ID
-gge3
-Supplier Part
-TBD-MECH-AXIS
-Supplier Footprint
-TBD-MECH-AXIS（样轴确认后绑定 Boba U4 或实际 SKU 准确封装）
-LCSC Part Name
-通用两脚常开开关（MX 机械轴电气符号）
-Manufacturer Part
-通用两脚常开开关
-3D Model Title
-TBD-MECH-AXIS
-JLCPCB Part Class
-TBD-MECH-AXIS
-
-*
-]
-[
-DESIGNATOR
-K2
-FOOTPRINT
-SW-SMD_C9900017374
-PARTTYPE
-轻触开关
-DESCRIPTION
-
-Component Kind
-Standard
-Add into BOM
-yes
-Convert to PCB
-yes
-Device
-轻触开关
-PCB Layer
-Default
-Symbol
-轻触开关_C9900017374
-Designator
-K2
-Channel ID
-
-Group ID
-
-Reuse Block
-
-Description
-
-Name
-通用两脚常开开关
-Supplier
-LCSC
-Datasheet
-
-Manufacturer
-
-Unique ID
-gge4
-Supplier Part
-TBD-MECH-AXIS
-Supplier Footprint
-TBD-MECH-AXIS（样轴确认后绑定 Boba U4 或实际 SKU 准确封装）
-LCSC Part Name
-通用两脚常开开关（MX 机械轴电气符号）
-Manufacturer Part
-通用两脚常开开关
-3D Model Title
-TBD-MECH-AXIS
-JLCPCB Part Class
-TBD-MECH-AXIS
-
-*
-]
-[
-DESIGNATOR
-K3
-FOOTPRINT
-SW-SMD_C9900017374
-PARTTYPE
-轻触开关
-DESCRIPTION
-
-Component Kind
-Standard
-Add into BOM
-yes
-Convert to PCB
-yes
-Device
-轻触开关
-PCB Layer
-Default
-Symbol
-轻触开关_C9900017374
-Designator
-K3
-Channel ID
-
-Group ID
-
-Reuse Block
-
-Description
-
-Name
-通用两脚常开开关
-Supplier
-LCSC
-Datasheet
-
-Manufacturer
-
-Unique ID
-gge5
-Supplier Part
-TBD-MECH-AXIS
-Supplier Footprint
-TBD-MECH-AXIS（样轴确认后绑定 Boba U4 或实际 SKU 准确封装）
-LCSC Part Name
-通用两脚常开开关（MX 机械轴电气符号）
-Manufacturer Part
-通用两脚常开开关
-3D Model Title
-TBD-MECH-AXIS
-JLCPCB Part Class
-TBD-MECH-AXIS
-
-*
-]
-[
-DESIGNATOR
-K4
-FOOTPRINT
-SW-SMD_C9900017374
-PARTTYPE
-轻触开关
-DESCRIPTION
-
-Component Kind
-Standard
-Add into BOM
-yes
-Convert to PCB
-yes
-Device
-轻触开关
-PCB Layer
-Default
-Symbol
-轻触开关_C9900017374
-Designator
-K4
-Channel ID
-
-Group ID
-
-Reuse Block
-
-Description
-
-Name
-通用两脚常开开关
-Supplier
-LCSC
-Datasheet
-
-Manufacturer
-
-Unique ID
-gge6
-Supplier Part
-TBD-MECH-AXIS
-Supplier Footprint
-TBD-MECH-AXIS（样轴确认后绑定 Boba U4 或实际 SKU 准确封装）
-LCSC Part Name
-通用两脚常开开关（MX 机械轴电气符号）
-Manufacturer Part
-通用两脚常开开关
-3D Model Title
-TBD-MECH-AXIS
-JLCPCB Part Class
-TBD-MECH-AXIS
-
-*
-]
-[
-DESIGNATOR
 J1
 FOOTPRINT
 HDR-TH_22P-P2.54-V-F
@@ -395,34 +171,258 @@ gge8
 
 *
 ]
+[
+DESIGNATOR
+K1
+FOOTPRINT
+SW-SMD_L3.9-W2.9-LS4.8-EH-A
+PARTTYPE
+YD-3410
+DESCRIPTION
+
+Component Kind
+Standard
+Add into BOM
+no
+Convert to PCB
+no
+Device
+YD-3410
+PCB Layer
+Default
+Symbol
+YD-3410
+Designator
+K1
+Channel ID
+
+Group ID
+
+Reuse Block
+
+Description
+
+Name
+通用两脚常开开关
+Supplier
+LCSC
+Datasheet
+
+Manufacturer
+
+Unique ID
+gge9
+Supplier Part
+TBD-MECH-AXIS
+Supplier Footprint
+TBD-MECH-AXIS（样轴确认后绑定 Boba U4 或实际 SKU 准确封装）
+LCSC Part Name
+通用两脚常开开关（MX 机械轴电气符号）
+Manufacturer Part
+通用两脚常开开关
+3D Model Title
+TBD-MECH-AXIS
+JLCPCB Part Class
+TBD-MECH-AXIS
+
+*
+]
+[
+DESIGNATOR
+K2
+FOOTPRINT
+SW-SMD_L3.9-W2.9-LS4.8-EH-A
+PARTTYPE
+YD-3410
+DESCRIPTION
+
+Component Kind
+Standard
+Add into BOM
+no
+Convert to PCB
+no
+Device
+YD-3410
+PCB Layer
+Default
+Symbol
+YD-3410
+Designator
+K2
+Channel ID
+
+Group ID
+
+Reuse Block
+
+Description
+
+Name
+通用两脚常开开关
+Supplier
+LCSC
+Datasheet
+
+Manufacturer
+
+Unique ID
+gge10
+Supplier Part
+TBD-MECH-AXIS
+Supplier Footprint
+TBD-MECH-AXIS（样轴确认后绑定 Boba U4 或实际 SKU 准确封装）
+LCSC Part Name
+通用两脚常开开关（MX 机械轴电气符号）
+Manufacturer Part
+通用两脚常开开关
+3D Model Title
+TBD-MECH-AXIS
+JLCPCB Part Class
+TBD-MECH-AXIS
+
+*
+]
+[
+DESIGNATOR
+K3
+FOOTPRINT
+SW-SMD_L3.9-W2.9-LS4.8-EH-A
+PARTTYPE
+YD-3410
+DESCRIPTION
+
+Component Kind
+Standard
+Add into BOM
+no
+Convert to PCB
+no
+Device
+YD-3410
+PCB Layer
+Default
+Symbol
+YD-3410
+Designator
+K3
+Channel ID
+
+Group ID
+
+Reuse Block
+
+Description
+
+Name
+通用两脚常开开关
+Supplier
+LCSC
+Datasheet
+
+Manufacturer
+
+Unique ID
+gge11
+Supplier Part
+TBD-MECH-AXIS
+Supplier Footprint
+TBD-MECH-AXIS（样轴确认后绑定 Boba U4 或实际 SKU 准确封装）
+LCSC Part Name
+通用两脚常开开关（MX 机械轴电气符号）
+Manufacturer Part
+通用两脚常开开关
+3D Model Title
+TBD-MECH-AXIS
+JLCPCB Part Class
+TBD-MECH-AXIS
+
+*
+]
+[
+DESIGNATOR
+K4
+FOOTPRINT
+SW-SMD_L3.9-W2.9-LS4.8-EH-A
+PARTTYPE
+YD-3410
+DESCRIPTION
+
+Component Kind
+Standard
+Add into BOM
+no
+Convert to PCB
+no
+Device
+YD-3410
+PCB Layer
+Default
+Symbol
+YD-3410
+Designator
+K4
+Channel ID
+
+Group ID
+
+Reuse Block
+
+Description
+
+Name
+通用两脚常开开关
+Supplier
+LCSC
+Datasheet
+
+Manufacturer
+
+Unique ID
+gge12
+Supplier Part
+TBD-MECH-AXIS
+Supplier Footprint
+TBD-MECH-AXIS（样轴确认后绑定 Boba U4 或实际 SKU 准确封装）
+LCSC Part Name
+通用两脚常开开关（MX 机械轴电气符号）
+Manufacturer Part
+通用两脚常开开关
+3D Model Title
+TBD-MECH-AXIS
+JLCPCB Part Class
+TBD-MECH-AXIS
+
+*
+]
 (
 GPIO4 
-K1-1 轻触开关-1 Passive 
 J1-4 BX-PM2.54-1-22PY-4 Passive 
+K1-1 YD-3410-1 Passive 
+)
+(
+GPIO5 
+J1-5 BX-PM2.54-1-22PY-5 Passive 
+K2-1 YD-3410-1 Passive 
+)
+(
+GPIO6 
+J1-6 BX-PM2.54-1-22PY-6 Passive 
+K3-1 YD-3410-1 Passive 
+)
+(
+GPIO7 
+J1-7 BX-PM2.54-1-22PY-7 Passive 
+K4-1 YD-3410-1 Passive 
 )
 (
 GND 
-K1-2 轻触开关-2 Passive 
-K2-2 轻触开关-2 Passive 
-K3-2 轻触开关-2 Passive 
-K4-2 轻触开关-2 Passive 
 J1-22 BX-PM2.54-1-22PY-22 Passive 
 J3-1 BX-PM2.54-1-22PY-1 Passive 
 J3-21 BX-PM2.54-1-22PY-21 Passive 
 J3-22 BX-PM2.54-1-22PY-22 Passive 
-)
-(
-GPIO5 
-K2-1 轻触开关-1 Passive 
-J1-5 BX-PM2.54-1-22PY-5 Passive 
-)
-(
-GPIO6 
-K3-1 轻触开关-1 Passive 
-J1-6 BX-PM2.54-1-22PY-6 Passive 
-)
-(
-GPIO7 
-K4-1 轻触开关-1 Passive 
-J1-7 BX-PM2.54-1-22PY-7 Passive 
+K1-2 YD-3410-2 Passive 
+K2-2 YD-3410-2 Passive 
+K3-2 YD-3410-2 Passive 
+K4-2 YD-3410-2 Passive 
 )

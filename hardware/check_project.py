@@ -19,6 +19,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import subprocess
 import sys
 from pathlib import Path
 
@@ -233,6 +234,26 @@ def validate(project_path: Path, changed: list[str] | None = None) -> dict:
                     bad_outputs.append((name, f"产物真实路径不存在 {opath}"))
                 elif sha256_file(pp) != digest:
                     bad_outputs.append((name, f"产物内容摘要不符 {opath}"))
+        # 网表语义断言：哈希一致 ≠ 语义正确——同步更新哈希不能绕过电气/隔离检查
+        if otype == "netlist" and opath and o.get("assert_script"):
+            spath = ROOT / o["assert_script"]
+            if not spath.is_file():
+                bad_outputs.append((name, f"语义断言脚本缺失 {o['assert_script']}"))
+            else:
+                try:
+                    proc = subprocess.run(
+                        [sys.executable, str(spath), "--check",
+                         "--net", str(ROOT / opath), "--json", str(ROOT / ev)],
+                        capture_output=True, text=True, timeout=60, cwd=str(ROOT))
+                    if proc.returncode != 0:
+                        detail = ""
+                        try:
+                            detail = "；".join(json.loads(proc.stdout).get("failed", [])[:3])
+                        except Exception:
+                            detail = (proc.stderr or proc.stdout or "无输出")[:200]
+                        bad_outputs.append((name, f"网表语义断言失败：{detail}"))
+                except Exception as exc:
+                    bad_outputs.append((name, f"语义断言执行异常：{str(exc)[:120]}"))
         ev_text = (ROOT / ev).read_text(encoding="utf-8", errors="ignore")
         if uuid and uuid not in ev_text:
             bad_outputs.append((name, f"证据文件中找不到 uuid {str(uuid)[:12]}"))

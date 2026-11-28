@@ -419,20 +419,25 @@ class EdaTypeContractTests(unittest.TestCase):
 
 
 class NetlistClosureTests(unittest.TestCase):
-    """2026-11-28 原理图真正闭环整改：真实排针/按键 GPIO/GND 网表断言与占位隔离。"""
+    """2026-11-28 原理图闭环+占位语义隔离：排针/按键 GPIO/GND 网表断言与隔离强制。"""
 
     NET = ROOT / "hardware/space-buddy-r1/netlist-evidence.net"
     EVIDENCE = ROOT / "hardware/space-buddy-r1/netlist-evidence.json"
     ASSERT = ROOT / "hardware/space-buddy-r1/eda-assert-netlist.py"
     READBACK = ROOT / "hardware/space-buddy-r1/eda-readback.json"
+    CHECKER = ROOT / "hardware/check_project.py"
 
     def _netlist_text(self):
         return self.NET.read_text(encoding="utf-8")
 
+    def _run_assert_on(self, net_path, json_path):
+        return subprocess.run([sys.executable, str(self.ASSERT), "--check",
+                               "--net", str(net_path), "--json", str(json_path)],
+                              capture_output=True, text=True, timeout=30, cwd=str(ROOT))
+
     def test_netlist_assertions_pass_on_committed_evidence(self):
         # 提交的 .net 必须通过全部机器断言（--check 只断言不写文件）
-        proc = subprocess.run([sys.executable, str(self.ASSERT), "--check"],
-                              capture_output=True, text=True, timeout=30, cwd=str(ROOT))
+        proc = self._run_assert_on(self.NET, self.EVIDENCE)
         out = json.loads(proc.stdout) if proc.stdout.strip() else {}
         self.assertEqual(proc.returncode, 0, f"断言失败: {out.get('failed')}")
         self.assertTrue(out.get("ok"))
@@ -462,15 +467,93 @@ class NetlistClosureTests(unittest.TestCase):
         self.assertIn("自动生成", ev.get("note", ""))
         self.assertTrue(ev.get("persistence", {}).get("stable"))
 
-    def test_switch_supplier_part_is_tbd_not_lcsc(self):
-        # C9900017374 不得作为 Supplier Part 声明（仅允许 FOOTPRINT 结构占位）
+    def test_switch_isolation_semantics_in_evidence(self):
+        # 占位隔离三件套：C9900017374 零出现 + Add into BOM=no + Convert to PCB=no
+        text = self._netlist_text()
+        self.assertNotIn("C9900017374", text, "整份网表不得出现 C9900017374")
         ev = json.loads(self.EVIDENCE.read_text(encoding="utf-8"))
         for des, rec in ev.get("components", {}).items():
             if des.startswith("K"):
-                self.assertNotIn("C9900017374", rec.get("supplier_part", ""),
-                                 f"{des} Supplier Part 仍含 C9900017374")
+                self.assertEqual(rec.get("add_into_bom"), "no", f"{des} Add into BOM 必须=no")
+                self.assertEqual(rec.get("convert_to_pcb"), "no", f"{des} Convert to PCB 必须=no")
+                self.assertEqual(rec.get("supplier_part"), "TBD-MECH-AXIS",
+                                 f"{des} Supplier Part 必须=TBD-MECH-AXIS")
+        bom = ev.get("bom_export", {})
+        self.assertFalse(bom.get("switch_present"), "BOM 真实导出不得含开关")
+        self.assertEqual([r.get("supplier_part") for r in bom.get("rows", [])],
+                         ["C18078140"], "BOM 行应仅 J1,J3（C18078140）")
         self.assertIn("TBD", ev.get("switch_footprint", ""))
-        self.assertIn("禁止用于制造", ev.get("switch_footprint", ""))
+
+    def test_switch_has_exactly_two_electrical_pins(self):
+        # 两电气脚语义：塑料定位脚不得成为第 3 电气引脚
+        text = self._netlist_text()
+        for k in ("K1", "K2", "K3", "K4"):
+            for pin in (f"{k}-1", f"{k}-2"):
+                self.assertIn(pin, text, f"{k} 缺电气脚 {pin}")
+            stray = [tok for tok in text.split() if tok.startswith(f"{k}-3")]
+            self.assertFalse(stray, f"{k} 出现第 3 电气脚（MX 轴塑料脚不入网表）")
+        rb = json.loads(self.READBACK.read_text(encoding="utf-8"))
+        for k in ("K1", "K2", "K3", "K4"):
+            self.assertEqual(sorted(rb["switch_pins_readback"][k]), ["1", "2"],
+                             f"{k} API 读回引脚应为 1/2")
+
+    def test_connector_identity_assertions(self):
+        # 连接器身份：C18078140 + BX-PM2.54-1-22PY（1×22P/2.54mm 母排）
+        ev = json.loads(self.EVIDENCE.read_text(encoding="utf-8"))
+        for j in ("J1", "J3"):
+            rec = ev["components"].get(j)
+            self.assertIsNotNone(rec, f"{j} 应在网表器件表")
+            self.assertEqual(rec.get("supplier_part"), "C18078140")
+            self.assertEqual(rec.get("partname"), "BX-PM2.54-1-22PY")
+
+    def test_male_header_regression_is_rejected(self):
+        # 负向：退回 KH-2.54PH90 公排针必须被断言拒绝
+        tmp = Path(tempfile.mkdtemp())
+        try:
+            tampered = self._netlist_text().replace("BX-PM2.54-1-22PY", "KH-2.54PH90")
+            net = tmp / "male.net"
+            net.write_text(tampered, encoding="utf-8")
+            proc = self._run_assert_on(net, tmp / "male.json")
+            self.assertEqual(proc.returncode, 2, "公排针回退必须失败")
+            out = json.loads(proc.stdout)
+            self.assertTrue(any("KH-2.54PH90" in f or "BX-PM2.54" in f for f in out.get("failed", [])))
+        finally:
+            shutil.rmtree(tmp, ignore_errors=True)
+
+    def test_tamper_with_synced_hash_still_fails_validator(self):
+        # 反例：人为改 GPIO + 同步更新 SHA256/证据/project.json digest → 校验器仍必须失败
+        tmp = Path(tempfile.mkdtemp())
+        try:
+            tampered = self._netlist_text().replace(
+                "J1-4 BX-PM2.54-1-22PY-4", "J1-9 BX-PM2.54-1-22PY-4")
+            net = tmp / "tampered.net"
+            net.write_text(tampered, encoding="utf-8")
+            sha = hashlib.sha256(net.read_bytes()).hexdigest()
+            ev = json.loads(self.EVIDENCE.read_text(encoding="utf-8"))
+            ev["sha256"] = sha
+            ev["size"] = net.stat().st_size
+            evj = tmp / "tampered-evidence.json"
+            evj.write_text(json.dumps(ev, ensure_ascii=False, indent=1), encoding="utf-8")
+            pj = json.loads(PROJECT.read_text(encoding="utf-8"))
+            for o in pj["domains"]["eda"]["outputs_present"]:
+                if o.get("type") == "netlist":
+                    o["path"] = str(net)
+                    o["evidence"] = str(evj)
+                    o["digest"] = sha
+            pjs = tmp / "tampered-project.json"
+            pjs.write_text(json.dumps(pj, ensure_ascii=False, indent=2), encoding="utf-8")
+            code, out = run_validator(project=pjs)
+            self.assertNotEqual(code, 0, "同步哈希后的语义篡改不得通过校验器")
+            joined = json.dumps(out, ensure_ascii=False)
+            self.assertIn("网表语义断言失败", joined, "失败原因必须是语义断言而非哈希不符")
+        finally:
+            shutil.rmtree(tmp, ignore_errors=True)
+
+    def test_validator_runs_semantic_assertions_on_real_project(self):
+        # 正向：校验器对真实工程运行语义断言且通过
+        code, out = run_validator()
+        self.assertEqual(code, 0, f"校验器失败: {out.get('failures')}")
+        self.assertTrue(out["ok"])
 
     def test_designators_unified_in_project_records(self):
         p = json.loads(PROJECT.read_text(encoding="utf-8"))
@@ -494,16 +577,24 @@ class NetlistClosureTests(unittest.TestCase):
         self.assertIn("USB", erc["detail"])
         rb = json.loads(self.READBACK.read_text(encoding="utf-8"))
         groups = rb["erc"]["groups"]
-        self.assertEqual(sum(g["count"] for g in groups), 40,
-                         "ERC 浮动引脚计数应逐组记录")
+        self.assertEqual(sum(g["count"] for g in groups), 36,
+                         "ERC 浮动引脚计数应逐组记录（两脚开关换件后为 36：J1 17 + J3 19）")
+        # 开关第 3 脚浮动必须已消失并留有记录
+        self.assertIn("消失", rb["erc"].get("switch_pin3_floating", ""))
 
-    def test_footprint_placeholder_is_quarantined_not_final(self):
+    def test_switch_footprint_isolated_not_frozen(self):
         p = json.loads(PROJECT.read_text(encoding="utf-8"))
         sp = p["domains"]["eda"]["schematic_progress"]
-        ph = sp.get("switch_footprint_placeholder", "")
-        self.assertIn("SW-SMD_C9900017374", ph)
-        self.assertIn("禁止用于制造", ph)
-        self.assertIn("TBD", sp.get("switch_symbol", ""))
+        fp = sp.get("switch_footprint", "")
+        self.assertIn("TBD", fp)
+        self.assertIn("Convert to PCB=no", fp)
+        iso = sp.get("isolation", {})
+        self.assertFalse(iso.get("c9900017374_in_netlist"), "isolation 必须记录 C9900017374 零出现")
+        self.assertFalse(iso.get("c9900017374_in_bom_export"), "isolation 必须记录 BOM 零开关")
+        self.assertEqual(iso.get("add_into_bom"), "no")
+        self.assertEqual(iso.get("convert_to_pcb"), "no")
+        # 机械轴封装未冻结（版本四元组 pcb 段仍为 null；不做正式 PCB）
+        self.assertIsNone(p["version_contract"]["revisions"]["pcb"])
 
 
 if __name__ == "__main__":

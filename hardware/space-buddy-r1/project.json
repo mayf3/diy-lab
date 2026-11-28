@@ -34,7 +34,7 @@
       "evidence": "checks.json ok=true 且负向自检通过（check_case.py 每次建模后必跑）"
     },
     "eda": {
-      "status": "进行中（原理图真实闭环：J1/J3 排母 GPIO4–7/GND 引脚全部入网；位号 K1–K4/J1/J3；C9900017374 仅剩隔离占位；45 项网表断言全过；ERC 0 error/2 组预期浮动引脚；保存→关闭→重开→再导出逐字节一致）",
+      "status": "进行中（原理图真实闭环+占位语义隔离：K1–K4 已换两电气脚通用开关符号（YD-3410 承载，pin1/2），C9900017374 整份网表零出现；Add into BOM=no + Convert to PCB=no（BOM 真实导出仅 J1,J3 一行）；J1/J3 连接器断言入列；网表语义断言已接入校验器；45→52 项断言全过；ERC 0 error/2 组排母预期浮动）",
       "editor_note": "EDA 环境已激活且读写往返验收（2026-11-26，MakerLab-EDA-Check-20261126.eprj3）——环境可用 ≠ 产品 PCB 存在",
       "project": {
         "kind": "cloud-workspace + 本地会话",
@@ -68,12 +68,13 @@
           "evidence": "hardware/space-buddy-r1/eda-readback.json"
         },
         {
-          "name": "网表导出（PROTEL，重开会话稳定导出 ee4f7ea0…）",
+          "name": "网表导出（PROTEL，重开会话稳定导出 d3f46041…；含语义断言）",
           "type": "netlist",
           "uuid": "7415725566084bd0",
           "evidence": "hardware/space-buddy-r1/netlist-evidence.json",
           "path": "hardware/space-buddy-r1/netlist-evidence.net",
-          "digest": "ee4f7ea008d8672c124fcf6f0343062a2ab9f4e3dc5eea6d15f2b2417ea04b17"
+          "digest": "d3f46041f40113632179f7cd62b1f6383d0e01591703b33399d015f5681dba50",
+          "assert_script": "hardware/space-buddy-r1/eda-assert-netlist.py"
         }
       ],
       "schematic_progress": {
@@ -88,8 +89,7 @@
         },
         "designator_method": "sch_SourcePrimitiveComponent.update({designator})——2026-11-28 修改后 get 读回一致（此前误用 updateAttribute：仅属性显示/位置，不改值）",
         "connector": "J1/J3 = BX-PM2.54-1-22PY（C18078140，1×22P 2.54mm 母排）；间距/插入深度/塑高待实物验证（G4）",
-        "switch_symbol": "通用两脚常开（第 1/2 脚电气有效）；Supplier Part=TBD-MECH-AXIS；机械轴封装 TBD（样轴确认后绑定 Boba U4 或实际 SKU）",
-        "switch_footprint_placeholder": "EDA 器件库结构绑定 SW-SMD_C9900017374 无法经 properties 修改（API 明确拒绝），登记为隔离占位：非最终声明、禁止用于制造、最终 BOM 不得含 C9900017374",
+        "switch_symbol": "两电气脚常开符号（YD-3410 器件承载，仅 pin1/pin2；隔离工程演练后应用）。MX 机械轴=2 金属触点+3 塑料定位脚，塑料脚不属于电气引脚、不入网表",
         "official_pinout_basis": "Espressif ESP32-S3-DevKitC-1 v1.1 用户指南 Header Block J1/J3 表（2026-11-28 查证）：J1.4=GPIO4、J1.5=GPIO5、J1.6=GPIO6、J1.7=GPIO7；GND=J1.22/J3.1/J3.21/J3.22；USB_D±=J3.19/J3.20 载板不引入",
         "nets": {
           "GPIO4": [
@@ -123,7 +123,7 @@
         "erc": {
           "error": 0,
           "warning": 2,
-          "detail": "CHECKFLOATPIN×2 组（40 引脚，全部=预期未使用引脚）：K1–K4 符号第3脚×4；J1 未用 17 脚；J3 未用 19 脚（含 USB_D± 不引入载板）。SHOWDANDLING=0。逐条分类见 eda-readback.json erc.groups"
+          "detail": "CHECKFLOATPIN×2 组（36 引脚，全部=排母预期未使用引脚）：J1 未用 17 脚（3V3×2/RST/GPIO15-18/8/3/46/9-14/5V）；J3 未用 19 脚（TX/RX/GPIO1/2/42-35/0/45/48/47/21 及 USB_D±/GPIO19-20，USB 属开发板自身通道，载板不引入）。开关第 3 脚浮动警告已随两脚符号更换消失。SHOWDANDLING=0。逐条分类见 eda-readback.json"
         },
         "netlist_assertions": {
           "script": "hardware/space-buddy-r1/eda-assert-netlist.py",
@@ -132,12 +132,29 @@
           "coverage": "GPIO 精确映射×4 / GND 精确集合 / 无互短 / 无电源短路 / 开关引脚完整 / 排母真实入网 / C9900017374 隔离"
         },
         "persistence": {
-          "cycle": "编辑→异步落盘（.esch2）→会话关闭→工程重开→导出→再导出",
-          "result": "重开导出两次逐字节一致（ee4f7ea0…）",
-          "caveat": "关闭前导出曾捕获属性异步落盘中间态（0e413db3…）——以重开后稳定导出为唯一源"
+          "cycle": "换件+属性隔离→异步落盘→会话关闭→工程重开→导出→再导出",
+          "result": "重开导出两次逐字节一致（d3f46041…）",
+          "caveat": "关闭前导出捕获属性异步落盘中间态（fbaa5030…）——以重开稳定导出为唯一源"
         },
         "netlist_exported": true,
-        "netlist_sha256_note": "哈希一律以 netlist-evidence.json 的 sha256 字段为准（自动生成，不手抄）"
+        "netlist_sha256_note": "哈希一律以 netlist-evidence.json 的 sha256 字段为准（自动生成，不手抄）",
+        "switch_footprint": "TBD（样轴确认后绑定 Boba U4 或实际 SKU 准确封装）。EDA 占位绑定 SW-SMD_L3.9-W2.9-LS4.8-EH-A 被 Convert to PCB=no 语义隔离（无法进入 PCB）+ Add into BOM=no（无法进入 BOM）",
+        "isolation": {
+          "method": "临时工程 SB-R1-Lab-Isolation 验证后应用：properties 支持 Add into BOM/Convert to PCB；replace 因引脚号集合不一致被拒（3脚→2脚），改为 remove+re-add+重接线",
+          "add_into_bom": "no",
+          "convert_to_pcb": "no",
+          "c9900017374_in_netlist": false,
+          "c9900017374_in_bom_export": false,
+          "bom_export_rows": [
+            {
+              "designator": "J1,J3",
+              "part": "BX-PM2.54-1-22PY",
+              "supplier_part": "C18078140"
+            }
+          ],
+          "negative_tests": "GPIO 篡改/公排针回退/BOM 翻转/pin3 回归/Supplier Part 回退 全部被断言拒绝"
+        },
+        "connector_assertions": "J1/J3 Supplier Part=C18078140、器件名=BX-PM2.54-1-22PY（1×22P/2.54mm/PM 母排）；KH-2.54PH90 公排针整网表禁入（负向测试覆盖）"
       }
     },
     "firmware": {

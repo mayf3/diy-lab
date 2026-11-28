@@ -8,9 +8,9 @@
  "pcb_uuid": "9c301e7941e42cc1",
  "pcb_name": "PCB1",
  "board_count": 1,
- "read_at": "2026-11-28T14:58:00.000Z",
- "session": "9b2df7cb-b1e3-4766-bba0-2e1b41abce4f（可见会话；保存→关闭→重开后的读回）",
- "note": "EDA 会话读回身份 v3（重开读回 + 位号/设计器读回；编辑器 API 实读）",
+ "read_at": "2026-11-28T16:20:00.000Z",
+ "session": "626b439c-1eb8-48a1-b9c5-ea12a2fb79ae（headless，保存→关闭→重开后的读回）",
+ "note": "EDA 会话读回身份 v4（隔离轮：两脚开关换件+属性隔离读回）",
  "digest_note": "pcb 对象摘要=uuid 本身（对象尚未导出文件，导出后改用文件 SHA256）",
  "local_reopen_instance_uuid": "4a7cbe805de29ce4d5cfb6358445cb4cb5e28fd1d92edfb453c18245a8d1483b",
  "local_folder": "/Users/yanfenma/Documents/LCEDA-Pro/projects/Space Buddy Deck R1/Space Buddy Deck R1.eprj3",
@@ -21,8 +21,8 @@
   "K4": "K4",
   "J1": "J1",
   "J3": "J3",
-  "method": "sch_SourcePrimitiveComponent.update(designator) 修改后 get 读回一致（2026-11-28）",
-  "fix_note": "此前失败原因：误用 updateAttribute（仅属性显示/位置）；正确方法为 update 的 designator 字段"
+  "method": "换件（remove+re-add 显式指定位号）后 sch_SourcePrimitiveComponent.get 读回一致（2026-11-28）",
+  "fix_note": "update(designator) 为正确方法；本轮换件后位号经 add(designator) 直接指定并读回核验"
  },
  "supplier_part_readback": {
   "K1": "TBD-MECH-AXIS",
@@ -31,13 +31,15 @@
   "K4": "TBD-MECH-AXIS",
   "J1": "C18078140",
   "J3": "C18078140",
-  "note": "开关 Supplier Part/3D Model Title/JLCPCB Part Class/Manufacturer Part 已改为通用声明 + TBD-MECH-AXIS；FootprintName 为器件库结构绑定，无法经 properties 修改，登记为隔离占位"
+  "switch_add_into_bom": "no",
+  "switch_convert_to_pcb": "no",
+  "note": "开关=通用两脚常开（YD-3410 承载）+ TBD-MECH-AXIS + Add into BOM=no + Convert to PCB=no；BOM 真实导出仅 J1,J3（BX-PM2.54-1-22PY，C18078140）一行"
  },
  "persistence_cycle": {
-  "save": "Source API 强制异步落盘（P1.esch2 22:38 实测含 K1-K4/J1/J3 位号与 17 条 WIRE 记录）",
-  "close": "6307c7d0 会话关闭 + 982face8 会话终止（alive=0）",
-  "reopen": "open 本地 .eprj3 → 本地实例 4a7cbe80（Schematic1/P1 uuid 不变 7415725566084bd0）→ openDocument(pageUuid) 位置参数加载图页",
-  "netlist_compare": "重开导出两次逐字节一致（ee4f7ea0…）；关闭前最后一次导出捕获到属性异步落盘中间态（0e413db3…），以重开后稳定导出为准"
+  "save": "sch_Document.save()=true（有未落盘变更）+ Source API 强制异步落盘",
+  "close": "583e9803 会话关闭（alive=0）",
+  "reopen": "openProject(4ab9e526…) + openDocument(pageUuid) 位置参数加载图页",
+  "netlist_compare": "重开导出两次逐字节一致（d3f46041…）；关闭前导出捕获属性异步落盘中间态（fbaa5030…，缺 Add into BOM/Convert to PCB 字段），以重开稳定导出为唯一源"
  },
  "erc": {
   "error": 0,
@@ -47,17 +49,37 @@
     "rule": "CHECKFLOATPIN",
     "count": 30,
     "classification": "预期未使用引脚",
-    "pins": "K1-K4 符号第3脚×4（两脚常开用法，第3脚电气未用）；J1 未用 17 脚（3V3×2/RST/GPIO15/16/17/18/8/3/46/9-14/5V）；J3 未用 9 脚（TX/RX/GPIO1/2/42/41/40/39/38）"
+    "pins": "J1 未用引脚（3V3×2/RST/GPIO15/16/17/18/8/3/46/9-14/5V 等 17 脚）+ J3 未用引脚（TX/RX/GPIO1/2/42-35 等）"
    },
    {
     "rule": "CHECKFLOATPIN",
-    "count": 10,
+    "count": 6,
     "classification": "预期未使用引脚",
-    "pins": "J3 未用 10 脚（GPIO37/36/35/0/45/48/47/21 及 USB_D±=GPIO20/19——USB 属开发板自身通道，载板不引入）"
+    "pins": "J3 剩余未用引脚（GPIO0/45/48/47/21 及 USB_D±=GPIO20/19——USB 属开发板自身通道，载板不引入）"
    }
   ],
+  "switch_pin3_floating": "已消失——两电气脚符号更换后开关无浮动脚",
   "dangling_net_warnings": 0,
   "real_design_errors": 0,
   "method": "sch_Drc.check(true,false,true) 于重开会话实跑；引脚级归属经 sch_SourcePin.getGeometry 元素 id 映射核实"
+ },
+ "switch_pins_readback": {
+  "K1": [
+   "1",
+   "2"
+  ],
+  "K2": [
+   "1",
+   "2"
+  ],
+  "K3": [
+   "1",
+   "2"
+  ],
+  "K4": [
+   "1",
+   "2"
+  ],
+  "note": "MX 机械轴=两金属电气触点；塑料定位脚非电气引脚，不入网表"
  }
 }
