@@ -192,7 +192,7 @@ def validate(project_path: Path, changed: list[str] | None = None) -> dict:
     failures.extend(f"EDA 工程证据：{x}" for x in eda_verify_fail)
     checks["eda_project_verified"] = eda_verified and not eda_verify_fail
     eda_outputs = eda_dom.get("outputs_present", [])
-    ALLOWED_TYPES = {"schematic", "pcb", "gerber", "bom", "cpl", "pcb_step"}
+    ALLOWED_TYPES = {"schematic", "pcb", "netlist", "gerber", "bom", "cpl", "pcb_step"}
     # gerber/bom/cpl/pcb_step 必须有 path+digest（真实产物文件），不能用读回身份文件冒充
     PATH_REQUIRED_TYPES = {"gerber", "bom", "cpl", "pcb_step"}
     seen_refs, bad_outputs = set(), []

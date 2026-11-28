@@ -550,10 +550,8 @@
   ],
   "hardware": {
     "project": "Space Buddy Deck R1",
-    "ok": false,
-    "failures": [
-      "EDA 产物证据缺陷：网表导出（PROTEL 5856B）:未知产物类型 netlist；网表导出（PROTEL 5856B）:证据文件缺失 hardware/space-buddy-r1/netlist-evidence.json"
-    ],
+    "ok": true,
+    "failures": [],
     "checks": {
       "quad_complete": true,
       "artifacts_present": true,
@@ -615,7 +613,6 @@
       "product_ready_reasons": [
         "CAD 设计检查未有效通过（尺寸存在占位/待实测项：connector_protrusion,board_envelope,usb_ports,usb_opening,usb_plug_envelope,skirt_usb_clearance,body,keys,boss）",
         "PCB 版本未冻结（需真实 PCB 对象+DRC 全绿+联合验证通过）",
-        "EDA 原生工程产物不足（原理图/DRC/BOM/CPL/Gerber 等）",
         "板壳联合验证未完成",
         "制造包缺件：EDA 原生工程、Gerber、BOM（LCSC 编号）、CPL、PCB STEP、外壳 STEP、分件 STL、外壳 3MF、装配说明、零件清单、版本清单"
       ],
@@ -627,7 +624,7 @@
     },
     "stale_preview": [],
     "note": "全部状态由本脚本从真实文件与回执计算；--changed 仅为影响预览",
-    "exit_code": 2
+    "exit_code": 0
   },
   "hardware_next": {
     "looks_like": "/case-r1-viewer.html",

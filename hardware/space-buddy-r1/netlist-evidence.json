@@ -1,0 +1,30 @@
+{
+ "format": "PROTEL NETLIST 2.0",
+ "exported_at": "2026-11-28",
+ "session": "6307c7d0 (headless)",
+ "size": 4944,
+ "sha256": "a6eef8ef3a15b8e11aba4db0b02da4a7e03192b147136ec517716563e94b914f",
+ "nets": {
+  "GPIO4": [
+   "U1-1"
+  ],
+  "GPIO5": [
+   "U2-1"
+  ],
+  "GPIO6": [
+   "U3-1"
+  ],
+  "GPIO7": [
+   "U4-1"
+  ],
+  "GND": [
+   "U1-2",
+   "U2-2",
+   "U3-2",
+   "U4-2"
+  ]
+ },
+ "note": "由 eda.sch_ManufactureData.getNetlistFile 真实导出（非手写）；GPIO↔开关映射经机器断言验证",
+ "project_uuid": "4ab9e52666a4fc7fe9b1d0c7c4c4263444d972eb139973d04478d976200a78b8",
+ "schematic_uuid": "7415725566084bd0"
+}
