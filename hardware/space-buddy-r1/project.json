@@ -34,7 +34,7 @@
       "evidence": "checks.json ok=true 且负向自检通过（check_case.py 每次建模后必跑）"
     },
     "eda": {
-      "status": "进行中（原生工程+原理图已建立并读回验证；元件/网络/ERC 未开始）",
+      "status": "进行中（原生工程+原理图页+PCB 空对象已建立并读回验证；元件/网络/ERC 未开始）",
       "editor_note": "EDA 环境已激活且读写往返验收（2026-11-26，MakerLab-EDA-Check-20261126.eprj3）——环境可用 ≠ 产品 PCB 存在",
       "project": {
         "kind": "cloud-workspace + 本地会话",
@@ -56,8 +56,15 @@
       ],
       "outputs_present": [
         {
-          "name": "原理图（含图页 P1）",
+          "name": "原理图 Schematic1/P1",
+          "type": "schematic",
           "uuid": "7415725566084bd0",
+          "evidence": "hardware/space-buddy-r1/eda-readback.json"
+        },
+        {
+          "name": "PCB1 对象（空板）",
+          "type": "pcb",
+          "uuid": "9c301e7941e42cc1",
           "evidence": "hardware/space-buddy-r1/eda-readback.json"
         }
       ]

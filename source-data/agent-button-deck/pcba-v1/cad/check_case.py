@@ -17,6 +17,7 @@ import sys
 
 import FreeCAD as App
 import Part
+FC_VERSION = ".".join(str(v) for v in App.Version()[:3])
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 print("SCRIPT LOADED, argv:", sys.argv)
@@ -295,7 +296,9 @@ def main():
     receipt = {
         "created_at": __import__("datetime").datetime.now().isoformat(timespec="seconds"),
         "tool": sys.version.split()[0],
-        "execution_result": {"ok": not failed, "failed": failed},
+        "freecad_version": FC_VERSION,
+        "execution_result": {"ok": not failed, "failed": list(failed)},
+        "checks_failed_list": list(failed),
         "inputs": {
             "model_script_sha256": sha("g2-case-r1.py"),
             "checker_sha256": hashlib.sha256(open(os.path.abspath(__file__), "rb").read()).hexdigest(),

@@ -175,7 +175,7 @@ class ProductReadyEvidenceTests(unittest.TestCase):
                 {"name": "原理图", "uuid": "deadbeef", "evidence": "hardware/space-buddy-r1/eda-readback.json"},
                 {"name": "PCB", "uuid": "7415725566084bd0", "evidence": "hardware/无此文件.json"}]
         code, out = run_validator(project=self._variant(fake_outputs))
-        self.assertTrue(any("EDA 产物缺少可核验证据" in f for f in out["failures"]), "虚构产物必须被检出")
+        self.assertTrue(any("EDA 产物证据缺陷" in f for f in out["failures"]), "虚构产物必须被检出")
 
     def test_checks_json_tamper_detected(self):
         # 负例：手改 checks.json 把失败改成 ok=true → 回执哈希比对必须检出
@@ -282,6 +282,66 @@ class WorkbenchHardwareCardTests(unittest.TestCase):
             self.assertIn(key, nine, f"九问卡缺字段：{key}")
         # EDA 环境可用 ≠ 产品就绪（环境检查与产品事实分离）
         self.assertIsNotNone(wb.get("environment", {}).get("checks"))
+
+
+
+
+class EdaEvidenceNegativeTests(unittest.TestCase):
+    """EDA 产物核验负例：重复引用/伪造类型/虚构 PCB/读回冒充。"""
+
+    def _variant(self, mutate):
+        proj = json.loads(PROJECT.read_text(encoding="utf-8"))
+        mutate(proj)
+        tmp = Path(tempfile.mkstemp(suffix=".json", dir=str(ROOT / "hardware"))[1])
+        tmp.write_text(json.dumps(proj, ensure_ascii=False), encoding="utf-8")
+        self.addCleanup(lambda: tmp.exists() and tmp.unlink())
+        return tmp
+
+    def runv(self, project):
+        args = [sys.executable, str(CHECKER), "--project", str(project)]
+        proc = subprocess.run(args, capture_output=True, text=True, timeout=120, cwd=str(ROOT))
+        return json.loads(proc.stdout) if proc.stdout.strip() else {}
+
+    def test_duplicate_reference_detected(self):
+        def m(p):
+            out = p["domains"]["eda"]["outputs_present"]
+            out.append(dict(out[0]))
+        out = self.runv(self._variant(m))
+        self.assertTrue(any("重复引用" in f for f in out["failures"]))
+
+    def test_fake_type_detected(self):
+        def m(p):
+            out = p["domains"]["eda"]["outputs_present"]
+            out.append({"name": "假产物", "type": "3mf", "uuid": "7415725566084bd0",
+                        "evidence": "hardware/space-buddy-r1/eda-readback.json"})
+        out = self.runv(self._variant(m))
+        self.assertTrue(any("未知产物类型" in f for f in out["failures"]))
+
+    def test_readback_cannot_impersonate_gerber(self):
+        def m(p):
+            out = p["domains"]["eda"]["outputs_present"]
+            out.append({"name": "假 Gerber", "type": "gerber", "uuid": "7415725566084bd0",
+                        "evidence": "hardware/space-buddy-r1/eda-readback.json"})
+        out = self.runv(self._variant(m))
+        self.assertTrue(any("冒充证据" in f for f in out["failures"]))
+
+    def test_fabricated_pcb_object_detected(self):
+        def m(p):
+            p["version_contract"]["revisions"]["pcb"] = 1
+            out = p["domains"]["eda"]["outputs_present"]
+            out.append({"name": "假 PCB", "type": "pcb", "uuid": "deadbeef" * 4,
+                        "evidence": "hardware/space-buddy-r1/eda-readback.json"})
+        out = self.runv(self._variant(m))
+        self.assertTrue(any("pcb uuid 与读回身份不符" in f for f in out["failures"]))
+
+    def test_free_cad_version_recorded_and_checked(self):
+        out = self.runv(PROJECT)
+        self.assertTrue(out["checks"].get("cad_evidence_state") in ("valid", "stale", "unknown"))
+        import json as _json
+        receipt = _json.loads((ROOT / "source-data/agent-button-deck/pcba-v1/cad/renders/case-r1/receipt.json").read_text())
+        self.assertIn("freecad_version", receipt, "回执必须记录 FreeCAD 版本")
+        self.assertIn("1.1.4", receipt.get("freecad_version", ""), "FreeCAD 版本应为主版本号")
+        self.assertIn("execution_result", receipt)
 
 
 if __name__ == "__main__":

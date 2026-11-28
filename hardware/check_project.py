@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -39,6 +40,28 @@ def load(p):
     return json.loads(Path(p).read_text(encoding="utf-8"))
 
 
+_FC_VER_CACHE = None
+
+
+def freecad_version() -> str:
+    """当前 FreeCAD 版本（捆绑 python 探针，结果缓存）。"""
+    global _FC_VER_CACHE
+    if _FC_VER_CACHE:
+        return _FC_VER_CACHE
+    import subprocess
+    fc_py = "/Applications/FreeCAD.app/Contents/Resources/bin/python"
+    env = dict(os.environ)
+    env["PYTHONPATH"] = "/Applications/FreeCAD.app/Contents/Resources/lib"
+    try:
+        r = subprocess.run([fc_py, "-c",
+                            "import FreeCAD;print('.'.join(str(v) for v in FreeCAD.Version()[:3]))"],
+                           capture_output=True, text=True, timeout=180, env=env)
+        _FC_VER_CACHE = r.stdout.strip() or "unknown"
+    except Exception:
+        _FC_VER_CACHE = "unknown"
+    return _FC_VER_CACHE
+
+
 def cad_evidence_state() -> tuple[str, list[str], dict | None]:
     """返回 (valid|stale|unknown, 差异原因列表, receipt)。"""
     receipt_path = RENDERS / "receipt.json"
@@ -50,8 +73,20 @@ def cad_evidence_state() -> tuple[str, list[str], dict | None]:
     try:
         checks_now = load(RENDERS / "checks.json")
         recorded_result = receipt.get("execution_result")
-        if recorded_result is not None and bool(checks_now.get("ok")) != bool(recorded_result.get("ok")):
-            diffs.append("checks.json 的 ok 与回执 execution_result 不一致（疑似手改报告）")
+        if recorded_result is not None:
+            # 完整比对：ok + 失败清单（手改部分字段也会被检出）
+            if bool(checks_now.get("ok")) != bool(recorded_result.get("ok")):
+                diffs.append("checks.json 的 ok 与回执 execution_result 不一致（疑似手改报告）")
+            if list(checks_now.get("failed", [])) != list(recorded_result.get("failed", [])):
+                diffs.append("checks.json 的 failed 清单与回执不一致（疑似手改报告）")
+            if list(checks_now.get("failed", [])) != list(receipt.get("checks_failed_list", [])):
+                diffs.append("checks.json 的 failed 清单与回执 checks_failed_list 不一致")
+        else:
+            diffs.append("回执缺少 execution_result")
+        fc_now = freecad_version()
+        fc_rec = receipt.get("freecad_version")
+        if fc_rec and fc_rec != fc_now:
+            diffs.append(f"FreeCAD 版本与回执不符：当前 {fc_now} / 回执 {fc_rec}")
     except Exception as e:
         diffs.append(f"checks.json 不可读：{e}")
     pairs = [
@@ -155,18 +190,49 @@ def validate(project_path: Path, changed: list[str] | None = None) -> dict:
     failures.extend(f"EDA 工程证据：{x}" for x in eda_verify_fail)
     checks["eda_project_verified"] = eda_verified and not eda_verify_fail
     eda_outputs = eda_dom.get("outputs_present", [])
-    bad_outputs = [o for o in eda_outputs
-                   if not (o.get("evidence") and (ROOT / o["evidence"]).is_file()
-                           and o.get("uuid") and rb and rb.get("schematic_uuid") == o.get("uuid"))]
+    ALLOWED_TYPES = {"schematic", "pcb", "gerber", "bom", "cpl", "pcb_step"}
+    seen_refs, bad_outputs = set(), []
+    pcb_object_uuid = None
+    for o in eda_outputs:
+        name, otype = o.get("name"), o.get("type")
+        uuid, digest, ev = o.get("uuid"), o.get("digest"), o.get("evidence")
+        if (uuid, otype) in seen_refs:
+            bad_outputs.append((name, "重复引用同一 uuid+类型"))
+        seen_refs.add((uuid, otype))
+        if otype not in ALLOWED_TYPES:
+            bad_outputs.append((name, f"未知产物类型 {otype}"))
+        if not ev or not (ROOT / ev).is_file():
+            bad_outputs.append((name, f"证据文件缺失 {ev}"))
+            continue
+        ev_text = (ROOT / ev).read_text(encoding="utf-8", errors="ignore")
+        if uuid and uuid not in ev_text:
+            bad_outputs.append((name, f"证据文件中找不到 uuid {str(uuid)[:12]}"))
+        if digest and o.get("path"):
+            pp = ROOT / o["path"]
+            if not pp.is_file():
+                bad_outputs.append((name, f"产物真实路径不存在 {o['path']}"))
+            elif sha256_file(pp) != digest:
+                bad_outputs.append((name, f"产物内容摘要不符 {o['path']}"))
+        if otype == "schematic" and rb and uuid and uuid != rb.get("schematic_uuid"):
+            bad_outputs.append((name, "schematic uuid 与读回身份不符"))
+        if otype == "pcb":
+            if rb and uuid and uuid != rb.get("pcb_uuid"):
+                bad_outputs.append((name, "pcb uuid 与读回身份不符"))
+            else:
+                pcb_object_uuid = uuid
+        if otype not in ("schematic", "pcb") and ev and Path(ev).name == "eda-readback.json":
+            bad_outputs.append((name, "gerber/bom/cpl 类产物不得用 EDA 读回身份文件冒充证据"))
     if eda_outputs and bad_outputs:
-        failures.append(f"EDA 产物缺少可核验证据（uuid+读回文件）：{[b.get('name') for b in bad_outputs]}")
+        failures.append("EDA 产物证据缺陷：" + "；".join(f"{n}:{w}" for n, w in bad_outputs))
     outputs_verified = bool(eda_outputs) and not bad_outputs
     pcb_frozen = isinstance(revs.get("pcb"), int)
-    pcb_evidence = eda_verified and outputs_verified
+    # PCB 冻结 = 版本数字 + 真实 PCB 对象（uuid 经读回证据核验）
+    pcb_evidence = eda_verified and outputs_verified and bool(pcb_object_uuid)
 
     facts["pcb_status"] = ("已冻结（rev %s）" % revs["pcb"]) if pcb_frozen and pcb_evidence else (
         "进行中（原生工程已建立，产物未齐）" if eda_project else "未开始（无 R1 原生 EDA 工程）")
     facts["pcb_frozen"] = pcb_frozen and pcb_evidence
+    facts["pcb_object_uuid"] = pcb_object_uuid or None
 
     # 6) 联合验证 / 制造包 / 授权 / 验收（区分表达，不互相混入）
     joint = proj.get("joint_check", {})

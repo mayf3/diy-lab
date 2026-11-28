@@ -5,7 +5,11 @@
  "page": [
   "P1"
  ],
- "read_at": "2026-11-28T03:47:05.269Z",
- "session": "a9a1f285-b60e-4dd6-97f1-7135ecec0a96 (headless)",
- "note": "EDA 会话读回身份（真实编辑器 API 读回，非人工填写）"
+ "pcb_uuid": "9c301e7941e42cc1",
+ "pcb_name": "PCB1",
+ "board_count": 1,
+ "read_at": "2026-11-28T08:53:06.568Z",
+ "session": "6307c7d0-1cea-40d9-a4b5-e2eecff61adb (headless)",
+ "note": "EDA 会话读回身份 v2（含 PCB 对象 uuid；编辑器 API 实读）",
+ "digest_note": "pcb 对象摘要=uuid 本身（对象尚未导出文件，导出后改用文件 SHA256）"
 }
