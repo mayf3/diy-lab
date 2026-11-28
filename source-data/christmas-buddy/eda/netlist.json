@@ -1,0 +1,3473 @@
+{
+  "schema": "cbu-netlist/0.2",
+  "product": "christmas-buddy-v1",
+  "date": "2026-11-28",
+  "architecture": "A（Pi Zero 2 W + ESP32-S3 协处理器；方案 B 变化点以 flag 标注）",
+  "devices": [
+    {
+      "ref": "U1",
+      "part": "Raspberry Pi Zero 2 W",
+      "mpn": "RP3A0（SC0542）",
+      "kind": "module",
+      "note": "512MB；云 AI/音频主控；USB 数据不接",
+      "pins": {
+        "P5V1": {
+          "pin": "P5V1",
+          "net": "5V_MAIN",
+          "dir": "PWR",
+          "vdom": "5V",
+          "tol5v": false,
+          "pull": null,
+          "note": "2A 额定",
+          "flag": null
+        },
+        "P5V2": {
+          "pin": "P5V2",
+          "net": "5V_MAIN",
+          "dir": "PWR",
+          "vdom": "5V",
+          "tol5v": false,
+          "pull": null,
+          "note": "2A 额定",
+          "flag": null
+        },
+        "GND1": {
+          "pin": "GND1",
+          "net": "GND",
+          "dir": "PWR",
+          "vdom": "0V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "BCM18": {
+          "pin": "BCM18",
+          "net": "I2S_PCM_CLK",
+          "dir": "OUT",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "BCM19": {
+          "pin": "BCM19",
+          "net": "I2S_PCM_FS",
+          "dir": "OUT",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "BCM20": {
+          "pin": "BCM20",
+          "net": "I2S_PCM_DIN",
+          "dir": "IN",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "BCM21": {
+          "pin": "BCM21",
+          "net": "I2S_PCM_DOUT",
+          "dir": "OUT",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "BCM25": {
+          "pin": "BCM25",
+          "net": "AMP_SD",
+          "dir": "OUT",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "高=出声，低=静音；复位默认输入态→外部下拉静音",
+          "flag": null
+        },
+        "BCM23": {
+          "pin": "BCM23",
+          "net": "BTN_K1",
+          "dir": "IN",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": "up",
+          "note": "",
+          "flag": null
+        },
+        "BCM24": {
+          "pin": "BCM24",
+          "net": "BTN_K2",
+          "dir": "IN",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": "up",
+          "note": "",
+          "flag": null
+        },
+        "BCM8": {
+          "pin": "BCM8",
+          "net": "BTN_K3",
+          "dir": "IN",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": "up",
+          "note": "",
+          "flag": null
+        },
+        "BCM7": {
+          "pin": "BCM7",
+          "net": "BTN_K4",
+          "dir": "IN",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": "up",
+          "note": "晚安，最高优先",
+          "flag": null
+        },
+        "BCM14": {
+          "pin": "BCM14",
+          "net": "UART_PI_TX",
+          "dir": "OUT",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "BCM15": {
+          "pin": "BCM15",
+          "net": "UART_ESP_TX",
+          "dir": "IN",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "BCM10": {
+          "pin": "BCM10",
+          "net": "LED_PI",
+          "dir": "OUT",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": "仅方案B"
+        },
+        "BCM6": {
+          "pin": "BCM6",
+          "net": "PI_RUNNING_N",
+          "dir": "OUT",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "心跳",
+          "flag": null
+        },
+        "BCM2": {
+          "pin": "BCM2",
+          "net": "I2C_SDA",
+          "dir": "IN",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": "up",
+          "note": "",
+          "flag": "预留"
+        },
+        "BCM3": {
+          "pin": "BCM3",
+          "net": "I2C_SCL",
+          "dir": "OUT",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": "up",
+          "note": "",
+          "flag": "预留"
+        },
+        "BCM5": {
+          "pin": "BCM5",
+          "net": "P_LED_BUF_EN",
+          "dir": "OUT",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": "预留"
+        },
+        "BCM26": {
+          "pin": "BCM26",
+          "net": "SPARE_GPIO",
+          "dir": "IN",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": "预留"
+        },
+        "P3V3": {
+          "pin": "P3V3",
+          "net": "3V3_PI",
+          "dir": "PWR",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": "仅方案B"
+        }
+      },
+      "pin_list": [
+        "P5V1",
+        "P5V2",
+        "GND1",
+        "BCM18",
+        "BCM19",
+        "BCM20",
+        "BCM21",
+        "BCM25",
+        "BCM23",
+        "BCM24",
+        "BCM8",
+        "BCM7",
+        "BCM14",
+        "BCM15",
+        "BCM10",
+        "BCM6",
+        "BCM2",
+        "BCM3",
+        "BCM5",
+        "BCM26",
+        "P3V3"
+      ]
+    },
+    {
+      "ref": "U2",
+      "part": "MAX98357A",
+      "mpn": "MAX98357AETE+（C 编号待核）",
+      "kind": "ic",
+      "note": "I2S Class-D，3W@4Ω 上限，V1 软件限 1W",
+      "pins": {
+        "VDD": {
+          "pin": "VDD",
+          "net": "5V_MAIN",
+          "dir": "PWR",
+          "vdom": "5V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "GND": {
+          "pin": "GND",
+          "net": "GND",
+          "dir": "PWR",
+          "vdom": "0V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "SD_MODE": {
+          "pin": "SD_MODE",
+          "net": "AMP_SD",
+          "dir": "IN",
+          "vdom": "5V",
+          "tol5v": false,
+          "pull": null,
+          "note": "内部模式脚，实际阈值按数据手册核对；下拉=静音默认态",
+          "flag": null
+        },
+        "GAIN": {
+          "pin": "GAIN",
+          "net": "GAIN_STRAP",
+          "dir": "IN",
+          "vdom": "5V",
+          "tol5v": false,
+          "pull": null,
+          "note": "增益 strapped，待数据手册核对",
+          "flag": null
+        },
+        "DIN": {
+          "pin": "DIN",
+          "net": "I2S_PCM_DOUT",
+          "dir": "IN",
+          "vdom": "3V3",
+          "tol5v": true,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "BCLK": {
+          "pin": "BCLK",
+          "net": "I2S_PCM_CLK",
+          "dir": "IN",
+          "vdom": "3V3",
+          "tol5v": true,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "LRC": {
+          "pin": "LRC",
+          "net": "I2S_PCM_FS",
+          "dir": "IN",
+          "vdom": "3V3",
+          "tol5v": true,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "OUTP": {
+          "pin": "OUTP",
+          "net": "SPK_P",
+          "dir": "OUT",
+          "vdom": "5V_AUDIO",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "OUTN": {
+          "pin": "OUTN",
+          "net": "SPK_N",
+          "dir": "OUT",
+          "vdom": "5V_AUDIO",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        }
+      },
+      "pin_list": [
+        "VDD",
+        "GND",
+        "SD_MODE",
+        "GAIN",
+        "DIN",
+        "BCLK",
+        "LRC",
+        "OUTP",
+        "OUTN"
+      ]
+    },
+    {
+      "ref": "U5",
+      "part": "INMP441",
+      "mpn": "INMP441（C 编号待核）",
+      "kind": "ic",
+      "note": "底端口 MEMS 麦，声学密封垫 + 前壳 Ø2.2 孔",
+      "pins": {
+        "VDD": {
+          "pin": "VDD",
+          "net": "3V3_MCU",
+          "dir": "PWR",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "GND": {
+          "pin": "GND",
+          "net": "GND",
+          "dir": "PWR",
+          "vdom": "0V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "SCK": {
+          "pin": "SCK",
+          "net": "I2S_PCM_CLK",
+          "dir": "IN",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "WS": {
+          "pin": "WS",
+          "net": "I2S_PCM_FS",
+          "dir": "IN",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "SD": {
+          "pin": "SD",
+          "net": "I2S_PCM_DIN",
+          "dir": "OUT",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "LRSL": {
+          "pin": "LRSL",
+          "net": "GND",
+          "dir": "IN",
+          "vdom": "0V",
+          "tol5v": false,
+          "pull": null,
+          "note": "左声道帧输出",
+          "flag": null
+        }
+      },
+      "pin_list": [
+        "VDD",
+        "GND",
+        "SCK",
+        "WS",
+        "SD",
+        "LRSL"
+      ]
+    },
+    {
+      "ref": "U3",
+      "part": "ESP32-S3-WROOM-1-N8R2",
+      "mpn": "C 编号待核（扩展库）",
+      "kind": "module",
+      "note": "方案 B：本器件 DNP",
+      "pins": {
+        "3V3": {
+          "pin": "3V3",
+          "net": "3V3_MCU",
+          "dir": "PWR",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "EN": {
+          "pin": "EN",
+          "net": "MCU_EN",
+          "dir": "IN",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": "up",
+          "note": "10k 上拉 + 1µF",
+          "flag": null
+        },
+        "GND": {
+          "pin": "GND",
+          "net": "GND",
+          "dir": "PWR",
+          "vdom": "0V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "RXD0": {
+          "pin": "RXD0",
+          "net": "UART_PI_TX",
+          "dir": "IN",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "TXD0": {
+          "pin": "TXD0",
+          "net": "UART_ESP_TX",
+          "dir": "OUT",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "IO4": {
+          "pin": "IO4",
+          "net": "LED_DIN_RAW",
+          "dir": "OUT",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "RMT 驱动眼/星/树灯链",
+          "flag": null
+        },
+        "IO5": {
+          "pin": "IO5",
+          "net": "STAR_ALT",
+          "dir": "OUT",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "备用独立通道，V1 不用",
+          "flag": "dnp"
+        },
+        "IO6": {
+          "pin": "IO6",
+          "net": "BTN_K1",
+          "dir": "IN",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": "up",
+          "note": "",
+          "flag": null
+        },
+        "IO7": {
+          "pin": "IO7",
+          "net": "BTN_K2",
+          "dir": "IN",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": "up",
+          "note": "",
+          "flag": null
+        },
+        "IO15": {
+          "pin": "IO15",
+          "net": "BTN_K3",
+          "dir": "IN",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": "up",
+          "note": "",
+          "flag": null
+        },
+        "IO16": {
+          "pin": "IO16",
+          "net": "BTN_K4",
+          "dir": "IN",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": "up",
+          "note": "晚安硬件级响应",
+          "flag": null
+        },
+        "IO17": {
+          "pin": "IO17",
+          "net": "AMP_FORCE_GATE",
+          "dir": "OUT",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "低电平默认；高=经 Q1 强制静音",
+          "flag": null
+        },
+        "IO18": {
+          "pin": "IO18",
+          "net": "PI_RUNNING_N",
+          "dir": "IN",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "IO0": {
+          "pin": "IO0",
+          "net": "BOOT_BTN",
+          "dir": "IN",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": "up",
+          "note": "烧录/恢复",
+          "flag": null
+        },
+        "IO9": {
+          "pin": "IO9",
+          "net": "JTAG_TP1",
+          "dir": "IN",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": "预留"
+        },
+        "IO10": {
+          "pin": "IO10",
+          "net": "JTAG_TP2",
+          "dir": "IN",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": "预留"
+        },
+        "IO11": {
+          "pin": "IO11",
+          "net": "JTAG_TP3",
+          "dir": "IN",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": "预留"
+        },
+        "IO12": {
+          "pin": "IO12",
+          "net": "JTAG_TP4",
+          "dir": "IN",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": "预留"
+        },
+        "IO13": {
+          "pin": "IO13",
+          "net": "JTAG_TP5",
+          "dir": "IN",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": "预留"
+        },
+        "IO14": {
+          "pin": "IO14",
+          "net": "JTAG_TP6",
+          "dir": "IN",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": "预留"
+        }
+      },
+      "pin_list": [
+        "3V3",
+        "EN",
+        "GND",
+        "RXD0",
+        "TXD0",
+        "IO4",
+        "IO5",
+        "IO6",
+        "IO7",
+        "IO15",
+        "IO16",
+        "IO17",
+        "IO18",
+        "IO0",
+        "IO9",
+        "IO10",
+        "IO11",
+        "IO12",
+        "IO13",
+        "IO14"
+      ]
+    },
+    {
+      "ref": "U6",
+      "part": "SN74LVC1T45",
+      "mpn": "SN74LVC1T45DBVR（C 编号待核）",
+      "kind": "ic",
+      "note": "3.3→5V LED 数据缓冲",
+      "pins": {
+        "VCCA": {
+          "pin": "VCCA",
+          "net": "3V3_MCU",
+          "dir": "PWR",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "A": {
+          "pin": "A",
+          "net": "BUF_A",
+          "dir": "IN",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "GND": {
+          "pin": "GND",
+          "net": "GND",
+          "dir": "PWR",
+          "vdom": "0V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "DIR": {
+          "pin": "DIR",
+          "net": "GND",
+          "dir": "IN",
+          "vdom": "0V",
+          "tol5v": false,
+          "pull": null,
+          "note": "固定 A→B",
+          "flag": null
+        },
+        "VCCB": {
+          "pin": "VCCB",
+          "net": "5V_LED",
+          "dir": "PWR",
+          "vdom": "5V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "B": {
+          "pin": "B",
+          "net": "LED_EYE_DIN",
+          "dir": "OUT",
+          "vdom": "5V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        }
+      },
+      "pin_list": [
+        "VCCA",
+        "A",
+        "GND",
+        "DIR",
+        "VCCB",
+        "B"
+      ]
+    },
+    {
+      "ref": "U4",
+      "part": "TPS563201（候选主选）",
+      "mpn": "TPS563201DRLR（C 编号待核）",
+      "kind": "power",
+      "note": "5V→3.3V buck；备选 AMS1117-3.3（DNP，发热需实测）",
+      "pins": {
+        "VIN": {
+          "pin": "VIN",
+          "net": "5V_MAIN",
+          "dir": "PWR",
+          "vdom": "5V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "EN": {
+          "pin": "EN",
+          "net": "5V_MAIN",
+          "dir": "IN",
+          "vdom": "5V",
+          "tol5v": false,
+          "pull": null,
+          "note": "经 R_EN 上电即启",
+          "flag": null
+        },
+        "GND": {
+          "pin": "GND",
+          "net": "GND",
+          "dir": "PWR",
+          "vdom": "0V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "SW": {
+          "pin": "SW",
+          "net": "BUCK_SW",
+          "dir": "OUT",
+          "vdom": "5V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "FB": {
+          "pin": "FB",
+          "net": "BUCK_FB",
+          "dir": "IN",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "分压反馈，阻值按数据手册公式核算（CALC）",
+          "flag": null
+        },
+        "BOOT": {
+          "pin": "BOOT",
+          "net": "BUCK_BOOT",
+          "dir": "IN",
+          "vdom": "5V",
+          "tol5v": false,
+          "pull": null,
+          "note": "自举电容",
+          "flag": null
+        }
+      },
+      "pin_list": [
+        "VIN",
+        "EN",
+        "GND",
+        "SW",
+        "FB",
+        "BOOT"
+      ]
+    },
+    {
+      "ref": "L1",
+      "part": "功率电感 4.7µH/2A",
+      "mpn": "（选型轮按 datasheet 公式核定）",
+      "kind": "passive",
+      "note": "CHECK：数值为候选",
+      "pins": {
+        "1": {
+          "pin": "1",
+          "net": "BUCK_SW",
+          "dir": "PWR",
+          "vdom": "5V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "2": {
+          "pin": "2",
+          "net": "3V3_MCU",
+          "dir": "PWR",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        }
+      },
+      "pin_list": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "ref": "F1",
+      "part": "PTC 3A hold",
+      "mpn": "（1206 PTC，C 编号待核）",
+      "kind": "protect",
+      "note": "",
+      "pins": {
+        "1": {
+          "pin": "1",
+          "net": "5V_IN",
+          "dir": "PWR",
+          "vdom": "5V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "2": {
+          "pin": "2",
+          "net": "5V_F",
+          "dir": "PWR",
+          "vdom": "5V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        }
+      },
+      "pin_list": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "ref": "F2",
+      "part": "PTC 1.6A hold",
+      "mpn": "（1206 PTC，C 编号待核）",
+      "kind": "protect",
+      "note": "",
+      "pins": {
+        "1": {
+          "pin": "1",
+          "net": "5V_MAIN",
+          "dir": "PWR",
+          "vdom": "5V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "2": {
+          "pin": "2",
+          "net": "5V_LED",
+          "dir": "PWR",
+          "vdom": "5V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        }
+      },
+      "pin_list": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "ref": "F3",
+      "part": "PTC 0.75A hold",
+      "mpn": "（0805 PTC，C 编号待核）",
+      "kind": "protect",
+      "note": "",
+      "pins": {
+        "1": {
+          "pin": "1",
+          "net": "5V_LED",
+          "dir": "PWR",
+          "vdom": "5V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "2": {
+          "pin": "2",
+          "net": "5V_LED_EXT",
+          "dir": "PWR",
+          "vdom": "5V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        }
+      },
+      "pin_list": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "ref": "D1",
+      "part": "TVS SMAJ5.0A",
+      "mpn": "（C 编号待核）",
+      "kind": "protect",
+      "note": "输入浪涌吸收",
+      "pins": {
+        "K": {
+          "pin": "K",
+          "net": "5V_IN",
+          "dir": "PWR",
+          "vdom": "5V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "A": {
+          "pin": "A",
+          "net": "GND",
+          "dir": "PWR",
+          "vdom": "0V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        }
+      },
+      "pin_list": [
+        "K",
+        "A"
+      ]
+    },
+    {
+      "ref": "SW5",
+      "part": "电源侧键",
+      "mpn": "（SS-12D00 拨动，C 编号待核）",
+      "kind": "mech",
+      "note": "硬断电开关（后壳）",
+      "pins": {
+        "1": {
+          "pin": "1",
+          "net": "5V_F",
+          "dir": "PWR",
+          "vdom": "5V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "2": {
+          "pin": "2",
+          "net": "5V_MAIN",
+          "dir": "PWR",
+          "vdom": "5V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        }
+      },
+      "pin_list": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "ref": "S1",
+      "part": "焊桥（方案A：ESP32 驱动 LED）",
+      "mpn": "PCB 焊桥",
+      "kind": "bridge",
+      "note": "方案A 闭合",
+      "pins": {
+        "1": {
+          "pin": "1",
+          "net": "LED_DIN_RAW",
+          "dir": "PAS",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "2": {
+          "pin": "2",
+          "net": "BUF_A",
+          "dir": "PAS",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        }
+      },
+      "pin_list": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "ref": "S2",
+      "part": "焊桥（方案B：Pi 驱动 LED）",
+      "mpn": "PCB 焊桥",
+      "kind": "bridge",
+      "note": "方案B 闭合（与 S1 互斥）",
+      "pins": {
+        "1": {
+          "pin": "1",
+          "net": "LED_PI",
+          "dir": "PAS",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "2": {
+          "pin": "2",
+          "net": "BUF_A",
+          "dir": "PAS",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        }
+      },
+      "pin_list": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "ref": "Q1",
+      "part": "2N7002",
+      "mpn": "（C 编号待核）",
+      "kind": "discrete",
+      "note": "ESP32 硬件静音路径",
+      "pins": {
+        "G": {
+          "pin": "G",
+          "net": "AMP_FORCE_GATE",
+          "dir": "IN",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "D": {
+          "pin": "D",
+          "net": "AMP_SD",
+          "dir": "IN",
+          "vdom": "5V",
+          "tol5v": false,
+          "pull": null,
+          "note": "漏极把 AMP_SD 拉到地=强制静音",
+          "flag": null
+        },
+        "S": {
+          "pin": "S",
+          "net": "GND",
+          "dir": "PWR",
+          "vdom": "0V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        }
+      },
+      "pin_list": [
+        "G",
+        "D",
+        "S"
+      ]
+    },
+    {
+      "ref": "R_SD",
+      "part": "100kΩ 下拉",
+      "mpn": "0402（C 编号待核）",
+      "kind": "passive",
+      "note": "静音默认态",
+      "pins": {
+        "1": {
+          "pin": "1",
+          "net": "AMP_SD",
+          "dir": "IN",
+          "vdom": "5V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "2": {
+          "pin": "2",
+          "net": "GND",
+          "dir": "PWR",
+          "vdom": "0V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        }
+      },
+      "pin_list": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "ref": "R_G",
+      "part": "100kΩ 下拉",
+      "mpn": "0402（C 编号待核）",
+      "kind": "passive",
+      "note": "",
+      "pins": {
+        "1": {
+          "pin": "1",
+          "net": "AMP_FORCE_GATE",
+          "dir": "IN",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "2": {
+          "pin": "2",
+          "net": "GND",
+          "dir": "PWR",
+          "vdom": "0V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        }
+      },
+      "pin_list": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "ref": "R_EN",
+      "part": "100kΩ",
+      "mpn": "0402（C 编号待核）",
+      "kind": "passive",
+      "note": "ESP32 EN 上拉",
+      "pins": {
+        "1": {
+          "pin": "1",
+          "net": "5V_MAIN",
+          "dir": "PWR",
+          "vdom": "5V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "2": {
+          "pin": "2",
+          "net": "MCU_EN",
+          "dir": "IN",
+          "vdom": "3V3",
+          "tol5v": true,
+          "pull": null,
+          "note": "",
+          "flag": null
+        }
+      },
+      "pin_list": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "ref": "R_CC1",
+      "part": "5.1kΩ Rd",
+      "mpn": "0402（C 编号待核）",
+      "kind": "passive",
+      "note": "",
+      "pins": {
+        "1": {
+          "pin": "1",
+          "net": "CC1_RD",
+          "dir": "PWR",
+          "vdom": "0V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "2": {
+          "pin": "2",
+          "net": "GND",
+          "dir": "PWR",
+          "vdom": "0V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        }
+      },
+      "pin_list": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "ref": "R_CC2",
+      "part": "5.1kΩ Rd",
+      "mpn": "0402（C 编号待核）",
+      "kind": "passive",
+      "note": "",
+      "pins": {
+        "1": {
+          "pin": "1",
+          "net": "CC2_RD",
+          "dir": "PWR",
+          "vdom": "0V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "2": {
+          "pin": "2",
+          "net": "GND",
+          "dir": "PWR",
+          "vdom": "0V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        }
+      },
+      "pin_list": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "ref": "R_GN",
+      "part": "100kΩ GAIN 脚带",
+      "mpn": "0402（C 编号待核）",
+      "kind": "passive",
+      "note": "增益档位待数据手册核对",
+      "pins": {
+        "1": {
+          "pin": "1",
+          "net": "GAIN_STRAP",
+          "dir": "IN",
+          "vdom": "5V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "2": {
+          "pin": "2",
+          "net": "GND",
+          "dir": "PWR",
+          "vdom": "0V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        }
+      },
+      "pin_list": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "ref": "R_FBH",
+      "part": "分压上臂（CALC）",
+      "mpn": "0402（C 编号待核）",
+      "kind": "passive",
+      "note": "",
+      "pins": {
+        "1": {
+          "pin": "1",
+          "net": "3V3_MCU",
+          "dir": "PWR",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "2": {
+          "pin": "2",
+          "net": "BUCK_FB",
+          "dir": "IN",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        }
+      },
+      "pin_list": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "ref": "R_FBL",
+      "part": "分压下臂（CALC）",
+      "mpn": "0402（C 编号待核）",
+      "kind": "passive",
+      "note": "",
+      "pins": {
+        "1": {
+          "pin": "1",
+          "net": "BUCK_FB",
+          "dir": "IN",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "2": {
+          "pin": "2",
+          "net": "GND",
+          "dir": "PWR",
+          "vdom": "0V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        }
+      },
+      "pin_list": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "ref": "SW1",
+      "part": "轻触开关 K1 说话",
+      "mpn": "TS-1187A（C 编号待核）",
+      "kind": "mech",
+      "note": "",
+      "pins": {
+        "1": {
+          "pin": "1",
+          "net": "BTN_K1",
+          "dir": "OUT",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "按下对地导通",
+          "flag": null
+        },
+        "2": {
+          "pin": "2",
+          "net": "GND",
+          "dir": "PWR",
+          "vdom": "0V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        }
+      },
+      "pin_list": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "ref": "SW2",
+      "part": "轻触开关 K2 重复",
+      "mpn": "TS-1187A",
+      "kind": "mech",
+      "note": "",
+      "pins": {
+        "1": {
+          "pin": "1",
+          "net": "BTN_K2",
+          "dir": "OUT",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "按下对地导通",
+          "flag": null
+        },
+        "2": {
+          "pin": "2",
+          "net": "GND",
+          "dir": "PWR",
+          "vdom": "0V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        }
+      },
+      "pin_list": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "ref": "SW3",
+      "part": "轻触开关 K3 魔法灯效",
+      "mpn": "TS-1187A",
+      "kind": "mech",
+      "note": "",
+      "pins": {
+        "1": {
+          "pin": "1",
+          "net": "BTN_K3",
+          "dir": "OUT",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "按下对地导通",
+          "flag": null
+        },
+        "2": {
+          "pin": "2",
+          "net": "GND",
+          "dir": "PWR",
+          "vdom": "0V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        }
+      },
+      "pin_list": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "ref": "SW4",
+      "part": "轻触开关 K4 晚安",
+      "mpn": "TS-1187A",
+      "kind": "mech",
+      "note": "",
+      "pins": {
+        "1": {
+          "pin": "1",
+          "net": "BTN_K4",
+          "dir": "OUT",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "按下对地导通",
+          "flag": null
+        },
+        "2": {
+          "pin": "2",
+          "net": "GND",
+          "dir": "PWR",
+          "vdom": "0V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        }
+      },
+      "pin_list": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "ref": "SW6",
+      "part": "BOOT 轻触",
+      "mpn": "侧键 2 脚",
+      "kind": "mech",
+      "note": "",
+      "pins": {
+        "1": {
+          "pin": "1",
+          "net": "BOOT_BTN",
+          "dir": "OUT",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "按下对地导通",
+          "flag": null
+        },
+        "2": {
+          "pin": "2",
+          "net": "GND",
+          "dir": "PWR",
+          "vdom": "0V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        }
+      },
+      "pin_list": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "ref": "J1",
+      "part": "USB-C 16pin 母座",
+      "mpn": "（板载 5A，C 编号待核）",
+      "kind": "conn",
+      "note": "仅 5V 供电，不接数据（隐私边界）",
+      "pins": {
+        "VBUS": {
+          "pin": "VBUS",
+          "net": "5V_IN",
+          "dir": "PWR",
+          "vdom": "5V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "GND": {
+          "pin": "GND",
+          "net": "GND",
+          "dir": "PWR",
+          "vdom": "0V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "CC1": {
+          "pin": "CC1",
+          "net": "CC1_RD",
+          "dir": "IN",
+          "vdom": "0V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "CC2": {
+          "pin": "CC2",
+          "net": "CC2_RD",
+          "dir": "IN",
+          "vdom": "0V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "DP": {
+          "pin": "DP",
+          "net": "USB_DP_NC",
+          "dir": "IN",
+          "vdom": "0V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": "dnp"
+        },
+        "DN": {
+          "pin": "DN",
+          "net": "USB_DN_NC",
+          "dir": "IN",
+          "vdom": "0V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": "dnp"
+        }
+      },
+      "pin_list": [
+        "VBUS",
+        "GND",
+        "CC1",
+        "CC2",
+        "DP",
+        "DN"
+      ]
+    },
+    {
+      "ref": "J4",
+      "part": "PH2.0-2P 扬声器座",
+      "mpn": "PH2.0 卧贴",
+      "kind": "conn",
+      "note": "",
+      "pins": {
+        "1": {
+          "pin": "1",
+          "net": "SPK_P",
+          "dir": "PAS",
+          "vdom": "5V_AUDIO",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "2": {
+          "pin": "2",
+          "net": "SPK_N",
+          "dir": "PAS",
+          "vdom": "5V_AUDIO",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        }
+      },
+      "pin_list": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "ref": "J5",
+      "part": "PH2.0-3P 左眼模组",
+      "mpn": "PH2.0 卧贴",
+      "kind": "conn",
+      "note": "",
+      "pins": {
+        "1": {
+          "pin": "1",
+          "net": "5V_LED",
+          "dir": "PWR",
+          "vdom": "5V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "2": {
+          "pin": "2",
+          "net": "LED_EYE_DIN",
+          "dir": "IN",
+          "vdom": "5V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "3": {
+          "pin": "3",
+          "net": "GND",
+          "dir": "PWR",
+          "vdom": "0V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        }
+      },
+      "pin_list": [
+        "1",
+        "2",
+        "3"
+      ]
+    },
+    {
+      "ref": "J6",
+      "part": "PH2.0-3P 右眼模组",
+      "mpn": "PH2.0 卧贴",
+      "kind": "conn",
+      "note": "",
+      "pins": {
+        "1": {
+          "pin": "1",
+          "net": "5V_LED",
+          "dir": "PWR",
+          "vdom": "5V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "2": {
+          "pin": "2",
+          "net": "LED_EYE_DIN",
+          "dir": "IN",
+          "vdom": "5V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "3": {
+          "pin": "3",
+          "net": "GND",
+          "dir": "PWR",
+          "vdom": "0V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        }
+      },
+      "pin_list": [
+        "1",
+        "2",
+        "3"
+      ]
+    },
+    {
+      "ref": "J7",
+      "part": "PH2.0-3P 星星灯",
+      "mpn": "PH2.0 卧贴",
+      "kind": "conn",
+      "note": "",
+      "pins": {
+        "1": {
+          "pin": "1",
+          "net": "5V_LED",
+          "dir": "PWR",
+          "vdom": "5V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "2": {
+          "pin": "2",
+          "net": "LED_EYE_DIN",
+          "dir": "IN",
+          "vdom": "5V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "3": {
+          "pin": "3",
+          "net": "GND",
+          "dir": "PWR",
+          "vdom": "0V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        }
+      },
+      "pin_list": [
+        "1",
+        "2",
+        "3"
+      ]
+    },
+    {
+      "ref": "J8",
+      "part": "PH2.0-3P 树灯扩展",
+      "mpn": "PH2.0 卧贴",
+      "kind": "conn",
+      "note": "V1 不装配",
+      "pins": {
+        "1": {
+          "pin": "1",
+          "net": "5V_LED_EXT",
+          "dir": "PWR",
+          "vdom": "5V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "2": {
+          "pin": "2",
+          "net": "LED_EYE_DIN",
+          "dir": "IN",
+          "vdom": "5V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "3": {
+          "pin": "3",
+          "net": "GND",
+          "dir": "PWR",
+          "vdom": "0V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        }
+      },
+      "pin_list": [
+        "1",
+        "2",
+        "3"
+      ]
+    },
+    {
+      "ref": "J9",
+      "part": "SH1.0-4P 调试座",
+      "mpn": "SH1.0 卧贴",
+      "kind": "conn",
+      "note": "",
+      "pins": {
+        "1": {
+          "pin": "1",
+          "net": "3V3_MCU",
+          "dir": "PWR",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "2": {
+          "pin": "2",
+          "net": "UART_PI_TX",
+          "dir": "IN",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "3": {
+          "pin": "3",
+          "net": "UART_ESP_TX",
+          "dir": "IN",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "4": {
+          "pin": "4",
+          "net": "GND",
+          "dir": "PWR",
+          "vdom": "0V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        }
+      },
+      "pin_list": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    {
+      "ref": "J10",
+      "part": "PH2.0-6P 按键卫星板座",
+      "mpn": "PH2.0 卧贴",
+      "kind": "conn",
+      "note": "卫星板上的 4 键与此并联（SW1-4 在主板上，二者取其一装配——装配轮决定）",
+      "pins": {
+        "1": {
+          "pin": "1",
+          "net": "BTN_K1",
+          "dir": "IN",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "2": {
+          "pin": "2",
+          "net": "BTN_K2",
+          "dir": "IN",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "3": {
+          "pin": "3",
+          "net": "BTN_K3",
+          "dir": "IN",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "4": {
+          "pin": "4",
+          "net": "BTN_K4",
+          "dir": "IN",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "5": {
+          "pin": "5",
+          "net": "GND",
+          "dir": "PWR",
+          "vdom": "0V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "6": {
+          "pin": "6",
+          "net": "KEY_NC",
+          "dir": "NC",
+          "vdom": "-",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": "dnp"
+        }
+      },
+      "pin_list": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ]
+    }
+  ],
+  "nets": {
+    "3V3_MCU": [
+      {
+        "ref": "J9",
+        "pin": "1",
+        "dir": "PWR",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "L1",
+        "pin": "2",
+        "dir": "PWR",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "R_FBH",
+        "pin": "1",
+        "dir": "PWR",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "U3",
+        "pin": "3V3",
+        "dir": "PWR",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "U5",
+        "pin": "VDD",
+        "dir": "PWR",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "U6",
+        "pin": "VCCA",
+        "dir": "PWR",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      }
+    ],
+    "3V3_PI": [
+      {
+        "ref": "U1",
+        "pin": "P3V3",
+        "dir": "PWR",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": null,
+        "flag": "仅方案B"
+      }
+    ],
+    "5V_F": [
+      {
+        "ref": "F1",
+        "pin": "2",
+        "dir": "PWR",
+        "vdom": "5V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "SW5",
+        "pin": "1",
+        "dir": "PWR",
+        "vdom": "5V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      }
+    ],
+    "5V_IN": [
+      {
+        "ref": "D1",
+        "pin": "K",
+        "dir": "PWR",
+        "vdom": "5V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "F1",
+        "pin": "1",
+        "dir": "PWR",
+        "vdom": "5V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "J1",
+        "pin": "VBUS",
+        "dir": "PWR",
+        "vdom": "5V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      }
+    ],
+    "5V_LED": [
+      {
+        "ref": "F2",
+        "pin": "2",
+        "dir": "PWR",
+        "vdom": "5V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "F3",
+        "pin": "1",
+        "dir": "PWR",
+        "vdom": "5V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "J5",
+        "pin": "1",
+        "dir": "PWR",
+        "vdom": "5V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "J6",
+        "pin": "1",
+        "dir": "PWR",
+        "vdom": "5V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "J7",
+        "pin": "1",
+        "dir": "PWR",
+        "vdom": "5V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "U6",
+        "pin": "VCCB",
+        "dir": "PWR",
+        "vdom": "5V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      }
+    ],
+    "5V_LED_EXT": [
+      {
+        "ref": "F3",
+        "pin": "2",
+        "dir": "PWR",
+        "vdom": "5V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "J8",
+        "pin": "1",
+        "dir": "PWR",
+        "vdom": "5V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      }
+    ],
+    "5V_MAIN": [
+      {
+        "ref": "F2",
+        "pin": "1",
+        "dir": "PWR",
+        "vdom": "5V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "R_EN",
+        "pin": "1",
+        "dir": "PWR",
+        "vdom": "5V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "SW5",
+        "pin": "2",
+        "dir": "PWR",
+        "vdom": "5V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "U1",
+        "pin": "P5V1",
+        "dir": "PWR",
+        "vdom": "5V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "U1",
+        "pin": "P5V2",
+        "dir": "PWR",
+        "vdom": "5V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "U2",
+        "pin": "VDD",
+        "dir": "PWR",
+        "vdom": "5V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "U4",
+        "pin": "EN",
+        "dir": "IN",
+        "vdom": "5V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "U4",
+        "pin": "VIN",
+        "dir": "PWR",
+        "vdom": "5V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      }
+    ],
+    "AMP_FORCE_GATE": [
+      {
+        "ref": "Q1",
+        "pin": "G",
+        "dir": "IN",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "R_G",
+        "pin": "1",
+        "dir": "IN",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "U3",
+        "pin": "IO17",
+        "dir": "OUT",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      }
+    ],
+    "AMP_SD": [
+      {
+        "ref": "Q1",
+        "pin": "D",
+        "dir": "IN",
+        "vdom": "5V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "R_SD",
+        "pin": "1",
+        "dir": "IN",
+        "vdom": "5V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "U1",
+        "pin": "BCM25",
+        "dir": "OUT",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "U2",
+        "pin": "SD_MODE",
+        "dir": "IN",
+        "vdom": "5V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      }
+    ],
+    "BOOT_BTN": [
+      {
+        "ref": "SW6",
+        "pin": "1",
+        "dir": "OUT",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "U3",
+        "pin": "IO0",
+        "dir": "IN",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": "up",
+        "flag": null
+      }
+    ],
+    "BTN_K1": [
+      {
+        "ref": "J10",
+        "pin": "1",
+        "dir": "IN",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "SW1",
+        "pin": "1",
+        "dir": "OUT",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "U1",
+        "pin": "BCM23",
+        "dir": "IN",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": "up",
+        "flag": null
+      },
+      {
+        "ref": "U3",
+        "pin": "IO6",
+        "dir": "IN",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": "up",
+        "flag": null
+      }
+    ],
+    "BTN_K2": [
+      {
+        "ref": "J10",
+        "pin": "2",
+        "dir": "IN",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "SW2",
+        "pin": "1",
+        "dir": "OUT",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "U1",
+        "pin": "BCM24",
+        "dir": "IN",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": "up",
+        "flag": null
+      },
+      {
+        "ref": "U3",
+        "pin": "IO7",
+        "dir": "IN",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": "up",
+        "flag": null
+      }
+    ],
+    "BTN_K3": [
+      {
+        "ref": "J10",
+        "pin": "3",
+        "dir": "IN",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "SW3",
+        "pin": "1",
+        "dir": "OUT",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "U1",
+        "pin": "BCM8",
+        "dir": "IN",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": "up",
+        "flag": null
+      },
+      {
+        "ref": "U3",
+        "pin": "IO15",
+        "dir": "IN",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": "up",
+        "flag": null
+      }
+    ],
+    "BTN_K4": [
+      {
+        "ref": "J10",
+        "pin": "4",
+        "dir": "IN",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "SW4",
+        "pin": "1",
+        "dir": "OUT",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "U1",
+        "pin": "BCM7",
+        "dir": "IN",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": "up",
+        "flag": null
+      },
+      {
+        "ref": "U3",
+        "pin": "IO16",
+        "dir": "IN",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": "up",
+        "flag": null
+      }
+    ],
+    "BUCK_BOOT": [
+      {
+        "ref": "U4",
+        "pin": "BOOT",
+        "dir": "IN",
+        "vdom": "5V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      }
+    ],
+    "BUCK_FB": [
+      {
+        "ref": "R_FBH",
+        "pin": "2",
+        "dir": "IN",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "R_FBL",
+        "pin": "1",
+        "dir": "IN",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "U4",
+        "pin": "FB",
+        "dir": "IN",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      }
+    ],
+    "BUCK_SW": [
+      {
+        "ref": "L1",
+        "pin": "1",
+        "dir": "PWR",
+        "vdom": "5V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "U4",
+        "pin": "SW",
+        "dir": "OUT",
+        "vdom": "5V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      }
+    ],
+    "BUF_A": [
+      {
+        "ref": "S1",
+        "pin": "2",
+        "dir": "PAS",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "S2",
+        "pin": "2",
+        "dir": "PAS",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "U6",
+        "pin": "A",
+        "dir": "IN",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      }
+    ],
+    "CC1_RD": [
+      {
+        "ref": "J1",
+        "pin": "CC1",
+        "dir": "IN",
+        "vdom": "0V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "R_CC1",
+        "pin": "1",
+        "dir": "PWR",
+        "vdom": "0V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      }
+    ],
+    "CC2_RD": [
+      {
+        "ref": "J1",
+        "pin": "CC2",
+        "dir": "IN",
+        "vdom": "0V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "R_CC2",
+        "pin": "1",
+        "dir": "PWR",
+        "vdom": "0V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      }
+    ],
+    "GAIN_STRAP": [
+      {
+        "ref": "R_GN",
+        "pin": "1",
+        "dir": "IN",
+        "vdom": "5V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "U2",
+        "pin": "GAIN",
+        "dir": "IN",
+        "vdom": "5V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      }
+    ],
+    "GND": [
+      {
+        "ref": "D1",
+        "pin": "A",
+        "dir": "PWR",
+        "vdom": "0V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "J1",
+        "pin": "GND",
+        "dir": "PWR",
+        "vdom": "0V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "J10",
+        "pin": "5",
+        "dir": "PWR",
+        "vdom": "0V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "J5",
+        "pin": "3",
+        "dir": "PWR",
+        "vdom": "0V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "J6",
+        "pin": "3",
+        "dir": "PWR",
+        "vdom": "0V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "J7",
+        "pin": "3",
+        "dir": "PWR",
+        "vdom": "0V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "J8",
+        "pin": "3",
+        "dir": "PWR",
+        "vdom": "0V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "J9",
+        "pin": "4",
+        "dir": "PWR",
+        "vdom": "0V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "Q1",
+        "pin": "S",
+        "dir": "PWR",
+        "vdom": "0V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "R_CC1",
+        "pin": "2",
+        "dir": "PWR",
+        "vdom": "0V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "R_CC2",
+        "pin": "2",
+        "dir": "PWR",
+        "vdom": "0V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "R_FBL",
+        "pin": "2",
+        "dir": "PWR",
+        "vdom": "0V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "R_G",
+        "pin": "2",
+        "dir": "PWR",
+        "vdom": "0V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "R_GN",
+        "pin": "2",
+        "dir": "PWR",
+        "vdom": "0V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "R_SD",
+        "pin": "2",
+        "dir": "PWR",
+        "vdom": "0V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "SW1",
+        "pin": "2",
+        "dir": "PWR",
+        "vdom": "0V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "SW2",
+        "pin": "2",
+        "dir": "PWR",
+        "vdom": "0V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "SW3",
+        "pin": "2",
+        "dir": "PWR",
+        "vdom": "0V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "SW4",
+        "pin": "2",
+        "dir": "PWR",
+        "vdom": "0V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "SW6",
+        "pin": "2",
+        "dir": "PWR",
+        "vdom": "0V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "U1",
+        "pin": "GND1",
+        "dir": "PWR",
+        "vdom": "0V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "U2",
+        "pin": "GND",
+        "dir": "PWR",
+        "vdom": "0V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "U3",
+        "pin": "GND",
+        "dir": "PWR",
+        "vdom": "0V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "U4",
+        "pin": "GND",
+        "dir": "PWR",
+        "vdom": "0V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "U5",
+        "pin": "GND",
+        "dir": "PWR",
+        "vdom": "0V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "U5",
+        "pin": "LRSL",
+        "dir": "IN",
+        "vdom": "0V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "U6",
+        "pin": "DIR",
+        "dir": "IN",
+        "vdom": "0V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "U6",
+        "pin": "GND",
+        "dir": "PWR",
+        "vdom": "0V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      }
+    ],
+    "I2C_SCL": [
+      {
+        "ref": "U1",
+        "pin": "BCM3",
+        "dir": "OUT",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": "up",
+        "flag": "预留"
+      }
+    ],
+    "I2C_SDA": [
+      {
+        "ref": "U1",
+        "pin": "BCM2",
+        "dir": "IN",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": "up",
+        "flag": "预留"
+      }
+    ],
+    "I2S_PCM_CLK": [
+      {
+        "ref": "U1",
+        "pin": "BCM18",
+        "dir": "OUT",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "U2",
+        "pin": "BCLK",
+        "dir": "IN",
+        "vdom": "3V3",
+        "tol5v": true,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "U5",
+        "pin": "SCK",
+        "dir": "IN",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      }
+    ],
+    "I2S_PCM_DIN": [
+      {
+        "ref": "U1",
+        "pin": "BCM20",
+        "dir": "IN",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "U5",
+        "pin": "SD",
+        "dir": "OUT",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      }
+    ],
+    "I2S_PCM_DOUT": [
+      {
+        "ref": "U1",
+        "pin": "BCM21",
+        "dir": "OUT",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "U2",
+        "pin": "DIN",
+        "dir": "IN",
+        "vdom": "3V3",
+        "tol5v": true,
+        "pull": null,
+        "flag": null
+      }
+    ],
+    "I2S_PCM_FS": [
+      {
+        "ref": "U1",
+        "pin": "BCM19",
+        "dir": "OUT",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "U2",
+        "pin": "LRC",
+        "dir": "IN",
+        "vdom": "3V3",
+        "tol5v": true,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "U5",
+        "pin": "WS",
+        "dir": "IN",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      }
+    ],
+    "JTAG_TP1": [
+      {
+        "ref": "U3",
+        "pin": "IO9",
+        "dir": "IN",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": null,
+        "flag": "预留"
+      }
+    ],
+    "JTAG_TP2": [
+      {
+        "ref": "U3",
+        "pin": "IO10",
+        "dir": "IN",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": null,
+        "flag": "预留"
+      }
+    ],
+    "JTAG_TP3": [
+      {
+        "ref": "U3",
+        "pin": "IO11",
+        "dir": "IN",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": null,
+        "flag": "预留"
+      }
+    ],
+    "JTAG_TP4": [
+      {
+        "ref": "U3",
+        "pin": "IO12",
+        "dir": "IN",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": null,
+        "flag": "预留"
+      }
+    ],
+    "JTAG_TP5": [
+      {
+        "ref": "U3",
+        "pin": "IO13",
+        "dir": "IN",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": null,
+        "flag": "预留"
+      }
+    ],
+    "JTAG_TP6": [
+      {
+        "ref": "U3",
+        "pin": "IO14",
+        "dir": "IN",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": null,
+        "flag": "预留"
+      }
+    ],
+    "KEY_NC": [
+      {
+        "ref": "J10",
+        "pin": "6",
+        "dir": "NC",
+        "vdom": "-",
+        "tol5v": false,
+        "pull": null,
+        "flag": "dnp"
+      }
+    ],
+    "LED_DIN_RAW": [
+      {
+        "ref": "S1",
+        "pin": "1",
+        "dir": "PAS",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "U3",
+        "pin": "IO4",
+        "dir": "OUT",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      }
+    ],
+    "LED_EYE_DIN": [
+      {
+        "ref": "J5",
+        "pin": "2",
+        "dir": "IN",
+        "vdom": "5V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "J6",
+        "pin": "2",
+        "dir": "IN",
+        "vdom": "5V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "J7",
+        "pin": "2",
+        "dir": "IN",
+        "vdom": "5V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "J8",
+        "pin": "2",
+        "dir": "IN",
+        "vdom": "5V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "U6",
+        "pin": "B",
+        "dir": "OUT",
+        "vdom": "5V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      }
+    ],
+    "LED_PI": [
+      {
+        "ref": "S2",
+        "pin": "1",
+        "dir": "PAS",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "U1",
+        "pin": "BCM10",
+        "dir": "OUT",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": null,
+        "flag": "仅方案B"
+      }
+    ],
+    "MCU_EN": [
+      {
+        "ref": "R_EN",
+        "pin": "2",
+        "dir": "IN",
+        "vdom": "3V3",
+        "tol5v": true,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "U3",
+        "pin": "EN",
+        "dir": "IN",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": "up",
+        "flag": null
+      }
+    ],
+    "PI_RUNNING_N": [
+      {
+        "ref": "U1",
+        "pin": "BCM6",
+        "dir": "OUT",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "U3",
+        "pin": "IO18",
+        "dir": "IN",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      }
+    ],
+    "P_LED_BUF_EN": [
+      {
+        "ref": "U1",
+        "pin": "BCM5",
+        "dir": "OUT",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": null,
+        "flag": "预留"
+      }
+    ],
+    "SPARE_GPIO": [
+      {
+        "ref": "U1",
+        "pin": "BCM26",
+        "dir": "IN",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": null,
+        "flag": "预留"
+      }
+    ],
+    "SPK_N": [
+      {
+        "ref": "J4",
+        "pin": "2",
+        "dir": "PAS",
+        "vdom": "5V_AUDIO",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "U2",
+        "pin": "OUTN",
+        "dir": "OUT",
+        "vdom": "5V_AUDIO",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      }
+    ],
+    "SPK_P": [
+      {
+        "ref": "J4",
+        "pin": "1",
+        "dir": "PAS",
+        "vdom": "5V_AUDIO",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "U2",
+        "pin": "OUTP",
+        "dir": "OUT",
+        "vdom": "5V_AUDIO",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      }
+    ],
+    "STAR_ALT": [
+      {
+        "ref": "U3",
+        "pin": "IO5",
+        "dir": "OUT",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": null,
+        "flag": "dnp"
+      }
+    ],
+    "UART_ESP_TX": [
+      {
+        "ref": "J9",
+        "pin": "3",
+        "dir": "IN",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "U1",
+        "pin": "BCM15",
+        "dir": "IN",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "U3",
+        "pin": "TXD0",
+        "dir": "OUT",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      }
+    ],
+    "UART_PI_TX": [
+      {
+        "ref": "J9",
+        "pin": "2",
+        "dir": "IN",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "U1",
+        "pin": "BCM14",
+        "dir": "OUT",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "U3",
+        "pin": "RXD0",
+        "dir": "IN",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      }
+    ],
+    "USB_DN_NC": [
+      {
+        "ref": "J1",
+        "pin": "DN",
+        "dir": "IN",
+        "vdom": "0V",
+        "tol5v": false,
+        "pull": null,
+        "flag": "dnp"
+      }
+    ],
+    "USB_DP_NC": [
+      {
+        "ref": "J1",
+        "pin": "DP",
+        "dir": "IN",
+        "vdom": "0V",
+        "tol5v": false,
+        "pull": null,
+        "flag": "dnp"
+      }
+    ]
+  },
+  "net_attrs": {
+    "GND": {
+      "kind": "power",
+      "vdom": "0V"
+    },
+    "5V_IN": {
+      "kind": "power",
+      "vdom": "5V"
+    },
+    "5V_F": {
+      "kind": "power",
+      "vdom": "5V"
+    },
+    "5V_MAIN": {
+      "kind": "power",
+      "vdom": "5V"
+    },
+    "5V_LED": {
+      "kind": "power",
+      "vdom": "5V"
+    },
+    "5V_LED_EXT": {
+      "kind": "power",
+      "vdom": "5V"
+    },
+    "3V3_MCU": {
+      "kind": "power",
+      "vdom": "3V3"
+    },
+    "3V3_PI": {
+      "kind": "power",
+      "vdom": "3V3"
+    },
+    "5V_AUDIO": {
+      "kind": "power",
+      "vdom": "5V_AUDIO",
+      "note": "Class-D 输出，差分对"
+    },
+    "LED_EYE_DIN": {
+      "note": "菊花链一级驱动（J5/J6/J7/J8 的 DIN 全部并联由 U6.B 驱动——多模组并联不是电气冲突，是同一信号广播；SK6812 链式布线在模组间飞线完成）"
+    },
+    "BUF_A": {
+      "kind": "analog",
+      "note": "S1/S2 焊桥二选一闭合，物理上互斥，ERC 豁免双驱动"
+    },
+    "GAIN_STRAP": {
+      "kind": "analog"
+    },
+    "BUCK_FB": {
+      "kind": "analog"
+    },
+    "BUCK_BOOT": {
+      "kind": "analog"
+    },
+    "BUCK_SW": {
+      "note": "开关节点"
+    },
+    "MCU_EN": {
+      "note": "RC 复位节点"
+    },
+    "STAR_ALT": {
+      "kind": "nc",
+      "note": "备用通道 DNP"
+    },
+    "USB_DP_NC": {
+      "kind": "nc"
+    },
+    "USB_DN_NC": {
+      "kind": "nc"
+    },
+    "KEY_NC": {
+      "kind": "nc"
+    },
+    "SPARE_GPIO": {
+      "kind": "nc"
+    },
+    "JTAG_TP1": {
+      "kind": "tp"
+    },
+    "JTAG_TP2": {
+      "kind": "tp"
+    },
+    "JTAG_TP3": {
+      "kind": "tp"
+    },
+    "JTAG_TP4": {
+      "kind": "tp"
+    },
+    "JTAG_TP5": {
+      "kind": "tp"
+    },
+    "JTAG_TP6": {
+      "kind": "tp"
+    },
+    "P_LED_BUF_EN": {
+      "kind": "nc",
+      "note": "预留，V1 不用"
+    },
+    "I2C_SDA": {
+      "kind": "nc"
+    },
+    "I2C_SCL": {
+      "kind": "nc"
+    }
+  },
+  "erc": {
+    "errors": [],
+    "warnings": []
+  }
+}

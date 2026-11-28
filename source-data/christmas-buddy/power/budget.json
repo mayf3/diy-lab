@@ -1,0 +1,323 @@
+{
+  "schema": "power-budget/1.0",
+  "product": "christmas-buddy-v1",
+  "view_date": "2026-11-28",
+  "rails": {
+    "5V_MAIN": {
+      "capacity_ma": 3000,
+      "source": "外置认证 5V/3A 适配器（计划）"
+    },
+    "5V_LED": {
+      "capacity_ma": 1600,
+      "ptc": "PTC 1206 1.5A hold（选型轮锁定）"
+    },
+    "3V3_MCU": {
+      "capacity_ma": 500,
+      "source": "专用 buck，官方建议余量"
+    }
+  },
+  "conversion": {
+    "buck_efficiency": 0.85,
+    "note": "3V3 负载按 η=0.85 折算回 5V 输入"
+  },
+  "params": {
+    "pi_idle_ma": {
+      "name": "Pi Zero 2 W 待机（无头，WiFi on）",
+      "value": 140,
+      "unit": "mA",
+      "source_kind": "measured",
+      "source": "官方 product brief 额定区间 + Jeff Geerling 实测 idle≈0.5–0.8W；本表取上限",
+      "note": "无头无 HDMI，收发待机"
+    },
+    "pi_typ_ma": {
+      "name": "Pi 典型工作（音频流+云 API+WiFi）",
+      "value": 320,
+      "unit": "mA",
+      "source_kind": "plan",
+      "source": "由 idle 与 stress 实测区间内插；需 V1 实测轮验证",
+      "note": "Python asyncio + HTTPS 流式请求"
+    },
+    "pi_peak_ma": {
+      "name": "Pi 峰值（4 核满载+WiFi TX 突发）",
+      "value": 520,
+      "unit": "mA",
+      "source_kind": "measured",
+      "source": "stress 四核实测 ≈2.3–2.6W → 460–520mA；取 520mA",
+      "note": "启动浪涌另计 ≤1A@100ms"
+    },
+    "pi_inrush_ma": {
+      "name": "Pi 启动浪涌（≤150ms）",
+      "value": 1000,
+      "unit": "mA",
+      "source_kind": "plan",
+      "source": "社区实测典型值；由 bulk 电容与 PTC 承担",
+      "note": ""
+    },
+    "esp_modem_sleep_ma": {
+      "name": "ESP32-S3 modem-sleep 待机",
+      "value": 20,
+      "unit": "mA",
+      "source_kind": "official",
+      "source": "Espressif ESP32-S3 Series Datasheet §Power Consumption（espressif.com）",
+      "note": ""
+    },
+    "esp_tx_peak_ma": {
+      "name": "ESP32-S3 WiFi TX 峰值",
+      "value": 345,
+      "unit": "mA",
+      "source_kind": "official",
+      "source": "ESP32-S3 Series Datasheet：TX 802.11n @11dBm 峰值 ≈345mA；官方建议 3V3 轨按 500mA 设计",
+      "note": ""
+    },
+    "esp_psu_margin_ma": {
+      "name": "ESP32 3V3 轨设计容量",
+      "value": 500,
+      "unit": "mA",
+      "source_kind": "official",
+      "source": "Espressif 官方建议电源设计余量",
+      "note": ""
+    },
+    "amp_peak_ma": {
+      "name": "MAX98357A 峰值（4Ω、正常玩具音量≈0.5W 输出）",
+      "value": 400,
+      "unit": "mA",
+      "source_kind": "plan",
+      "source": "P_out/(η·V)＝0.5/(0.7×5)≈143mA 平均；峰值按波形因数 2.8× 取 400mA",
+      "note": "满功率 3W 时可达 850mA——V1 软件限音量上限 1W"
+    },
+    "amp_avg_ma": {
+      "name": "MAX98357A 平均（1W 输出上限，η≈0.7）",
+      "value": 290,
+      "unit": "mA",
+      "source_kind": "plan",
+      "source": "1W/(0.7×5V)=286mA",
+      "note": "SD# 关断时 <5µA（官方 datasheet）"
+    },
+    "amp_sd_uA": {
+      "name": "MAX98357A SD# 关断静态",
+      "value": 2,
+      "unit": "uA",
+      "source_kind": "official",
+      "source": "Analog Devices MAX98357A datasheet",
+      "note": ""
+    },
+    "mic_ma": {
+      "name": "INMP441 I2S MEMS 麦克风",
+      "value": 1.4,
+      "unit": "mA",
+      "source_kind": "official",
+      "source": "InvenSense INMP441 datasheet（typ 1.4mA @3.3V）",
+      "note": "MSM261S4030H0R ≈1.9mA 同级"
+    },
+    "led_full_white_ma": {
+      "name": "单颗 SK6812 全白最大",
+      "value": 60,
+      "unit": "mA",
+      "source_kind": "official",
+      "source": "Worldsemi SK6812 datasheet（60mA@5V 每颗 max，RGB 各 20mA）",
+      "note": ""
+    },
+    "led_count": {
+      "name": "LED 总数（左眼3×3 + 右眼3×3 + 星星4）",
+      "value": 22,
+      "unit": "颗",
+      "source_kind": "plan",
+      "source": "产品视觉需求：2×3×3 矩阵眼 + 4 颗星",
+      "note": ""
+    },
+    "led_soft_cap_ratio": {
+      "name": "软件亮度上限（V1 策略）",
+      "value": 0.6,
+      "unit": "ratio",
+      "source_kind": "plan",
+      "source": "状态灯效使用饱和色+≤60% 全白占空，最坏 ~0.48A",
+      "note": "满白最坏 22×60mA=1.32A 仍按轨容量校核"
+    },
+    "led_worst_ma": {
+      "name": "LED 轨最坏电流（全白，不作常规）",
+      "value": 1320,
+      "unit": "mA",
+      "source_kind": "official",
+      "source": "= led_count × led_full_white_ma",
+      "note": ""
+    },
+    "buck_iq_ma": {
+      "name": "3V3 buck 静态电流（折算到 5V 侧）",
+      "value": 2,
+      "unit": "mA",
+      "source_kind": "plan",
+      "source": "候选 TPS563201/MP2315 同级；选型轮锁定",
+      "note": ""
+    },
+    "misc_3v3_ma": {
+      "name": "上拉/指示/漏电流合计",
+      "value": 5,
+      "unit": "mA",
+      "source_kind": "plan",
+      "source": "保守估计",
+      "note": ""
+    }
+  },
+  "scenarios": {
+    "boot": {
+      "name": "开机启动",
+      "note": "Pi 浪涌期 LED 初始化为暗色；ESP32 已先行运行",
+      "pi_5v": 520,
+      "amp_5v": 0,
+      "led_5v": 200,
+      "mic_3v3": 1.4,
+      "esp_3v3": 120,
+      "misc_3v3": 5,
+      "rail_3v3_total_ma": 126.4,
+      "rail_5v_total_ma": 818.1,
+      "rail_5v_total_w": 4.09
+    },
+    "idle": {
+      "name": "待机 Idle",
+      "note": "WiFi 保持，ESP32 modem-sleep，眼灯微光呼吸",
+      "pi_5v": 140,
+      "amp_5v": 0,
+      "led_5v": 40,
+      "mic_3v3": 1.4,
+      "esp_3v3": 20,
+      "misc_3v3": 5,
+      "rail_3v3_total_ma": 26.4,
+      "rail_5v_total_ma": 200.5,
+      "rail_5v_total_w": 1.0
+    },
+    "listening": {
+      "name": "聆听 Listening",
+      "note": "连续 I2S 采集 + 灯效",
+      "pi_5v": 320,
+      "amp_5v": 0,
+      "led_5v": 200,
+      "mic_3v3": 1.4,
+      "esp_3v3": 40,
+      "misc_3v3": 5,
+      "rail_3v3_total_ma": 46.4,
+      "rail_5v_total_ma": 556.0,
+      "rail_5v_total_w": 2.78
+    },
+    "thinking": {
+      "name": "思考 Thinking",
+      "note": "云请求中；ESP32 心跳/灯效，TX 突发计入",
+      "pi_5v": 320,
+      "amp_5v": 0,
+      "led_5v": 150,
+      "mic_3v3": 1.4,
+      "esp_3v3": 345,
+      "misc_3v3": 5,
+      "rail_3v3_total_ma": 351.4,
+      "rail_5v_total_ma": 742.9,
+      "rail_5v_total_w": 3.71
+    },
+    "speaking": {
+      "name": "应答 Speaking（1W 上限）",
+      "note": "I2S 回放 + 灯效",
+      "pi_5v": 320,
+      "amp_5v": 290,
+      "led_5v": 200,
+      "mic_3v3": 1.4,
+      "esp_3v3": 40,
+      "misc_3v3": 5,
+      "rail_3v3_total_ma": 46.4,
+      "rail_5v_total_ma": 846.0,
+      "rail_5v_total_w": 4.23
+    },
+    "magic": {
+      "name": "魔法灯效 Magic",
+      "note": "灯效最常规上限（软件 60% 帽）+ 音频并发",
+      "pi_5v": 320,
+      "amp_5v": 290,
+      "led_5v": 480,
+      "mic_3v3": 1.4,
+      "esp_3v3": 40,
+      "misc_3v3": 5,
+      "rail_3v3_total_ma": 46.4,
+      "rail_5v_total_ma": 1126.0,
+      "rail_5v_total_w": 5.63
+    },
+    "worst_case": {
+      "name": "设计最坏并发",
+      "note": "全白灯 + 满音量 + Pi 满载 + ESP TX——V1 不允许此场景常规出现，仅用于轨容量校核",
+      "pi_5v": 520,
+      "amp_5v": 400,
+      "led_5v": 1320,
+      "mic_3v3": 1.4,
+      "esp_3v3": 345,
+      "misc_3v3": 5,
+      "rail_3v3_total_ma": 351.4,
+      "rail_5v_total_ma": 2512.9,
+      "rail_5v_total_w": 12.56
+    }
+  },
+  "trace_widths": {
+    "5v_main": {
+      "max_a": 2.5,
+      "width_mm": 1.17,
+      "design_mm": 1.5,
+      "note": "USB-C → 分配点；按常规最坏并发 2.5A 计"
+    },
+    "5v_led": {
+      "max_a": 1.5,
+      "width_mm": 0.58,
+      "design_mm": 1.2,
+      "note": "LED 独立轨，PTC 后"
+    },
+    "gnd": {
+      "max_a": 2.5,
+      "width_mm": 1.17,
+      "design_mm": 99,
+      "note": "GND 用整面铺铜+缝合孔，不按线宽设计"
+    },
+    "3v3": {
+      "max_a": 0.5,
+      "width_mm": 0.13,
+      "design_mm": 0.8,
+      "note": "buck 输出至 ESP32"
+    },
+    "speaker": {
+      "max_a": 0.5,
+      "width_mm": 0.13,
+      "design_mm": 0.8,
+      "note": "Class-D 输出走差分对"
+    }
+  },
+  "checks": [
+    {
+      "check": "输入适配器容量（常规最坏场景 ×1.5 ≤ 3A）",
+      "result": "PASS",
+      "detail": "常规最坏 1126.0mA ×1.5 = 1689mA ≤ 3000mA"
+    },
+    {
+      "check": "设计最坏并发 ≤ 输入轨容量",
+      "result": "PASS",
+      "detail": "最坏 2512.9mA ≤ 3000mA（留 0 余量——用软件策略禁止常规触发）"
+    },
+    {
+      "check": "LED 轨容量 ≥ 软件帽后最坏",
+      "result": "PASS",
+      "detail": "Magic 灯效 480mA ×1.5 = 720mA ≤ 1600mA"
+    },
+    {
+      "check": "3V3 轨容量 ≥ ESP32 + 麦克风",
+      "result": "PASS",
+      "detail": "351mA ≤ 500mA"
+    },
+    {
+      "check": "USB-C 连接器额定 ≥ 3A",
+      "result": "PASS",
+      "detail": "标准 16pin 板载 USB-C 插座额定 5V/5A（选型轮锁定型号）"
+    },
+    {
+      "check": "适配器协议：仅 5V，无 PD 协商需求",
+      "result": "PASS",
+      "detail": "外置 5V/3A 认证适配器 + CC 脚 5.1kΩ Rd（UFP 默认档）；产品定位不含电池快充"
+    }
+  ],
+  "summary": {
+    "regular_worst_5v_ma": 1126.0,
+    "adapter": "5V/3A 外置 USB-C 认证适配器（不集成锂电池）",
+    "margin_regular": 2.66
+  }
+}

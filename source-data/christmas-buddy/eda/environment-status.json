@@ -1,0 +1,43 @@
+{
+  "schema": "eda-environment-status/1.0",
+  "product": "christmas-buddy-v1",
+  "date": "2026-11-28",
+  "client": {
+    "name": "嘉立创EDA（专业版）",
+    "path": "/Applications/嘉立创EDA(专业版).app",
+    "cli": "/Applications/嘉立创EDA(专业版).app/Contents/MacOS/LCEDA-Pro",
+    "version": "4.1.105.0339a6cd"
+  },
+  "checks": [
+    {"check": "cli --help", "result": "passed", "observed_at": "2026-11-28",
+     "evidence": "usage banner: activate/open/stop/doctor/session/invoke/functions/doc/--mcp stdio|http"},
+    {"check": "doctor", "result": "passed", "observed_at": "2026-11-28",
+     "evidence": "{\"ok\":true,\"value\":{\"endpoint\":\"JLCEDAPro5647a773\",\"connected\":false}}"},
+    {"check": "doc api --search（放置/导线）", "result": "passed", "observed_at": "2026-11-28",
+     "evidence": "命中 SCH_SourcePrimitiveComponent.add / SCH_SourcePrimitiveWire.add / SCH_PrimitiveWire.create 等编程 API"},
+    {"check": "open --headless true", "result": "passed", "observed_at": "2026-11-28",
+     "evidence": "session list 返回 {status:alive, headless:true, origin:cli}"},
+    {"check": "invoke --code（无界面会话内执行 JS）", "result": "passed", "observed_at": "2026-11-28",
+     "evidence": "return 1+1 → 2；Object.keys(eda) 暴露 dmt_Project/dmt_Schematic/dmt_SourceSchematic/lib_Device/lib_Symbol/lib_Footprint/pcb_Drc/pcb_Dfm/pcb_ManufactureData 等命名空间"},
+    {"check": "session close", "result": "passed", "observed_at": "2026-11-28", "evidence": "status:closed"},
+    {"check": "真实 EDA 工程（V1 原理图/PCB 在客户端内创建）", "result": "pending",
+     "observed_at": null, "evidence": "环境就绪，设计未开始——对应下一阶段任务 T-E1/T-E2"}
+  ],
+  "official_docs_viewed": [
+    {"url": "https://prodocs.lceda.cn/cn/api/guide/cli.html", "date": "2026-11-28",
+     "facts": "CLI 内置于客户端 V4.1.60+；open --headless；invoke 扩展 API；sch_Drc/pcb_Drc.check；sch_ManufactureData.getNetlistFile/getBomFile/getPngFile；pcb_ManufactureData.get3DFile(STEP)/Gerber/坐标/IPC-2581/ODB++；--mcp stdio|http"},
+    {"url": "https://prodocs.lceda.cn/cn/api/guide/how-to-start.html", "date": "2026-11-28",
+     "facts": "官方扩展 SDK github.com/easyeda/easyeda-api-sdk（Apache-2.0，TypeScript，构建为 .eext）；命名空间 SYS_/DMT_/SCH_/PCB_/PNL_/LIB_；文档明示可用 AI 助手自动化"},
+    {"url": "https://github.com/uPesy/easyeda2kicad.py", "date": "2026-11-28",
+     "facts": "easyeda.com/api/products/{lcsc_id}/components 等元件数据端点；modules.easyeda.com 3D 模型（OBJ/STEP）；jlcpcb.com SMT 元件搜索 API（匿名）；工具声明不保证转换正确性"}
+  ],
+  "boundaries": [
+    "官方 CLI 文档仅给 Windows 路径示例；macOS CLI 本机实测可用（本文件 checks）。",
+    "editor_round_trip passed 只证明编辑器读写能力，不代表电路正确或可制造（governance 门禁）。",
+    "PCB_Drc.check 含原理图-PCB 网表比对，属设计验证，不替代嘉立创下单系统的 DFM 审核。"
+  ],
+  "related_records": [
+    {"where": "PR #28 分支 codex/eda-pcba-setup-20261126 的 docs/eda/environment-status.json",
+     "date": "2026-11-26", "fact": "安装+激活+编辑器往返验收；为本文件的更早独立复核"}
+  ]
+}

@@ -1,0 +1,618 @@
+{
+  "schema_version": "0.1",
+  "project": "christmas-buddy",
+  "updated": "2026-11-28",
+  "direction": {
+    "goal": "做出可制造、可装配、可测试的 Christmas Buddy V1 圣诞精灵 AI 机器人（120–160mm，LED 矩阵眼，2×2 按键，云 GPT 对话），并把它作为 DIY Lab 第一套 AI 硬件研发流程样板",
+    "audience": "面向没有焊接和 PCB 经验的新手；不预设拥有 Bambu P1S、电子工具或嘉立创账号",
+    "non_goals": [
+      "第一版不集成锂电池（外置合规 5V/3A）",
+      "不用彩色屏幕（表情只用 LED 矩阵眼）",
+      "不做本地大模型推理（AI 全部云端）",
+      "不固定到 KURA 床架（Free 底座）",
+      "预研阶段不下单、不采购、不生产制造文件"
+    ],
+    "done_when": "实物装配完成且电源/音频/时延/安全实测验收通过并留证据；流程样板（任务书+模型+证明+证据）可复用到其他 DIY 产品"
+  },
+  "resource_routes": [
+    {
+      "id": "manufacturing",
+      "question": "PCB/贴片/外壳如何制造？",
+      "options": [
+        "嘉立创 EDA 打样 + SMT 贴片 + P1S 自印外壳（主路线）",
+        "嘉立创代打印外壳（P1S 不可用时）",
+        "面包板/模块搭验证机（架构风险高时）",
+        "尚未决定"
+      ],
+      "policy": "Agent 完成设计与文件，人批准报价并付款，供应商制造；预研轮一律不下单"
+    }
+  ],
+  "references": [
+    {
+      "role": "嘉立创EDA专业版 CLI 文档（查看 2026-11-28）",
+      "url": "https://prodocs.lceda.cn/cn/api/guide/cli.html"
+    },
+    {
+      "role": "嘉立创EDA专业版 扩展 SDK（查看 2026-11-28）",
+      "url": "https://github.com/easyeda/easyeda-api-sdk"
+    },
+    {
+      "role": "MAX98357A 数据手册（查看 2026-11-28）",
+      "url": "https://www.analog.com/media/en/technical-documentation/data-sheets/MAX98357A-MAX98357B.pdf"
+    },
+    {
+      "role": "SN74LVC1T45 数据手册（查看 2026-11-28）",
+      "url": "https://www.ti.com/lit/ds/symlink/sn74lvc1t45.pdf"
+    },
+    {
+      "role": "TPS563201 数据手册（查看 2026-11-28）",
+      "url": "https://www.ti.com/lit/ds/symlink/tps563201.pdf"
+    },
+    {
+      "role": "ESP32-S3-WROOM-1 数据手册（查看 2026-11-28）",
+      "url": "https://www.espressif.com/sites/default/files/documentation/esp32-s3-wroom-1_wroom-1-u_datasheet_en.pdf"
+    },
+    {
+      "role": "Christmas Magic Tent A12/A13（KURA 现场约束与床外电子暂缓）（查看 2026-11-28）",
+      "url": "https://github.com/mayf3/diy-lab/pull/24"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "A01",
+      "title": "三仓库现状审计（diy-lab / primitives / governance）",
+      "actor": "agent",
+      "requires": [],
+      "goal": "核实现有能力、PR 谱系与规范门禁，避免重复建设",
+      "agent": [
+        "审计三仓库与 PR #23/#24/#28/#29/#30 真实状态；实测本机工具链"
+      ],
+      "human": [
+        "无需操作"
+      ],
+      "outputs": [
+        "reports/00-preresearch-report.md 审计章节"
+      ],
+      "verify": {
+        "type": "public-source",
+        "criteria": "审计覆盖 PR 谱系与工具链实测；未把历史计划当实现",
+        "status": "observed",
+        "evidence_ref": "reports/00-preresearch-report.md",
+        "observed_on": "2026-11-28"
+      },
+      "block": "发现并行会话未提交改动时不处理、不回退，仅记录",
+      "deep": "/projects/christmas-buddy/01-workflow/",
+      "status": "observed",
+      "human_summary": "AI 核实了三仓库现状：EDA 工具链已就绪（PR #28），Space Buddy 已有 M1–M4 先例，本项目的 M1–M5 编号与其不同需区分。"
+    },
+    {
+      "id": "A02",
+      "title": "电源预算模型（M1 数值基线）",
+      "actor": "agent",
+      "requires": [],
+      "goal": "计算各模块电流、并发场景、走线宽度与电源门禁",
+      "agent": [
+        "power/power_budget.py：每参数带来源三分法；IPC-2221B 线宽；6 项门禁"
+      ],
+      "human": [
+        "无需操作"
+      ],
+      "outputs": [
+        "power/budget.json",
+        "power/budget.md"
+      ],
+      "verify": {
+        "type": "simulation",
+        "criteria": "6/6 门禁 PASS；常规最坏 1126mA ×1.5 ≤ 3A",
+        "status": "observed",
+        "evidence_ref": "power/budget.json",
+        "observed_on": "2026-11-28"
+      },
+      "block": "数据手册电流未核实的参数标 plan，不得冒充 official",
+      "deep": "/projects/christmas-buddy/01-workflow/",
+      "status": "observed",
+      "human_summary": "电源预算算完：常规最坏 1.13A，3A 适配器裕量 2.7 倍；灯效+满音量场景受软件双帽约束。"
+    },
+    {
+      "id": "A03",
+      "title": "板级接口定义表",
+      "actor": "agent",
+      "requires": [
+        "A02"
+      ],
+      "goal": "9 个连接器 76 引脚的电压/电流/方向/型号定义，作为原理图与机械的共享事实源",
+      "agent": [
+        "interfaces/interfaces.py 单一生成器"
+      ],
+      "human": [
+        "无需操作"
+      ],
+      "outputs": [
+        "interfaces/interfaces.json",
+        "interfaces/interfaces.md"
+      ],
+      "verify": {
+        "type": "simulation",
+        "criteria": "信号名与网表对齐（ERC 交叉检查 0 警告）",
+        "status": "observed",
+        "evidence_ref": "interfaces/interfaces.json",
+        "observed_on": "2026-11-28"
+      },
+      "block": "接口变更必须回写机械参数并重跑装配检查",
+      "deep": "/projects/christmas-buddy/01-workflow/",
+      "status": "observed",
+      "human_summary": "接口表定了 USB-C 电源、Pi 排母、ESP32、喇叭、眼睛/星星/树灯灯链、调试串口的全部引脚。"
+    },
+    {
+      "id": "A04",
+      "title": "电子架构 A/B 比较与电源评估",
+      "actor": "agent",
+      "requires": [
+        "A03"
+      ],
+      "goal": "量化比较「Pi+ESP32 协处理器」与「Pi 单主控」，评估 Zero 2 W 内存/音频并发/时延",
+      "agent": [
+        "architecture/architecture.py 加权评分 + Pi 适用性评估"
+      ],
+      "human": [
+        "无需操作"
+      ],
+      "outputs": [
+        "architecture/architecture.json",
+        "architecture/architecture.md"
+      ],
+      "verify": {
+        "type": "simulation",
+        "criteria": "8 准则加权；推荐 A=4.15 vs B=3.43；降级触发条件明确",
+        "status": "observed",
+        "evidence_ref": "architecture/architecture.json",
+        "observed_on": "2026-11-28"
+      },
+      "block": "不预设 ESP32 必须存在——B 案得分输在失效安全，不是成本",
+      "deep": "/projects/christmas-buddy/01-workflow/",
+      "status": "observed",
+      "human_summary": "结论：推荐 A（多约 ¥25、+0.2W，换来 Pi 死机时眼睛受控、晚安强制静音的硬件安全路径）。"
+    },
+    {
+      "id": "A05",
+      "title": "架构决策（用户签字）",
+      "actor": "human",
+      "requires": [
+        "A04"
+      ],
+      "goal": "用户确认 V1 采用方案 A 或 B",
+      "agent": [
+        "提供决策摘要与推荐"
+      ],
+      "human": [
+        "阅读架构比较，回复选择（或提出新约束）"
+      ],
+      "outputs": [
+        "架构决策记录"
+      ],
+      "verify": {
+        "type": "human-confirmation",
+        "criteria": "用户明确选择；未确认前不进入 PCB 布局",
+        "status": "planned"
+      },
+      "block": "未确认前 A11（EDA 工程）不得开始",
+      "deep": "/projects/christmas-buddy/01-workflow/",
+      "status": "planned",
+      "human_summary": "需要用户拍板：方案 A（推荐）还是方案 B。"
+    },
+    {
+      "id": "A06",
+      "title": "初版原理图（网表级）+ ERC-lite",
+      "actor": "agent",
+      "requires": [
+        "A03"
+      ],
+      "goal": "36 器件 49 网络的机器可读完整网表与电气规则检查",
+      "agent": [
+        "eda/netlist.py：单驱动冲突/悬空/电压域/安全默认态/接口对齐"
+      ],
+      "human": [
+        "无需操作"
+      ],
+      "outputs": [
+        "eda/netlist.json",
+        "eda/erc_report.md",
+        "eda/environment-status.json"
+      ],
+      "verify": {
+        "type": "simulation",
+        "criteria": "ERC 0 error 0 warning；UART 单驱动；AMP_SD 下拉默认静音",
+        "status": "observed",
+        "evidence_ref": "eda/erc_report.md",
+        "observed_on": "2026-11-28"
+      },
+      "block": "网表不是 EDA 工程——EDA 客户端内工程在 A11 完成",
+      "deep": "/projects/christmas-buddy/01-workflow/",
+      "status": "observed",
+      "human_summary": "原理图以可检查的网表完成；嘉立创 EDA 无界面自动化已在本机实测可用。"
+    },
+    {
+      "id": "A07",
+      "title": "机械参数模型 + 装配验证",
+      "actor": "agent",
+      "requires": [
+        "A03"
+      ],
+      "goal": "PCB 与外壳共享一套参数；真实布尔求交的干涉/净空/公差检查",
+      "agent": [
+        "mech/params.py + build_mech.py（CadQuery）"
+      ],
+      "human": [
+        "无需操作"
+      ],
+      "outputs": [
+        "mech/mech_params.json",
+        "mech/assembly_check.json",
+        "mech/outputs/ STEP+STL"
+      ],
+      "verify": {
+        "type": "simulation",
+        "criteria": "20/20 PASS；首轮 4 个 FAIL 已修正并留痕",
+        "status": "observed",
+        "evidence_ref": "mech/assembly_check.json",
+        "observed_on": "2026-11-28"
+      },
+      "block": "机械结构未冻结（等试打印公差实测）",
+      "deep": "/projects/christmas-buddy/01-workflow/",
+      "status": "observed",
+      "human_summary": "两套外观共享同一功能内核；检查器抓出按键超腔、栅格面积不足、PCB 顶部弦长差 2mm 并已修正。"
+    },
+    {
+      "id": "A08",
+      "title": "视觉两案规格 + 真实渲染",
+      "actor": "agent",
+      "requires": [
+        "A07"
+      ],
+      "goal": "可机器检查的视觉约束 + 参数模型 8 视图渲染 ×2 案",
+      "agent": [
+        "visual/visual_specs.py（12/12 PASS）+ render_blender.py"
+      ],
+      "human": [
+        "盲评打分（V1/V2 匿名）"
+      ],
+      "outputs": [
+        "visual/visual-specs.json",
+        "renders_local/christmas-buddy/*.png"
+      ],
+      "verify": {
+        "type": "simulation",
+        "criteria": "机器检查 12/12；渲染为同一几何源；盲评记录在案",
+        "status": "observed",
+        "evidence_ref": "visual/visual-specs.json",
+        "observed_on": "2026-11-28"
+      },
+      "block": "盲评接近时由用户决断或合并优点",
+      "deep": "/projects/christmas-buddy/01-workflow/",
+      "status": "observed",
+      "human_summary": "两案渲染完成待盲评；审美不由脚本判定，脚本只管可计算约束。"
+    },
+    {
+      "id": "A09",
+      "title": "数学模型 M1–M5 与 Lean 首批定理",
+      "actor": "agent",
+      "requires": [
+        "A02"
+      ],
+      "goal": "电源/状态机/制造版本的形式化与验证回执",
+      "agent": [
+        "proof/：23 定理；verify_proof.py 公理审计"
+      ],
+      "human": [
+        "无需操作"
+      ],
+      "outputs": [
+        "proof/src/*.lean",
+        "proof/verification.json",
+        "proof/README.md",
+        "m5_manifest.json"
+      ],
+      "verify": {
+        "type": "simulation",
+        "criteria": "lake build PASS；公理白名单内 0 违规；M5 清单哈希一致",
+        "status": "observed",
+        "evidence_ref": "proof/verification.json",
+        "observed_on": "2026-11-28"
+      },
+      "block": "模型证明≠实现正确≠实物验收（三层证据不可互换）",
+      "deep": "/projects/christmas-buddy/01-workflow/",
+      "status": "observed",
+      "human_summary": "晚安最高优先、音频互斥、错误可恢复、电源余量、版本四元组门禁等 23 条性质已被 Lean 验证。"
+    },
+    {
+      "id": "A10",
+      "title": "工程任务书生成器 + 工作台集成方案",
+      "actor": "agent",
+      "requires": [
+        "A04"
+      ],
+      "goal": "可调度的结构化任务书（14 任务全要素）与最小工作台集成",
+      "agent": [
+        "scripts/gen_eng_tasks.py + tasks/*.json + 集成方案文档"
+      ],
+      "human": [
+        "无需操作"
+      ],
+      "outputs": [
+        "tasks/christmas-buddy-v1.tasks.json",
+        "tasks/traceability.md",
+        "reports/03-workbench-integration.md"
+      ],
+      "verify": {
+        "type": "simulation",
+        "criteria": "需求悬空 0；门禁负责人违规 0；依赖一致",
+        "status": "observed",
+        "evidence_ref": "tasks/christmas-buddy-v1.tasks.json",
+        "observed_on": "2026-11-28"
+      },
+      "block": "不另起孤立工作台——复用 source-data/workflow.json 与 PR #28 工作台约定",
+      "deep": "/projects/christmas-buddy/01-workflow/",
+      "status": "observed",
+      "human_summary": "任务书把每个阶段的输入/输出/验收/风险/证据结构化，门禁任务强制人/供应商负责。"
+    },
+    {
+      "id": "A11",
+      "title": "EDA 客户端内创建 V1 工程（原理图+DRC）",
+      "actor": "agent",
+      "requires": [
+        "A05",
+        "A06"
+      ],
+      "goal": "在嘉立创 EDA 专业版按网表建图，sch_Drc 通过并导出网表比对",
+      "agent": [
+        "CLI/invoke 驱动客户端；必要时手绘辅助"
+      ],
+      "human": [
+        "无需操作"
+      ],
+      "outputs": [
+        "EDA 工程文件 + 导出网表 + DRC 报告"
+      ],
+      "verify": {
+        "type": "simulation",
+        "criteria": "sch_Drc.check 通过；导出网表与本仓 netlist.json 语义一致",
+        "status": "planned",
+        "evidence_ref": "eda/environment-status.json"
+      },
+      "block": "元件 C 编号未核实前不生成制造文件",
+      "deep": "/projects/christmas-buddy/01-workflow/",
+      "status": "planned",
+      "human_summary": "AI 在嘉立创 EDA 里建原理图并跑 DRC（工具链已验证可用）。"
+    },
+    {
+      "id": "A12",
+      "title": "PCB 布局布线 + 3D 联合检查",
+      "actor": "agent",
+      "requires": [
+        "A11"
+      ],
+      "goal": "58×66mm 双面布局，pcb_Drc 通过，STEP 与外壳装配复检",
+      "agent": [
+        "布线规则按 budget.md 线宽；导出 STEP 进装配检查"
+      ],
+      "human": [
+        "无需操作"
+      ],
+      "outputs": [
+        "PCB 工程 + DRC/DFM 报告 + PCB STEP"
+      ],
+      "verify": {
+        "type": "simulation",
+        "criteria": "pcb_Drc 0 错误；装配检查含 PCB STEP 后仍 PASS",
+        "status": "planned",
+        "evidence_ref": "eda/environment-status.json"
+      },
+      "block": "外形冻结前不下单",
+      "deep": "/projects/christmas-buddy/01-workflow/",
+      "status": "planned",
+      "human_summary": "AI 画 PCB 并与外壳做真实装配复检。"
+    },
+    {
+      "id": "A13",
+      "title": "外壳细化 + 试打印",
+      "actor": "shared",
+      "requires": [
+        "A07"
+      ],
+      "goal": "螺丝柱/公差/声学细节细化并试打印验证 0.2mm 公差假设",
+      "agent": [
+        "细化 CAD 与切片；给出打印参数"
+      ],
+      "human": [
+        "P1S 打印与试装（或选代打印）"
+      ],
+      "outputs": [
+        "可打印 STL + 切片 + 试装记录"
+      ],
+      "verify": {
+        "type": "physical-observation",
+        "criteria": "试装间隙与检查模型一致；公差实测回写参数",
+        "status": "planned"
+      },
+      "block": "公差实测前机械结构不冻结",
+      "deep": "/projects/christmas-buddy/01-workflow/",
+      "status": "planned",
+      "human_summary": "人打印试装，AI 按实测公差修正模型。"
+    },
+    {
+      "id": "A14",
+      "title": "固件：ESP32 HMI + Pi 音频服务",
+      "actor": "agent",
+      "requires": [
+        "A11"
+      ],
+      "goal": "状态机实现与模型适配器测试（合法/非法轨迹 fixtures）",
+      "agent": [
+        "ESP32 灯效/按键/安全路径 + Pi 流式音频管线"
+      ],
+      "human": [
+        "无需操作"
+      ],
+      "outputs": [
+        "固件源码 + 适配器测试报告"
+      ],
+      "verify": {
+        "type": "simulation",
+        "criteria": "轨迹校验：合法轨迹 TRACE_CONFORMANT、非法轨迹被拒",
+        "status": "planned",
+        "evidence_ref": "tasks/traceability.md"
+      },
+      "block": "MAP 未落地前不得声称实现符合模型",
+      "deep": "/projects/christmas-buddy/01-workflow/",
+      "status": "planned",
+      "human_summary": "AI 写固件并用模型驱动测试验证状态机。"
+    },
+    {
+      "id": "A15",
+      "title": "制造门禁（人工批准报价）",
+      "actor": "human",
+      "requires": [
+        "A12",
+        "A13"
+      ],
+      "goal": "确认 PCB+SMT 报价、数量、风险后放行下单",
+      "agent": [
+        "整理报价与备选料"
+      ],
+      "human": [
+        "确认付款"
+      ],
+      "outputs": [
+        "报价确认记录"
+      ],
+      "verify": {
+        "type": "human-confirmation",
+        "criteria": "人明确确认 SKU/数量/运费/风险",
+        "status": "planned"
+      },
+      "block": "无人工确认不产生任何订单",
+      "deep": "/projects/christmas-buddy/01-workflow/",
+      "status": "planned",
+      "human_summary": "下单前必须由人批准——这是硬门禁。"
+    },
+    {
+      "id": "A16",
+      "title": "打样与 SMT 下单执行",
+      "actor": "vendor",
+      "requires": [
+        "A15"
+      ],
+      "goal": "嘉立创生产并交付",
+      "agent": [
+        "生成制造文件包并做哈希绑定"
+      ],
+      "human": [
+        "平台下单、跟踪物流"
+      ],
+      "outputs": [
+        "制造文件包（哈希绑定）+ 订单回执"
+      ],
+      "verify": {
+        "type": "device-log",
+        "criteria": "Gerber/坐标/BOM 哈希与 m5_manifest 一致",
+        "status": "planned",
+        "evidence_ref": "m5_manifest.json"
+      },
+      "block": "制造文件必须有可追溯哈希",
+      "deep": "/projects/christmas-buddy/01-workflow/",
+      "status": "planned",
+      "human_summary": "人下单付款，供应商制造。"
+    },
+    {
+      "id": "A17",
+      "title": "装配与首次通电",
+      "actor": "human",
+      "requires": [
+        "A16"
+      ],
+      "goal": "实物装配、首通电观察",
+      "agent": [
+        "提供装配指引与检查清单"
+      ],
+      "human": [
+        "焊接/接线/通电（人不被 Agent 代替）"
+      ],
+      "outputs": [
+        "装配记录 + 首通电记录"
+      ],
+      "verify": {
+        "type": "physical-observation",
+        "criteria": "断电开关/分域保险正常；首通电在受控条件下",
+        "status": "planned"
+      },
+      "block": "首次通电必须人执行",
+      "deep": "/projects/christmas-buddy/01-workflow/",
+      "status": "planned",
+      "human_summary": "实物阶段由人完成，AI 提供清单与远程协助。"
+    },
+    {
+      "id": "A18",
+      "title": "实物测试与验收",
+      "actor": "shared",
+      "requires": [
+        "A17"
+      ],
+      "goal": "电源/音频/时延/安全路径实测对照任务书验收项",
+      "agent": [
+        "测试脚本与记录表"
+      ],
+      "human": [
+        "按清单实测并确认结果"
+      ],
+      "outputs": [
+        "实测报告（含不达标项如实记录）"
+      ],
+      "verify": {
+        "type": "physical-measurement",
+        "criteria": "实测峰值≤预算；时延 p50/p95 达标或如实记录",
+        "status": "planned",
+        "evidence_ref": "tasks/traceability.md"
+      },
+      "block": "不能用文档完成冒充实测通过",
+      "deep": "/projects/christmas-buddy/01-workflow/",
+      "status": "planned",
+      "human_summary": "按任务书验收项实测；不达标如实记录并回修。"
+    },
+    {
+      "id": "A19",
+      "title": "教程与工作台归档",
+      "actor": "agent",
+      "requires": [
+        "A18"
+      ],
+      "goal": "零基础可跟做的教程页面与流程样板归档",
+      "agent": [
+        "项目页/BOM 状态推进/视图重生成"
+      ],
+      "human": [
+        "发布确认"
+      ],
+      "outputs": [
+        "教程页 + 归档记录"
+      ],
+      "verify": {
+        "type": "simulation",
+        "criteria": "check.py/build.py 通过；双视图无漂移",
+        "status": "planned",
+        "evidence_ref": "workflow.json"
+      },
+      "block": "状态推进需证据支撑",
+      "deep": "/projects/christmas-buddy/01-workflow/",
+      "status": "planned",
+      "human_summary": "收尾把过程沉淀为可复用样板。"
+    }
+  ],
+  "public_status": "planning",
+  "status_history": [
+    {
+      "date": "2026-11-28",
+      "status": "planning",
+      "note": "工程预研完成（A01–A10 observed 带证据）；架构/外观决策与一切采购未发生"
+    }
+  ]
+}

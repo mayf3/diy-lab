@@ -1,0 +1,756 @@
+{
+  "schema": "interface-table/1.0",
+  "product": "christmas-buddy-v1",
+  "view_date": "2026-11-28",
+  "connectors": [
+    {
+      "ref": "J1",
+      "name": "USB-C 电源输入（板载母座，朝后下方）",
+      "model_plan": "16pin 板载 USB-C 母座，额定 5V/5A（选型轮锁定）",
+      "pins": [
+        {
+          "pin": "A4/B4/A9/B9",
+          "signal": "VBUS_IN",
+          "v": "5V",
+          "ma": "3A",
+          "direction": "PWR",
+          "note": "外置认证 5V/3A 适配器"
+        },
+        {
+          "pin": "A1/B1/A12/B12",
+          "signal": "GND",
+          "v": "GND",
+          "ma": "3A",
+          "direction": "PWR",
+          "note": ""
+        },
+        {
+          "pin": "CC1",
+          "signal": "CC1_RD",
+          "v": "-",
+          "ma": "-",
+          "direction": "-",
+          "note": "5.1kΩ 下拉至 GND（UFP）"
+        },
+        {
+          "pin": "CC2",
+          "signal": "CC2_RD",
+          "v": "-",
+          "ma": "-",
+          "direction": "-",
+          "note": "5.1kΩ 下拉至 GND"
+        },
+        {
+          "pin": "DP/DN",
+          "signal": "USB_DP/DN",
+          "v": "-",
+          "ma": "-",
+          "direction": "-",
+          "note": "V1 不接 USB 数据（保持 DNP 焊盘备用）"
+        },
+        {
+          "pin": "SBU1/2",
+          "signal": "-",
+          "v": "-",
+          "ma": "-",
+          "direction": "-",
+          "note": "NC"
+        },
+        {
+          "pin": "D+/D-",
+          "signal": "壳地",
+          "v": "-",
+          "ma": "-",
+          "direction": "-",
+          "note": "外壳屏蔽接 GND"
+        }
+      ],
+      "note": "输入链：PTC(3A hold) → SMAJ5.0A TVS → 5V_MAIN 分配"
+    },
+    {
+      "ref": "J2",
+      "name": "Raspberry Pi Zero 2 W 排母（2×20，2.54mm，Pi 反扣或立插——机械轮冻结）",
+      "model_plan": "2×20P 2.54mm 排母 H=6.5mm（立插方案）/或 2×20 排针（反扣方案）",
+      "pins": [
+        {
+          "pin": "P2",
+          "signal": "P5V_PI1",
+          "v": "5V",
+          "ma": "2A",
+          "direction": "PWR",
+          "note": "Pi 供电"
+        },
+        {
+          "pin": "P4",
+          "signal": "P5V_PI2",
+          "v": "5V",
+          "ma": "2A",
+          "direction": "PWR",
+          "note": "Pi 供电"
+        },
+        {
+          "pin": "P1",
+          "signal": "P3V3_PI",
+          "v": "3.3V",
+          "ma": "-",
+          "direction": "PWR",
+          "note": "仅方案 B 给 mic 供电；方案 A NC"
+        },
+        {
+          "pin": "P6",
+          "signal": "GND",
+          "v": "GND",
+          "ma": "-",
+          "direction": "PWR",
+          "note": ""
+        },
+        {
+          "pin": "P9",
+          "signal": "GND",
+          "v": "GND",
+          "ma": "-",
+          "direction": "PWR",
+          "note": ""
+        },
+        {
+          "pin": "P14",
+          "signal": "GND",
+          "v": "GND",
+          "ma": "-",
+          "direction": "PWR",
+          "note": ""
+        },
+        {
+          "pin": "P20",
+          "signal": "GND",
+          "v": "GND",
+          "ma": "-",
+          "direction": "PWR",
+          "note": ""
+        },
+        {
+          "pin": "P25",
+          "signal": "GND",
+          "v": "GND",
+          "ma": "-",
+          "direction": "PWR",
+          "note": ""
+        },
+        {
+          "pin": "P30",
+          "signal": "GND",
+          "v": "GND",
+          "ma": "-",
+          "direction": "PWR",
+          "note": ""
+        },
+        {
+          "pin": "P34",
+          "signal": "GND",
+          "v": "GND",
+          "ma": "-",
+          "direction": "PWR",
+          "note": ""
+        },
+        {
+          "pin": "P39",
+          "signal": "GND",
+          "v": "GND",
+          "ma": "-",
+          "direction": "PWR",
+          "note": ""
+        },
+        {
+          "pin": "P12",
+          "signal": "I2S_PCM_CLK",
+          "v": "3.3V",
+          "ma": "-",
+          "direction": "OUT",
+          "note": "BCM18 → 麦 BCLK"
+        },
+        {
+          "pin": "P35",
+          "signal": "I2S_PCM_FS",
+          "v": "3.3V",
+          "ma": "-",
+          "direction": "OUT",
+          "note": "BCM19 → 麦 LRCLK"
+        },
+        {
+          "pin": "P38",
+          "signal": "I2S_PCM_DIN",
+          "v": "3.3V",
+          "ma": "-",
+          "direction": "IN",
+          "note": "BCM20 ← 麦 SD"
+        },
+        {
+          "pin": "P40",
+          "signal": "I2S_PCM_DOUT",
+          "v": "3.3V",
+          "ma": "-",
+          "direction": "OUT",
+          "note": "BCM21 → 功放 DIN"
+        },
+        {
+          "pin": "P19",
+          "signal": "LED_EYE_DIN",
+          "v": "3.3V",
+          "ma": "-",
+          "direction": "OUT",
+          "note": "BCM10（方案A：由 ESP32 经缓冲驱动同名网；见 J3）"
+        },
+        {
+          "pin": "P22",
+          "signal": "AMP_SD",
+          "v": "3.3V",
+          "ma": "-",
+          "direction": "OUT",
+          "note": "BCM25，上拉默认静音（安全态）"
+        },
+        {
+          "pin": "P16",
+          "signal": "BTN_K1",
+          "v": "3.3V",
+          "ma": "-",
+          "direction": "IN",
+          "note": "BCM23，内部上拉，按下到 GND"
+        },
+        {
+          "pin": "P18",
+          "signal": "BTN_K2",
+          "v": "3.3V",
+          "ma": "-",
+          "direction": "IN",
+          "note": "BCM24"
+        },
+        {
+          "pin": "P24",
+          "signal": "BTN_K3",
+          "v": "3.3V",
+          "ma": "-",
+          "direction": "IN",
+          "note": "BCM8"
+        },
+        {
+          "pin": "P26",
+          "signal": "BTN_K4",
+          "v": "3.3V",
+          "ma": "-",
+          "direction": "IN",
+          "note": "BCM7，晚安键"
+        },
+        {
+          "pin": "P3",
+          "signal": "I2C_SDA",
+          "v": "3.3V",
+          "ma": "-",
+          "direction": "BIDIR",
+          "note": "BCM2，扩展预留（I2C 温湿度/姿态）"
+        },
+        {
+          "pin": "P5",
+          "signal": "I2C_SCL",
+          "v": "3.3V",
+          "ma": "-",
+          "direction": "OUT",
+          "note": "BCM3"
+        },
+        {
+          "pin": "P8",
+          "signal": "UART_PI_TX",
+          "v": "3.3V",
+          "ma": "-",
+          "direction": "OUT",
+          "note": "BCM14 → ESP32 RXD0（单向：每网只有一个驱动源）"
+        },
+        {
+          "pin": "P10",
+          "signal": "UART_ESP_TX",
+          "v": "3.3V",
+          "ma": "-",
+          "direction": "IN",
+          "note": "BCM15 ← ESP32 TXD0"
+        },
+        {
+          "pin": "P29",
+          "signal": "P_LED_BUF_EN",
+          "v": "3.3V",
+          "ma": "-",
+          "direction": "OUT",
+          "note": "BCM5：预留（V1 网表不使用，DNP）"
+        },
+        {
+          "pin": "P31",
+          "signal": "PI_RUNNING_N",
+          "v": "3.3V",
+          "ma": "-",
+          "direction": "OUT",
+          "note": "BCM6：Pi 心跳（ESP32 监控，超时进入安全态）"
+        },
+        {
+          "pin": "P37",
+          "signal": "SPARE_GPIO",
+          "v": "3.3V",
+          "ma": "-",
+          "direction": "BIDIR",
+          "note": "BCM26 预留"
+        },
+        {
+          "pin": "P29/31/37",
+          "signal": "TP_*",
+          "v": "-",
+          "ma": "-",
+          "direction": "-",
+          "note": "另设测试点，见 TP 清单"
+        }
+      ],
+      "note": "Pi Zero 2 W 官方 40-pin 定义对齐；机械轮决定立插/反扣，影响 J2 封装方向"
+    },
+    {
+      "ref": "U3",
+      "name": "ESP32-S3-WROOM-1-N8R2（方案 A，板载贴片模块）",
+      "model_plan": "ESP32-S3-WROOM-1-N8R2（嘉立创 SMT 扩展库，选型轮锁定 C 编号）",
+      "pins": [
+        {
+          "pin": "3V3",
+          "signal": "P3V3_MCU",
+          "v": "3.3V",
+          "ma": "500mA",
+          "direction": "PWR",
+          "note": "专用 buck 供电"
+        },
+        {
+          "pin": "EN",
+          "signal": "MCU_EN",
+          "v": "3.3V",
+          "ma": "-",
+          "direction": "IN",
+          "note": "RC 复位 + 测试点"
+        },
+        {
+          "pin": "IO19",
+          "signal": "USB_DN_MCU",
+          "v": "-",
+          "ma": "-",
+          "direction": "-",
+          "note": "NC（V1 不用 ESP32 USB）"
+        },
+        {
+          "pin": "IO20",
+          "signal": "USB_DP_MCU",
+          "v": "-",
+          "ma": "-",
+          "direction": "-",
+          "note": "NC"
+        },
+        {
+          "pin": "RXD0",
+          "signal": "UART_PI_TX",
+          "v": "3.3V",
+          "ma": "-",
+          "direction": "IN",
+          "note": "← Pi BCM14（方案A）"
+        },
+        {
+          "pin": "TXD0",
+          "signal": "UART_ESP_TX",
+          "v": "3.3V",
+          "ma": "-",
+          "direction": "OUT",
+          "note": "→ Pi BCM15（单向驱动，避免双 TX 冲突）"
+        },
+        {
+          "pin": "IO4",
+          "signal": "LED_DIN_RAW",
+          "v": "3.3V",
+          "ma": "-",
+          "direction": "OUT",
+          "note": "RMT 驱动，经 74LVC1T45 缓冲为 5V"
+        },
+        {
+          "pin": "IO5",
+          "signal": "STAR_ALT",
+          "v": "3.3V",
+          "ma": "-",
+          "direction": "OUT",
+          "note": "备用独立通道（V1 不用，DNP）"
+        },
+        {
+          "pin": "IO6",
+          "signal": "BTN_K1",
+          "v": "3.3V",
+          "ma": "-",
+          "direction": "IN",
+          "note": "与 Pi 并联读取（去抖主责在 ESP32）"
+        },
+        {
+          "pin": "IO7",
+          "signal": "BTN_K2",
+          "v": "3.3V",
+          "ma": "-",
+          "direction": "IN",
+          "note": ""
+        },
+        {
+          "pin": "IO15",
+          "signal": "BTN_K3",
+          "v": "3.3V",
+          "ma": "-",
+          "direction": "IN",
+          "note": ""
+        },
+        {
+          "pin": "IO16",
+          "signal": "BTN_K4",
+          "v": "3.3V",
+          "ma": "-",
+          "direction": "IN",
+          "note": "晚安键：ESP32 本地强制安全态"
+        },
+        {
+          "pin": "IO17",
+          "signal": "AMP_FORCE_GATE",
+          "v": "3.3V",
+          "ma": "-",
+          "direction": "OUT",
+          "note": "安全路径：IO17 经 2N7002 把 AMP_SD 拉地强制静音（Pi 死机仍有效）"
+        },
+        {
+          "pin": "IO18",
+          "signal": "PI_RUNNING_N",
+          "v": "3.3V",
+          "ma": "-",
+          "direction": "IN",
+          "note": "监控 Pi BCM6 心跳，超时进入安全态"
+        },
+        {
+          "pin": "IO3",
+          "signal": "LED_PI",
+          "v": "3.3V",
+          "ma": "-",
+          "direction": "IN",
+          "note": "Pi BCM10 经缓冲来的备用数据源"
+        },
+        {
+          "pin": "IO0",
+          "signal": "BOOT_BTN",
+          "v": "3.3V",
+          "ma": "-",
+          "direction": "IN",
+          "note": "固件烧录按钮 + 测试点"
+        },
+        {
+          "pin": "IO9",
+          "signal": "JTAG_TP1",
+          "v": "3.3V",
+          "ma": "-",
+          "direction": "IN",
+          "note": "测试点（固件调试）"
+        },
+        {
+          "pin": "IO10",
+          "signal": "JTAG_TP2",
+          "v": "3.3V",
+          "ma": "-",
+          "direction": "IN",
+          "note": ""
+        },
+        {
+          "pin": "IO11",
+          "signal": "JTAG_TP3",
+          "v": "3.3V",
+          "ma": "-",
+          "direction": "IN",
+          "note": ""
+        },
+        {
+          "pin": "IO12",
+          "signal": "JTAG_TP4",
+          "v": "3.3V",
+          "ma": "-",
+          "direction": "IN",
+          "note": ""
+        },
+        {
+          "pin": "IO13",
+          "signal": "JTAG_TP5",
+          "v": "3.3V",
+          "ma": "-",
+          "direction": "IN",
+          "note": ""
+        },
+        {
+          "pin": "IO14",
+          "signal": "JTAG_TP6",
+          "v": "3.3V",
+          "ma": "-",
+          "direction": "IN",
+          "note": ""
+        }
+      ],
+      "note": "方案 B 时 U3 不贴（DNP），LED_EYE_DIN 由 Pi BCM10 直驱（经缓冲），安全静音由 Pi GPIO 承担"
+    },
+    {
+      "ref": "J4",
+      "name": "扬声器输出",
+      "model_plan": "PH2.0-2P 卧贴（额定 2A）",
+      "pins": [
+        {
+          "pin": "1",
+          "signal": "SPK_P",
+          "v": "5V(音频)",
+          "ma": "400mA峰值",
+          "direction": "OUT",
+          "note": "MAX98357A 输出+，4Ω 3W 额定"
+        },
+        {
+          "pin": "2",
+          "signal": "SPK_N",
+          "v": "5V(音频)",
+          "ma": "400mA峰值",
+          "direction": "OUT",
+          "note": "Class-D 差分对，等长就近回流"
+        }
+      ],
+      "note": "外置 28mm 8Ω/2W 或 4Ω/3W 腔体喇叭（采购轮定，接口按 4Ω/3W 设计）"
+    },
+    {
+      "ref": "J5",
+      "name": "眼睛左（3×3 SK6812 模组）",
+      "model_plan": "PH2.0-3P 卧贴",
+      "pins": [
+        {
+          "pin": "1",
+          "signal": "P5V_LED",
+          "v": "5V",
+          "ma": "540mA",
+          "direction": "PWR",
+          "note": "LED 轨（PTC 后）"
+        },
+        {
+          "pin": "2",
+          "signal": "LED_EYE_DIN",
+          "v": "5V",
+          "ma": "-",
+          "direction": "IN",
+          "note": "5V 电平数据（74LVC1T45 缓冲后）"
+        },
+        {
+          "pin": "3",
+          "signal": "GND",
+          "v": "GND",
+          "ma": "540mA",
+          "direction": "PWR",
+          "note": ""
+        }
+      ],
+      "note": "模组端自带下一级 DOUT；左眼 DOUT → 右眼 DIN（模组内飞线，不在板上）"
+    },
+    {
+      "ref": "J6",
+      "name": "眼睛右（3×3 SK6812 模组）",
+      "model_plan": "PH2.0-3P 卧贴",
+      "pins": [
+        {
+          "pin": "1",
+          "signal": "P5V_LED",
+          "v": "5V",
+          "ma": "540mA",
+          "direction": "PWR",
+          "note": ""
+        },
+        {
+          "pin": "2",
+          "signal": "LED_EYE_DIN",
+          "v": "5V",
+          "ma": "-",
+          "direction": "IN",
+          "note": "菊花链第二级"
+        },
+        {
+          "pin": "3",
+          "signal": "GND",
+          "v": "GND",
+          "ma": "540mA",
+          "direction": "PWR",
+          "note": ""
+        }
+      ],
+      "note": ""
+    },
+    {
+      "ref": "J7",
+      "name": "胸前星星灯（4 颗 SK6812）",
+      "model_plan": "PH2.0-3P 卧贴",
+      "pins": [
+        {
+          "pin": "1",
+          "signal": "P5V_LED",
+          "v": "5V",
+          "ma": "240mA",
+          "direction": "PWR",
+          "note": ""
+        },
+        {
+          "pin": "2",
+          "signal": "LED_EYE_DIN",
+          "v": "5V",
+          "ma": "-",
+          "direction": "IN",
+          "note": "菊花链第三级"
+        },
+        {
+          "pin": "3",
+          "signal": "GND",
+          "v": "GND",
+          "ma": "240mA",
+          "direction": "PWR",
+          "note": ""
+        }
+      ],
+      "note": ""
+    },
+    {
+      "ref": "J8",
+      "name": "圣诞树灯光扩展（预留，V1 不装配）",
+      "model_plan": "PH2.0-3P 卧贴",
+      "pins": [
+        {
+          "pin": "1",
+          "signal": "P5V_LED_EXT",
+          "v": "5V",
+          "ma": "600mA",
+          "direction": "PWR",
+          "note": "LED 轨延伸，独立 PTC 0.75A"
+        },
+        {
+          "pin": "2",
+          "signal": "LED_EYE_DIN",
+          "v": "5V",
+          "ma": "-",
+          "direction": "IN",
+          "note": "菊花链第 4 级 DIN（树灯模块级联在星星灯之后）"
+        },
+        {
+          "pin": "3",
+          "signal": "GND",
+          "v": "GND",
+          "ma": "600mA",
+          "direction": "PWR",
+          "note": ""
+        }
+      ],
+      "note": "外接上限 10 颗 SK6812；不使用时盲盖"
+    },
+    {
+      "ref": "J9",
+      "name": "调试 UART",
+      "model_plan": "SH1.0-4P 卧贴",
+      "pins": [
+        {
+          "pin": "1",
+          "signal": "P3V3_MCU",
+          "v": "3.3V",
+          "ma": "100mA",
+          "direction": "PWR",
+          "note": "调试时给逻辑笔/串口桥供电上限"
+        },
+        {
+          "pin": "2",
+          "signal": "UART_PI_TX",
+          "v": "3.3V",
+          "ma": "-",
+          "direction": "IN",
+          "note": "Pi BCM14 输出（观察 Pi 控制流）"
+        },
+        {
+          "pin": "3",
+          "signal": "UART_ESP_TX",
+          "v": "3.3V",
+          "ma": "-",
+          "direction": "OUT",
+          "note": "ESP32 输出（观察 ESP 日志）"
+        },
+        {
+          "pin": "4",
+          "signal": "GND",
+          "v": "GND",
+          "ma": "-",
+          "direction": "PWR",
+          "note": ""
+        }
+      ],
+      "note": "每网单驱动；SH1.0 间距避免与 2.54 误插"
+    }
+  ],
+  "test_points": [
+    {
+      "ref": "TP1",
+      "signal": "5V_MAIN",
+      "note": "电源主轨"
+    },
+    {
+      "ref": "TP2",
+      "signal": "5V_LED",
+      "note": "LED 轨（PTC 后）"
+    },
+    {
+      "ref": "TP3",
+      "signal": "P3V3_MCU",
+      "note": "ESP32 供电轨"
+    },
+    {
+      "ref": "TP4",
+      "signal": "GND",
+      "note": "参考地"
+    },
+    {
+      "ref": "TP5",
+      "signal": "GND",
+      "note": "参考地（示波器夹）"
+    },
+    {
+      "ref": "TP6",
+      "signal": "I2S_PCM_CLK",
+      "note": "I2S 时钟"
+    },
+    {
+      "ref": "TP7",
+      "signal": "I2S_PCM_FS",
+      "note": "I2S 帧时钟"
+    },
+    {
+      "ref": "TP8",
+      "signal": "I2S_PCM_DIN",
+      "note": "麦克风数据"
+    },
+    {
+      "ref": "TP9",
+      "signal": "AMP_SD",
+      "note": "功放静音（安全路径验证）"
+    },
+    {
+      "ref": "TP10",
+      "signal": "LED_EYE_DIN_RAW",
+      "note": "ESP32 RMT 波形"
+    },
+    {
+      "ref": "TP11",
+      "signal": "PI_RUNNING_N",
+      "note": "Pi 心跳"
+    },
+    {
+      "ref": "TP12",
+      "signal": "MCU_EN",
+      "note": "ESP32 复位"
+    }
+  ],
+  "safety_notes": [
+    "K4（晚安）在两条路径上生效：Pi 软件（最高优先级状态）+ ESP32 硬件级 AMP_SD_FORCED 强制静音——Pi 死机时仍可静音。",
+    "AMP_SD 上拉到静音态：上电/复位/固件崩溃默认无声。",
+    "LED 数据缓冲 74LVC1T45 由 P_LED_BUF_EN 门控：上电默认关闭，防止 GPIO 初始化抖动点亮。",
+    "USB-C 只做 5V 供电不做数据：杜绝陌生 USB 设备枚举进 Pi（隐私）；Pi 自身 USB 口用盲塞。",
+    "所有外接线缆（喇叭/灯）均走 2A 额定连接器，短路与 PTC 保护兜底；不引入任何市电直连。"
+  ]
+}

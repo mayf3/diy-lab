@@ -1,0 +1,29 @@
+id,类别,材料,型号或规格,数量,采购状态,采购链接或来源
+B01,PCB,载板打样,2层 1.6mm 1oz FR-4 外形58×66mm（板框随机械冻结轮定稿）,5,HOLD,https://www.jlc.com/（架构冻结后下单；本预研不下单）
+B02,SMT,贴片加工,载板双面贴片（方案A 含 U3 模块贴装）,5,HOLD,https://www.jlc.com/portal/smt.html（BOM 冻结后报价）
+B03,主控,单板机,Raspberry Pi Zero 2 W（512MB 无线）,1,CHECK,https://www.raspberrypi.com/products/raspberry-pi-zero-2-w/（官方产品页 2026-11-28 curl 403 反爬，浏览器可达）
+B04,音频,功放,MAX98357A（I2S Class-D 3W@4Ω）,1,CHECK,https://www.analog.com/media/en/technical-documentation/data-sheets/MAX98357A-MAX98357B.pdf（已核验 200）
+B05,协处理器,WiFi/BLE 模块,ESP32-S3-WROOM-1-N8R2,1,CHECK,https://www.espressif.com/sites/default/files/documentation/esp32-s3-wroom-1_wroom-1-u_datasheet_en.pdf（302 重定向可达；C 编号待核）
+B06,电源,buck 转换器,TPS563201（5V→3.3V 主选）,1,CHECK,https://www.ti.com/lit/ds/symlink/tps563201.pdf（已核验 200）
+B07,电源,LDO 备选,AMS1117-3.3（方案 B 低负载路径备选 DNP）,1,CHECK,立创商城搜索 AMS1117-3.3（C 编号待核）
+B08,传感,MEMS 麦克风,INMP441（I2S 底端口）,1,CHECK,https://invensense.tdk.com/wp-content/uploads/2015/02/INMP441.pdf（待核验可达性）
+B09,逻辑,电平转换,SN74LVC1T45DBVR,1,CHECK,https://www.ti.com/lit/ds/symlink/sn74lvc1t45.pdf（已核验 200）
+B10,逻辑,N-MOSFET,2N7002（强制静音门）,1,CHECK,立创商城搜索 2N7002（C 编号待核）
+B11,保护,TVS,SMAJ5.0A（5V 输入浪涌）,1,CHECK,立创商城搜索 SMAJ5.0A（C 编号待核）
+B12,保护,PTC 自恢复保险,F1 3A hold / F2 1.6A hold / F3 0.75A hold,3,CHECK,立创商城 1206/0805 PTC（C 编号待核）
+B13,机电,电源拨动开关,SS-12D00 或同级（后壳硬断电）,1,CHECK,立创商城搜索 SS-12D00（C 编号待核）
+B14,机电,轻触按键,TS-1187A 6×6（K1-K4 主板 + BOOT 侧键）,5,CHECK,立创商城搜索 TS-1187A（C 编号待核）
+B15,连接,USB-C 母座,板载 16pin 5A 额定,1,CHECK,立创商城搜索 板载 USB-C 16P（C 编号待核）
+B16,连接,排母,2×20P 2.54mm（Pi 载板接口）,1,CHECK,立创商城搜索 2x20 排母 2.54（C 编号待核）
+B17,连接,PH2.0 卧贴座,2P×1 + 3P×4（喇叭/眼×2/星/树灯扩展）,5,CHECK,立创商城搜索 PH2.0 卧贴（C 编号待核）
+B18,连接,SH1.0 卧贴座,SH1.0-4P（调试 UART）,1,CHECK,立创商城搜索 SH1.0 4P 卧贴（C 编号待核）
+B19,电源,功率电感,4.7µH/2A 一体成型（候选值，按 datasheet 公式核定）,1,CHECK,立创商城搜索 4.7uH 一体成型电感（数值待核）
+B20,被动,阻容组,0402 电阻（5.1k×2、100k×5）+ 电容（100nF×6、10µF×2、22µF×2、1µF×1）,1,CHECK,立创商城基本库（阻容按基本库最低增量成本）
+B21,被动,储能电容,470µF/6.3V 固态或铝电解（5V 主轨缓冲）,1,CHECK,立创商城搜索 470uF 6.3V（C 编号待核）
+B22,执行器,喇叭,28mm 4Ω 3W 内腔喇叭（声学轮定腔体）,1,CHECK,立创商城/淘宝 28mm 4Ω 喇叭（接口按 4Ω 设计）
+B23,灯效,眼灯模组,3×3 SK6812 模组（带飞线级联）,2,CHECK,https://www.world-semi.com/（SK6812 官方；模组采购链接待核）
+B24,灯效,星灯模组,4 颗 SK6812 星形模组,1,CHECK,待采购轮核（自定义 FPC 或成品）
+B25,结构,装配紧固件,M2.5 自攻 ×4 + M2.5 沉头 ×2 + 橡胶脚垫 ×4,1,CHECK,淘宝标准件
+B26,可选,树灯扩展线,PH2.0-3P 级联线（上限 10 颗 SK6812）,1,HOLD,V1 不装配；接口已预留（J8 + F3）
+B27,电源,USB-C 适配器,5V/3A 认证外置电源（不得用劣质无认证充电头）,1,CHECK,待采购轮核（需 CCC/CE 认证标识）
+B28,结构,打印材料,奶油白/森林绿/圣诞红/星光金 PLA 各 1 卷（或嘉立创代打印）,4,CHECK,Bambu PLA 或代工报价

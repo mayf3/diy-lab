@@ -1,0 +1,24 @@
+{
+  "schema": "product-spec/1.0",
+  "product": "christmas-buddy",
+  "title": "Christmas Buddy V1 圣诞精灵机器人",
+  "date": "2026-11-28",
+  "goal": "独立摆放在儿童床边的圣诞主题 AI 互动机器人；借本项目建立 DIY Lab 第一套 AI 硬件研发样板流程。",
+  "non_goals": ["不集成锂电池（第一版外置 5V/3A）", "不用彩色屏幕（表情只用 LED 矩阵眼）", "不做本地大模型推理（AI 全部云端）", "不固定到 KURA 床架（Free 底座）"],
+  "requirements": [
+    {"id": "REQ-001", "req": "精灵形态，总高 120–160mm，头/体/帽/围巾分件", "acc": "机械模型导出总高几何推算 ≤160.5mm，装配检查 20/20 PASS"},
+    {"id": "REQ-002", "req": "表情 = 左右两只 3×3 RGB LED 矩阵眼，无彩屏", "acc": "网表含 J5/J6 眼模组接口；状态机定义 Idle/Listening/Thinking/Speaking/Magic/Goodnight/Error 眼部状态"},
+    {"id": "REQ-003", "req": "Free 摆放：独立底座，不固定床架", "acc": "底座 Ø92+ 带 4 橡胶脚；无床架连接件"},
+    {"id": "REQ-004", "req": "四色外观：奶油白/森林绿/圣诞红/星光金", "acc": "visual-specs 色板恰好 4 色锁定 HEX"},
+    {"id": "REQ-005", "req": "2×2 实体按键：说话/重复/魔法灯效/晚安（最高优先）", "acc": "Lean thm_sleep_priority：任何状态 sleep→Goodnight；晚安态静音（thm_goodnight_silent）"},
+    {"id": "REQ-006", "req": "GPT 对话 + 语音识别 + 语音合成（云链路）", "acc": "任务书验收：流式管线首音频 p50≤3s、p95≤5s（实测轮判定，预研不声称达成）"},
+    {"id": "REQ-007", "req": "嘉立创 EDA 设计，PCB 打样 + SMT 贴片可制造", "acc": "网表 ERC 0 error；EDA 客户端内创建工程并通过 sch/pcb DRC；四元组 pcb 段冻结"},
+    {"id": "REQ-008", "req": "P1S 3D 打印外壳，可打印可装配可维修", "acc": "装配检查含公差链与螺柱；试打印试装记录"},
+    {"id": "REQ-009", "req": "外置合规 5V/3A USB-C 供电，无电池", "acc": "Lean Power 定理 6 条全 PASS；ASM-P1 实物核对铭牌"},
+    {"id": "REQ-010", "req": "音频：I2S 麦 + Class-D 功放 + 声学通道", "acc": "机械检查扬声器开孔 ≥60% 振膜；mic 孔同轴；实测录音回放轮验证"},
+    {"id": "REQ-011", "req": "预留圣诞树灯光扩展接口", "acc": "J8 + 独立 PTC 在网表/BOM；V1 不装配"},
+    {"id": "REQ-012", "req": "儿童安全：紧急静音、无数据口、断电开关、防短路", "acc": "双静音路径（Pi + ESP32 硬件）在网表；USB 数据 DNP；F1/F2/F3 分域 PTC"},
+    {"id": "REQ-013", "req": "视觉达收藏级：两案盲评择优", "acc": "真实参数模型渲染 8 视图 ×2 案；盲评协议执行并记录"},
+    {"id": "REQ-014", "req": "研发过程可追溯：模型/证明/工件哈希", "acc": "m5_manifest 全量哈希一致；Lean 23 定理 0 违规"}
+  ]
+}
