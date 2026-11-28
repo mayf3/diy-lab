@@ -588,6 +588,10 @@
       ],
       "pcb_status": "进行中（原生工程已建立，产物未齐）",
       "pcb_frozen": false,
+      "pcb_object_uuid": "9c301e7941e42cc1",
+      "pcb_object_verified": true,
+      "pcb_layout_started": false,
+      "pcb_design_verified": false,
       "joint_status": "未开始（等：轴体实测→键帽冻结；DevKitC 实测→USB 校核；G4 板框→螺柱）",
       "package_complete": false,
       "package_missing": [
@@ -608,7 +612,7 @@
       "product_ready_computed": false,
       "product_ready_reasons": [
         "CAD 设计检查未有效通过（尺寸存在占位/待实测项：connector_protrusion,board_envelope,usb_ports,usb_opening,usb_plug_envelope,skirt_usb_clearance,body,keys,boss）",
-        "PCB 版本未冻结",
+        "PCB 版本未冻结（需真实 PCB 对象+DRC 全绿+联合验证通过）",
         "板壳联合验证未完成",
         "制造包缺件：EDA 原生工程、Gerber、BOM（LCSC 编号）、CPL、PCB STEP、外壳 STEP、分件 STL、外壳 3MF、装配说明、零件清单、版本清单"
       ],

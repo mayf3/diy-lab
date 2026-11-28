@@ -85,7 +85,9 @@ def cad_evidence_state() -> tuple[str, list[str], dict | None]:
             diffs.append("回执缺少 execution_result")
         fc_now = freecad_version()
         fc_rec = receipt.get("freecad_version")
-        if fc_rec and fc_rec != fc_now:
+        if not fc_rec:
+            diffs.append("FreeCAD 版本 UNKNOWN（回执未记录）")
+        elif fc_rec != fc_now:
             diffs.append(f"FreeCAD 版本与回执不符：当前 {fc_now} / 回执 {fc_rec}")
     except Exception as e:
         diffs.append(f"checks.json 不可读：{e}")
@@ -191,11 +193,15 @@ def validate(project_path: Path, changed: list[str] | None = None) -> dict:
     checks["eda_project_verified"] = eda_verified and not eda_verify_fail
     eda_outputs = eda_dom.get("outputs_present", [])
     ALLOWED_TYPES = {"schematic", "pcb", "gerber", "bom", "cpl", "pcb_step"}
+    # gerber/bom/cpl/pcb_step 必须有 path+digest（真实产物文件），不能用读回身份文件冒充
+    PATH_REQUIRED_TYPES = {"gerber", "bom", "cpl", "pcb_step"}
     seen_refs, bad_outputs = set(), []
     pcb_object_uuid = None
+    evidence_files_used = {}  # evidence 文件 → 使用它的产物类型集合（防同一文件冒充多种产物）
     for o in eda_outputs:
         name, otype = o.get("name"), o.get("type")
         uuid, digest, ev = o.get("uuid"), o.get("digest"), o.get("evidence")
+        opath = o.get("path")
         if (uuid, otype) in seen_refs:
             bad_outputs.append((name, "重复引用同一 uuid+类型"))
         seen_refs.add((uuid, otype))
@@ -204,15 +210,32 @@ def validate(project_path: Path, changed: list[str] | None = None) -> dict:
         if not ev or not (ROOT / ev).is_file():
             bad_outputs.append((name, f"证据文件缺失 {ev}"))
             continue
+        # 同一证据文件不得承载多种产物类型（读回身份文件只能给 schematic/pcb 各用一次）
+        ev_key = str(Path(ev))
+        evidence_files_used.setdefault(ev_key, set()).add(otype)
+        if len(evidence_files_used[ev_key]) > 2:
+            bad_outputs.append((name, f"证据文件 {Path(ev).name} 承载了过多产物类型"))
+        # path+digest 严格检查：PATH_REQUIRED_TYPES 缺 path/digest 直接 FAIL
+        if otype in PATH_REQUIRED_TYPES:
+            if not opath or not digest:
+                bad_outputs.append((name, f"{otype} 必须提供真实产物路径和 SHA256 摘要"))
+            else:
+                pp = ROOT / opath
+                if not pp.is_file():
+                    bad_outputs.append((name, f"产物真实路径不存在 {opath}"))
+                elif sha256_file(pp) != digest:
+                    bad_outputs.append((name, f"产物内容摘要不符 {opath}"))
+        else:
+            # 非强制类型：如果提供了 path+digest 也要校验
+            if opath and digest:
+                pp = ROOT / opath
+                if not pp.is_file():
+                    bad_outputs.append((name, f"产物真实路径不存在 {opath}"))
+                elif sha256_file(pp) != digest:
+                    bad_outputs.append((name, f"产物内容摘要不符 {opath}"))
         ev_text = (ROOT / ev).read_text(encoding="utf-8", errors="ignore")
         if uuid and uuid not in ev_text:
             bad_outputs.append((name, f"证据文件中找不到 uuid {str(uuid)[:12]}"))
-        if digest and o.get("path"):
-            pp = ROOT / o["path"]
-            if not pp.is_file():
-                bad_outputs.append((name, f"产物真实路径不存在 {o['path']}"))
-            elif sha256_file(pp) != digest:
-                bad_outputs.append((name, f"产物内容摘要不符 {o['path']}"))
         if otype == "schematic" and rb and uuid and uuid != rb.get("schematic_uuid"):
             bad_outputs.append((name, "schematic uuid 与读回身份不符"))
         if otype == "pcb":
@@ -221,18 +244,30 @@ def validate(project_path: Path, changed: list[str] | None = None) -> dict:
             else:
                 pcb_object_uuid = uuid
         if otype not in ("schematic", "pcb") and ev and Path(ev).name == "eda-readback.json":
-            bad_outputs.append((name, "gerber/bom/cpl 类产物不得用 EDA 读回身份文件冒充证据"))
+            bad_outputs.append((name, f"{otype} 产物不得用 EDA 读回身份文件冒充证据"))
     if eda_outputs and bad_outputs:
         failures.append("EDA 产物证据缺陷：" + "；".join(f"{n}:{w}" for n, w in bad_outputs))
     outputs_verified = bool(eda_outputs) and not bad_outputs
-    pcb_frozen = isinstance(revs.get("pcb"), int)
-    # PCB 冻结 = 版本数字 + 真实 PCB 对象（uuid 经读回证据核验）
+
+    # ── PCB 状态分离（整改：空 PCB 对象 ≠ 完成/冻结）──
+    # pcb_object_verified: EDA 工程中有经读回核验的真实 PCB 对象
+    # pcb_layout_started: EDA PCB 已有元件或走线（当前无法自动检测，标 False）
+    # pcb_design_verified: DRC 全绿 + 联合验证通过（等 PR-B/C 实现）
+    # pcb_frozen: 版本数字 + 上述全部
+    pcb_object_verified = eda_verified and bool(pcb_object_uuid)
+    pcb_layout_started = False   # PR-B DRC 后才可标记
+    pcb_design_verified = False  # PR-B ERC+DRC 全绿 + PR-C 联合验证后才可标记
+    pcb_frozen = (isinstance(revs.get("pcb"), int)
+                  and pcb_object_verified and pcb_design_verified)
     pcb_evidence = eda_verified and outputs_verified and bool(pcb_object_uuid)
 
     facts["pcb_status"] = ("已冻结（rev %s）" % revs["pcb"]) if pcb_frozen and pcb_evidence else (
         "进行中（原生工程已建立，产物未齐）" if eda_project else "未开始（无 R1 原生 EDA 工程）")
     facts["pcb_frozen"] = pcb_frozen and pcb_evidence
     facts["pcb_object_uuid"] = pcb_object_uuid or None
+    facts["pcb_object_verified"] = pcb_object_verified
+    facts["pcb_layout_started"] = pcb_layout_started
+    facts["pcb_design_verified"] = pcb_design_verified
 
     # 6) 联合验证 / 制造包 / 授权 / 验收（区分表达，不互相混入）
     joint = proj.get("joint_check", {})
@@ -267,7 +302,7 @@ def validate(project_path: Path, changed: list[str] | None = None) -> dict:
     if not design_ok:
         reasons.append("CAD 设计检查未有效通过" + ("（尺寸存在占位/待实测项：%s）" % ",".join(unconfirmed) if unconfirmed else ""))
     if not pcb_frozen:
-        reasons.append("PCB 版本未冻结")
+        reasons.append("PCB 版本未冻结（需真实 PCB 对象+DRC 全绿+联合验证通过）")
     if not pcb_evidence:
         reasons.append("EDA 原生工程产物不足（原理图/DRC/BOM/CPL/Gerber 等）")
     if not checks["joint_verified"]:
