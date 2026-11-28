@@ -34,7 +34,7 @@
       "evidence": "checks.json ok=true 且负向自检通过（check_case.py 每次建模后必跑）"
     },
     "eda": {
-      "status": "进行中（原生工程+原理图页+PCB 空对象已建立并读回验证；元件/网络/ERC 未开始）",
+      "status": "进行中（原理图元件布局完成：J1/J3/K1–K4 + GPIO4–7/GND 网络全部连通，ERC 0 错误；位号改写待续）",
       "editor_note": "EDA 环境已激活且读写往返验收（2026-11-26，MakerLab-EDA-Check-20261126.eprj3）——环境可用 ≠ 产品 PCB 存在",
       "project": {
         "kind": "cloud-workspace + 本地会话",
@@ -56,7 +56,7 @@
       ],
       "outputs_present": [
         {
-          "name": "原理图 Schematic1/P1",
+          "name": "原理图 Schematic1/P1（含 6 元件+8 导线+8 网络标签）",
           "type": "schematic",
           "uuid": "7415725566084bd0",
           "evidence": "hardware/space-buddy-r1/eda-readback.json"
@@ -66,8 +66,52 @@
           "type": "pcb",
           "uuid": "9c301e7941e42cc1",
           "evidence": "hardware/space-buddy-r1/eda-readback.json"
+        },
+        {
+          "name": "网表导出（PROTEL 5856B）",
+          "type": "netlist",
+          "uuid": "7415725566084bd0",
+          "evidence": "hardware/space-buddy-r1/netlist-evidence.json"
         }
-      ]
+      ],
+      "schematic_progress": {
+        "components_placed": true,
+        "component_ids": {
+          "J1": "9219a882acbb9928",
+          "J3": "dd09a31e60381e2c",
+          "K1": "15eb568866d1c5e4",
+          "K2": "d2021d0f73c9658a",
+          "K3": "ce954863ed464ffb",
+          "K4": "82f2e5a85940f6bb"
+        },
+        "nets": {
+          "GPIO4": [
+            "U1-1"
+          ],
+          "GPIO5": [
+            "U2-1"
+          ],
+          "GPIO6": [
+            "U3-1"
+          ],
+          "GPIO7": [
+            "U4-1"
+          ],
+          "GND": [
+            "U1-2",
+            "U2-2",
+            "U3-2",
+            "U4-2"
+          ]
+        },
+        "erc": {
+          "error": 0,
+          "warning": 10,
+          "note": "SHOWDANDLING×8（排母未接线，预期）+ CHECKFLOATPIN×2（开关 NC 脚）"
+        },
+        "netlist_exported": true,
+        "netlist_sha256_first20": "7fbff02ffe7f01c6d203"
+      }
     },
     "firmware": {
       "status": "draft（未编译烧录）",
