@@ -1,0 +1,12 @@
+试件,特征,CAD 标称(mm),切片尺寸(mm),实物测量(mm),误差(mm),装配结果,测量人/日期
+C1-pcb-slot,槽1,1.80,,,,,
+C1-pcb-slot,槽2,2.00,,,,,
+C1-pcb-slot,槽3,2.20,,,,,
+C1-pcb-slot,槽4,2.40,,,,,
+C2-hole-gauge,孔1,2.00,,,,,
+C2-hole-gauge,孔2,2.20,,,,,
+C2-hole-gauge,孔3,2.40,,,,,
+C2-hole-gauge,孔4,2.60,,,,,
+C3-usb-opening,开孔宽,13.40,,,,,
+C3-usb-opening,开孔高,7.40,,,,,
+C3-usb-opening,USB-C 插头插入,通过/不通过,,,,,

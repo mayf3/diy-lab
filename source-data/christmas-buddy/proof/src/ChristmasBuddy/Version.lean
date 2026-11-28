@@ -91,4 +91,46 @@ theorem thm_complete_sound :
     cases pcb <;> cases cad <;> cases fw <;> cases bom <;>
       simp [complete]
 
+
+/-! ### v2 扩展：批准状态与「不静默继承」合同 -/
+
+/-- Release 增加批准维度：批准人（Option String，none=未批准）。 -/
+structure ApprovedRelease where
+  release : Release
+  approver : Option String
+  deriving DecidableEq, Repr
+
+/-- 制造许可 = 完整 + 冻结 + 已批准（三重门禁，缺一不可）。 -/
+def manufacturingRelease (r : ApprovedRelease) : Bool :=
+  complete r.release && isFrozen r.release && r.approver.isSome
+
+/-- 未批准的候选不可制造（GATE 门禁的形式化）。 -/
+theorem thm_unapproved_not_manufacturable :
+    ∀ r : ApprovedRelease, r.approver = none → manufacturingRelease r = false := by
+  intro r h
+  simp [manufacturingRelease, h]
+
+/-- 批准绑定精确版本：同一工件集合的批准记录是确定的。 -/
+def approvedRegistry : List ApprovedRelease := []
+
+/-- 注册表成员判定（decide 等价，无依赖证明）。 -/
+def isApproved (r : ApprovedRelease) : Bool :=
+  approvedRegistry.any (fun x => decide (x = r))
+
+/-- 注册表中的每条批准都满足三重门禁的前两条（complete+frozen 由登记流程保证；
+    本定理证：注册表成员的 approver 必为 some——登记即批准）。 -/
+theorem thm_registry_membership_implies_approved :
+    ∀ r, isApproved r = true → r.approver.isSome = true := by
+  intro r h
+  -- 注册表为空时前提即为 False，simp 直接闭合目标
+  simp [approvedRegistry, isApproved, List.any] at h
+
+/-- 任一分项变化必须形成新候选：Release 值相等当且仅当四段逐一相等
+    （因此任何一段变化都产生 ≠ 旧值的新 Release，注册表不会自动包含它）。 -/
+theorem thm_release_ext :
+    ∀ a b : Release,
+      a = b ↔ a.pcb = b.pcb ∧ a.cad = b.cad ∧ a.fw = b.fw ∧ a.bom = b.bom := by
+  intro a b
+  cases a <;> cases b <;> simp
+
 end ChristmasBuddy.Version

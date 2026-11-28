@@ -1,8 +1,62 @@
 {
-  "schema": "cbu-netlist/0.2",
+  "schema": "cbu-netlist/0.3",
   "product": "christmas-buddy-v1",
   "date": "2026-11-28",
   "architecture": "A（Pi Zero 2 W + ESP32-S3 协处理器；方案 B 变化点以 flag 标注）",
+  "datasheet_facts": {
+    "esp32_en": "ESP32-S3 WROOM-1 Datasheet §Pin Definitions: EN High=on/Low=off，不得悬空；§DC Characteristics: VIH=0.75×VDD1，绝对上限 VDD1+0.3V；§Strapping: tSU=0ms/tH=3ms",
+    "max98357_sd": "MAX98357A Datasheet §SD_MODE and shutdown operation: 内部 RPD 92–108kΩ；RLARGE(kΩ)=222.2×VDDIO−100 → (L+R)/2 模式，VDDIO=3.3V → 633.3kΩ；比较点 B0=0.16V/B1=0.77V/B2=1.4V (typ)；GAIN_SLOT=GND→+12dB（官方正文）",
+    "lvc1t45": "TI SCES515N: DIR=L: B→A / DIR=H: A→B；DIR 参考 VCCA，VIH(DIR)=2V@3–3.6V；VCC isolation：任一 VCC=GND 两端口高阻"
+  },
+  "led_chain": {
+    "stages": [
+      {
+        "net": "LED_DIN",
+        "module": "J5",
+        "leds": [
+          0,
+          8
+        ]
+      },
+      {
+        "net": "LED_CHAIN1",
+        "module": "J6",
+        "leds": [
+          9,
+          17
+        ]
+      },
+      {
+        "net": "LED_CHAIN2",
+        "module": "J7",
+        "leds": [
+          18,
+          21
+        ]
+      },
+      {
+        "net": "LED_CHAIN3",
+        "module": "J8",
+        "leds": [
+          22,
+          31
+        ]
+      }
+    ],
+    "max_leds": 32,
+    "refresh_ms": 1.01,
+    "note": "WS2812/SK6812 位时长 1.25µs×24bit=30µs/颗 @800kHz"
+  },
+  "amp_sd_arbitration": {
+    "design": "BCM25 → R_MODE 620k → SD 节点；Q1（ESP32 IO17 门控）拉低强制静音；SD 内部 100k 下拉提供默认 shutdown（官方）",
+    "cases": {
+      "Pi 高": "V_SD=3.3×100/720=0.458V ∈ (0.16,0.77) → (L+R)/2 模式，输出开",
+      "Pi 低": "节点 0V → shutdown",
+      "Pi 悬空/死机": "内部 100k 下拉 → 0V → shutdown（安全默认）",
+      "ESP32 强制（K4）": "Q1 导通 → 0V；Pi 高仅灌 3.3/620k=5.3µA，无争用应力",
+      "ESP32 死机": "R_G 下拉 → Q1 截止 → Pi 正常控制"
+    }
+  },
   "devices": [
     {
       "ref": "U1",
@@ -10,6 +64,7 @@
       "mpn": "RP3A0（SC0542）",
       "kind": "module",
       "note": "512MB；云 AI/音频主控；USB 数据不接",
+      "attrs": {},
       "pins": {
         "P5V1": {
           "pin": "P5V1",
@@ -83,12 +138,12 @@
         },
         "BCM25": {
           "pin": "BCM25",
-          "net": "AMP_SD",
+          "net": "AMP_EN_PI",
           "dir": "OUT",
           "vdom": "3V3",
           "tol5v": false,
           "pull": null,
-          "note": "高=出声，低=静音；复位默认输入态→外部下拉静音",
+          "note": "高=允许发声((L+R)/2 模式)；低/悬空=静音；经 R_MODE 隔离",
           "flag": null
         },
         "BCM23": {
@@ -252,6 +307,7 @@
       "mpn": "MAX98357AETE+（C 编号待核）",
       "kind": "ic",
       "note": "I2S Class-D，3W@4Ω 上限，V1 软件限 1W",
+      "attrs": {},
       "pins": {
         "VDD": {
           "pin": "VDD",
@@ -280,7 +336,7 @@
           "vdom": "5V",
           "tol5v": false,
           "pull": null,
-          "note": "内部模式脚，实际阈值按数据手册核对；下拉=静音默认态",
+          "note": "内部 100kΩ 下拉（官方 92–108kΩ）；<0.16V=shutdown；0.16–0.77V=(L+R)/2 模式；本设计经 R_MODE 620k 上拉到 3.3V 逻辑 → 0.458V=(L+R)/2 单声道",
           "flag": null
         },
         "GAIN": {
@@ -290,7 +346,7 @@
           "vdom": "5V",
           "tol5v": false,
           "pull": null,
-          "note": "增益 strapped，待数据手册核对",
+          "note": "经 U7 接 GND=+12dB（官方正文）",
           "flag": null
         },
         "DIN": {
@@ -357,11 +413,46 @@
       ]
     },
     {
+      "ref": "U7",
+      "part": "GAIN 脚接地带",
+      "mpn": "0Ω 跨接（或直接铺铜）",
+      "kind": "passive",
+      "note": "12dB 固定增益（官方接法），音量由软件控制",
+      "attrs": {},
+      "pins": {
+        "1": {
+          "pin": "1",
+          "net": "GAIN_STRAP",
+          "dir": "PAS",
+          "vdom": "5V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "2": {
+          "pin": "2",
+          "net": "GND",
+          "dir": "PWR",
+          "vdom": "0V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        }
+      },
+      "pin_list": [
+        "1",
+        "2"
+      ]
+    },
+    {
       "ref": "U5",
       "part": "INMP441",
       "mpn": "INMP441（C 编号待核）",
       "kind": "ic",
       "note": "底端口 MEMS 麦，声学密封垫 + 前壳 Ø2.2 孔",
+      "attrs": {},
       "pins": {
         "VDD": {
           "pin": "VDD",
@@ -439,6 +530,7 @@
       "mpn": "C 编号待核（扩展库）",
       "kind": "module",
       "note": "方案 B：本器件 DNP",
+      "attrs": {},
       "pins": {
         "3V3": {
           "pin": "3V3",
@@ -457,7 +549,7 @@
           "vdom": "3V3",
           "tol5v": false,
           "pull": "up",
-          "note": "10k 上拉 + 1µF",
+          "note": "官方：不得悬空；R_EN 上拉到 3V3_MCU（VIH=0.75×VDD1，5V 域违规）+ C_EN 1µF，RC=10ms>tH 3ms",
           "flag": null
         },
         "GND": {
@@ -499,16 +591,6 @@
           "pull": null,
           "note": "RMT 驱动眼/星/树灯链",
           "flag": null
-        },
-        "IO5": {
-          "pin": "IO5",
-          "net": "STAR_ALT",
-          "dir": "OUT",
-          "vdom": "3V3",
-          "tol5v": false,
-          "pull": null,
-          "note": "备用独立通道，V1 不用",
-          "flag": "dnp"
         },
         "IO6": {
           "pin": "IO6",
@@ -557,7 +639,7 @@
           "vdom": "3V3",
           "tol5v": false,
           "pull": null,
-          "note": "低电平默认；高=经 Q1 强制静音",
+          "note": "低=默认（R_G 下拉）；高=Q1 导通强制静音，可覆盖 Pi",
           "flag": null
         },
         "IO18": {
@@ -648,7 +730,6 @@
         "RXD0",
         "TXD0",
         "IO4",
-        "IO5",
         "IO6",
         "IO7",
         "IO15",
@@ -669,7 +750,12 @@
       "part": "SN74LVC1T45",
       "mpn": "SN74LVC1T45DBVR（C 编号待核）",
       "kind": "ic",
-      "note": "3.3→5V LED 数据缓冲",
+      "note": "3.3→5V LED 数据缓冲（A→B 方向）",
+      "attrs": {
+        "translator": {
+          "a_to_b_when_dir": "HIGH"
+        }
+      },
       "pins": {
         "VCCA": {
           "pin": "VCCA",
@@ -703,12 +789,12 @@
         },
         "DIR": {
           "pin": "DIR",
-          "net": "GND",
+          "net": "3V3_MCU",
           "dir": "IN",
-          "vdom": "0V",
+          "vdom": "3V3",
           "tol5v": false,
           "pull": null,
-          "note": "固定 A→B",
+          "note": "官方功能表 DIR=H: A→B；DIR 参考 VCCA，接 VCCA 即高",
           "flag": null
         },
         "VCCB": {
@@ -723,7 +809,7 @@
         },
         "B": {
           "pin": "B",
-          "net": "LED_EYE_DIN",
+          "net": "LED_DIN",
           "dir": "OUT",
           "vdom": "5V",
           "tol5v": false,
@@ -747,6 +833,7 @@
       "mpn": "TPS563201DRLR（C 编号待核）",
       "kind": "power",
       "note": "5V→3.3V buck；备选 AMS1117-3.3（DNP，发热需实测）",
+      "attrs": {},
       "pins": {
         "VIN": {
           "pin": "VIN",
@@ -760,12 +847,12 @@
         },
         "EN": {
           "pin": "EN",
-          "net": "5V_MAIN",
+          "net": "BUCK_EN",
           "dir": "IN",
           "vdom": "5V",
           "tol5v": false,
           "pull": null,
-          "note": "经 R_EN 上电即启",
+          "note": "经 R_EN2 上电即启",
           "flag": null
         },
         "GND": {
@@ -824,11 +911,12 @@
       "mpn": "（选型轮按 datasheet 公式核定）",
       "kind": "passive",
       "note": "CHECK：数值为候选",
+      "attrs": {},
       "pins": {
         "1": {
           "pin": "1",
           "net": "BUCK_SW",
-          "dir": "PWR",
+          "dir": "PAS",
           "vdom": "5V",
           "tol5v": false,
           "pull": null,
@@ -857,6 +945,9 @@
       "mpn": "（1206 PTC，C 编号待核）",
       "kind": "protect",
       "note": "",
+      "attrs": {
+        "ptc_hold_a": 3.0
+      },
       "pins": {
         "1": {
           "pin": "1",
@@ -890,6 +981,9 @@
       "mpn": "（1206 PTC，C 编号待核）",
       "kind": "protect",
       "note": "",
+      "attrs": {
+        "ptc_hold_a": 1.6
+      },
       "pins": {
         "1": {
           "pin": "1",
@@ -923,6 +1017,9 @@
       "mpn": "（0805 PTC，C 编号待核）",
       "kind": "protect",
       "note": "",
+      "attrs": {
+        "ptc_hold_a": 0.75
+      },
       "pins": {
         "1": {
           "pin": "1",
@@ -955,7 +1052,12 @@
       "part": "TVS SMAJ5.0A",
       "mpn": "（C 编号待核）",
       "kind": "protect",
-      "note": "输入浪涌吸收",
+      "note": "",
+      "attrs": {
+        "tvs_standoff_v": 5.0,
+        "tvs_vbr_min": 6.4,
+        "tvs_vc_5a": 9.2
+      },
       "pins": {
         "K": {
           "pin": "K",
@@ -989,6 +1091,7 @@
       "mpn": "（SS-12D00 拨动，C 编号待核）",
       "kind": "mech",
       "note": "硬断电开关（后壳）",
+      "attrs": {},
       "pins": {
         "1": {
           "pin": "1",
@@ -1017,15 +1120,16 @@
       ]
     },
     {
-      "ref": "S1",
-      "part": "焊桥（方案A：ESP32 驱动 LED）",
-      "mpn": "PCB 焊桥",
-      "kind": "bridge",
-      "note": "方案A 闭合",
+      "ref": "R_MODE",
+      "part": "620kΩ ±1% ((L+R)/2 模式电阻)",
+      "mpn": "0402（C 编号待核）",
+      "kind": "passive",
+      "note": "官方公式 RLARGE=222.2×VDDIO−100=633.3kΩ@3.3V → 620k 实值；BCM25 高时 V_SD=3.3×100/(620+100)=0.458V∈(0.16,0.77)→(L+R)/2 单声道；BCM25 低/悬空→内部 100k 下拉→shutdown；Q1 强制拉低时 Pi 高仅灌 5.3µA",
+      "attrs": {},
       "pins": {
         "1": {
           "pin": "1",
-          "net": "LED_DIN_RAW",
+          "net": "AMP_EN_PI",
           "dir": "PAS",
           "vdom": "3V3",
           "tol5v": false,
@@ -1035,10 +1139,10 @@
         },
         "2": {
           "pin": "2",
-          "net": "BUF_A",
+          "net": "AMP_SD",
           "dir": "PAS",
-          "vdom": "3V3",
-          "tol5v": false,
+          "vdom": "5V",
+          "tol5v": true,
           "pull": null,
           "note": "",
           "flag": null
@@ -1050,16 +1154,17 @@
       ]
     },
     {
-      "ref": "S2",
-      "part": "焊桥（方案B：Pi 驱动 LED）",
-      "mpn": "PCB 焊桥",
-      "kind": "bridge",
-      "note": "方案B 闭合（与 S1 互斥）",
+      "ref": "R_G",
+      "part": "100kΩ 下拉",
+      "mpn": "0402（C 编号待核）",
+      "kind": "passive",
+      "note": "",
+      "attrs": {},
       "pins": {
         "1": {
           "pin": "1",
-          "net": "LED_PI",
-          "dir": "PAS",
+          "net": "AMP_FORCE_GATE",
+          "dir": "IN",
           "vdom": "3V3",
           "tol5v": false,
           "pull": null,
@@ -1068,9 +1173,9 @@
         },
         "2": {
           "pin": "2",
-          "net": "BUF_A",
-          "dir": "PAS",
-          "vdom": "3V3",
+          "net": "GND",
+          "dir": "PWR",
+          "vdom": "0V",
           "tol5v": false,
           "pull": null,
           "note": "",
@@ -1087,7 +1192,8 @@
       "part": "2N7002",
       "mpn": "（C 编号待核）",
       "kind": "discrete",
-      "note": "ESP32 硬件静音路径",
+      "note": "ESP32 硬件静音路径；官方 SD_MODE 内部下拉提供默认 shutdown",
+      "attrs": {},
       "pins": {
         "G": {
           "pin": "G",
@@ -1106,7 +1212,7 @@
           "vdom": "5V",
           "tol5v": false,
           "pull": null,
-          "note": "漏极把 AMP_SD 拉到地=强制静音",
+          "note": "漏极把 AMP_SD 拉到地=强制静音（与 Pi 隔离经 R_MODE）",
           "flag": null
         },
         "S": {
@@ -1127,17 +1233,18 @@
       ]
     },
     {
-      "ref": "R_SD",
-      "part": "100kΩ 下拉",
+      "ref": "R_EN",
+      "part": "10kΩ 上拉",
       "mpn": "0402（C 编号待核）",
       "kind": "passive",
-      "note": "静音默认态",
+      "note": "官方：EN 不得悬空；上拉必须在 3.3V 域（VIH=0.75×VDD1，5V 违规）",
+      "attrs": {},
       "pins": {
         "1": {
           "pin": "1",
-          "net": "AMP_SD",
-          "dir": "IN",
-          "vdom": "5V",
+          "net": "3V3_MCU",
+          "dir": "PWR",
+          "vdom": "3V3",
           "tol5v": false,
           "pull": null,
           "note": "",
@@ -1145,9 +1252,9 @@
         },
         "2": {
           "pin": "2",
-          "net": "GND",
-          "dir": "PWR",
-          "vdom": "0V",
+          "net": "MCU_EN",
+          "dir": "IN",
+          "vdom": "3V3",
           "tol5v": false,
           "pull": null,
           "note": "",
@@ -1160,15 +1267,16 @@
       ]
     },
     {
-      "ref": "R_G",
-      "part": "100kΩ 下拉",
+      "ref": "C_EN",
+      "part": "1µF",
       "mpn": "0402（C 编号待核）",
       "kind": "passive",
-      "note": "",
+      "note": "RC 复位：τ=10ms > 官方 strapping tH=3ms",
+      "attrs": {},
       "pins": {
         "1": {
           "pin": "1",
-          "net": "AMP_FORCE_GATE",
+          "net": "MCU_EN",
           "dir": "IN",
           "vdom": "3V3",
           "tol5v": false,
@@ -1193,11 +1301,12 @@
       ]
     },
     {
-      "ref": "R_EN",
+      "ref": "R_EN2",
       "part": "100kΩ",
       "mpn": "0402（C 编号待核）",
       "kind": "passive",
-      "note": "ESP32 EN 上拉",
+      "note": "buck EN（宽输入器件，5V 域合法）",
+      "attrs": {},
       "pins": {
         "1": {
           "pin": "1",
@@ -1211,10 +1320,10 @@
         },
         "2": {
           "pin": "2",
-          "net": "MCU_EN",
+          "net": "BUCK_EN",
           "dir": "IN",
-          "vdom": "3V3",
-          "tol5v": true,
+          "vdom": "5V",
+          "tol5v": false,
           "pull": null,
           "note": "",
           "flag": null
@@ -1231,6 +1340,7 @@
       "mpn": "0402（C 编号待核）",
       "kind": "passive",
       "note": "",
+      "attrs": {},
       "pins": {
         "1": {
           "pin": "1",
@@ -1264,6 +1374,7 @@
       "mpn": "0402（C 编号待核）",
       "kind": "passive",
       "note": "",
+      "attrs": {},
       "pins": {
         "1": {
           "pin": "1",
@@ -1292,275 +1403,12 @@
       ]
     },
     {
-      "ref": "R_GN",
-      "part": "100kΩ GAIN 脚带",
-      "mpn": "0402（C 编号待核）",
-      "kind": "passive",
-      "note": "增益档位待数据手册核对",
-      "pins": {
-        "1": {
-          "pin": "1",
-          "net": "GAIN_STRAP",
-          "dir": "IN",
-          "vdom": "5V",
-          "tol5v": false,
-          "pull": null,
-          "note": "",
-          "flag": null
-        },
-        "2": {
-          "pin": "2",
-          "net": "GND",
-          "dir": "PWR",
-          "vdom": "0V",
-          "tol5v": false,
-          "pull": null,
-          "note": "",
-          "flag": null
-        }
-      },
-      "pin_list": [
-        "1",
-        "2"
-      ]
-    },
-    {
-      "ref": "R_FBH",
-      "part": "分压上臂（CALC）",
-      "mpn": "0402（C 编号待核）",
-      "kind": "passive",
-      "note": "",
-      "pins": {
-        "1": {
-          "pin": "1",
-          "net": "3V3_MCU",
-          "dir": "PWR",
-          "vdom": "3V3",
-          "tol5v": false,
-          "pull": null,
-          "note": "",
-          "flag": null
-        },
-        "2": {
-          "pin": "2",
-          "net": "BUCK_FB",
-          "dir": "IN",
-          "vdom": "3V3",
-          "tol5v": false,
-          "pull": null,
-          "note": "",
-          "flag": null
-        }
-      },
-      "pin_list": [
-        "1",
-        "2"
-      ]
-    },
-    {
-      "ref": "R_FBL",
-      "part": "分压下臂（CALC）",
-      "mpn": "0402（C 编号待核）",
-      "kind": "passive",
-      "note": "",
-      "pins": {
-        "1": {
-          "pin": "1",
-          "net": "BUCK_FB",
-          "dir": "IN",
-          "vdom": "3V3",
-          "tol5v": false,
-          "pull": null,
-          "note": "",
-          "flag": null
-        },
-        "2": {
-          "pin": "2",
-          "net": "GND",
-          "dir": "PWR",
-          "vdom": "0V",
-          "tol5v": false,
-          "pull": null,
-          "note": "",
-          "flag": null
-        }
-      },
-      "pin_list": [
-        "1",
-        "2"
-      ]
-    },
-    {
-      "ref": "SW1",
-      "part": "轻触开关 K1 说话",
-      "mpn": "TS-1187A（C 编号待核）",
-      "kind": "mech",
-      "note": "",
-      "pins": {
-        "1": {
-          "pin": "1",
-          "net": "BTN_K1",
-          "dir": "OUT",
-          "vdom": "3V3",
-          "tol5v": false,
-          "pull": null,
-          "note": "按下对地导通",
-          "flag": null
-        },
-        "2": {
-          "pin": "2",
-          "net": "GND",
-          "dir": "PWR",
-          "vdom": "0V",
-          "tol5v": false,
-          "pull": null,
-          "note": "",
-          "flag": null
-        }
-      },
-      "pin_list": [
-        "1",
-        "2"
-      ]
-    },
-    {
-      "ref": "SW2",
-      "part": "轻触开关 K2 重复",
-      "mpn": "TS-1187A",
-      "kind": "mech",
-      "note": "",
-      "pins": {
-        "1": {
-          "pin": "1",
-          "net": "BTN_K2",
-          "dir": "OUT",
-          "vdom": "3V3",
-          "tol5v": false,
-          "pull": null,
-          "note": "按下对地导通",
-          "flag": null
-        },
-        "2": {
-          "pin": "2",
-          "net": "GND",
-          "dir": "PWR",
-          "vdom": "0V",
-          "tol5v": false,
-          "pull": null,
-          "note": "",
-          "flag": null
-        }
-      },
-      "pin_list": [
-        "1",
-        "2"
-      ]
-    },
-    {
-      "ref": "SW3",
-      "part": "轻触开关 K3 魔法灯效",
-      "mpn": "TS-1187A",
-      "kind": "mech",
-      "note": "",
-      "pins": {
-        "1": {
-          "pin": "1",
-          "net": "BTN_K3",
-          "dir": "OUT",
-          "vdom": "3V3",
-          "tol5v": false,
-          "pull": null,
-          "note": "按下对地导通",
-          "flag": null
-        },
-        "2": {
-          "pin": "2",
-          "net": "GND",
-          "dir": "PWR",
-          "vdom": "0V",
-          "tol5v": false,
-          "pull": null,
-          "note": "",
-          "flag": null
-        }
-      },
-      "pin_list": [
-        "1",
-        "2"
-      ]
-    },
-    {
-      "ref": "SW4",
-      "part": "轻触开关 K4 晚安",
-      "mpn": "TS-1187A",
-      "kind": "mech",
-      "note": "",
-      "pins": {
-        "1": {
-          "pin": "1",
-          "net": "BTN_K4",
-          "dir": "OUT",
-          "vdom": "3V3",
-          "tol5v": false,
-          "pull": null,
-          "note": "按下对地导通",
-          "flag": null
-        },
-        "2": {
-          "pin": "2",
-          "net": "GND",
-          "dir": "PWR",
-          "vdom": "0V",
-          "tol5v": false,
-          "pull": null,
-          "note": "",
-          "flag": null
-        }
-      },
-      "pin_list": [
-        "1",
-        "2"
-      ]
-    },
-    {
-      "ref": "SW6",
-      "part": "BOOT 轻触",
-      "mpn": "侧键 2 脚",
-      "kind": "mech",
-      "note": "",
-      "pins": {
-        "1": {
-          "pin": "1",
-          "net": "BOOT_BTN",
-          "dir": "OUT",
-          "vdom": "3V3",
-          "tol5v": false,
-          "pull": null,
-          "note": "按下对地导通",
-          "flag": null
-        },
-        "2": {
-          "pin": "2",
-          "net": "GND",
-          "dir": "PWR",
-          "vdom": "0V",
-          "tol5v": false,
-          "pull": null,
-          "note": "",
-          "flag": null
-        }
-      },
-      "pin_list": [
-        "1",
-        "2"
-      ]
-    },
-    {
       "ref": "J1",
       "part": "USB-C 16pin 母座",
       "mpn": "（板载 5A，C 编号待核）",
       "kind": "conn",
       "note": "仅 5V 供电，不接数据（隐私边界）",
+      "attrs": {},
       "pins": {
         "VBUS": {
           "pin": "VBUS",
@@ -1633,11 +1481,324 @@
       ]
     },
     {
+      "ref": "R_FBH",
+      "part": "分压上臂（CALC）",
+      "mpn": "0402（C 编号待核）",
+      "kind": "passive",
+      "note": "",
+      "attrs": {},
+      "pins": {
+        "1": {
+          "pin": "1",
+          "net": "3V3_MCU",
+          "dir": "PWR",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "2": {
+          "pin": "2",
+          "net": "BUCK_FB",
+          "dir": "IN",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        }
+      },
+      "pin_list": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "ref": "R_FBL",
+      "part": "分压下臂（CALC）",
+      "mpn": "0402（C 编号待核）",
+      "kind": "passive",
+      "note": "",
+      "attrs": {},
+      "pins": {
+        "1": {
+          "pin": "1",
+          "net": "BUCK_FB",
+          "dir": "IN",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "2": {
+          "pin": "2",
+          "net": "GND",
+          "dir": "PWR",
+          "vdom": "0V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        }
+      },
+      "pin_list": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "ref": "S1",
+      "part": "焊桥（方案A：ESP32 驱动 LED）",
+      "mpn": "PCB 焊桥",
+      "kind": "bridge",
+      "note": "方案A 闭合",
+      "attrs": {
+        "bridge_group": "LED_SRC",
+        "closed_in": "A"
+      },
+      "pins": {
+        "1": {
+          "pin": "1",
+          "net": "LED_DIN_RAW",
+          "dir": "PAS",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "2": {
+          "pin": "2",
+          "net": "BUF_A",
+          "dir": "PAS",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        }
+      },
+      "pin_list": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "ref": "S2",
+      "part": "焊桥（方案B：Pi 驱动 LED）",
+      "mpn": "PCB 焊桥",
+      "kind": "bridge",
+      "note": "方案B 闭合（与 S1 互斥）",
+      "attrs": {
+        "bridge_group": "LED_SRC",
+        "closed_in": "B"
+      },
+      "pins": {
+        "1": {
+          "pin": "1",
+          "net": "LED_PI",
+          "dir": "PAS",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "2": {
+          "pin": "2",
+          "net": "BUF_A",
+          "dir": "PAS",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        }
+      },
+      "pin_list": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "ref": "SW1",
+      "part": "轻触开关 K1 说话",
+      "mpn": "TS-1187A（C 编号待核）",
+      "kind": "mech",
+      "note": "",
+      "attrs": {},
+      "pins": {
+        "1": {
+          "pin": "1",
+          "net": "BTN_K1",
+          "dir": "OUT",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "按下对地导通",
+          "flag": null
+        },
+        "2": {
+          "pin": "2",
+          "net": "GND",
+          "dir": "PWR",
+          "vdom": "0V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        }
+      },
+      "pin_list": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "ref": "SW2",
+      "part": "轻触开关 K2 重复",
+      "mpn": "TS-1187A",
+      "kind": "mech",
+      "note": "",
+      "attrs": {},
+      "pins": {
+        "1": {
+          "pin": "1",
+          "net": "BTN_K2",
+          "dir": "OUT",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "按下对地导通",
+          "flag": null
+        },
+        "2": {
+          "pin": "2",
+          "net": "GND",
+          "dir": "PWR",
+          "vdom": "0V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        }
+      },
+      "pin_list": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "ref": "SW3",
+      "part": "轻触开关 K3 魔法灯效",
+      "mpn": "TS-1187A",
+      "kind": "mech",
+      "note": "",
+      "attrs": {},
+      "pins": {
+        "1": {
+          "pin": "1",
+          "net": "BTN_K3",
+          "dir": "OUT",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "按下对地导通",
+          "flag": null
+        },
+        "2": {
+          "pin": "2",
+          "net": "GND",
+          "dir": "PWR",
+          "vdom": "0V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        }
+      },
+      "pin_list": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "ref": "SW4",
+      "part": "轻触开关 K4 晚安",
+      "mpn": "TS-1187A",
+      "kind": "mech",
+      "note": "",
+      "attrs": {},
+      "pins": {
+        "1": {
+          "pin": "1",
+          "net": "BTN_K4",
+          "dir": "OUT",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "按下对地导通",
+          "flag": null
+        },
+        "2": {
+          "pin": "2",
+          "net": "GND",
+          "dir": "PWR",
+          "vdom": "0V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        }
+      },
+      "pin_list": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "ref": "SW6",
+      "part": "BOOT 轻触",
+      "mpn": "侧键 2 脚",
+      "kind": "mech",
+      "note": "",
+      "attrs": {},
+      "pins": {
+        "1": {
+          "pin": "1",
+          "net": "BOOT_BTN",
+          "dir": "OUT",
+          "vdom": "3V3",
+          "tol5v": false,
+          "pull": null,
+          "note": "按下对地导通",
+          "flag": null
+        },
+        "2": {
+          "pin": "2",
+          "net": "GND",
+          "dir": "PWR",
+          "vdom": "0V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        }
+      },
+      "pin_list": [
+        "1",
+        "2"
+      ]
+    },
+    {
       "ref": "J4",
       "part": "PH2.0-2P 扬声器座",
       "mpn": "PH2.0 卧贴",
       "kind": "conn",
       "note": "",
+      "attrs": {},
       "pins": {
         "1": {
           "pin": "1",
@@ -1667,10 +1828,11 @@
     },
     {
       "ref": "J5",
-      "part": "PH2.0-3P 左眼模组",
+      "part": "PH2.0-4P 左眼模组（链级1）",
       "mpn": "PH2.0 卧贴",
       "kind": "conn",
-      "note": "",
+      "note": "模组 LED0–8；DOUT 返回板内进链级2",
+      "attrs": {},
       "pins": {
         "1": {
           "pin": "1",
@@ -1684,9 +1846,9 @@
         },
         "2": {
           "pin": "2",
-          "net": "LED_EYE_DIN",
-          "dir": "IN",
-          "vdom": "5V",
+          "net": "GND",
+          "dir": "PWR",
+          "vdom": "0V",
           "tol5v": false,
           "pull": null,
           "note": "",
@@ -1694,9 +1856,19 @@
         },
         "3": {
           "pin": "3",
-          "net": "GND",
-          "dir": "PWR",
-          "vdom": "0V",
+          "net": "LED_DIN",
+          "dir": "IN",
+          "vdom": "5V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "4": {
+          "pin": "4",
+          "net": "LED_CHAIN1",
+          "dir": "OUT",
+          "vdom": "5V",
           "tol5v": false,
           "pull": null,
           "note": "",
@@ -1706,15 +1878,17 @@
       "pin_list": [
         "1",
         "2",
-        "3"
+        "3",
+        "4"
       ]
     },
     {
       "ref": "J6",
-      "part": "PH2.0-3P 右眼模组",
+      "part": "PH2.0-4P 右眼模组（链级2）",
       "mpn": "PH2.0 卧贴",
       "kind": "conn",
-      "note": "",
+      "note": "模组 LED9–17",
+      "attrs": {},
       "pins": {
         "1": {
           "pin": "1",
@@ -1728,9 +1902,9 @@
         },
         "2": {
           "pin": "2",
-          "net": "LED_EYE_DIN",
-          "dir": "IN",
-          "vdom": "5V",
+          "net": "GND",
+          "dir": "PWR",
+          "vdom": "0V",
           "tol5v": false,
           "pull": null,
           "note": "",
@@ -1738,9 +1912,19 @@
         },
         "3": {
           "pin": "3",
-          "net": "GND",
-          "dir": "PWR",
-          "vdom": "0V",
+          "net": "LED_CHAIN1",
+          "dir": "IN",
+          "vdom": "5V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "4": {
+          "pin": "4",
+          "net": "LED_CHAIN2",
+          "dir": "OUT",
+          "vdom": "5V",
           "tol5v": false,
           "pull": null,
           "note": "",
@@ -1750,15 +1934,17 @@
       "pin_list": [
         "1",
         "2",
-        "3"
+        "3",
+        "4"
       ]
     },
     {
       "ref": "J7",
-      "part": "PH2.0-3P 星星灯",
+      "part": "PH2.0-4P 星星灯（链级3）",
       "mpn": "PH2.0 卧贴",
       "kind": "conn",
-      "note": "",
+      "note": "模组 LED18–21",
+      "attrs": {},
       "pins": {
         "1": {
           "pin": "1",
@@ -1772,9 +1958,9 @@
         },
         "2": {
           "pin": "2",
-          "net": "LED_EYE_DIN",
-          "dir": "IN",
-          "vdom": "5V",
+          "net": "GND",
+          "dir": "PWR",
+          "vdom": "0V",
           "tol5v": false,
           "pull": null,
           "note": "",
@@ -1782,9 +1968,19 @@
         },
         "3": {
           "pin": "3",
-          "net": "GND",
-          "dir": "PWR",
-          "vdom": "0V",
+          "net": "LED_CHAIN2",
+          "dir": "IN",
+          "vdom": "5V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "4": {
+          "pin": "4",
+          "net": "LED_CHAIN3",
+          "dir": "OUT",
+          "vdom": "5V",
           "tol5v": false,
           "pull": null,
           "note": "",
@@ -1794,15 +1990,17 @@
       "pin_list": [
         "1",
         "2",
-        "3"
+        "3",
+        "4"
       ]
     },
     {
       "ref": "J8",
-      "part": "PH2.0-3P 树灯扩展",
+      "part": "PH2.0-4P 树灯扩展（链级4，V1 不装配）",
       "mpn": "PH2.0 卧贴",
       "kind": "conn",
-      "note": "V1 不装配",
+      "note": "LED22–31（上限 10 颗）；末级 DOUT 悬空盲盖",
+      "attrs": {},
       "pins": {
         "1": {
           "pin": "1",
@@ -1816,9 +2014,9 @@
         },
         "2": {
           "pin": "2",
-          "net": "LED_EYE_DIN",
-          "dir": "IN",
-          "vdom": "5V",
+          "net": "GND",
+          "dir": "PWR",
+          "vdom": "0V",
           "tol5v": false,
           "pull": null,
           "note": "",
@@ -1826,9 +2024,19 @@
         },
         "3": {
           "pin": "3",
-          "net": "GND",
-          "dir": "PWR",
-          "vdom": "0V",
+          "net": "LED_CHAIN3",
+          "dir": "IN",
+          "vdom": "5V",
+          "tol5v": false,
+          "pull": null,
+          "note": "",
+          "flag": null
+        },
+        "4": {
+          "pin": "4",
+          "net": "LED_CHAIN_END",
+          "dir": "OUT",
+          "vdom": "5V",
           "tol5v": false,
           "pull": null,
           "note": "",
@@ -1838,7 +2046,8 @@
       "pin_list": [
         "1",
         "2",
-        "3"
+        "3",
+        "4"
       ]
     },
     {
@@ -1847,6 +2056,7 @@
       "mpn": "SH1.0 卧贴",
       "kind": "conn",
       "note": "",
+      "attrs": {},
       "pins": {
         "1": {
           "pin": "1",
@@ -1902,6 +2112,7 @@
       "mpn": "PH2.0 卧贴",
       "kind": "conn",
       "note": "卫星板上的 4 键与此并联（SW1-4 在主板上，二者取其一装配——装配轮决定）",
+      "attrs": {},
       "pins": {
         "1": {
           "pin": "1",
@@ -1995,6 +2206,15 @@
         "flag": null
       },
       {
+        "ref": "R_EN",
+        "pin": "1",
+        "dir": "PWR",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
         "ref": "R_FBH",
         "pin": "1",
         "dir": "PWR",
@@ -2016,6 +2236,15 @@
         "ref": "U5",
         "pin": "VDD",
         "dir": "PWR",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "U6",
+        "pin": "DIR",
+        "dir": "IN",
         "vdom": "3V3",
         "tol5v": false,
         "pull": null,
@@ -2178,7 +2407,7 @@
         "flag": null
       },
       {
-        "ref": "R_EN",
+        "ref": "R_EN2",
         "pin": "1",
         "dir": "PWR",
         "vdom": "5V",
@@ -2224,18 +2453,29 @@
       },
       {
         "ref": "U4",
-        "pin": "EN",
-        "dir": "IN",
+        "pin": "VIN",
+        "dir": "PWR",
         "vdom": "5V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      }
+    ],
+    "AMP_EN_PI": [
+      {
+        "ref": "R_MODE",
+        "pin": "1",
+        "dir": "PAS",
+        "vdom": "3V3",
         "tol5v": false,
         "pull": null,
         "flag": null
       },
       {
-        "ref": "U4",
-        "pin": "VIN",
-        "dir": "PWR",
-        "vdom": "5V",
+        "ref": "U1",
+        "pin": "BCM25",
+        "dir": "OUT",
+        "vdom": "3V3",
         "tol5v": false,
         "pull": null,
         "flag": null
@@ -2281,20 +2521,11 @@
         "flag": null
       },
       {
-        "ref": "R_SD",
-        "pin": "1",
-        "dir": "IN",
+        "ref": "R_MODE",
+        "pin": "2",
+        "dir": "PAS",
         "vdom": "5V",
-        "tol5v": false,
-        "pull": null,
-        "flag": null
-      },
-      {
-        "ref": "U1",
-        "pin": "BCM25",
-        "dir": "OUT",
-        "vdom": "3V3",
-        "tol5v": false,
+        "tol5v": true,
         "pull": null,
         "flag": null
       },
@@ -2491,6 +2722,26 @@
         "flag": null
       }
     ],
+    "BUCK_EN": [
+      {
+        "ref": "R_EN2",
+        "pin": "2",
+        "dir": "IN",
+        "vdom": "5V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "U4",
+        "pin": "EN",
+        "dir": "IN",
+        "vdom": "5V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      }
+    ],
     "BUCK_FB": [
       {
         "ref": "R_FBH",
@@ -2524,7 +2775,7 @@
       {
         "ref": "L1",
         "pin": "1",
-        "dir": "PWR",
+        "dir": "PAS",
         "vdom": "5V",
         "tol5v": false,
         "pull": null,
@@ -2611,15 +2862,6 @@
     ],
     "GAIN_STRAP": [
       {
-        "ref": "R_GN",
-        "pin": "1",
-        "dir": "IN",
-        "vdom": "5V",
-        "tol5v": false,
-        "pull": null,
-        "flag": null
-      },
-      {
         "ref": "U2",
         "pin": "GAIN",
         "dir": "IN",
@@ -2627,9 +2869,27 @@
         "tol5v": false,
         "pull": null,
         "flag": null
+      },
+      {
+        "ref": "U7",
+        "pin": "1",
+        "dir": "PAS",
+        "vdom": "5V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
       }
     ],
     "GND": [
+      {
+        "ref": "C_EN",
+        "pin": "2",
+        "dir": "PWR",
+        "vdom": "0V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
       {
         "ref": "D1",
         "pin": "A",
@@ -2659,7 +2919,7 @@
       },
       {
         "ref": "J5",
-        "pin": "3",
+        "pin": "2",
         "dir": "PWR",
         "vdom": "0V",
         "tol5v": false,
@@ -2668,7 +2928,7 @@
       },
       {
         "ref": "J6",
-        "pin": "3",
+        "pin": "2",
         "dir": "PWR",
         "vdom": "0V",
         "tol5v": false,
@@ -2677,7 +2937,7 @@
       },
       {
         "ref": "J7",
-        "pin": "3",
+        "pin": "2",
         "dir": "PWR",
         "vdom": "0V",
         "tol5v": false,
@@ -2686,7 +2946,7 @@
       },
       {
         "ref": "J8",
-        "pin": "3",
+        "pin": "2",
         "dir": "PWR",
         "vdom": "0V",
         "tol5v": false,
@@ -2740,24 +3000,6 @@
       },
       {
         "ref": "R_G",
-        "pin": "2",
-        "dir": "PWR",
-        "vdom": "0V",
-        "tol5v": false,
-        "pull": null,
-        "flag": null
-      },
-      {
-        "ref": "R_GN",
-        "pin": "2",
-        "dir": "PWR",
-        "vdom": "0V",
-        "tol5v": false,
-        "pull": null,
-        "flag": null
-      },
-      {
-        "ref": "R_SD",
         "pin": "2",
         "dir": "PWR",
         "vdom": "0V",
@@ -2866,16 +3108,16 @@
       },
       {
         "ref": "U6",
-        "pin": "DIR",
-        "dir": "IN",
+        "pin": "GND",
+        "dir": "PWR",
         "vdom": "0V",
         "tol5v": false,
         "pull": null,
         "flag": null
       },
       {
-        "ref": "U6",
-        "pin": "GND",
+        "ref": "U7",
+        "pin": "2",
         "dir": "PWR",
         "vdom": "0V",
         "tol5v": false,
@@ -3080,6 +3322,97 @@
         "flag": "dnp"
       }
     ],
+    "LED_CHAIN1": [
+      {
+        "ref": "J5",
+        "pin": "4",
+        "dir": "OUT",
+        "vdom": "5V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "J6",
+        "pin": "3",
+        "dir": "IN",
+        "vdom": "5V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      }
+    ],
+    "LED_CHAIN2": [
+      {
+        "ref": "J6",
+        "pin": "4",
+        "dir": "OUT",
+        "vdom": "5V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "J7",
+        "pin": "3",
+        "dir": "IN",
+        "vdom": "5V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      }
+    ],
+    "LED_CHAIN3": [
+      {
+        "ref": "J7",
+        "pin": "4",
+        "dir": "OUT",
+        "vdom": "5V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "J8",
+        "pin": "3",
+        "dir": "IN",
+        "vdom": "5V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      }
+    ],
+    "LED_CHAIN_END": [
+      {
+        "ref": "J8",
+        "pin": "4",
+        "dir": "OUT",
+        "vdom": "5V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      }
+    ],
+    "LED_DIN": [
+      {
+        "ref": "J5",
+        "pin": "3",
+        "dir": "IN",
+        "vdom": "5V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
+        "ref": "U6",
+        "pin": "B",
+        "dir": "OUT",
+        "vdom": "5V",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      }
+    ],
     "LED_DIN_RAW": [
       {
         "ref": "S1",
@@ -3095,53 +3428,6 @@
         "pin": "IO4",
         "dir": "OUT",
         "vdom": "3V3",
-        "tol5v": false,
-        "pull": null,
-        "flag": null
-      }
-    ],
-    "LED_EYE_DIN": [
-      {
-        "ref": "J5",
-        "pin": "2",
-        "dir": "IN",
-        "vdom": "5V",
-        "tol5v": false,
-        "pull": null,
-        "flag": null
-      },
-      {
-        "ref": "J6",
-        "pin": "2",
-        "dir": "IN",
-        "vdom": "5V",
-        "tol5v": false,
-        "pull": null,
-        "flag": null
-      },
-      {
-        "ref": "J7",
-        "pin": "2",
-        "dir": "IN",
-        "vdom": "5V",
-        "tol5v": false,
-        "pull": null,
-        "flag": null
-      },
-      {
-        "ref": "J8",
-        "pin": "2",
-        "dir": "IN",
-        "vdom": "5V",
-        "tol5v": false,
-        "pull": null,
-        "flag": null
-      },
-      {
-        "ref": "U6",
-        "pin": "B",
-        "dir": "OUT",
-        "vdom": "5V",
         "tol5v": false,
         "pull": null,
         "flag": null
@@ -3169,11 +3455,20 @@
     ],
     "MCU_EN": [
       {
+        "ref": "C_EN",
+        "pin": "1",
+        "dir": "IN",
+        "vdom": "3V3",
+        "tol5v": false,
+        "pull": null,
+        "flag": null
+      },
+      {
         "ref": "R_EN",
         "pin": "2",
         "dir": "IN",
         "vdom": "3V3",
-        "tol5v": true,
+        "tol5v": false,
         "pull": null,
         "flag": null
       },
@@ -3267,17 +3562,6 @@
         "tol5v": false,
         "pull": null,
         "flag": null
-      }
-    ],
-    "STAR_ALT": [
-      {
-        "ref": "U3",
-        "pin": "IO5",
-        "dir": "OUT",
-        "vdom": "3V3",
-        "tol5v": false,
-        "pull": null,
-        "flag": "dnp"
       }
     ],
     "UART_ESP_TX": [
@@ -3399,15 +3683,21 @@
       "vdom": "5V_AUDIO",
       "note": "Class-D 输出，差分对"
     },
-    "LED_EYE_DIN": {
-      "note": "菊花链一级驱动（J5/J6/J7/J8 的 DIN 全部并联由 U6.B 驱动——多模组并联不是电气冲突，是同一信号广播；SK6812 链式布线在模组间飞线完成）"
+    "AMP_EN_PI": {
+      "kind": "logic",
+      "note": "BCM25 经 R_MODE 隔离进 AMP_SD（驱动隔离规则的被隔离侧）"
+    },
+    "AMP_SD": {
+      "kind": "analog",
+      "note": "MAX98357A SD_MODE：内部 100k 下拉；Q1 拉低=强制静音；R_MODE 隔离 Pi 驱动——任何推挽 OUT 不得直连本网（P0-2 规则）"
+    },
+    "GAIN_STRAP": {
+      "kind": "analog",
+      "note": "经 U7 接地=+12dB（官方）"
     },
     "BUF_A": {
       "kind": "analog",
-      "note": "S1/S2 焊桥二选一闭合，物理上互斥，ERC 豁免双驱动"
-    },
-    "GAIN_STRAP": {
-      "kind": "analog"
+      "note": "S1/S2 焊桥互斥"
     },
     "BUCK_FB": {
       "kind": "analog"
@@ -3419,11 +3709,12 @@
       "note": "开关节点"
     },
     "MCU_EN": {
-      "note": "RC 复位节点"
+      "kind": "analog",
+      "note": "RC 复位节点 10ms"
     },
-    "STAR_ALT": {
-      "kind": "nc",
-      "note": "备用通道 DNP"
+    "BUCK_EN": {
+      "kind": "logic",
+      "note": "buck EN 5V 域合法（宽输入）"
     },
     "USB_DP_NC": {
       "kind": "nc"
@@ -3436,6 +3727,23 @@
     },
     "SPARE_GPIO": {
       "kind": "nc"
+    },
+    "P_LED_BUF_EN": {
+      "kind": "nc",
+      "note": "预留，V1 不用"
+    },
+    "I2C_SDA": {
+      "kind": "nc"
+    },
+    "I2C_SCL": {
+      "kind": "nc"
+    },
+    "STAR_ALT": {
+      "kind": "nc"
+    },
+    "LED_CHAIN_END": {
+      "kind": "nc",
+      "note": "末级 DOUT 悬空（树灯未装时盲盖）"
     },
     "JTAG_TP1": {
       "kind": "tp"
@@ -3455,15 +3763,25 @@
     "JTAG_TP6": {
       "kind": "tp"
     },
-    "P_LED_BUF_EN": {
-      "kind": "nc",
-      "note": "预留，V1 不用"
+    "LED_DIN": {
+      "kind": "led_chain",
+      "stage": 0,
+      "note": "U6.B → 左眼 DIN"
     },
-    "I2C_SDA": {
-      "kind": "nc"
+    "LED_CHAIN1": {
+      "kind": "led_chain",
+      "stage": 1,
+      "note": "左眼 DOUT → 右眼 DIN"
     },
-    "I2C_SCL": {
-      "kind": "nc"
+    "LED_CHAIN2": {
+      "kind": "led_chain",
+      "stage": 2,
+      "note": "右眼 DOUT → 星灯 DIN"
+    },
+    "LED_CHAIN3": {
+      "kind": "led_chain",
+      "stage": 3,
+      "note": "星灯 DOUT → 树灯 DIN"
     }
   },
   "erc": {

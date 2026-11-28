@@ -1,0 +1,36 @@
+{
+  "schema": "workbench-register/1.0",
+  "product": "christmas-buddy-v1",
+  "date": "2026-11-28",
+  "note": "DIY Lab 硬件工作台登记（最小 MVP：先跑通再抽象）。合并顺序见 reports/03-workbench-integration.md——PR #28 的 catalog.json 在其合并后追加本条目，本文件是其内容来源，路径不冲突。",
+  "catalog_entry_plan": {
+    "slug": "christmas-buddy",
+    "title": "Christmas Buddy 圣诞精灵机器人",
+    "g_stage": "G2-G3（预研完成；开孔几何检查通过；EDA 真实工程待路线选择）",
+    "owner": "mayf3",
+    "version_tuple": {"pcb": null, "cad": null, "fw": null, "bom": null, "state": "preresearch"},
+    "manifest_hash_source": "source-data/christmas-buddy/m5_manifest.json"
+  },
+  "checks": [
+    {"name": "power_budget", "cmd": "python3 source-data/christmas-buddy/power/power_budget.py", "gates": 6},
+    {"name": "interfaces", "cmd": "python3 source-data/christmas-buddy/interfaces/interfaces.py"},
+    {"name": "architecture", "cmd": "python3 source-data/christmas-buddy/architecture/architecture.py"},
+    {"name": "netlist_erc", "cmd": "python3 source-data/christmas-buddy/eda/netlist.py", "rule": "0 error 必须保持"},
+    {"name": "netlist_negative_tests", "cmd": "python3 source-data/christmas-buddy/eda/netlist_tests.py", "cases": 9},
+    {"name": "mech_assembly", "cmd": "python3 source-data/christmas-buddy/mech/build_mech.py", "gates": 26, "note": "含导出 STEP 几何复核 + UNKNOWN 注册表"},
+    {"name": "mech_negative_tests", "cmd": "python3 source-data/christmas-buddy/mech/mech_tests.py", "cases": 5},
+    {"name": "visual_specs", "cmd": "python3 source-data/christmas-buddy/visual/visual_specs.py", "gates": 12},
+    {"name": "print_coupons", "cmd": "python3 source-data/christmas-buddy/mech/gen_print_coupons.py", "note": "生成试打印测件；测量由人完成"},
+    {"name": "task_book", "cmd": "python3 scripts/gen_eng_tasks.py christmas-buddy v1", "gates": "需求悬空=0 / 门禁负责人合规 / 依赖一致"},
+    {"name": "lean_proof", "cmd": "python3 source-data/christmas-buddy/proof/verify_proof.py", "note": "公理白名单审计，含 ReleaseCurrent.lean 生成文件"},
+    {"name": "m5_manifest", "cmd": "python3 source-data/christmas-buddy/m5_manifest.py check", "note": "漂移即 FAIL=新候选；NOT_YET 不带哈希"}
+  ],
+  "human_gates": [
+    {"gate": "架构 A/B 决策", "task": "A05", "state": "等待用户"},
+    {"gate": "视觉盲评", "task": "A08", "state": "等待用户（答案在 blind-key.md，未公开）"},
+    {"gate": "EDA 工程路线（云端 vs 本地 .eprj3）", "task": "T11 后续", "state": "等待用户"},
+    {"gate": "报价与下单", "task": "A15/A16", "state": "锁定：未经批准不产生订单"},
+    {"gate": "首次通电", "task": "A17", "state": "锁定：人执行"},
+    {"gate": "试打印与公差实测", "task": "A13", "state": "测件已备（print-coupon/），待人打印测量"}
+  ]
+}

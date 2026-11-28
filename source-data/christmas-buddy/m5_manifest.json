@@ -1,86 +1,235 @@
 {
-  "schema": "m5-manifest/1.0",
+  "schema": "m5-release-manifest/2.0",
   "product": "christmas-buddy-v1",
   "date": "2026-11-28",
-  "version_tuple": {
-    "pcb": null,
-    "cad": null,
-    "fw": null,
-    "bom": null,
-    "state": "preresearch（全部未冻结，符合 Version.lean 的 preresearch 定义）"
+  "generated_at": "2026-11-28T03:31:12Z",
+  "release_candidate": {
+    "product": "christmas-buddy-v1",
+    "tuple": {
+      "pcb": null,
+      "cad": null,
+      "fw": null,
+      "bom": null
+    },
+    "tuple_state": "preresearch（四段未冻结——冻结须 GATE 门禁人工批准）",
+    "source_commit": "56e6c1c6e73c006e93c65f6f236ee0f2ef53c00f",
+    "manifest_hash": "a799916e94c502d833feba56b3fdeaaaab747ed842ebeba8954a6201d1231400",
+    "approval_state": "UNAPPROVED",
+    "rule": "任一工件变化 → manifest_hash 变化 → 产生新候选；旧 approval_state 不继承"
   },
-  "git_commit": "370786b8947b83b3b5d37e9b1ea893b391ff90c8",
-  "note": "OB-1：pcb 槽冻结前不存在 Gerber/坐标/BOM 制造文件——本清单只绑定设计工件。",
   "artifacts": [
     {
-      "path": "power/budget.json",
-      "sha256": "3771e9b4a38451f31be5d443c1d92c0808b1df22d5ae5947e6c520bba8831b1f",
-      "bytes": 9457
-    },
-    {
-      "path": "interfaces/interfaces.json",
-      "sha256": "6537231f83aa008be89833cd8f11fd1e36437b9f9c46b1dc78ded2040a35947f",
-      "bytes": 18821
-    },
-    {
       "path": "architecture/architecture.json",
+      "logical_name": "架构比较",
       "sha256": "7cc836efc06bd5ee496f2be2115380c9c0bce9d93f7a7ff032131e7460502938",
-      "bytes": 5514
-    },
-    {
-      "path": "mech/mech_params.json",
-      "sha256": "23ecafab65d27d572d5938b3226447cb49f47ce7340a9d2552138bab2cbadafb",
-      "bytes": 3941
-    },
-    {
-      "path": "mech/assembly_check.json",
-      "sha256": "4de6f1f8cfb1ffc0cd2a2812752a06d434a09b23a1a1f5a16b04ec281a4cdf4c",
-      "bytes": 3491
-    },
-    {
-      "path": "eda/netlist.json",
-      "sha256": "61b819bac9f2e9457f8d6fb55c5f71ca147783e64d10eacacb841d75c76e5e7b",
-      "bytes": 70168
-    },
-    {
-      "path": "bom.csv",
-      "sha256": "622642d452eddd3a193b1e54a3009bdcf040dafddea2fe7c401aea6c52711cb3",
-      "bytes": 3933
+      "bytes": 5514,
+      "version_slot": "design",
+      "tool": "architecture.py",
+      "tool_version": "architecture.py",
+      "status": "BOUND"
     },
     {
       "path": "eda/environment-status.json",
+      "logical_name": "EDA 环境证据",
       "sha256": "b8b8334fc8106428469f81c39494c18f7cfcee3647a81d949d8cdac4aa75c51f",
-      "bytes": 3327
+      "bytes": 3327,
+      "version_slot": "pcb",
+      "tool": "人工登记",
+      "tool_version": "人工登记",
+      "status": "BOUND"
     },
     {
-      "path": "visual/visual-specs.json",
-      "sha256": "bad9570387a64611128503198c946927a0397b0166a8ff9b0da2f3db0e6dea62",
-      "bytes": 4141
+      "path": "eda/erc_report.md",
+      "logical_name": "ERC 报告",
+      "sha256": "9637dbb536281a8162ec7e66504214c6ca6497db3f058b361cae2711b8f4d0e9",
+      "bytes": 1198,
+      "version_slot": "pcb",
+      "tool": "netlist.py",
+      "tool_version": "netlist.py",
+      "status": "BOUND"
     },
     {
-      "path": "tasks/christmas-buddy-v1.tasks.json",
-      "sha256": "9477a82f8fa52c068f4a8f67efee98ce34494f68413e4ec19441801cb0a37365",
-      "bytes": 14138
+      "path": "eda/netlist.json",
+      "logical_name": "网表",
+      "sha256": "e54543ef4a51cbcb1f7f06a7780ce006fa0d094e60dc641f83815a65aa20d894",
+      "bytes": 78234,
+      "version_slot": "pcb",
+      "tool": "netlist.py",
+      "tool_version": "netlist.py",
+      "status": "BOUND"
     },
     {
-      "path": "proof/src/ChristmasBuddy/StateMachine.lean",
-      "sha256": "d464afaf53799dd56a7475404a1e0c32f90be288aea567ab274898aeebe9af90",
-      "bytes": 5300
+      "path": "interfaces/interfaces.json",
+      "logical_name": "接口定义",
+      "sha256": "90fe2540312c5e474da9dce7f77c11bbf39a50463bdca0b26259c1cbef58696f",
+      "bytes": 19604,
+      "version_slot": "design",
+      "tool": "interfaces.py",
+      "tool_version": "interfaces.py",
+      "status": "BOUND"
+    },
+    {
+      "path": "mech/assembly_check.json",
+      "logical_name": "装配检查",
+      "sha256": "0c59d34bd6ce477af61d7c0d2e704f43ef85206fe42f77827da684d46e4a5636",
+      "bytes": 6691,
+      "version_slot": "cad",
+      "tool": "build_mech.py",
+      "tool_version": "build_mech.py",
+      "status": "BOUND"
+    },
+    {
+      "path": "mech/mech_params.json",
+      "logical_name": "机械参数",
+      "sha256": "23ecafab65d27d572d5938b3226447cb49f47ce7340a9d2552138bab2cbadafb",
+      "bytes": 3941,
+      "version_slot": "cad",
+      "tool": "params.py",
+      "tool_version": "params.py",
+      "status": "BOUND"
+    },
+    {
+      "path": "power/budget.json",
+      "logical_name": "电源预算",
+      "sha256": "3771e9b4a38451f31be5d443c1d92c0808b1df22d5ae5947e6c520bba8831b1f",
+      "bytes": 9457,
+      "version_slot": "design",
+      "tool": "power_budget.py",
+      "tool_version": "power_budget.py",
+      "status": "BOUND"
     },
     {
       "path": "proof/src/ChristmasBuddy/Power.lean",
+      "logical_name": "M1 电源证明",
       "sha256": "c8a30665e2afe1c6de4501f1b04c2f4b44d4463e80f7281931a73112f0e2b575",
-      "bytes": 2955
+      "bytes": 2955,
+      "version_slot": "fw",
+      "tool": "lean 4.19.0",
+      "tool_version": "leanprover/lean4:v4.19.0",
+      "status": "BOUND"
+    },
+    {
+      "path": "proof/src/ChristmasBuddy/StateMachine.lean",
+      "logical_name": "M2 状态机证明",
+      "sha256": "d464afaf53799dd56a7475404a1e0c32f90be288aea567ab274898aeebe9af90",
+      "bytes": 5300,
+      "version_slot": "fw",
+      "tool": "lean 4.19.0",
+      "tool_version": "leanprover/lean4:v4.19.0",
+      "status": "BOUND"
     },
     {
       "path": "proof/src/ChristmasBuddy/Version.lean",
-      "sha256": "bc2a12768f6801712dc1a0560badca370ce9f0c7a7492a1597550e312e987aa0",
-      "bytes": 3398
+      "logical_name": "M5 发布合同证明",
+      "sha256": "7b9134512603472f8201b4cbdaea2eddd1e645c59cac2f7dc71cfc446eab91ca",
+      "bytes": 5247,
+      "version_slot": "fw",
+      "tool": "lean 4.19.0",
+      "tool_version": "leanprover/lean4:v4.19.0",
+      "status": "BOUND"
     },
     {
       "path": "proof/verification.json",
-      "sha256": "bd44df13afb6244926e46dbf292ac20b8b1aa5ea84a2d725b5f2f0d1925c4e34",
-      "bytes": 1835
+      "logical_name": "Lean 验证回执",
+      "sha256": "63dffd1c22c67bfb9a4e904ae00dc114f2ec102366457e955266f3d6f3ff9fdc",
+      "bytes": 2091,
+      "version_slot": "fw",
+      "tool": "verify_proof.py",
+      "tool_version": "verify_proof.py",
+      "status": "BOUND"
+    },
+    {
+      "path": "tasks/christmas-buddy-v1.tasks.json",
+      "logical_name": "工程任务书",
+      "sha256": "9477a82f8fa52c068f4a8f67efee98ce34494f68413e4ec19441801cb0a37365",
+      "bytes": 14138,
+      "version_slot": "design",
+      "tool": "gen_eng_tasks.py",
+      "tool_version": "gen_eng_tasks.py",
+      "status": "BOUND"
+    },
+    {
+      "path": "visual/visual-specs.json",
+      "logical_name": "视觉约束",
+      "sha256": "bad9570387a64611128503198c946927a0397b0166a8ff9b0da2f3db0e6dea62",
+      "bytes": 4141,
+      "version_slot": "design",
+      "tool": "visual_specs.py",
+      "tool_version": "visual_specs.py",
+      "status": "BOUND"
     }
-  ]
+  ],
+  "not_yet": [
+    {
+      "path": "eda/project/PCB1_1.epcb2",
+      "logical_name": "PCB 源文件",
+      "version_slot": "pcb",
+      "status": "NOT_YET",
+      "sha256": null
+    },
+    {
+      "path": "manufacturing/gerber/",
+      "logical_name": "Gerber 包",
+      "version_slot": "pcb",
+      "status": "NOT_YET",
+      "sha256": null
+    },
+    {
+      "path": "manufacturing/bom.xlsx",
+      "logical_name": "贴片 BOM",
+      "version_slot": "bom",
+      "status": "NOT_YET",
+      "sha256": null
+    },
+    {
+      "path": "manufacturing/cpl.xlsx",
+      "logical_name": "坐标文件",
+      "version_slot": "pcb",
+      "status": "NOT_YET",
+      "sha256": null
+    },
+    {
+      "path": "manufacturing/pcb.step",
+      "logical_name": "PCB STEP",
+      "version_slot": "cad",
+      "status": "NOT_YET",
+      "sha256": null
+    },
+    {
+      "path": "manufacturing/drc-report.json",
+      "logical_name": "DRC 报告",
+      "version_slot": "pcb",
+      "status": "NOT_YET",
+      "sha256": null
+    },
+    {
+      "path": "manufacturing/dfm-report.json",
+      "logical_name": "DFM 报告",
+      "version_slot": "pcb",
+      "status": "NOT_YET",
+      "sha256": null
+    },
+    {
+      "path": "firmware/esp32/main.bin",
+      "logical_name": "ESP32 固件",
+      "version_slot": "fw",
+      "status": "NOT_YET",
+      "sha256": null
+    },
+    {
+      "path": "firmware/pi/service.tar.gz",
+      "logical_name": "Pi 服务包",
+      "version_slot": "fw",
+      "status": "NOT_YET",
+      "sha256": null
+    },
+    {
+      "path": "mech/outputs/print-coupon/test-report.json",
+      "logical_name": "试打印公差报告",
+      "version_slot": "cad",
+      "status": "NOT_YET",
+      "sha256": null
+    }
+  ],
+  "note": "NOT_YET 工件不携带任何哈希（禁止虚构占位）；OB-1 义务待真实 EDA 工程产出解除。"
 }

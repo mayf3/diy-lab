@@ -26,8 +26,7 @@
 | ![](../../media/christmas-buddy/blind-v1.png) | ![](../../media/christmas-buddy/blind-v2.png) |
 
 按 5 个维度各打 1–5 分：可爱度 / 圣诞氛围 / 做工精致感 / 与 Apple·TE 参考的接近度 / 孩子第一眼吸引力。
-（答案：V1=方案A「雪宝」圆润雪人风，V2=方案B「胶囊舱」TE 分段风——同为同一功能内核的真实参数模型渲染；
-更多视图见 `public/media/christmas-buddy/`，爆炸图与 PCB 装配特写也在。）
+（对应关系在盲评完成前不公开；打分后写入下表即可。）
 
 ## 验收
 
