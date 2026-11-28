@@ -1,0 +1,86 @@
+{
+  "schema": "m5-manifest/1.0",
+  "product": "christmas-buddy-v1",
+  "date": "2026-11-28",
+  "version_tuple": {
+    "pcb": null,
+    "cad": null,
+    "fw": null,
+    "bom": null,
+    "state": "preresearch（全部未冻结，符合 Version.lean 的 preresearch 定义）"
+  },
+  "git_commit": "370786b8947b83b3b5d37e9b1ea893b391ff90c8",
+  "note": "OB-1：pcb 槽冻结前不存在 Gerber/坐标/BOM 制造文件——本清单只绑定设计工件。",
+  "artifacts": [
+    {
+      "path": "power/budget.json",
+      "sha256": "3771e9b4a38451f31be5d443c1d92c0808b1df22d5ae5947e6c520bba8831b1f",
+      "bytes": 9457
+    },
+    {
+      "path": "interfaces/interfaces.json",
+      "sha256": "6537231f83aa008be89833cd8f11fd1e36437b9f9c46b1dc78ded2040a35947f",
+      "bytes": 18821
+    },
+    {
+      "path": "architecture/architecture.json",
+      "sha256": "7cc836efc06bd5ee496f2be2115380c9c0bce9d93f7a7ff032131e7460502938",
+      "bytes": 5514
+    },
+    {
+      "path": "mech/mech_params.json",
+      "sha256": "23ecafab65d27d572d5938b3226447cb49f47ce7340a9d2552138bab2cbadafb",
+      "bytes": 3941
+    },
+    {
+      "path": "mech/assembly_check.json",
+      "sha256": "4de6f1f8cfb1ffc0cd2a2812752a06d434a09b23a1a1f5a16b04ec281a4cdf4c",
+      "bytes": 3491
+    },
+    {
+      "path": "eda/netlist.json",
+      "sha256": "61b819bac9f2e9457f8d6fb55c5f71ca147783e64d10eacacb841d75c76e5e7b",
+      "bytes": 70168
+    },
+    {
+      "path": "bom.csv",
+      "sha256": "622642d452eddd3a193b1e54a3009bdcf040dafddea2fe7c401aea6c52711cb3",
+      "bytes": 3933
+    },
+    {
+      "path": "eda/environment-status.json",
+      "sha256": "b8b8334fc8106428469f81c39494c18f7cfcee3647a81d949d8cdac4aa75c51f",
+      "bytes": 3327
+    },
+    {
+      "path": "visual/visual-specs.json",
+      "sha256": "bad9570387a64611128503198c946927a0397b0166a8ff9b0da2f3db0e6dea62",
+      "bytes": 4141
+    },
+    {
+      "path": "tasks/christmas-buddy-v1.tasks.json",
+      "sha256": "9477a82f8fa52c068f4a8f67efee98ce34494f68413e4ec19441801cb0a37365",
+      "bytes": 14138
+    },
+    {
+      "path": "proof/src/ChristmasBuddy/StateMachine.lean",
+      "sha256": "d464afaf53799dd56a7475404a1e0c32f90be288aea567ab274898aeebe9af90",
+      "bytes": 5300
+    },
+    {
+      "path": "proof/src/ChristmasBuddy/Power.lean",
+      "sha256": "c8a30665e2afe1c6de4501f1b04c2f4b44d4463e80f7281931a73112f0e2b575",
+      "bytes": 2955
+    },
+    {
+      "path": "proof/src/ChristmasBuddy/Version.lean",
+      "sha256": "bc2a12768f6801712dc1a0560badca370ce9f0c7a7492a1597550e312e987aa0",
+      "bytes": 3398
+    },
+    {
+      "path": "proof/verification.json",
+      "sha256": "bd44df13afb6244926e46dbf292ac20b8b1aa5ea84a2d725b5f2f0d1925c4e34",
+      "bytes": 1835
+    }
+  ]
+}

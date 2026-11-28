@@ -213,5 +213,24 @@
     "date": "2026-11-18",
     "budget": "路线乙支架 ≈¥15–40（未核实）；路线甲价格待预算确认后核实；物料表全部 HOLD",
     "steps": []
+  },
+  {
+    "slug": "christmas-buddy",
+    "title": "Christmas Buddy 圣诞精灵机器人",
+    "subtitle": "床边圣诞 AI 互动机器人｜DIY Lab 首套 AI 硬件研发样板",
+    "status": "planning",
+    "category": "AI 硬件",
+    "description": "工程预研完成：架构比较/电源预算/网表/机械/视觉/Lean 证明/任务书全绿；未下单未采购。待用户确认架构与外观方向。",
+    "date": "2026-11-28",
+    "budget": "预研 ¥0；V1 目标 ≤¥400（未下单）",
+    "steps": [
+      {
+        "id": "01",
+        "file": "01-workflow.md",
+        "title": "工程预研与架构决策",
+        "minutes": "45",
+        "phase": "准备"
+      }
+    ]
   }
 ]

@@ -1,0 +1,115 @@
+{
+  "schema": "assembly-check/1.0",
+  "view_date": "2026-11-28",
+  "tool": "CadQuery 2.8 / OCCT 布尔求交",
+  "schemes": {
+    "a": {
+      "checks": [
+        {
+          "check": "总高在 120–160mm",
+          "result": "PASS",
+          "detail": "z_max=139.5mm"
+        },
+        {
+          "check": "功能内核全部位于体部内腔",
+          "result": "PASS",
+          "detail": "内腔外体积 0.000mm³（阈值 5）"
+        },
+        {
+          "check": "功能内核 ∩ 前后壳 ≈ ∅",
+          "result": "PASS",
+          "detail": "干涉体积 0.000mm³（阈值 5）"
+        },
+        {
+          "check": "功能内核 ∩ 头部 ≈ ∅",
+          "result": "PASS",
+          "detail": "干涉体积 0.000mm³"
+        },
+        {
+          "check": "功能内核 ∩ 帽 ≈ ∅",
+          "result": "PASS",
+          "detail": "干涉体积 0.000mm³"
+        },
+        {
+          "check": "USB-C 插头凹深 ≤ 15mm",
+          "result": "PASS",
+          "detail": "凹深 5.3mm（壁 2.8 + 悬出 2.5）"
+        },
+        {
+          "check": "扬声器开孔 ≥ 60% 振膜",
+          "result": "PASS",
+          "detail": "16 条 2.5×10.0mm = 400mm² ≥ 需要 369mm²"
+        },
+        {
+          "check": "Pi 迭放弦长净空（Pi 65mm @偏距 8.6mm）",
+          "result": "PASS",
+          "detail": "全程满足 + 2×1.0mm 间隙"
+        },
+        {
+          "check": "PCB 站立弦长净空（58mm）",
+          "result": "PASS",
+          "detail": "全程满足 + 2×1.0mm 间隙"
+        },
+        {
+          "check": "PCB 槽公差链（临界项）",
+          "result": "PASS",
+          "detail": "槽宽 2.0mm vs PCB 1.6 + 2×0.2 打印公差 = 2.0mm——临界，打印轮实测后冻结"
+        }
+      ]
+    },
+    "b": {
+      "checks": [
+        {
+          "check": "总高在 120–160mm",
+          "result": "PASS",
+          "detail": "z_max=145.7mm"
+        },
+        {
+          "check": "功能内核全部位于体部内腔",
+          "result": "PASS",
+          "detail": "内腔外体积 0.000mm³（阈值 5）"
+        },
+        {
+          "check": "功能内核 ∩ 前后壳 ≈ ∅",
+          "result": "PASS",
+          "detail": "干涉体积 0.000mm³（阈值 5）"
+        },
+        {
+          "check": "功能内核 ∩ 头部 ≈ ∅",
+          "result": "PASS",
+          "detail": "干涉体积 0.000mm³"
+        },
+        {
+          "check": "功能内核 ∩ 帽 ≈ ∅",
+          "result": "PASS",
+          "detail": "干涉体积 0.000mm³"
+        },
+        {
+          "check": "USB-C 插头凹深 ≤ 15mm",
+          "result": "PASS",
+          "detail": "凹深 5.3mm（壁 2.8 + 悬出 2.5）"
+        },
+        {
+          "check": "扬声器开孔 ≥ 60% 振膜",
+          "result": "PASS",
+          "detail": "16 条 2.5×10.0mm = 400mm² ≥ 需要 369mm²"
+        },
+        {
+          "check": "Pi 迭放弦长净空（Pi 65mm @偏距 8.6mm）",
+          "result": "PASS",
+          "detail": "全程满足 + 2×1.0mm 间隙"
+        },
+        {
+          "check": "PCB 站立弦长净空（58mm）",
+          "result": "PASS",
+          "detail": "全程满足 + 2×1.0mm 间隙"
+        },
+        {
+          "check": "PCB 槽公差链（临界项）",
+          "result": "PASS",
+          "detail": "槽宽 2.0mm vs PCB 1.6 + 2×0.2 打印公差 = 2.0mm——临界，打印轮实测后冻结"
+        }
+      ]
+    }
+  }
+}

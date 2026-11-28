@@ -1,0 +1,10 @@
+name = "ChristmasBuddy"
+defaultTargets = ["ChristmasBuddy"]
+
+[leanOptions]
+warningAsError = true
+
+[[lean_lib]]
+name = "ChristmasBuddy"
+srcDir = "src"
+

@@ -1,0 +1,63 @@
+{
+  "schema": "lean-verification/1.0",
+  "product": "christmas-buddy-v1",
+  "date": "2026-11-28",
+  "toolchain": "leanprover/lean4:v4.19.0",
+  "steps": [
+    {
+      "step": "lake build",
+      "cmd": "lake build",
+      "rc": 0
+    },
+    {
+      "step": "axiom audit",
+      "cmd": "lake env lean Axioms.lean",
+      "rc": 0
+    }
+  ],
+  "theorems": {
+    "ChristmasBuddy.thm_sleep_priority": [],
+    "ChristmasBuddy.thm_goodnight_silent": [],
+    "ChristmasBuddy.thm_goodnight_terminal": [],
+    "ChristmasBuddy.thm_fatal_not_goodnight": [],
+    "ChristmasBuddy.thm_error_recoverable": [],
+    "ChristmasBuddy.thm_return_home_listening": [],
+    "ChristmasBuddy.thm_return_home_thinking": [],
+    "ChristmasBuddy.thm_return_home_speaking": [],
+    "ChristmasBuddy.thm_return_home_magic": [],
+    "ChristmasBuddy.thm_return_home_error": [],
+    "ChristmasBuddy.thm_return_home_goodnight": [],
+    "ChristmasBuddy.thm_wake_returns_idle_safe": [],
+    "ChristmasBuddy.Power.thm_magic_within_adapter": [],
+    "ChristmasBuddy.Power.thm_worst_within_adapter": [],
+    "ChristmasBuddy.Power.thm_led_capped_rail": [],
+    "ChristmasBuddy.Power.thm_led_rail_covers_uncapped": [],
+    "ChristmasBuddy.Power.thm_3v3_rail": [],
+    "ChristmasBuddy.thm_no_audio_conflict": [
+      "propext"
+    ],
+    "ChristmasBuddy.Power.thm_rail_sum_bound": [
+      "propext",
+      "Quot.sound"
+    ],
+    "ChristmasBuddy.Version.thm_frozen_are_complete": [
+      "propext"
+    ],
+    "ChristmasBuddy.Version.thm_incomplete_never_manufacturable": [
+      "propext"
+    ],
+    "ChristmasBuddy.Version.thm_frozen_manufacturable": [
+      "propext"
+    ],
+    "ChristmasBuddy.Version.thm_complete_sound": [
+      "propext"
+    ]
+  },
+  "axiom_whitelist": [
+    "Classical.choice",
+    "Quot.sound",
+    "propext"
+  ],
+  "violations": [],
+  "result": "PASS"
+}
