@@ -163,11 +163,11 @@ class UserFacingDeliveryTests(unittest.TestCase):
         self.talk = (base / "jlc-dfm-checklist.md").read_text(encoding="utf-8")
 
     def test_batch1_has_six_elements_and_no_auto_purchase(self):
-        for kw in ("兼容性依据", "替代", "商品页", "实时价格", "确认", "预算"):
+        for kw in ("兼容性依据", "备选", "下单链接", "价格", "确认", "预算", "UNKNOWN", "证据日期"):
             self.assertIn(kw, self.batch1, f"第一批清单缺要素：{kw}")
         for sku in ("Gazzew Boba U4", "ESP32-S3-DevKitC-1-N8R8"):
             self.assertIn(sku, self.batch1, f"第一批清单缺准确 SKU：{sku}")
-        self.assertIn("自己下单付款", self.batch1, "必须写明由负责人本人下单付款")
+        self.assertIn("自行下单付款", self.batch1, "必须写明由负责人本人下单付款")
         self.assertIn("U4T 不是静音轴", self.batch1, "型号警示必须保留")
 
     def test_assembly_guide_is_solder_free(self):
@@ -409,8 +409,10 @@ class ComponentRegistryTests(unittest.TestCase):
         self.assertIn("手插 + 后焊", self.dfm)
 
     def test_batch1_marks_unverified_items_honestly(self):
-        self.assertIn("待核对", self.batch1, "未抓到实时价格的项必须标待核对")
-        self.assertIn("预焊排针照片", self.batch1, "预焊排针必须要求照片核对")
+        self.assertIn("预焊排针", self.batch1, "预焊排针必须要求核对")
+        self.assertIn("UNKNOWN", self.batch1, "核实失败的项必须显式标 UNKNOWN")
+        self.assertIn("证据日期", self.batch1, "每项必须标注证据日期")
+        self.assertNotIn("$5.47 × 4 颗", self.batch1, "整包价格不得当作单颗×4 报价")
         self.assertIn("U4T 不是静音轴", self.batch1)
 
 
