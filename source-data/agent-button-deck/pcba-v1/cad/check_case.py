@@ -295,6 +295,7 @@ def main():
     receipt = {
         "created_at": __import__("datetime").datetime.now().isoformat(timespec="seconds"),
         "tool": sys.version.split()[0],
+        "execution_result": {"ok": not failed, "failed": failed},
         "inputs": {
             "model_script_sha256": sha("g2-case-r1.py"),
             "checker_sha256": hashlib.sha256(open(os.path.abspath(__file__), "rb").read()).hexdigest(),
@@ -302,6 +303,7 @@ def main():
         },
         "outputs": {f"step_sha256::{n}": sha(os.path.join("renders", "case-r1", f"case-r1-{n}.step"))
                     for n in ("body", "base", "cap-a", "cap-b", "cap-c", "cap-d")},
+        "checks_sha256": sha(os.path.join("renders", "case-r1", "checks.json")),
     }
     with open(os.path.join(OUT, "receipt.json"), "w") as f:
         json.dump(receipt, f, indent=1)

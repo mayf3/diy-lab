@@ -46,14 +46,25 @@ def cad_evidence_state() -> tuple[str, list[str], dict | None]:
         return "unknown", ["receipt.json 缺失（未跑过真实几何检查）"], None
     receipt = load(receipt_path)
     diffs: list[str] = []
+    # 手改 checks.json（把失败改成 ok）会被哈希比对检出
+    try:
+        checks_now = load(RENDERS / "checks.json")
+        recorded_result = receipt.get("execution_result")
+        if recorded_result is not None and bool(checks_now.get("ok")) != bool(recorded_result.get("ok")):
+            diffs.append("checks.json 的 ok 与回执 execution_result 不一致（疑似手改报告）")
+    except Exception as e:
+        diffs.append(f"checks.json 不可读：{e}")
     pairs = [
         ("model_script_sha256", CAD_DIR / "g2-case-r1.py"),
         ("checker_sha256", CAD_DIR / "check_case.py"),
         ("dims_sha256", RENDERS / "dims.json"),
+        ("checks_sha256", RENDERS / "checks.json"),
     ]
     for key, path in pairs:
         current = sha256_file(path)
-        recorded = receipt.get("inputs", {}).get(key)
+        # checks_sha256 在回执顶层（check_case.py 写入），其余在 inputs
+        recorded = (receipt.get("checks_sha256") if key == "checks_sha256"
+                    else receipt.get("inputs", {}).get(key))
         if recorded != current:
             diffs.append(f"{key} 与回执不符（{path.name} 已变化）")
     for name in ("body", "base", "cap-a", "cap-b", "cap-c", "cap-d"):
@@ -118,11 +129,41 @@ def validate(project_path: Path, changed: list[str] | None = None) -> dict:
     facts["dims_confirmed"] = not unconfirmed
     facts["dims_unconfirmed"] = unconfirmed
 
-    # 5) EDA 原生工程与 PCB（真实证据：工程文件/产物存在）
-    eda_project = proj["domains"]["eda"].get("project")
-    eda_outputs = proj["domains"]["eda"].get("outputs_present", [])
+    # 5) EDA 原生工程与 PCB（真实证据：本地工程路径存在 或 读回身份文件核对）
+    eda_dom = proj["domains"]["eda"]
+    eda_project = eda_dom.get("project")
+    eda_verified = False
+    eda_verify_fail = []
+    if isinstance(eda_project, dict):
+        local_path = (eda_project.get("local_session_path") or "").split("（")[0].strip()
+        local_exists = Path(local_path).is_dir()
+        rb_path = eda_project.get("readback_file")
+        rb = load(ROOT / rb_path) if rb_path and (ROOT / rb_path).is_file() else None
+        rb_match = bool(rb) and (
+            rb.get("project_uuid") == eda_project.get("project_uuid") and
+            rb.get("schematic_uuid") == eda_project.get("schematic_uuid"))
+        # 真实性判定：读回身份匹配（编辑器 API 实读）为主；本地落盘为辅（首次保存前可能尚未落盘）
+        if rb_path and not rb:
+            eda_verify_fail.append(f"读回身份文件不存在：{rb_path}")
+        elif rb_path and not rb_match:
+            eda_verify_fail.append("读回身份与登记的 uuid 不一致")
+        elif not rb_path and not local_exists:
+            eda_verify_fail.append(f"既无读回身份文件也无本地工程：{local_path}")
+        eda_verified = (bool(rb) and rb_match) or local_exists
+    elif isinstance(eda_project, str) and eda_project:
+        eda_verify_fail.append(f"本地工程路径不存在：{eda_project}")
+    failures.extend(f"EDA 工程证据：{x}" for x in eda_verify_fail)
+    checks["eda_project_verified"] = eda_verified and not eda_verify_fail
+    eda_outputs = eda_dom.get("outputs_present", [])
+    bad_outputs = [o for o in eda_outputs
+                   if not (o.get("evidence") and (ROOT / o["evidence"]).is_file()
+                           and o.get("uuid") and rb and rb.get("schematic_uuid") == o.get("uuid"))]
+    if eda_outputs and bad_outputs:
+        failures.append(f"EDA 产物缺少可核验证据（uuid+读回文件）：{[b.get('name') for b in bad_outputs]}")
+    outputs_verified = bool(eda_outputs) and not bad_outputs
     pcb_frozen = isinstance(revs.get("pcb"), int)
-    pcb_evidence = bool(eda_project) and len(eda_outputs) >= 3
+    pcb_evidence = eda_verified and outputs_verified
+
     facts["pcb_status"] = ("已冻结（rev %s）" % revs["pcb"]) if pcb_frozen and pcb_evidence else (
         "进行中（原生工程已建立，产物未齐）" if eda_project else "未开始（无 R1 原生 EDA 工程）")
     facts["pcb_frozen"] = pcb_frozen and pcb_evidence
@@ -167,12 +208,13 @@ def validate(project_path: Path, changed: list[str] | None = None) -> dict:
         reasons.append("板壳联合验证未完成")
     if not facts["package_complete"]:
         reasons.append("制造包缺件：%s" % "、".join(missing_pkg))
-    if not order_authorized:
-        reasons.append("制造下单未获授权（正常状态，非设计错误）")
-    if not facts["acceptance_done"]:
-        reasons.append("实物验收未完成（最终验收项，非首次打样前置）")
+    # 下单授权与实物验收不再进入设计缺口 reasons（三态分离），由 facts 单独表达
     facts["product_ready_computed"] = product_ready_computed
     facts["product_ready_reasons"] = reasons
+    # 三态分离（整改 8）：设计/授权/验收互不冒充
+    facts["design_ready"] = bool(design_ok and pcb_frozen and pcb_evidence and checks["joint_verified"])
+    facts["manufacturing_authorized"] = order_authorized
+    facts["product_accepted"] = bool(acceptance_evidence)
 
     # 8) 人工声明与证据冲突检查
     guard = proj.get("guard", {})

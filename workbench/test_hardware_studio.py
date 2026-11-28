@@ -126,7 +126,10 @@ class ProductReadyEvidenceTests(unittest.TestCase):
 
     def test_pcb_number_and_manual_flag_cannot_fake_ready(self):
         def mutate(p):
+            # 伪造 PCB 版本：同时清除 EDA 真实证据（模拟"凭空填版本号"）
             p["version_contract"]["revisions"]["pcb"] = 1
+            p["domains"]["eda"]["project"] = None
+            p["domains"]["eda"]["outputs_present"] = []
             p["guard"]["product_ready"] = True
         code, out = run_validator(project=self._variant(mutate))
         self.assertNotEqual(code, 0, "填个版本号+手写 true 不得得到产品就绪")
@@ -135,32 +138,69 @@ class ProductReadyEvidenceTests(unittest.TestCase):
         self.assertTrue(any("人工声明与证据冲突" in f for f in out["failures"]))
         self.assertTrue(facts["product_ready_reasons"], "必须列出具体未就绪原因")
         # 各领域独立表达，不互相冒充
-        self.assertFalse(facts["pcb_frozen"], "版本号填数字不等于冻结（EDA 产物仍不足）")
+        # pcb=1 + 真实 EDA 工程 → 进行中；冻结还需设计检查有效与联合验证
+        self.assertFalse(facts["pcb_frozen"], "pcb=1 未过设计检查/联合验证不得冻结")
         self.assertFalse(facts["package_complete"])
         self.assertFalse(facts["acceptance_done"])
         self.assertFalse(facts["order_authorized"])
 
     def test_eda_guard_is_computed_not_constant(self):
         code, out = run_validator()
-        # 真实状态：product_ready=False 且无 EDA 工程 → 守卫应为真（未误报）
+        # 真实状态：product_ready=False 且 EDA 工程已验证 → 守卫应为真（未误报）
         self.assertTrue(out["checks"]["eda_not_product_guard"])
-        # 守卫是计算值：当证据算出 ready 且无 EDA 工程时必须转假
+        # 守卫是计算值：验证它与输入一致（非恒真）
+        expected = not (out["facts"]["product_ready_computed"]
+                        and not json.loads(PROJECT.read_text(encoding="utf-8"))
+                        ["domains"]["eda"].get("project"))
+        self.assertEqual(out["checks"]["eda_not_product_guard"], expected)
+
+    def test_fabricated_eda_evidence_is_rejected(self):
         import tempfile
-        proj = json.loads(PROJECT.read_text(encoding="utf-8"))
-        proj["domains"]["eda"]["project"] = "fake/Fake.eprj3"
-        proj["domains"]["eda"]["outputs_present"] = ["a", "b", "c"]
-        proj["version_contract"]["revisions"]["pcb"] = 1
-        # 手工把事实改出来不可行（facts 是算的）——此场景由
-        # ProductReadyEvidenceTests 冲突用例覆盖守卫的错误路径，此处登记关联
-        del proj
+        # 负例 1：虚构本地工程路径
+        def fake_path(p):
+            p["domains"]["eda"]["project"] = "/tmp/nonexistent-fake/Fake.eprj3"
+            p["domains"]["eda"]["readback_file"] = None
+            p["domains"]["eda"]["outputs_present"] = []
+        code, out = run_validator(project=self._variant(fake_path))
+        self.assertTrue(any("EDA 工程证据" in f for f in out["failures"]), "虚构路径必须被检出")
+        # 负例 2：虚构 EDA 产物（uuid 与读回身份不符 / evidence 文件缺失）
+        def fake_outputs(p):
+            eda = p["domains"]["eda"]
+            eda["project"] = {
+                "kind": "cloud", "project_uuid": "4ab9e52666a4fc7fe9b1d0c7c4c4263444d972eb139973d04478d976200a78b8",
+                "schematic_uuid": "7415725566084bd0",
+                "local_session_path": "/Users/yanfenma/Documents/LCEDA-Pro/projects/SpaceBuddy-R1",
+                "readback_file": "hardware/space-buddy-r1/eda-readback.json"}
+            eda["outputs_present"] = [
+                {"name": "原理图", "uuid": "deadbeef", "evidence": "hardware/space-buddy-r1/eda-readback.json"},
+                {"name": "PCB", "uuid": "7415725566084bd0", "evidence": "hardware/无此文件.json"}]
+        code, out = run_validator(project=self._variant(fake_outputs))
+        self.assertTrue(any("EDA 产物缺少可核验证据" in f for f in out["failures"]), "虚构产物必须被检出")
+
+    def test_checks_json_tamper_detected(self):
+        # 负例：手改 checks.json 把失败改成 ok=true → 回执哈希比对必须检出
+        checks_path = ROOT / "source-data/agent-button-deck/pcba-v1/cad/renders/case-r1/checks.json"
+        backup = checks_path.read_bytes()
+        try:
+            cj = json.loads(checks_path.read_text())
+            cj["ok"] = True; cj["failed"] = []
+            checks_path.write_text(json.dumps(cj))
+            code, out = run_validator()
+            self.assertNotEqual(code, 0, "手改报告必须被检出")
+            self.assertTrue(any("checks_sha256" in f or "不一致" in f for f in out["failures"]))
+        finally:
+            checks_path.write_bytes(backup)
+            # 以真实重跑恢复一致性（字节还原的旧报告会与最新回执错位）
+            run_real_checker()
 
     def test_first_batch_release_does_not_require_acceptance_or_payment(self):
-        # 实物验收/付款不是首次打样前置：缺失它们只进 reasons，不算设计错误失败之外的新失败
+        # 三态分离：下单授权与实物验收独立表达（facts），不混入设计缺口 reasons
         code, out = run_validator()
         reasons = " ".join(out["facts"]["product_ready_reasons"])
-        self.assertIn("实物验收未完成", reasons)
-        self.assertIn("制造下单未获授权", reasons)
-        # 且这些原因不改变"校验本身通过"（设计当前有效）
+        self.assertNotIn("制造下单未获授权", reasons, "授权状态不得混入设计缺口")
+        self.assertNotIn("实物验收未完成", reasons, "验收状态不得混入设计缺口")
+        self.assertFalse(out["facts"]["manufacturing_authorized"])
+        self.assertFalse(out["facts"]["product_accepted"])
         self.assertEqual(out["checks"]["cad_evidence_state"], "valid")
 
 
@@ -206,6 +246,42 @@ class RealGeometryNote(unittest.TestCase):
         # 已执行真实 FreeCAD（捆绑 python）完成几何重算与回执重建；
         # 该运行的成功/失败在该用例断言，此处登记以防漏跑。
         self.assertTrue(FC_PY.startswith("/Applications/FreeCAD.app"))
+
+
+
+
+class QuadPartialTests(unittest.TestCase):
+    """四元组禁止部分声明（整改时曾被误删，回归补回）。"""
+
+    def test_quad_partial_is_rejected(self):
+        import tempfile
+        proj = json.loads(PROJECT.read_text(encoding="utf-8"))
+        del proj["version_contract"]["revisions"]["bom"]
+        tmp = Path(tempfile.mkstemp(suffix=".json", dir=str(ROOT / "hardware"))[1])
+        tmp.write_text(json.dumps(proj, ensure_ascii=False), encoding="utf-8")
+        code, out = run_validator(project=tmp)
+        tmp.unlink()
+        self.assertEqual(code, 2)
+        self.assertFalse(out["checks"]["quad_complete"])
+
+
+class WorkbenchHardwareCardTests(unittest.TestCase):
+    """首屏卡：硬件校验结果与九问数据必须存在且如实。"""
+
+    def test_hardware_section_present_and_facts_flow(self):
+        wb = json.loads((ROOT / "workbench/web/workbench.json").read_text(encoding="utf-8"))
+        hw = wb.get("hardware") or {}
+        self.assertTrue(hw.get("ok"), f"校验未通过：{hw.get('failures')}")
+        facts = hw.get("facts") or {}
+        self.assertFalse(facts.get("product_ready"), "产品未完成不得标就绪")
+        self.assertEqual(facts.get("pcb_status"), "进行中（原生工程已建立，产物未齐）")
+        self.assertFalse(facts.get("package_complete"))
+        nine = wb.get("hardware_next") or {}
+        for key in ("looks_like", "appearance_progress", "blockers",
+                    "next_owner", "needs_user"):
+            self.assertIn(key, nine, f"九问卡缺字段：{key}")
+        # EDA 环境可用 ≠ 产品就绪（环境检查与产品事实分离）
+        self.assertIsNotNone(wb.get("environment", {}).get("checks"))
 
 
 if __name__ == "__main__":
