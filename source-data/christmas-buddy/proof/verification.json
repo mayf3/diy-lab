@@ -33,18 +33,25 @@
     "ChristmasBuddy.Power.thm_led_capped_rail": [],
     "ChristmasBuddy.Power.thm_led_rail_covers_uncapped": [],
     "ChristmasBuddy.Power.thm_3v3_rail": [],
+    "ChristmasBuddy.Version.thm_mixed_version_frozen_manufacturable": [],
     "ChristmasBuddy.Version.thm_bom_complete_nil": [],
     "ChristmasBuddy.Version.thm_dir_manifest_pure": [],
     "ChristmasBuddy.Version.thm_registered_exact_approval_manufacturable": [],
+    "ChristmasBuddy.Version.thm_mixed_version_manufacturing_release": [],
+    "ChristmasBuddy.Version.thm_version_change_invalidates_old_approval": [],
     "ChristmasBuddy.r1_real_candidate_matches_approval_state": [],
     "ChristmasBuddy.r2_isolated_registry_cannot_approve_real_candidate": [],
-    "ChristmasBuddy.reg_caseA_approver_exact_match": [],
-    "ChristmasBuddy.reg_caseB_approver_identity_mismatch": [],
-    "ChristmasBuddy.reg_caseC_empty_approver": [],
-    "ChristmasBuddy.reg_case3_hash_mismatch": [],
-    "ChristmasBuddy.reg_case4_release_mismatch": [],
-    "ChristmasBuddy.reg_case5_record_unregistered": [],
-    "ChristmasBuddy.reg_case6_empty_registry": [],
+    "ChristmasBuddy.reg_mixed_exact_match": [],
+    "ChristmasBuddy.reg_mixed_approver_mismatch": [],
+    "ChristmasBuddy.reg_mixed_empty_approver": [],
+    "ChristmasBuddy.reg_mixed_stale_release_hash": [],
+    "ChristmasBuddy.reg_mixed_not_frozen": [],
+    "ChristmasBuddy.reg_mixed_empty_frozen": [],
+    "ChristmasBuddy.reg_mixed_unregistered": [],
+    "ChristmasBuddy.reg_pcb_bump_invalidates": [],
+    "ChristmasBuddy.reg_cad_bump_invalidates": [],
+    "ChristmasBuddy.reg_fw_bump_invalidates": [],
+    "ChristmasBuddy.reg_bom_bump_invalidates": [],
     "ChristmasBuddy.thm_no_audio_conflict": [
       "propext"
     ],
@@ -52,8 +59,9 @@
       "propext",
       "Quot.sound"
     ],
-    "ChristmasBuddy.Version.thm_frozen_are_complete": [
-      "propext"
+    "ChristmasBuddy.Version.thm_frozen_membership_complete": [
+      "propext",
+      "Quot.sound"
     ],
     "ChristmasBuddy.Version.thm_incomplete_never_manufacturable": [
       "propext"
@@ -73,7 +81,7 @@
     "ChristmasBuddy.Version.thm_bom_complete_cons": [
       "propext"
     ],
-    "ChristmasBuddy.Version.thm_approval_hash_mismatch_not_manufacturable": [
+    "ChristmasBuddy.Version.thm_release_hash_mismatch_not_manufacturable": [
       "propext"
     ],
     "ChristmasBuddy.Version.thm_approval_release_mismatch_not_manufacturable": [
@@ -83,6 +91,9 @@
       "propext"
     ],
     "ChristmasBuddy.Version.thm_empty_approver_not_manufacturable": [
+      "propext"
+    ],
+    "ChristmasBuddy.Version.thm_unfrozen_not_manufacturable": [
       "propext"
     ],
     "ChristmasBuddy.Version.thm_unregistered_record_not_manufacturable": [

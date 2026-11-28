@@ -2,23 +2,24 @@
 # Christmas Buddy V1 · M5 制造模型（版本四元组）
 
 延续 Space Buddy R1 建立的版本四元组惯例（pcb.cad.fw.bom），定义：
-- `Release`：pcb / cad / fw / bom 四个版本槽。
+- `Release`：pcb / cad / fw / bom 四个版本槽（各组件可独立演进）。
 - `complete`：四段全部存在。
-- `isFrozen`：属于已冻结发布清单。
-- `manufacturable`：complete 且 frozen。
+- `frozenWellFormed`：冻结注册表良构（只登记完整四元组）。
+- `manufacturableIn frozen r`：complete 且 r 精确在动态冻结注册表中。
 
 证明：
-- `thm_frozen_are_complete`：frozen 清单中的发布都完整。
+- `thm_frozen_membership_complete`：良构冻结注册表中的发布都完整。
 - `thm_incomplete_never_manufacturable`：四段不齐的发布永不可制造（安全门禁）。
-- `thm_frozen_manufacturable`：frozen 发布都可进入制造流程。
+- `thm_frozen_manufacturable`：完整且在册的发布可进入制造流程。
 - `thm_complete_sound`：complete 判定与逐段 isSome 合取等价。
-- v5（Batch4.2）：制造资格 = 完整 + 冻结 + 批准人身份精确一致（r.approver = some
-  rec.approver）+ 记录批准人非空 + release/manifest_hash 精确一致 + 注册表成员
-  （`manufacturingReleaseIn`，注册表为显式输入）；身份不符 / 空批准人 / 未登记 /
-  空注册表均不可制造，精确登记则可制造。
+- v5（Batch4.2）：制造资格含批准人身份精确一致 + 记录批准人非空 + 注册表成员。
+- v6（Batch4.3）：双层哈希语义——批准记录绑定 **release_hash**（产品内容身份），
+  与 manifest_hash（清单封套）不得混用；冻结注册表与批准注册表均为制造资格的
+  **显式输入**（动态，由 m5_manifest.build 从 release-spec.json 受控生成）；
+  混合版本（PCB=2 CAD=1 FW=3 BOM=2）可合法冻结+批准；任一组件版本变化使旧批准失效。
 
-实现对应（MAP）：`m5_manifest.py` 计算 design-to-artifact 的 sha256 追溯；
-本文件只证结构规则；哈希一致性由脚本检查并登记为 TESTED 证据，
+实现对应（MAP）：`m5_manifest.py` 计算 release_hash/manifest_hash（SHA256）与真实文件
+绑定；本文件只证结构规则；哈希一致性由脚本检查并登记为 TESTED 证据，
 不得声称 Lean 已证明哈希绑定。
 
 UNPROVEN 义务登记：
@@ -46,44 +47,50 @@ def preresearch : Release := ⟨none, none, none, none⟩
 /-- 首个冻结发布的目标形态（占位示例：V1 各段 rev 1）。 -/
 def v1 : Release := ⟨some 1, some 1, some 1, some 1⟩
 
-/-- 已冻结发布清单（当前只含 v1 占位；真实清单由 m5_manifest.py 生成）。 -/
-def frozenList : List Release := [v1]
+/-- 动态冻结注册表（Batch4.3）：制造资格判断的**显式输入**；生产当前为空，
+    由 m5_manifest.build 从 release-spec.json 受控生成（经 ReleaseCurrent.lean
+    的 currentFrozenRegistry 投影），不得手工编辑生成的 Manifest 伪造。 -/
+def frozenRegistry : List Release := []
 
-/-- 属于冻结清单（用 decide 等价，便于无依赖证明）。 -/
-def isFrozen (r : Release) : Bool :=
-  frozenList.any (fun x => decide (x = r))
+/-- 冻结注册表良构：登记的发布都必须完整（GATE 只能冻结完整四元组）。 -/
+def frozenWellFormed (frozen : List Release) : Bool :=
+  frozen.all complete
 
-/-- 可进入制造流程 = 完整且已冻结。 -/
-def manufacturable (r : Release) : Bool :=
-  complete r && isFrozen r
+/-- 良构冻结注册表中的每个发布都完整。 -/
+theorem thm_frozen_membership_complete :
+    ∀ frozen : List Release, frozenWellFormed frozen = true →
+      ∀ r : Release, frozen.any (fun x => decide (x = r)) = true → complete r = true := by
+  intro frozen hw r hm
+  rw [frozenWellFormed, List.all_eq_true] at hw
+  rw [List.any_eq_true] at hm
+  obtain ⟨x, hx, hxr⟩ := hm
+  have hxr' : x = r := by simpa using hxr
+  rw [← hxr']
+  exact hw x hx
 
-/-- frozen 清单中的每个发布都完整。 -/
-theorem thm_frozen_are_complete : ∀ r, isFrozen r = true → complete r = true := by
-  intro r h
-  have hun : isFrozen r = decide (v1 = r) := by
-    simp [isFrozen, frozenList, List.any]
-  rw [hun] at h
-  cases hr : decide (v1 = r) with
-  | false =>
-    rw [hr] at h
-    simp at h
-  | true =>
-    simp at hr
-    rw [← hr]
-    rfl
+/-- 冻结层面资格 = 完整且精确在冻结注册表（批准检查见 manufacturingReleaseIn）。 -/
+def manufacturableIn (frozen : List Release) (r : Release) : Bool :=
+  complete r && frozen.any (fun x => decide (x = r))
 
-/-- 不完整的发布绝不可制造（安全门禁）。 -/
+/-- 不完整的发布绝不可制造（安全门禁，任意冻结注册表下成立）。 -/
 theorem thm_incomplete_never_manufacturable :
-    ∀ r : Release, complete r = false → manufacturable r = false := by
-  intro r hc
-  simp [manufacturable, hc]
+    ∀ frozen : List Release, ∀ r : Release, complete r = false →
+      manufacturableIn frozen r = false := by
+  intro frozen r hc
+  simp [manufacturableIn, hc]
 
-/-- frozen 发布都可进入制造流程。 -/
+/-- 完整且在册的发布可进入冻结资格判定（合同不是恒假开关）。 -/
 theorem thm_frozen_manufacturable :
-    ∀ r, isFrozen r = true → manufacturable r = true := by
-  intro r h
-  have hc : complete r = true := thm_frozen_are_complete r h
-  simp [manufacturable, hc, h]
+    ∀ frozen : List Release, ∀ r : Release, complete r = true →
+      frozen.any (fun x => decide (x = r)) = true → manufacturableIn frozen r = true := by
+  intro frozen r hc hm
+  simp [manufacturableIn, hc, hm]
+
+/-- 混合版本正向（Batch4.3）：PCB=2 CAD=1 FW=3 BOM=2——各组件版本独立演进，
+    完整且精确冻结 → 冻结层面资格成立（不要求所有组件同版本号）。 -/
+theorem thm_mixed_version_frozen_manufacturable :
+    manufacturableIn [⟨some 2, some 1, some 3, some 2⟩]
+      ⟨some 2, some 1, some 3, some 2⟩ = true := by rfl
 
 /-- complete 判定与逐段 isSome 合取逐条等价。 -/
 theorem thm_complete_sound :
@@ -96,7 +103,7 @@ theorem thm_complete_sound :
       simp [complete]
 
 
-/-! ### v2/v4/v5 扩展：批准记录绑定（release + manifest_hash + approver 身份 + 注册表成员） -/
+/-! ### v2/v4/v5/v6 扩展：批准记录绑定（release + release_hash + approver 身份 + 双注册表） -/
 
 /-- 候选 + 批准人（Option String：none=未批准）。 -/
 structure ApprovedRelease where
@@ -104,10 +111,13 @@ structure ApprovedRelease where
   approver : Option String
   deriving DecidableEq, Repr
 
-/-- 批准记录：绑定**精确** release、该候选的 manifest_hash、批准人——缺一不可。 -/
+/-- 批准记录：绑定**精确** release、该候选的 **release_hash**（产品内容身份）、
+    批准人——缺一不可。语义分层（Batch4.3）：releaseHash 字段绑定 release_hash，
+    **不是** manifest_hash（清单封套完整性）——两层哈希不得混用，
+    否则批准记录哈希固定点回归（PR#37 Review #4727422072）。 -/
 structure ApprovalRecord where
   release : Release
-  manifestHash : String
+  releaseHash : String
   approver : String
   deriving DecidableEq, Repr
 
@@ -122,83 +132,117 @@ def approvedRegistry : List ApprovalRecord := []
 def isApproved (r : ApprovalRecord) : Bool :=
   approvedRegistry.any (fun x => decide (x = r))
 
-/-- 制造许可（Batch4.2 全判定，注册表为**显式输入**）：
-    完整 + 冻结 + 候选批准人非空 + **批准人身份精确一致**（r.approver = some rec.approver，
-    P0-1 #4727196821）+ 记录批准人非空串 + release 精确一致 + manifest_hash 精确一致
-    + 批准记录属于受信任注册表（P1-1）。 -/
-def manufacturingReleaseIn (registry : List ApprovalRecord)
-    (r : ApprovedRelease) (rec : ApprovalRecord) (currentHash : String) : Bool :=
-  complete r.release && isFrozen r.release
+/-- 制造许可（Batch4.3 全判定；冻结注册表 + 批准注册表均为**显式输入**）：
+    四元组完整 + 精确 Release 在冻结注册表 + 候选批准人非空 + 批准人身份精确一致
+    （r.approver = some rec.approver）+ 记录批准人非空串 + release 精确一致
+    + **release_hash 精确一致** + 批准记录属于受信任批准注册表。 -/
+def manufacturingReleaseIn (frozen : List Release) (registry : List ApprovalRecord)
+    (rhash : String) (r : ApprovedRelease) (rec : ApprovalRecord) : Bool :=
+  complete r.release
+    && frozen.any (fun x => decide (x = r.release))
     && r.approver.isSome && decide (r.approver = some rec.approver)
     && decide (rec.approver.isEmpty = false)
-    && decide (rec.release = r.release) && decide (rec.manifestHash = currentHash)
+    && decide (rec.release = r.release) && decide (rec.releaseHash = rhash)
     && registry.any (fun x => decide (x = rec))
 
-/-- 默认制造许可 = 受控生产注册表（当前为空）上的判定。 -/
-def manufacturingRelease (r : ApprovedRelease) (rec : ApprovalRecord) (currentHash : String) : Bool :=
-  manufacturingReleaseIn approvedRegistry r rec currentHash
+/-- 默认制造许可 = 受控生产注册表（冻结/批准注册表当前均为空）上的判定。
+    rhash 传当前候选的 release_hash（内容身份）。 -/
+def manufacturingRelease (r : ApprovedRelease) (rec : ApprovalRecord) (rhash : String) : Bool :=
+  manufacturingReleaseIn frozenRegistry approvedRegistry rhash r rec
 
 /-- 未批准（approver 为空）不可制造。 -/
 theorem thm_unapproved_not_manufacturable :
-    ∀ registry : List ApprovalRecord, ∀ r : ApprovedRelease, ∀ rec : ApprovalRecord, ∀ h : String,
-      r.approver.isSome = false → manufacturingReleaseIn registry r rec h = false := by
-  intro registry r rec h happro
+    ∀ frozen : List Release, ∀ registry : List ApprovalRecord, ∀ h : String,
+      ∀ r : ApprovedRelease, ∀ rec : ApprovalRecord,
+        r.approver.isSome = false → manufacturingReleaseIn frozen registry h r rec = false := by
+  intro frozen registry h r rec happro
   simp [manufacturingReleaseIn, happro]
 
-/-- 批准记录的 manifest_hash 与当前候选不一致 → 不可制造（旧批准不越哈希）。 -/
-theorem thm_approval_hash_mismatch_not_manufacturable :
-    ∀ registry : List ApprovalRecord, ∀ r : ApprovedRelease, ∀ rec : ApprovalRecord, ∀ h : String,
-      rec.manifestHash ≠ h → manufacturingReleaseIn registry r rec h = false := by
-  intro registry r rec h hne
-  by_cases hpx : rec.manifestHash = h
+/-- 批准记录的 release_hash 与当前候选不一致 → 不可制造（旧批准不越内容身份）。 -/
+theorem thm_release_hash_mismatch_not_manufacturable :
+    ∀ frozen : List Release, ∀ registry : List ApprovalRecord, ∀ h : String,
+      ∀ r : ApprovedRelease, ∀ rec : ApprovalRecord,
+        rec.releaseHash ≠ h → manufacturingReleaseIn frozen registry h r rec = false := by
+  intro frozen registry h r rec hne
+  by_cases hpx : rec.releaseHash = h
   · exact absurd hpx hne
   · simp [manufacturingReleaseIn, hpx]
 
 /-- 批准记录绑定不同 release → 不可制造。 -/
 theorem thm_approval_release_mismatch_not_manufacturable :
-    ∀ registry : List ApprovalRecord, ∀ r : ApprovedRelease, ∀ rec : ApprovalRecord, ∀ h : String,
-      rec.release ≠ r.release → manufacturingReleaseIn registry r rec h = false := by
-  intro registry r rec h hne
+    ∀ frozen : List Release, ∀ registry : List ApprovalRecord, ∀ h : String,
+      ∀ r : ApprovedRelease, ∀ rec : ApprovalRecord,
+        rec.release ≠ r.release → manufacturingReleaseIn frozen registry h r rec = false := by
+  intro frozen registry h r rec hne
   by_cases hpx : rec.release = r.release
   · exact absurd hpx hne
   · simp [manufacturingReleaseIn, hpx]
 
-/-- P0-1：候选批准人与记录批准人身份不一致 → 不可制造（其余字段再精确也不行）。 -/
+/-- 候选批准人与记录批准人身份不一致 → 不可制造（其余字段再精确也不行）。 -/
 theorem thm_approver_identity_mismatch_not_manufacturable :
-    ∀ registry : List ApprovalRecord, ∀ r : ApprovedRelease, ∀ rec : ApprovalRecord, ∀ h : String,
-      r.approver ≠ some rec.approver → manufacturingReleaseIn registry r rec h = false := by
-  intro registry r rec h hne
+    ∀ frozen : List Release, ∀ registry : List ApprovalRecord, ∀ h : String,
+      ∀ r : ApprovedRelease, ∀ rec : ApprovalRecord,
+        r.approver ≠ some rec.approver → manufacturingReleaseIn frozen registry h r rec = false := by
+  intro frozen registry h r rec hne
   by_cases hpx : r.approver = some rec.approver
   · exact absurd hpx hne
   · simp [manufacturingReleaseIn, hpx]
 
 /-- 空字符串批准人不可制造（身份一致也不行：空标识不是有效批准人）。 -/
 theorem thm_empty_approver_not_manufacturable :
-    ∀ registry : List ApprovalRecord, ∀ r : ApprovedRelease, ∀ rec : ApprovalRecord, ∀ h : String,
-      rec.approver.isEmpty = true → manufacturingReleaseIn registry r rec h = false := by
-  intro registry r rec h hempty
+    ∀ frozen : List Release, ∀ registry : List ApprovalRecord, ∀ h : String,
+      ∀ r : ApprovedRelease, ∀ rec : ApprovalRecord,
+        rec.approver.isEmpty = true → manufacturingReleaseIn frozen registry h r rec = false := by
+  intro frozen registry h r rec hempty
   have hd : decide (rec.approver.isEmpty = false) = false := by simp [hempty]
   simp [manufacturingReleaseIn, hd]
 
-/-- P1-1：字段全部正确但批准记录未登记于注册表 → 不可制造。 -/
-theorem thm_unregistered_record_not_manufacturable :
-    ∀ registry : List ApprovalRecord, ∀ r : ApprovedRelease, ∀ rec : ApprovalRecord, ∀ h : String,
-      registry.any (fun x => decide (x = rec)) = false →
-      manufacturingReleaseIn registry r rec h = false := by
-  intro registry r rec h hnot
+/-- 候选不在冻结注册表 → 不可制造（冻结注册表动态，成员资格为显式检查）。 -/
+theorem thm_unfrozen_not_manufacturable :
+    ∀ frozen : List Release, ∀ registry : List ApprovalRecord, ∀ h : String,
+      ∀ r : ApprovedRelease, ∀ rec : ApprovalRecord,
+        frozen.any (fun x => decide (x = r.release)) = false →
+        manufacturingReleaseIn frozen registry h r rec = false := by
+  intro frozen registry h r rec hnot
   simp [manufacturingReleaseIn, hnot]
 
-/-- P1-1：空注册表（生产现状）下任何候选都不可制造。 -/
+/-- 字段全部正确但批准记录未登记于注册表 → 不可制造。 -/
+theorem thm_unregistered_record_not_manufacturable :
+    ∀ frozen : List Release, ∀ registry : List ApprovalRecord, ∀ h : String,
+      ∀ r : ApprovedRelease, ∀ rec : ApprovalRecord,
+        registry.any (fun x => decide (x = rec)) = false →
+        manufacturingReleaseIn frozen registry h r rec = false := by
+  intro frozen registry h r rec hnot
+  simp [manufacturingReleaseIn, hnot]
+
+/-- 空批准注册表（生产现状）下任何候选都不可制造。 -/
 theorem thm_empty_registry_not_manufacturable :
-    ∀ r : ApprovedRelease, ∀ rec : ApprovalRecord, ∀ h : String,
-      manufacturingReleaseIn [] r rec h = false := by
-  intro r rec h
+    ∀ frozen : List Release, ∀ r : ApprovedRelease, ∀ rec : ApprovalRecord, ∀ h : String,
+      manufacturingReleaseIn frozen [] h r rec = false := by
+  intro frozen r rec h
   simp [manufacturingReleaseIn, List.any]
 
-/-- P1-1 正向：完整 + 冻结 + 批准人精确一致 + 已注册 → 可制造（合同不是恒假开关）。 -/
+/-- 正向：完整 + 冻结 + 批准人精确一致 + release_hash 精确一致 + 已注册 → 可制造
+    （合同不是恒假开关）。 -/
 theorem thm_registered_exact_approval_manufacturable :
-    manufacturingReleaseIn [⟨v1, "h", "GATE"⟩] ⟨v1, some "GATE"⟩ ⟨v1, "h", "GATE"⟩ "h" = true := by
-  rfl
+    manufacturingReleaseIn [v1] [⟨v1, "h", "GATE"⟩] "h" ⟨v1, some "GATE"⟩ ⟨v1, "h", "GATE"⟩
+      = true := by rfl
+
+/-- 混合版本正向（完整制造许可）：PCB=2 CAD=1 FW=3 BOM=2 独立演进，
+    精确冻结 + 精确批准（绑 release_hash）→ 可制造。 -/
+theorem thm_mixed_version_manufacturing_release :
+    manufacturingReleaseIn [⟨some 2, some 1, some 3, some 2⟩]
+      [⟨⟨some 2, some 1, some 3, some 2⟩, "h-mixed", "GATE-test"⟩] "h-mixed"
+      ⟨⟨some 2, some 1, some 3, some 2⟩, some "GATE-test"⟩
+      ⟨⟨some 2, some 1, some 3, some 2⟩, "h-mixed", "GATE-test"⟩ = true := by rfl
+
+/-- 版本变化（PCB 2→3，新版本已在冻结注册表）→ 旧批准记录仍绑旧版本 → 不可制造
+    （任一组件版本变化都使旧批准失效；CAD/FW/BOM 同理，见生成文件 reg_*_bump 定理）。 -/
+theorem thm_version_change_invalidates_old_approval :
+    manufacturingReleaseIn [⟨some 2, some 1, some 3, some 2⟩, ⟨some 3, some 1, some 3, some 2⟩]
+      [⟨⟨some 2, some 1, some 3, some 2⟩, "h-mixed", "GATE-test"⟩] "h-mixed"
+      ⟨⟨some 3, some 1, some 3, some 2⟩, some "GATE-test"⟩
+      ⟨⟨some 2, some 1, some 3, some 2⟩, "h-mixed", "GATE-test"⟩ = false := by rfl
 
 theorem thm_registry_membership_implies_approved :
     ∀ r, isApproved r = true → r.approver.isEmpty = false := by
@@ -232,6 +276,11 @@ theorem thm_dir_manifest_pure :
     ∀ l : List DirEntry, dirManifest l = dirManifest l := by
   intro l; rfl
 
-/- UNPROVEN 义务登记（OB-4）：manifest_hash 对内容碰撞的抵抗力不可在 Lean 内证明
-    （需要 SHA-256 抗碰撞性），由 Python 对抗矩阵 A1-A12 在真实文件层承担。 -/
+/- UNPROVEN 义务登记（不得在 Lean 内声明已证）：
+  OB-4：release_hash / manifest_hash 对内容碰撞的抵抗力不可在 Lean 内证明
+        （需要 SHA-256 抗碰撞性），由 Python 对抗矩阵 A1-A16 与 N1-N8 在真实文件层承担。
+  OB-5：manifest_hash（封套）独立一致性——SHA256(canonical_manifest_payload) 由
+        Python check 每次独立重算比对（Batch4.3 双层哈希解耦后，封套含 release_hash 值
+        但不含自身，无 H=SHA256(Payload(H)) 固定点）；Lean 只证结构一致性，
+        不承担哈希计算。 -/
 end ChristmasBuddy.Version

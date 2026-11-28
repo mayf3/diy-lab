@@ -1,8 +1,8 @@
 {
-  "schema": "m5-release-manifest/2.1",
+  "schema": "m5-release-manifest/3.0",
   "product": "christmas-buddy-v1",
   "date": "2026-11-28",
-  "generated_at": "2026-11-28T14:27:07Z",
+  "generated_at": "2026-11-28T15:21:42Z",
   "release_candidate": {
     "product": "christmas-buddy-v1",
     "tuple": {
@@ -11,14 +11,16 @@
       "fw": null,
       "bom": null
     },
-    "tuple_state": "preresearch（四段未冻结——冻结须 GATE 门禁人工批准）",
-    "source_commit": "c89585d6f24dbbb140196dc7b1f1d09c7135fc86",
-    "manifest_hash": "663f135f81575e6e6774c5cbe9ee55a7392278feba594e031a1f0dea2941db7d",
+    "tuple_state": "preresearch（版本由 release-spec.json 控制；冻结须 GATE 门禁人工批准）",
+    "source_commit": "2658ae458353c41cee115dd654e340050ccc5ef7",
+    "release_hash": "5b1dff0f02ed4d3dd87dbad9ed9d330d1e7734eef4f03a5d5ef31243441bf376",
+    "manifest_hash": "de057815511f2b3358b260c905deb46d9074963e188cdc4e26cb870535c1bd49",
     "approval_state": "UNAPPROVED",
     "approver": null,
     "approval_records": [],
-    "hash_basis": "canonical v5：path/kind/sha/bytes/slot/tool/files/symlinks + release 元数据（含 approver/approval_records）；全部数组按完整相对路径规范化；build/check 共用 canonical_payload 唯一实现；排除时间戳与自身哈希",
-    "rule": "任一工件或批准元数据变化 → canonical hash 变化 → 新候选；旧批准不继承"
+    "frozen_registry": [],
+    "hash_basis": "双层哈希 v6：release_hash=SHA256(canonical(product,tuple,source_commit,artifacts,not_yet))=产品内容身份（批准绑定层）；manifest_hash=SHA256(canonical(release_hash,frozen_registry,approval_state,approver,approval_records))=清单封套完整性。批准元数据不入内容基线、manifest_hash 不入任何基线（无自引用/无固定点）；全部数组按完整相对路径或语义键规范化；build/check 共用唯一实现",
+    "rule": "工件或四元组变化 → release_hash 变 → 旧批准失效；批准状态/批准人/批准记录/冻结注册表变化 → manifest_hash 变（release_hash 不变）"
   },
   "artifacts": [
     {
@@ -104,8 +106,8 @@
     {
       "path": "m5_manifest.py",
       "logical_name": "Manifest 检查器源码",
-      "sha256": "2d3432dc308fdaff75ec00b0cec378936cfe5c6732fe7bff991fdcf4ab3949e5",
-      "bytes": 28488,
+      "sha256": "efc25d382e987b29161f905f0bc57db4ac20454be93626487d00abf7dc537543",
+      "bytes": 38948,
       "version_slot": "bom",
       "tool": "python3",
       "tool_version": "python3",
@@ -214,8 +216,8 @@
     {
       "path": "proof/src/ChristmasBuddy/Version.lean",
       "logical_name": "M5 发布合同证明",
-      "sha256": "4b4eb3695ba59c9c4f5077875160be7366f4c91c6469c549a59b43ddf80c2692",
-      "bytes": 10950,
+      "sha256": "27705187c9097a26a29fe0cdd652b405e1854c515fc949b7bee684fcc735e3e3",
+      "bytes": 15069,
       "version_slot": "fw",
       "tool": "lean 4.19.0",
       "tool_version": "leanprover/lean4:v4.19.0",
@@ -224,8 +226,8 @@
     {
       "path": "proof/verification.json",
       "logical_name": "Lean 验证回执",
-      "sha256": "cc578bec44ef9b4e77255a83df9978092712284d34c45b8e9e7ddfff9c132262",
-      "bytes": 3406,
+      "sha256": "c05df09dee4f5d8a6615ab25d6dccc950fecaece3f9780c788288ece6c993fdc",
+      "bytes": 3920,
       "version_slot": "fw",
       "tool": "verify_proof.py",
       "tool_version": "verify_proof.py",
