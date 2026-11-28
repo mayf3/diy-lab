@@ -35,6 +35,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 import subprocess
 import sys
 from datetime import date, datetime, timezone
@@ -115,12 +116,28 @@ ARTIFACT_TABLE = [
 def sha256(p: Path) -> str:
     return hashlib.sha256(p.read_bytes()).hexdigest()
 
-def git_commit() -> str | None:
+def git_commit_reachable(base: Path, sha: str) -> None:
+    """校验 sha 是 base 所在 Git 仓库历史中**可达**的提交（HEAD 祖先）。
+    失败即抛 ValueError——缺失/无效/不可达的 source_commit 必须 FAIL，不得静默。
+    （Batch4.3.1：source_commit 由 release-spec.json 受控固定，build 不再自动取当前 HEAD；
+    语义 = 本次产品内容候选的基准提交，而非批准记录最后一次提交的 HEAD。）"""
+    if not isinstance(sha, str) or not re.fullmatch(r"[0-9a-f]{40}", sha):
+        raise ValueError(f"source_commit 缺失或非法（须 40 位小写十六进制 commit SHA）: {sha!r}")
     try:
-        return subprocess.run(["git", "rev-parse", "HEAD"], cwd=BASE, capture_output=True,
-                              text=True, timeout=10).stdout.strip() or None
-    except Exception:
-        return None
+        root = subprocess.run(["git", "rev-parse", "--show-toplevel"], cwd=base,
+                              capture_output=True, text=True, timeout=10)
+        if root.returncode != 0:
+            raise ValueError(f"source_commit 可达性校验失败：base 不在 Git 仓库内"
+                             f"（{root.stderr.strip()[:80]}）")
+        r = subprocess.run(["git", "merge-base", "--is-ancestor", sha, "HEAD"],
+                           cwd=root.stdout.strip(), capture_output=True, text=True, timeout=10)
+        if r.returncode != 0:
+            raise ValueError(f"source_commit {sha[:12]}… 在当前仓库历史中不可达（非 HEAD 祖先；"
+                             "基准提交被重写或未提交？）")
+    except ValueError:
+        raise
+    except Exception as e:  # git 缺失/超时等：异常不得静默转 PASS
+        raise ValueError(f"source_commit 可达性校验异常: {e}") from e
 
 def tool_version(tool: str) -> str:
     if tool.startswith("lean"):
@@ -196,7 +213,8 @@ def manifest_hash(m: dict) -> str:
     ).hexdigest()
 
 def load_release_spec(base: Path) -> dict:
-    """读取受控版本输入 release-spec.json。缺失即异常（版本输入无受控来源，禁止静默默认）。"""
+    """读取受控版本输入 release-spec.json。缺失即异常（版本输入无受控来源，禁止静默默认）。
+    source_commit = 本次产品内容候选的基准提交（受控固定，非构建时 HEAD）。"""
     p = base / "release-spec.json"
     if not p.exists():
         raise FileNotFoundError(f"{p} 缺失——build 拒绝在无受控版本输入时生成候选")
@@ -204,7 +222,7 @@ def load_release_spec(base: Path) -> dict:
     if spec.get("schema") != "release-spec/1.0":
         raise ValueError(f"release-spec.json schema={spec.get('schema')!r} 不受支持（须 release-spec/1.0）")
     for key in ("product", "tuple", "frozen_registry", "approval_state", "approver",
-                "approval_records"):
+                "approval_records", "source_commit"):
         if key not in spec:
             raise ValueError(f"release-spec.json 缺少受控字段 {key}")
     if spec["approval_state"] not in ("UNAPPROVED", "APPROVED"):
@@ -222,6 +240,10 @@ def load_release_spec(base: Path) -> dict:
     if spec["approval_state"] == "APPROVED" and not (
             isinstance(spec.get("approver"), str) and spec["approver"]):
         raise ValueError("APPROVED 需要 approver（非空字符串）")
+    sc = spec.get("source_commit")
+    if not isinstance(sc, str) or not re.fullmatch(r"[0-9a-f]{40}", sc):
+        raise ValueError(f"release-spec.json source_commit 缺失或非法"
+                         f"（须 40 位小写十六进制 commit SHA）: {sc!r}")
     return spec
 
 def scan_artifacts(base: Path) -> tuple[list, list]:
@@ -264,11 +286,12 @@ def scan_artifacts(base: Path) -> tuple[list, list]:
 def build(base: Path = BASE) -> dict:
     now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     spec = load_release_spec(base)  # 受控版本输入（缺失/结构非法即异常，绝不静默默认）
+    git_commit_reachable(base, spec["source_commit"])  # 基准提交必须在仓库历史中可达
     artifacts, not_yet = scan_artifacts(base)
-    # —— 双层哈希（先内容后封套，无自引用）——
+    # —— 双层哈希（先内容后封套，无自引用）；source_commit 由 spec 受控固定 ——
     staged = {"artifacts": artifacts, "not_yet": not_yet,
               "release_candidate": {"product": spec["product"], "tuple": spec["tuple"],
-                                    "source_commit": git_commit()}}
+                                    "source_commit": spec["source_commit"]}}
     rc = staged["release_candidate"]
     hr = release_hash(staged)
     rc["release_hash"] = hr
@@ -398,8 +421,12 @@ def _lean_record(r: dict) -> str:
 # 隔离测试身份（混合版本 PCB=2 CAD=1 FW=3 BOM=2；与生产候选重合时拒绝生成）
 MIXED_TEST_TUPLE = {"pcb": 2, "cad": 1, "fw": 3, "bom": 2}
 
-def gen_lean(manifest: dict, base: Path = BASE) -> None:
-    """受控转换（Batch4.2 P1-2 + Batch4.3）：manifest → Lean 常量文件。
+def render_lean(manifest: dict) -> str:
+    """受控生成 ReleaseCurrent.lean 的**纯函数**内容（Batch4.3.1 P1 精确生成一致性）。
+    gen_lean 落盘、check 用同一函数重新生成并与实际文件**逐字节比较**——
+    不得只检查哈希字符串是否存在。数据结构非法/身份与隔离测试重合时抛 ValueError，
+    调用方不得静默吞掉。
+
     currentTuple / currentApproved / currentCandidateApprover / currentRegistry /
     currentFrozenRegistry / currentReleaseHash / currentManifestHash 全部从
     release_candidate 真实生成（不再写死；冻结注册表由 release-spec 经 manifest 受控生成）。
@@ -574,9 +601,13 @@ theorem r2_isolated_registry_cannot_approve_real_candidate :
 
 end ChristmasBuddy
 """
+    return tpl
+
+def gen_lean(manifest: dict, base: Path = BASE) -> None:
+    """render_lean 的落盘入口（与 check 共用同一渲染实现，逐字节一致）。"""
     out = base / "proof/src/ChristmasBuddy/ReleaseCurrent.lean"
     out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(tpl + "\n", encoding="utf-8")
+    out.write_text(render_lean(manifest), encoding="utf-8")
 
 def load() -> dict:
     return json.loads((BASE / "m5_manifest.json").read_text(encoding="utf-8"))
@@ -630,26 +661,30 @@ def check(base: Path = BASE, manifest_path: Path | None = None) -> None:
     if stored_hm != recomputed_hm:
         bad.append(f"manifest_hash 不一致：登记 {fmt12(stored_hm)}… ≠ 重算 {recomputed_hm[:12]}…"
                    "（封套被篡改或字段漂移）")
-    # release-spec 一致性：受控输入 ↔ 生成清单（禁止手改 Manifest 伪造冻结版本）
+    # release-spec 一致性：受控输入 ↔ 生成清单（禁止手改 Manifest 伪造冻结版本/source_commit）
     try:
         spec = load_release_spec(base)
         diffs = [k for k in ("product", "tuple", "approval_state", "approver",
-                             "approval_records", "frozen_registry")
+                             "approval_records", "frozen_registry", "source_commit")
                  if _json_key(spec.get(k)) != _json_key(rc.get(k))]
         if diffs:
             bad.append(f"release-spec 不一致（{', '.join(diffs)}）——受控版本输入已变，须重新 build")
+        git_commit_reachable(base, spec["source_commit"])
     except (FileNotFoundError, ValueError, json.JSONDecodeError) as e:
         bad.append(f"release-spec 不可用: {e}")
-    # 7. ReleaseCurrent.lean 数据绑定
+    # 7. ReleaseCurrent.lean 精确生成一致性（Batch4.3.1 P1）：用同一 render_lean 重新生成
+    #    并与实际文件逐字节比较——不得只检查哈希字符串存在。
     lean_out = base / "proof/src/ChristmasBuddy/ReleaseCurrent.lean"
     if lean_out.exists():
-        lean = lean_out.read_text(encoding="utf-8")
-        if f'"{recomputed_rh}"' not in lean:
-            bad.append("ReleaseCurrent.lean 与 release_hash 不一致（须重新 gen-lean）")
-        if f'"{recomputed_hm}"' not in lean:
-            bad.append("ReleaseCurrent.lean 与 manifest_hash 不一致（须重新 gen-lean）")
-        if rc.get("approval_state") != "UNAPPROVED" and "currentApproved : Bool := false" in lean:
-            bad.append("approval_state 已变更但 Lean 常量未更新")
+        actual = lean_out.read_text(encoding="utf-8")
+        try:
+            expected = render_lean(m)
+        except (ValueError, KeyError, TypeError) as e:
+            bad.append(f"ReleaseCurrent 受控生成失败（数据矛盾，异常不静默）: {e}")
+        else:
+            if actual != expected:
+                bad.append("ReleaseCurrent.lean 与受控生成不一致（render_lean 逐字节比对失败）"
+                           "——手改无效，须重新 build")
     else:
         bad.append("ReleaseCurrent.lean 缺失（须重跑 build 生成）")
     # 8. 结论

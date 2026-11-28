@@ -64,3 +64,15 @@ Lean/脚本验证了「现实中的人」的身份。
 
 生产现状：release-spec.json（UNAPPROVED / 空冻结注册表 / 空批准注册表）；双层哈希规范全文见
 `reports/06-two-layer-release-hash.md`。本批后制造验证框架冻结，转入真实 EDA 工程与 PCB Layout。
+
+## Batch4.3.1 Source Commit 固定与 Lean MAP 完整性
+
+| 检查器 | 正向 | 负向 | 故障注入 | 证据 |
+|---|---|---|---|---|
+| source_commit 受控固定 | 生命周期 A→B：候选内容提交 A 入 spec → 批准提交 B 后重建：source_commit 仍 A、release_hash 不变、manifest_hash 正确变化、check PASS、Lean+公理审计 PASS | 0-缺失/非法格式/不可达提交 → build 拒绝（不得静默写 null）；G 漂移 A→B → release_hash 变 + 旧批准失效 | —（git_commit 自动 HEAD 已删除；git_commit_reachable 以 merge-base --is-ancestor 校验） | manifest_git_lifecycle_tests 12 案 |
+| 工件变更生命周期 | — | H 提交 C（PCB 工件）→ 旧清单 check FAIL（漂移+release_hash）；重建后旧批准不继承（治理 FAIL） | — | 同上 |
+| ReleaseCurrent 精确生成一致性 | render_lean（纯函数）落盘；check 用同一函数重新生成逐字节比对；手改后重新 build 自愈 | 手改 currentTuple / currentFrozenRegistry / currentRegistry / R1 定理 / currentApproved（保留正确哈希串）→ 全部 FAIL | — | gen 测试 R-×5 + R-heal |
+
+说明：ReleaseCurrent.lean 自身文件哈希**不**加入任何内容哈希（防循环依赖）；其完整性由
+「同 manifest 重渲染逐字节相等」承担。临时目录测试已全部切换为独立临时 Git 仓
+（不再依赖真实仓库全局 HEAD）。

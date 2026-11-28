@@ -2,7 +2,7 @@
   "schema": "m5-release-manifest/3.0",
   "product": "christmas-buddy-v1",
   "date": "2026-11-28",
-  "generated_at": "2026-11-28T15:21:42Z",
+  "generated_at": "2026-11-28T15:52:54Z",
   "release_candidate": {
     "product": "christmas-buddy-v1",
     "tuple": {
@@ -12,9 +12,9 @@
       "bom": null
     },
     "tuple_state": "preresearch（版本由 release-spec.json 控制；冻结须 GATE 门禁人工批准）",
-    "source_commit": "2658ae458353c41cee115dd654e340050ccc5ef7",
-    "release_hash": "5b1dff0f02ed4d3dd87dbad9ed9d330d1e7734eef4f03a5d5ef31243441bf376",
-    "manifest_hash": "de057815511f2b3358b260c905deb46d9074963e188cdc4e26cb870535c1bd49",
+    "source_commit": "626981a34cc8d6bc9d8d61081eb5254e129daaa8",
+    "release_hash": "770e22938623c2237d2364fc4c84c486979913870cb10f99db8396793ef692f5",
+    "manifest_hash": "84f50767a49802e7fd438553c7572f0cc91cfc35d154bd4f727fc1b5940df0bf",
     "approval_state": "UNAPPROVED",
     "approver": null,
     "approval_records": [],
@@ -106,8 +106,8 @@
     {
       "path": "m5_manifest.py",
       "logical_name": "Manifest 检查器源码",
-      "sha256": "efc25d382e987b29161f905f0bc57db4ac20454be93626487d00abf7dc537543",
-      "bytes": 38948,
+      "sha256": "d964fb5185e0fa977a593cda47dbeb4205aefc16e46f31dc27029dabc9c491ba",
+      "bytes": 41504,
       "version_slot": "bom",
       "tool": "python3",
       "tool_version": "python3",

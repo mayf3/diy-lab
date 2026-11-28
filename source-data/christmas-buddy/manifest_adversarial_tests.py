@@ -19,6 +19,7 @@ import io
 import json
 import os
 import shutil
+import subprocess
 import sys
 import tempfile
 from pathlib import Path
@@ -26,6 +27,18 @@ from pathlib import Path
 SRC = Path(__file__).parent
 sys.path.insert(0, str(SRC))
 import m5_manifest as M5  # noqa: E402
+
+def git_commit_all(tmp: Path, msg: str = "content") -> str:
+    """临时一次性 Git 仓提交（非共享工作区，全量暂存安全）；返回 HEAD SHA。
+    Batch4.3.1：source_commit 是 build 的必填受控字段（历史可达），临时树须自建提交基准。"""
+    def g(*args):
+        return subprocess.run(
+            ["git", "-c", "user.name=cbu-test", "-c", "user.email=cbu-test@test", *args],
+            cwd=tmp, capture_output=True, text=True, timeout=60)
+    assert g("init", "-b", "main").returncode == 0
+    add, c = g("add", "-A"), g("commit", "-m", msg)
+    assert add.returncode == 0 and c.returncode == 0, (add.stderr, c.stderr)
+    return g("rev-parse", "HEAD").stdout.strip()
 
 def fresh_tree() -> Path:
     tmp = Path(tempfile.mkdtemp(prefix="cbu_adv_"))
@@ -38,6 +51,10 @@ def fresh_tree() -> Path:
     (tmp / "manufacturing/gerber/top.gbr").write_bytes(b"G04 top v1\n")
     (tmp / "manufacturing/gerber/bottom.gbr").write_bytes(b"G04 bottom v1\n")
     shutil.copy2(SRC / "release-spec.json", tmp / "release-spec.json")  # 受控版本输入
+    spec = json.loads((tmp / "release-spec.json").read_text(encoding="utf-8"))
+    spec["source_commit"] = git_commit_all(tmp)  # 临时仓自身的内容提交基准
+    (tmp / "release-spec.json").write_text(json.dumps(spec, ensure_ascii=False, indent=2) + "\n",
+                                           encoding="utf-8")
     M5.build(tmp)
     return tmp
 

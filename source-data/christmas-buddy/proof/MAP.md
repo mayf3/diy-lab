@@ -48,7 +48,9 @@ m5_manifest check（8 步：工件 → release_hash 实时重算 → 批准精�
 | THM-版本失效 | thm_version_change_invalidates_old_approval / reg_{pcb,cad,fw,bom}_bump_invalidates | 四元组变化 → release_hash 变 → 旧批准失效 | N5 + 生成文件 4 条 bump 定理 | PROVEN + TESTED |
 | THM-注册 | thm_registry_membership_implies_approved / thm_unregistered_record_not_manufacturable / thm_empty_registry_not_manufacturable | approvedRegistry（生产空）/ currentRegistry（受控生成） | reg_mixed_unregistered / N6 / thm_empty_registry | PROVEN + TESTED |
 | MAP-身份 | currentReleaseHash / currentManifestHash = manifest.release_candidate 对应字段 | check() 断言 Lean 文件内嵌双哈希 == 实时重算 | N7 伪造 manifest_hash FAIL | TESTED |
-| SPEC-受控输入 | — | release-spec.json（不进 ARTIFACT_TABLE——批准元数据不得入内容基线） | build 缺失即异常；check spec↔manifest 比对 | TESTED |
+| SPEC-受控输入 | — | release-spec.json（不进 ARTIFACT_TABLE——批准元数据不得入内容基线）；**source_commit 受控固定**（候选基准提交，非构建时 HEAD；merge-base --is-ancestor 校验可达） | build 缺失/非法/不可达即异常；check spec↔manifest 比对（含 source_commit） | TESTED |
+| MAP-精确生成 | （结构：生成文件是 manifest 的纯函数投影） | Batch4.3.1：render_lean 纯函数；gen_lean 落盘、check 同函数重渲染逐字节比对（文件哈希不入内容基线——防循环） | 手改 currentTuple/Registry/R1/currentApproved 五项全部 FAIL；重新 build 自愈 | TESTED |
+| GIT-生命周期 | — | 独立临时 Git 仓 A（内容）→B（批准元数据）→C（工件变更）：批准提交后 source_commit 仍 A、release_hash 稳定、check PASS；C 后旧批准失效 | manifest_git_lifecycle_tests 12 案 | TESTED |
 | OB-1 | （无——存在性不证明） | NOT_YET 工件 10 项不携带虚构哈希 | NOT_YET 出现文件即 FAIL | TESTED |
 
 ## 证据状态声明（不得互相冒充）
