@@ -87,7 +87,13 @@
     },
     {
       "name": "manifest_adversarial",
-      "cmd": "python3 source-data/christmas-buddy/manifest_adversarial_tests.py"
+      "cmd": "python3 source-data/christmas-buddy/manifest_adversarial_tests.py",
+      "note": "v3：含 A14 符号链接排序回归（PR#36 Review #4727196824）与 A15/A16 批准治理"
+    },
+    {
+      "name": "manifest_lean_gen",
+      "cmd": "python3 source-data/christmas-buddy/manifest_lean_gen_tests.py",
+      "note": "Batch4.2：gen_lean 从 Manifest 真实生成（P1-2）+ 批准治理故障注入（P1-1）；临时目录隔离"
     },
     {
       "name": "verify_all_chain",
