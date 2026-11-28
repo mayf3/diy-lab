@@ -1,0 +1,428 @@
+PROTEL NETLIST 2.0
+[
+DESIGNATOR
+J1
+FOOTPRINT
+HDR-TH_22P-P2.54-V-F
+PARTTYPE
+BX-PM2.54-1-22PY
+DESCRIPTION
+插孔结构:1x22P;间距:2.54mm;行距:-;圆孔/方孔:方孔;安装方式:直插;排数:单排;总孔位数:22P;额定电流:3A;额定电压:-;插孔方向:顶部;塑高:8.5mm;触头材质:黄铜;触头镀层:金;工作温度:-40℃~+105℃;
+Component Kind
+Standard
+Add into BOM
+yes
+Convert to PCB
+yes
+Device
+BX-PM2.54-1-22PY
+PCB Layer
+Default
+Symbol
+BX-PM2.54-1-22PY
+Designator
+J1
+Channel ID
+
+Group ID
+
+Reuse Block
+
+Description
+插孔结构:1x22P;间距:2.54mm;行距:-;圆孔/方孔:方孔;安装方式:直插;排数:单排;总孔位数:22P;额定电流:3A;额定电压:-;插孔方向:顶部;塑高:8.5mm;触头材质:黄铜;触头镀层:金;工作温度:-40℃~+105℃;
+Name
+BX-PM2.54-1-22PY
+PIN Length
+3.2mm
+Operating Temperature
+-40℃~+105℃
+Contact Plating
+金
+Contact Material
+黄铜
+Insulation Height
+8.5mm
+Holes Direction
+顶部
+Voltage Rating (Max)
+-
+Current Rating
+3A
+Number of Positions
+22P
+Number of Rows
+单排
+Mounting Type
+直插
+Circular Hole / Square Hole
+方孔
+Row Spacing
+-
+Pitch
+2.54mm
+Holes Structure
+1x22P
+3D Model Title
+HDR-TH_22P-P2.54-V-F
+Supplier
+LCSC
+Datasheet
+https://item.szlcsc.com/datasheet/BX-PM2.54-1-22PY/19218541.html
+JLCPCB Part Class
+Extended Part
+Supplier Footprint
+插件,P=2.54mm
+Manufacturer Part
+BX-PM2.54-1-22PY
+Manufacturer
+Bossie(博锡)
+Supplier Part
+C18078140
+LCSC Part Name
+1x22P 间距:2.54mm 直插
+Unique ID
+gge7
+
+*
+]
+[
+DESIGNATOR
+J3
+FOOTPRINT
+HDR-TH_22P-P2.54-V-F
+PARTTYPE
+BX-PM2.54-1-22PY
+DESCRIPTION
+插孔结构:1x22P;间距:2.54mm;行距:-;圆孔/方孔:方孔;安装方式:直插;排数:单排;总孔位数:22P;额定电流:3A;额定电压:-;插孔方向:顶部;塑高:8.5mm;触头材质:黄铜;触头镀层:金;工作温度:-40℃~+105℃;
+Component Kind
+Standard
+Add into BOM
+yes
+Convert to PCB
+yes
+Device
+BX-PM2.54-1-22PY
+PCB Layer
+Default
+Symbol
+BX-PM2.54-1-22PY
+Designator
+J3
+Channel ID
+
+Group ID
+
+Reuse Block
+
+Description
+插孔结构:1x22P;间距:2.54mm;行距:-;圆孔/方孔:方孔;安装方式:直插;排数:单排;总孔位数:22P;额定电流:3A;额定电压:-;插孔方向:顶部;塑高:8.5mm;触头材质:黄铜;触头镀层:金;工作温度:-40℃~+105℃;
+Name
+BX-PM2.54-1-22PY
+PIN Length
+3.2mm
+Operating Temperature
+-40℃~+105℃
+Contact Plating
+金
+Contact Material
+黄铜
+Insulation Height
+8.5mm
+Holes Direction
+顶部
+Voltage Rating (Max)
+-
+Current Rating
+3A
+Number of Positions
+22P
+Number of Rows
+单排
+Mounting Type
+直插
+Circular Hole / Square Hole
+方孔
+Row Spacing
+-
+Pitch
+2.54mm
+Holes Structure
+1x22P
+3D Model Title
+HDR-TH_22P-P2.54-V-F
+Supplier
+LCSC
+Datasheet
+https://item.szlcsc.com/datasheet/BX-PM2.54-1-22PY/19218541.html
+JLCPCB Part Class
+Extended Part
+Supplier Footprint
+插件,P=2.54mm
+Manufacturer Part
+BX-PM2.54-1-22PY
+Manufacturer
+Bossie(博锡)
+Supplier Part
+C18078140
+LCSC Part Name
+1x22P 间距:2.54mm 直插
+Unique ID
+gge8
+
+*
+]
+[
+DESIGNATOR
+K1
+FOOTPRINT
+SW-SMD_L3.9-W2.9-LS4.8-EH-A
+PARTTYPE
+YD-3410
+DESCRIPTION
+
+Component Kind
+Standard
+Add into BOM
+no
+Convert to PCB
+no
+Device
+YD-3410
+PCB Layer
+Default
+Symbol
+YD-3410
+Designator
+K1
+Channel ID
+
+Group ID
+
+Reuse Block
+
+Description
+
+Name
+通用两脚常开开关
+Supplier
+LCSC
+Datasheet
+
+Manufacturer
+
+Unique ID
+gge9
+Supplier Part
+TBD-MECH-AXIS
+Supplier Footprint
+TBD-MECH-AXIS（样轴确认后绑定 Boba U4 或实际 SKU 准确封装）
+LCSC Part Name
+通用两脚常开开关（MX 机械轴电气符号）
+Manufacturer Part
+通用两脚常开开关
+3D Model Title
+TBD-MECH-AXIS
+JLCPCB Part Class
+TBD-MECH-AXIS
+
+*
+]
+[
+DESIGNATOR
+K2
+FOOTPRINT
+SW-SMD_L3.9-W2.9-LS4.8-EH-A
+PARTTYPE
+YD-3410
+DESCRIPTION
+
+Component Kind
+Standard
+Add into BOM
+no
+Convert to PCB
+no
+Device
+YD-3410
+PCB Layer
+Default
+Symbol
+YD-3410
+Designator
+K2
+Channel ID
+
+Group ID
+
+Reuse Block
+
+Description
+
+Name
+通用两脚常开开关
+Supplier
+LCSC
+Datasheet
+
+Manufacturer
+
+Unique ID
+gge10
+Supplier Part
+TBD-MECH-AXIS
+Supplier Footprint
+TBD-MECH-AXIS（样轴确认后绑定 Boba U4 或实际 SKU 准确封装）
+LCSC Part Name
+通用两脚常开开关（MX 机械轴电气符号）
+Manufacturer Part
+通用两脚常开开关
+3D Model Title
+TBD-MECH-AXIS
+JLCPCB Part Class
+TBD-MECH-AXIS
+
+*
+]
+[
+DESIGNATOR
+K3
+FOOTPRINT
+SW-SMD_L3.9-W2.9-LS4.8-EH-A
+PARTTYPE
+YD-3410
+DESCRIPTION
+
+Component Kind
+Standard
+Add into BOM
+no
+Convert to PCB
+no
+Device
+YD-3410
+PCB Layer
+Default
+Symbol
+YD-3410
+Designator
+K3
+Channel ID
+
+Group ID
+
+Reuse Block
+
+Description
+
+Name
+通用两脚常开开关
+Supplier
+LCSC
+Datasheet
+
+Manufacturer
+
+Unique ID
+gge11
+Supplier Part
+TBD-MECH-AXIS
+Supplier Footprint
+TBD-MECH-AXIS（样轴确认后绑定 Boba U4 或实际 SKU 准确封装）
+LCSC Part Name
+通用两脚常开开关（MX 机械轴电气符号）
+Manufacturer Part
+通用两脚常开开关
+3D Model Title
+TBD-MECH-AXIS
+JLCPCB Part Class
+TBD-MECH-AXIS
+
+*
+]
+[
+DESIGNATOR
+K4
+FOOTPRINT
+SW-SMD_L3.9-W2.9-LS4.8-EH-A
+PARTTYPE
+YD-3410
+DESCRIPTION
+
+Component Kind
+Standard
+Add into BOM
+no
+Convert to PCB
+no
+Device
+YD-3410
+PCB Layer
+Default
+Symbol
+YD-3410
+Designator
+K4
+Channel ID
+
+Group ID
+
+Reuse Block
+
+Description
+
+Name
+通用两脚常开开关
+Supplier
+LCSC
+Datasheet
+
+Manufacturer
+
+Unique ID
+gge12
+Supplier Part
+TBD-MECH-AXIS
+Supplier Footprint
+TBD-MECH-AXIS（样轴确认后绑定 Boba U4 或实际 SKU 准确封装）
+LCSC Part Name
+通用两脚常开开关（MX 机械轴电气符号）
+Manufacturer Part
+通用两脚常开开关
+3D Model Title
+TBD-MECH-AXIS
+JLCPCB Part Class
+TBD-MECH-AXIS
+
+*
+]
+(
+GPIO4 
+J1-4 BX-PM2.54-1-22PY-4 Passive 
+K1-1 YD-3410-1 Passive 
+)
+(
+GPIO5 
+J1-5 BX-PM2.54-1-22PY-5 Passive 
+K2-1 YD-3410-1 Passive 
+)
+(
+GPIO6 
+J1-6 BX-PM2.54-1-22PY-6 Passive 
+K3-1 YD-3410-1 Passive 
+)
+(
+GPIO7 
+J1-7 BX-PM2.54-1-22PY-7 Passive 
+K4-1 YD-3410-1 Passive 
+)
+(
+GND 
+J1-22 BX-PM2.54-1-22PY-22 Passive 
+J3-1 BX-PM2.54-1-22PY-1 Passive 
+J3-21 BX-PM2.54-1-22PY-21 Passive 
+J3-22 BX-PM2.54-1-22PY-22 Passive 
+K1-2 YD-3410-2 Passive 
+K2-2 YD-3410-2 Passive 
+K3-2 YD-3410-2 Passive 
+K4-2 YD-3410-2 Passive 
+)

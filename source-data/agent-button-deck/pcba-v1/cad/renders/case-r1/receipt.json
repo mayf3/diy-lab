@@ -1,0 +1,24 @@
+{
+ "created_at": "2026-11-29T00:09:13",
+ "tool": "3.11.14",
+ "freecad_version": "1.1.4",
+ "execution_result": {
+  "ok": true,
+  "failed": []
+ },
+ "checks_failed_list": [],
+ "inputs": {
+  "model_script_sha256": "6819d7b01a5dc1bf5080711b3c497436502f98c092068c96154a5bd28ea12aa4",
+  "checker_sha256": "2a755aed17adc706a12234ebc2b2cb1bbff5abc4c4ed570607a0061f4efb9e70",
+  "dims_sha256": "830a465ff99fea3d2abc6eac245f06279842193efb74e409909cf28cddd437b3"
+ },
+ "outputs": {
+  "step_sha256::body": "55aaf168d8e0403279ba9822c4d20de21d9140a9eed26d7bc78591d0f4ae9e08",
+  "step_sha256::base": "e43d8a0841bb480087279e46c0404733c8f9be184f38f6053f4c8d43fe05dac0",
+  "step_sha256::cap-a": "a9e2077a2fce340573b75dddf976342d422571339d6f3fbc297f46a68779d4a9",
+  "step_sha256::cap-b": "a3ce594e8cb1d62728a4916f34cd4239216d498c5d1c0e26b338f84c187ecefd",
+  "step_sha256::cap-c": "f607c761dacd62ed32de402c01d2c2e4f01c630232f387a35ca387c78645c184",
+  "step_sha256::cap-d": "bdbcf7f08281b7ed525014349f5b3c98cd7d2ed7c7be88ebd68a729fcf72e5fe"
+ },
+ "checks_sha256": "ff44a0755987536aa75589e8a70a124a0a3f0e820813bb08773f0a25c60db2fd"
+}

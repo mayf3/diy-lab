@@ -9,6 +9,7 @@
 #   主体背面截面分析存在两个分离开口；开口中心距；贯穿背壁；USB 插头包络可通过；
 #   连接器包络与底座裙壁无干涉；主体完整落入底座设计区域（非仅 bbox 长宽比较）。
 
+import hashlib
 import json
 import math
 import os
@@ -16,6 +17,7 @@ import sys
 
 import FreeCAD as App
 import Part
+FC_VERSION = ".".join(str(v) for v in App.Version()[:3])
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 print("SCRIPT LOADED, argv:", sys.argv)
@@ -283,6 +285,32 @@ def main():
                    "measured": measured,
                    "note": "全部数值从 STEP 实际几何重算（check_case.py），参数仅作期望值对比"},
                   f, ensure_ascii=False, indent=1)
+
+    # 证据回执：绑定本次检查所依据的输入与产物内容摘要（check_project.py 逐项重算比对）
+    def sha(rel):
+        h = hashlib.sha256()
+        with open(os.path.join(HERE, rel), "rb") as fh:
+            for chunk in iter(lambda: fh.read(65536), b""):
+                h.update(chunk)
+        return h.hexdigest()
+    receipt = {
+        "created_at": __import__("datetime").datetime.now().isoformat(timespec="seconds"),
+        "tool": sys.version.split()[0],
+        "freecad_version": FC_VERSION,
+        "execution_result": {"ok": not failed, "failed": list(failed)},
+        "checks_failed_list": list(failed),
+        "inputs": {
+            "model_script_sha256": sha("g2-case-r1.py"),
+            "checker_sha256": hashlib.sha256(open(os.path.abspath(__file__), "rb").read()).hexdigest(),
+            "dims_sha256": sha(os.path.join("renders", "case-r1", "dims.json")),
+        },
+        "outputs": {f"step_sha256::{n}": sha(os.path.join("renders", "case-r1", f"case-r1-{n}.step"))
+                    for n in ("body", "base", "cap-a", "cap-b", "cap-c", "cap-d")},
+        "checks_sha256": sha(os.path.join("renders", "case-r1", "checks.json")),
+    }
+    with open(os.path.join(OUT, "receipt.json"), "w") as f:
+        json.dump(receipt, f, indent=1)
+    print("receipt written")
     print("CHECKS:", "OK" if not failed else f"FAILED {failed}")
     print("measured:", json.dumps(measured))
     print("SELF-TEST: OK")

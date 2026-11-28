@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import json
+import subprocess
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -41,6 +43,33 @@ def build() -> dict:
             **presentation,
         })
     checks = environment_checks(env)
+    nine = {}
+    try:
+        prj_full = json.loads((ROOT / 'hardware/space-buddy-r1/project.json').read_text())
+        nine = dict(prj_full.get('workbench_nine', {}))
+        nine.setdefault('appearance_progress',
+                        prj_full.get('appearance', {}).get('g2_3_refinements', '见项目记录'))
+    except Exception:
+        nine = {}
+    # Hardware Studio（PR-A）：统一项目模型校验器作为唯一真源（子进程，失败如实呈现）
+    hardware = None
+    try:
+        proc = subprocess.run(
+            [sys.executable, 'hardware/check_project.py',
+             '--project', 'hardware/space-buddy-r1/project.json'],
+            capture_output=True, text=True, timeout=30, cwd=str(ROOT))
+        # 校验器失败（exit 2）时同样输出结构化 JSON——必须保留 facts（stale 状态可见），
+        # 只有解析失败/超时才退化为错误文本
+        if proc.stdout.strip():
+            try:
+                hardware = json.loads(proc.stdout)
+                hardware['exit_code'] = proc.returncode
+            except json.JSONDecodeError:
+                hardware = {'ok': False, 'error': '校验器输出不可解析：' + proc.stdout[:200]}
+        else:
+            hardware = {'ok': False, 'error': (proc.stderr or '校验器无输出')[:400]}
+    except Exception as exc:  # 校验器故障必须可见，不得静默吞掉
+        hardware = {'ok': False, 'error': str(exc)[:400]}
     return {
         'schema_version': 1,
         'title': '硬件工作台',
@@ -55,6 +84,8 @@ def build() -> dict:
             'ready': all(check['status'] == 'passed' for check in checks),
         },
         'projects': projects,
+        'hardware': hardware,
+        'hardware_next': nine,
         'documents': catalog['documents'],
         'resources': catalog['resources'],
     }

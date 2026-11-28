@@ -1,0 +1,363 @@
+{
+  "schema_version": 1,
+  "product": "Space Buddy Deck R1",
+  "version_contract": {
+    "format": "R1.<pcb>.<cad>.<fw>.<bom>",
+    "revisions": {
+      "pcb": null,
+      "cad": 3,
+      "fw": "compiled-untested-1",
+      "bom": "batch1-v3"
+    },
+    "rule": "任一影响接口或尺寸的变更：递增对应段与整体版本，并按 dependency_graph 将下游证据标记 stale（需重新验证）。禁止只声明部分段的版本。"
+  },
+  "domains": {
+    "cad": {
+      "status": "原型完成（外观冻结 G2-3 版）",
+      "entry": "source-data/agent-button-deck/pcba-v1/cad/g2-case-r1.py",
+      "checker": "source-data/agent-button-deck/pcba-v1/cad/check_case.py",
+      "outputs": [
+        "source-data/agent-button-deck/pcba-v1/cad/renders/case-r1/case-r1-body.step",
+        "source-data/agent-button-deck/pcba-v1/cad/renders/case-r1/case-r1-base.step",
+        "source-data/agent-button-deck/pcba-v1/cad/renders/case-r1/case-r1-cap-a.step",
+        "source-data/agent-button-deck/pcba-v1/cad/renders/case-r1/case-r1-cap-b.step",
+        "source-data/agent-button-deck/pcba-v1/cad/renders/case-r1/case-r1-cap-c.step",
+        "source-data/agent-button-deck/pcba-v1/cad/renders/case-r1/case-r1-cap-d.step",
+        "source-data/agent-button-deck/pcba-v1/cad/renders/case-r1/dims.json",
+        "source-data/agent-button-deck/pcba-v1/cad/renders/case-r1/checks.json",
+        "source-data/agent-button-deck/pcba-v1/cad/renders/case-r1/views/view-front.png",
+        "source-data/agent-button-deck/pcba-v1/cad/renders/case-r1/views/view-iso45.png",
+        "source-data/agent-button-deck/pcba-v1/cad/renders/case-r1/views/view-side.png",
+        "source-data/agent-button-deck/pcba-v1/cad/renders/case-r1/views/view-back.png",
+        "source-data/agent-button-deck/pcba-v1/cad/renders/case-r1/views/view-exploded.png"
+      ],
+      "evidence": "checks.json ok=true 且负向自检通过（check_case.py 每次建模后必跑）"
+    },
+    "eda": {
+      "status": "进行中（原理图真实闭环+占位语义隔离：K1–K4 已换两电气脚通用开关符号（YD-3410 承载，pin1/2），C9900017374 整份网表零出现；Add into BOM=no + Convert to PCB=no（BOM 真实导出仅 J1,J3 一行）；J1/J3 连接器断言入列；网表语义断言已接入校验器；45→52 项断言全过；ERC 0 error/2 组排母预期浮动）",
+      "editor_note": "EDA 环境已激活且读写往返验收（2026-11-26，MakerLab-EDA-Check-20261126.eprj3）——环境可用 ≠ 产品 PCB 存在",
+      "project": {
+        "kind": "cloud-workspace + 本地会话",
+        "project_uuid": "4ab9e52666a4fc7fe9b1d0c7c4c4263444d972eb139973d04478d976200a78b8",
+        "schematic_uuid": "7415725566084bd0",
+        "local_session_path": "/Users/yanfenma/Documents/LCEDA-Pro/projects/Space Buddy Deck R1/Space Buddy Deck R1.eprj3（本地实例 uuid 4a7cbe80…，Schematic/P1 uuid 不变）",
+        "readback_file": "hardware/space-buddy-r1/eda-readback.json",
+        "session": "9b2df7cb（可见会话，保存→关闭→重开后读回）",
+        "created_at": "2026-11-28"
+      },
+      "expected_outputs": [
+        "原理图",
+        "PCB",
+        "DRC 报告",
+        "BOM",
+        "CPL",
+        "Gerber",
+        "PCB STEP"
+      ],
+      "outputs_present": [
+        {
+          "name": "原理图 Schematic1/P1（6 元件 22 导线 + 12 网络标签 + 1 GND 符号；K1–K4/J1/J3）",
+          "type": "schematic",
+          "uuid": "7415725566084bd0",
+          "evidence": "hardware/space-buddy-r1/eda-readback.json"
+        },
+        {
+          "name": "PCB1 对象（空板）",
+          "type": "pcb",
+          "uuid": "9c301e7941e42cc1",
+          "evidence": "hardware/space-buddy-r1/eda-readback.json"
+        },
+        {
+          "name": "网表导出（PROTEL，重开会话稳定导出 d3f46041…；含语义断言）",
+          "type": "netlist",
+          "uuid": "7415725566084bd0",
+          "evidence": "hardware/space-buddy-r1/netlist-evidence.json",
+          "path": "hardware/space-buddy-r1/netlist-evidence.net",
+          "digest": "d3f46041f40113632179f7cd62b1f6383d0e01591703b33399d015f5681dba50",
+          "assert_script": "hardware/space-buddy-r1/eda-assert-netlist.py"
+        },
+        {
+          "name": "BOM 真实导出（CSV，仅 J1/J3 一行；含语义断言）",
+          "type": "bom",
+          "path": "hardware/space-buddy-r1/bom-evidence.csv",
+          "digest": "327f8e17fe71774ff33bb14ac8248049fca116a382c1af96f38e4e5fdf6ced7f",
+          "evidence": "hardware/space-buddy-r1/netlist-evidence.json",
+          "assert_script": "hardware/space-buddy-r1/eda-assert-netlist.py"
+        }
+      ],
+      "schematic_progress": {
+        "components_placed": true,
+        "component_designators": {
+          "header_left": "J1",
+          "header_right": "J3",
+          "switch_1": "K1",
+          "switch_2": "K2",
+          "switch_3": "K3",
+          "switch_4": "K4"
+        },
+        "designator_method": "sch_SourcePrimitiveComponent.update({designator})——2026-11-28 修改后 get 读回一致（此前误用 updateAttribute：仅属性显示/位置，不改值）",
+        "connector": "J1/J3 = BX-PM2.54-1-22PY（C18078140，1×22P 2.54mm 母排）；间距/插入深度/塑高待实物验证（G4）",
+        "switch_symbol": "两电气脚常开符号（YD-3410 器件承载，仅 pin1/pin2；隔离工程演练后应用）。MX 机械轴=2 金属触点+3 塑料定位脚，塑料脚不属于电气引脚、不入网表",
+        "official_pinout_basis": "Espressif ESP32-S3-DevKitC-1 v1.1 用户指南 Header Block J1/J3 表（2026-11-28 查证）：J1.4=GPIO4、J1.5=GPIO5、J1.6=GPIO6、J1.7=GPIO7；GND=J1.22/J3.1/J3.21/J3.22；USB_D±=J3.19/J3.20 载板不引入",
+        "nets": {
+          "GPIO4": [
+            "J1-4",
+            "K1-1"
+          ],
+          "GPIO5": [
+            "J1-5",
+            "K2-1"
+          ],
+          "GPIO6": [
+            "J1-6",
+            "K3-1"
+          ],
+          "GPIO7": [
+            "J1-7",
+            "K4-1"
+          ],
+          "GND": [
+            "J1-22",
+            "J3-1",
+            "J3-21",
+            "J3-22",
+            "K1-2",
+            "K2-2",
+            "K3-2",
+            "K4-2"
+          ]
+        },
+        "wiring": "J1.4–J1.7 竖直导线+GPIO 标签；J1.22/J3.1/J3.21/J3.22 竖直导线+公共 GND 导轨+GROUND 网络符号；网表断言证明排母引脚真实入网",
+        "erc": {
+          "error": 0,
+          "warning": 2,
+          "detail": "CHECKFLOATPIN×2 组（36 引脚，全部=排母预期未使用引脚）：J1 未用 17 脚（3V3×2/RST/GPIO15-18/8/3/46/9-14/5V）；J3 未用 19 脚（TX/RX/GPIO1/2/42-35/0/45/48/47/21 及 USB_D±/GPIO19-20，USB 属开发板自身通道，载板不引入）。开关第 3 脚浮动警告已随两脚符号更换消失。SHOWDANDLING=0。逐条分类见 eda-readback.json"
+        },
+        "netlist_assertions": {
+          "script": "hardware/space-buddy-r1/eda-assert-netlist.py",
+          "ok": true,
+          "failed": [],
+          "coverage": "GPIO 精确映射×4 / GND 精确集合 / 无互短 / 无电源短路 / 开关引脚完整 / 排母真实入网 / C9900017374 隔离"
+        },
+        "persistence": {
+          "cycle": "换件+属性隔离→异步落盘→会话关闭→工程重开→导出→再导出",
+          "result": "重开导出两次逐字节一致（d3f46041…）",
+          "caveat": "关闭前导出捕获属性异步落盘中间态（fbaa5030…）——以重开稳定导出为唯一源"
+        },
+        "netlist_exported": true,
+        "netlist_sha256_note": "哈希一律以 netlist-evidence.json 的 sha256 字段为准（自动生成，不手抄）",
+        "switch_footprint": "TBD（样轴确认后绑定 Boba U4 或实际 SKU 准确封装）。EDA 占位绑定 SW-SMD_L3.9-W2.9-LS4.8-EH-A 被 Convert to PCB=no 语义隔离（无法进入 PCB）+ Add into BOM=no（无法进入 BOM）",
+        "isolation": {
+          "method": "临时工程 SB-R1-Lab-Isolation 验证后应用：properties 支持 Add into BOM/Convert to PCB；replace 因引脚号集合不一致被拒（3脚→2脚），改为 remove+re-add+重接线",
+          "add_into_bom": "no",
+          "convert_to_pcb": "no",
+          "c9900017374_in_netlist": false,
+          "c9900017374_in_bom_export": false,
+          "bom_export_rows": [
+            {
+              "designator": "J1,J3",
+              "part": "BX-PM2.54-1-22PY",
+              "supplier_part": "C18078140"
+            }
+          ],
+          "negative_tests": "GPIO 篡改/公排针回退/BOM 翻转/pin3 回归/Supplier Part 回退 全部被断言拒绝"
+        },
+        "connector_assertions": "J1/J3 Supplier Part=C18078140、器件名=BX-PM2.54-1-22PY（1×22P/2.54mm/PM 母排）；KH-2.54PH90 公排针整网表禁入（负向测试覆盖）"
+      }
+    },
+    "firmware": {
+      "status": "已真实编译（esp32:esp32 4.0.0 锁定；未烧录、未实测）",
+      "entry": "source-data/agent-button-deck/pcba-v1/firmware-hid/AgentButtonDeckHID.ino",
+      "evidence": "source-data/agent-button-deck/pcba-v1/firmware-hid/build-evidence.json",
+      "log": "source-data/agent-button-deck/pcba-v1/firmware-hid/compile-2026-11-28.log",
+      "toolchain": {
+        "arduino_cli": "1.6.0",
+        "core": "esp32:esp32@4.0.0",
+        "index": "https://espressif.github.io/arduino-esp32/package_esp32_index.json"
+      },
+      "fqbn": "esp32:esp32:esp32s3:USBMode=default,CDCOnBoot=default,FlashSize=8M,PSRAM=opi",
+      "result": {
+        "program": "371961/1310720 (28%)",
+        "global": "56108/327680 (17%)",
+        "app_bin_sha256": "66c55a3996f5b9f5393a2380e683d3febe027953460b7c3253c32af2b8f40ee5"
+      },
+      "boundary": "只编译：不烧录；USB 枚举/按键行为待到货实测验收（§固件/主机与整机验收）"
+    },
+    "bom": {
+      "status": "batch1 采购清单（UNKNOWN 项待用户核对）",
+      "entry": "source-data/agent-button-deck/pcba-v1/bom-batch1-user.md",
+      "electrical_bom_evidence": {
+        "file": "hardware/space-buddy-r1/bom-evidence.csv",
+        "sha256": "327f8e17fe71774f…（完整值见 netlist-evidence.json bom_export.sha256）",
+        "note": "真实导出（getBomFile CSV）：仅 J1,J3 一行（C18078140×2）；K1–K4/TBD-MECH-AXIS 零出现；语义断言强制",
+        "raw_rows_source": "netlist-evidence.json bom_export.rows（真实 CSV 机器解析，非构造）"
+      }
+    },
+    "manufacturing": {
+      "status": "未授权（未冻结不下单）",
+      "package_required": [
+        "EDA 原生工程",
+        "Gerber",
+        "BOM（LCSC 编号）",
+        "CPL",
+        "PCB STEP",
+        "外壳 STEP",
+        "分件 STL",
+        "外壳 3MF",
+        "装配说明",
+        "零件清单",
+        "版本清单"
+      ],
+      "package_present": [],
+      "dfm": {
+        "usb_switch_wave": "待厂家确认（塑料轴体过波峰/手插后焊）",
+        "template": "source-data/agent-button-deck/pcba-v1/jlc-dfm-checklist.md",
+        "status": "待厂家确认（话术已备，等轴体 SKU 定档；通用插件声明不构成轴体 DFM 通过）"
+      },
+      "order_authorized": false
+    },
+    "acceptance": {
+      "status": "未开始",
+      "criteria": "factory-delivery-plan §6 七条（免焊接为否决项）",
+      "evidence": null
+    },
+    "pcb": {
+      "status": "Layout 草案进行中（参数化草案已建档；EDA 原生画布放置被阻断——已登记；不冻结、不导 Gerber）",
+      "draft_entry": "source-data/agent-button-deck/pcba-v1/pcb/g3-pcb-draft-r1.py",
+      "draft_outputs": [
+        "source-data/agent-button-deck/pcba-v1/pcb/draft/pcb-draft-r1.json",
+        "source-data/agent-button-deck/pcba-v1/pcb/draft/pcb-draft-r1.svg"
+      ],
+      "official_basis": "PCB_ESP32-S3-DevKitC-1_V1.1_20220429.pdf 第1页标注（SHA256 3f6716…，2026-11-29 重下载核验一致）：排距 22.86=25.40−2×1.27、间距 2.54、板框 25.40×62.74、USB 区 8.00",
+      "draft_contents": [
+        "J1/J3 1×22P 母排焊盘坐标（排距 22.86 官方；pin1=3V3 远 USB 端，pin22=GND 近 USB 端）",
+        "GPIO4–7 引出焊盘定位（J1.4–7 顶部远端）",
+        "DevKitC 包络 + USB 区悬出载板底边 2.74（草案）",
+        "四键 2×2 区域映射壳体键距 33（placeholder，等样轴）",
+        "GND 规划：底面覆铜草案待 EDA 原生放置后实施"
+      ],
+      "joint_conflict_exposed": "K3/K4 键区与插座区在当前壳体坐标下重叠——G4 联合检查三选一（双层载板/调键距/竖置 DevKitC）；草案不隐瞒不冻结",
+      "eda_canvas_blocker": "pcb_Document.importChanges 需画布确认对话框，自动环境下 PCB 文档无法就绪（getDocumentReadyState=notLoaded，tab 已建但画布不加载）；EDA 原生放置等画布可用或人工确认一次",
+      "preconditions_before_pcb_convert": [
+        "PCB 转换前必须重新检查 K1–K4 Convert to PCB=no（eda-assert-netlist.py 已强制）",
+        "DevKitC 实物实测：排距/USB 中心距/板框终判",
+        "样轴确认后绑定真正机械轴封装（不复用 YD-3410 SMD 占位）",
+        "G4 联合检查选定冲突解除方案后冻结板框"
+      ],
+      "not_frozen": [
+        "载板外形 76×62",
+        "焊排起点",
+        "键距 33",
+        "键孔 15.6",
+        "螺柱",
+        "USB 中心距",
+        "排距实测终判"
+      ]
+    }
+  },
+  "dependency_graph": {
+    "dims.usb_ports": {
+      "downstream": [
+        "cad.case",
+        "cad.checks",
+        "joint-checks",
+        "pcb.usb-footprint",
+        "manufacturing.package"
+      ]
+    },
+    "dims.keys": {
+      "downstream": [
+        "cad.case",
+        "cad.caps",
+        "cad.checks",
+        "joint-checks",
+        "pcb.switch-footprint",
+        "manufacturing.package"
+      ]
+    },
+    "dims.boss": {
+      "downstream": [
+        "cad.base",
+        "cad.checks",
+        "joint-checks",
+        "pcb.mount-holes",
+        "manufacturing.package"
+      ]
+    },
+    "dims.skirt": {
+      "downstream": [
+        "cad.base",
+        "cad.checks",
+        "joint-checks",
+        "manufacturing.package"
+      ]
+    },
+    "pcb.rev": {
+      "downstream": [
+        "joint-checks",
+        "eda.gerber",
+        "eda.cpl",
+        "bom",
+        "manufacturing.package"
+      ]
+    },
+    "cad.rev": {
+      "downstream": [
+        "shell-step",
+        "shell-stl",
+        "shell-3mf",
+        "joint-checks",
+        "manufacturing.package"
+      ]
+    },
+    "firmware.rev": {
+      "downstream": [
+        "acceptance.flash-test"
+      ]
+    }
+  },
+  "joint_check": {
+    "status": "草案冲突已量化：K3/K4 键区×插座区重叠（见 domains.pcb.joint_conflict_exposed）；等：实物测量 → G4 联合检查三选一 → 板框冻结",
+    "contract": "PCB 板框/安装孔/排母高度/开关高度/USB 连接器位置 × 外壳开孔/螺柱/键帽行程/维修空间，共同机械坐标原点=底座地板上表面"
+  },
+  "workbench_nine": {
+    "looks_like": "/case-r1-viewer.html",
+    "cad_done": "checks.json 全绿 + 外观冻结",
+    "factory_can": "待 DFM 答复（话术已备，等轴体 SKU 定档）",
+    "blockers": [
+      "样轴与 DevKitC 未到货（第一批采购由负责人执行）",
+      "PCB EDA 原生放置待画布可用（importChanges 需确认对话框）；G4 联合检查三选一未定",
+      "固件已编译未烧录（等 DevKitC 到货实测）"
+    ],
+    "next_owner": [
+      {
+        "who": "负责人",
+        "what": "第一批下单（清单已终版）+ PR #31 复核合并"
+      },
+      {
+        "who": "Agent",
+        "what": "到货实测回填+样轴封装绑定+G4 联合检查+EDA 原生 PCB 放置"
+      }
+    ],
+    "needs_user": [
+      "四键用途与 F13–F16 绑定",
+      "键帽四色打印路线（G2 前）",
+      "第一批付款授权"
+    ],
+    "copy": {
+      "factory_can": "待 DFM 答复（话术已备，等轴体 SKU 定档）",
+      "package_incomplete_note": "缺件报告见 PR-C",
+      "product_not_ready_note": "未就绪——PCB 未开始、实物未适配、制造未授权"
+    }
+  },
+  "guard": {
+    "product_ready": false,
+    "product_ready_note": "EDA 环境可用、CAD 原型完成 ≠ 产品就绪：PCB 未开始、实物未适配、制造未授权"
+  },
+  "appearance": {
+    "g0_baseline_frozen": true,
+    "g0_evidence": "2026-11-27 发起人确认（concept-r1 视觉基准）",
+    "g2_3_refinements": "本轮外观原型完成（头盔双环/椭圆面罩/圆肩双臂/舷窗十字框/五角星节奏），几何检查全绿；未单独升级为用户确认冻结",
+    "iteration_paused": "2026-11-28 发起人指示：暂时冻结当前外观，停止无必要造型迭代"
+  }
+}

@@ -548,6 +548,115 @@
       ]
     }
   ],
+  "hardware": {
+    "project": "Space Buddy Deck R1",
+    "ok": true,
+    "failures": [],
+    "checks": {
+      "quad_complete": true,
+      "artifacts_present": true,
+      "cad_evidence_state": "valid",
+      "cad_geometry_green": true,
+      "eda_project_verified": true,
+      "joint_verified": false,
+      "package_complete": false,
+      "acceptance_done": false,
+      "manual_vs_evidence_consistent": true,
+      "eda_not_product_guard": true
+    },
+    "facts": {
+      "quad": {
+        "pcb": null,
+        "cad": 3,
+        "fw": "compiled-untested-1",
+        "bom": "batch1-v3"
+      },
+      "missing_files": [],
+      "cad_evidence_state": "valid",
+      "cad_evidence_diffs": [],
+      "dims_confirmed": false,
+      "dims_unconfirmed": [
+        "connector_protrusion",
+        "board_envelope",
+        "usb_ports",
+        "usb_opening",
+        "usb_plug_envelope",
+        "skirt_usb_clearance",
+        "body",
+        "keys",
+        "boss"
+      ],
+      "pcb_status": "进行中（原生工程已建立，产物未齐）",
+      "pcb_frozen": false,
+      "pcb_object_uuid": "9c301e7941e42cc1",
+      "pcb_object_verified": true,
+      "pcb_layout_started": false,
+      "pcb_design_verified": false,
+      "joint_status": "草案冲突已量化：K3/K4 键区×插座区重叠（见 domains.pcb.joint_conflict_exposed）；等：实物测量 → G4 联合检查三选一 → 板框冻结",
+      "package_complete": false,
+      "package_missing": [
+        "EDA 原生工程",
+        "Gerber",
+        "BOM（LCSC 编号）",
+        "CPL",
+        "PCB STEP",
+        "外壳 STEP",
+        "分件 STL",
+        "外壳 3MF",
+        "装配说明",
+        "零件清单",
+        "版本清单"
+      ],
+      "order_authorized": false,
+      "acceptance_done": false,
+      "product_ready_computed": false,
+      "product_ready_reasons": [
+        "CAD 设计检查未有效通过（尺寸存在占位/待实测项：connector_protrusion,board_envelope,usb_ports,usb_opening,usb_plug_envelope,skirt_usb_clearance,body,keys,boss）",
+        "PCB 版本未冻结（需真实 PCB 对象+DRC 全绿+联合验证通过）",
+        "板壳联合验证未完成",
+        "制造包缺件：EDA 原生工程、Gerber、BOM（LCSC 编号）、CPL、PCB STEP、外壳 STEP、分件 STL、外壳 3MF、装配说明、零件清单、版本清单"
+      ],
+      "design_ready": false,
+      "manufacturing_authorized": false,
+      "product_accepted": false,
+      "product_ready": false,
+      "eda_environment_note": "EDA 环境已激活且读写往返验收（2026-11-26，MakerLab-EDA-Check-20261126.eprj3）——环境可用 ≠ 产品 PCB 存在"
+    },
+    "stale_preview": [],
+    "note": "全部状态由本脚本从真实文件与回执计算；--changed 仅为影响预览",
+    "exit_code": 0
+  },
+  "hardware_next": {
+    "looks_like": "/case-r1-viewer.html",
+    "cad_done": "checks.json 全绿 + 外观冻结",
+    "factory_can": "待 DFM 答复（话术已备，等轴体 SKU 定档）",
+    "blockers": [
+      "样轴与 DevKitC 未到货（第一批采购由负责人执行）",
+      "PCB EDA 原生放置待画布可用（importChanges 需确认对话框）；G4 联合检查三选一未定",
+      "固件已编译未烧录（等 DevKitC 到货实测）"
+    ],
+    "next_owner": [
+      {
+        "who": "负责人",
+        "what": "第一批下单（清单已终版）+ PR #31 复核合并"
+      },
+      {
+        "who": "Agent",
+        "what": "到货实测回填+样轴封装绑定+G4 联合检查+EDA 原生 PCB 放置"
+      }
+    ],
+    "needs_user": [
+      "四键用途与 F13–F16 绑定",
+      "键帽四色打印路线（G2 前）",
+      "第一批付款授权"
+    ],
+    "copy": {
+      "factory_can": "待 DFM 答复（话术已备，等轴体 SKU 定档）",
+      "package_incomplete_note": "缺件报告见 PR-C",
+      "product_not_ready_note": "未就绪——PCB 未开始、实物未适配、制造未授权"
+    },
+    "appearance_progress": "本轮外观原型完成（头盔双环/椭圆面罩/圆肩双臂/舷窗十字框/五角星节奏），几何检查全绿；未单独升级为用户确认冻结"
+  },
   "documents": [
     {
       "id": "button-brief",

@@ -222,8 +222,48 @@
     return `<div class='document-list'>${documents.slice(0, 6).map((item) => `<div class='document-row'>${icon('file')}<div>${link(`/documents/${encodeURIComponent(item.id)}`, item.name, 'document-name')}</div></div>`).join('')}</div>${!localAvailable() ? `<p class='resource-detail'>本地文档在连接此 Mac 后可打开。</p>` : ''}`;
   }
 
+
+  function renderHardwareStudio() {
+    const hw = state.data.hardware;
+    if (!hw) return '';
+    const err = hw.error ? `<p class='body-muted'>校验器错误：${escapeHtml(hw.error)}</p>` : '';
+    const line = (label, value, cls) => `<div class='status-row'><span class='status-row-label'>${escapeHtml(label)}</span><div class='status-value ${cls || ''}'>${escapeHtml(value)}</div></div>`;
+    const lineRaw = (label, html, cls) => `<div class='status-row'><span class='status-row-label'>${escapeHtml(label)}</span><div class='status-value ${cls || ''}'>${html}</div></div>`;
+    if (!hw.ok) {
+      const fails = (hw.failures || []).map(f => `<li>${escapeHtml(f)}</li>`).join('');
+      return `<section class='panel' aria-label='Hardware Studio'><div class='panel-heading'><h2>Hardware Studio · Space Buddy R1</h2><span class='badge hold'>校验失败/过期</span></div><div class='status-list'>${err}<ul class='open-items'>${fails}</ul></div></section>`;
+    }
+    const facts = hw.facts || {};
+    const nine = (state.data.hardware_next || {});
+    const quad = (facts.quad || {});
+    const looks = nine.looks_like ? link(nine.looks_like, '五视图 + 可旋转模型', '', true) : '待输出';
+    const cadLabel = facts.cad_evidence_state === 'valid'
+      ? `有效（几何检查全绿）`
+      : `${facts.cad_evidence_state === 'stale' ? '已过期' : '未知'}——${(facts.cad_evidence_diffs || []).join('；') || '缺回执'}`;
+    const rows = [
+      line('外观原型进展', nine.appearance_progress || '见项目记录'),
+      lineRaw('产品长什么样', looks),
+      line('当前几何检查', cadLabel, facts.cad_evidence_state === 'valid' ? 'good' : 'attention'),
+      line('实物尺寸适配', facts.dims_confirmed ? '全部确认' : `待样品（未确认：${(facts.dims_unconfirmed || []).join('、')}）`, facts.dims_confirmed ? 'good' : 'attention'),
+      line('板壳联合验证', facts.joint_status, checks_or('joint_verified', facts) ),
+      line('制造准备与授权', facts.order_authorized ? '已授权' : '未授权（不付款不下单）', facts.order_authorized ? 'good' : 'attention'),
+      line('制造包是否齐全', facts.package_complete ? '齐全' : `未齐全（缺：${(facts.package_missing || []).join('、')}）`, facts.package_complete ? 'good' : 'attention'),
+      line('PCB 是否完成', facts.pcb_status, facts.pcb_frozen ? 'good' : 'attention'),
+      line('当前阻断', (nine.blockers || []).join('；'), 'attention'),
+      line('版本四元组', `R1.${quad.pcb || '未开始'}.${quad.cad}.${quad.fw}.${quad.bom}`),
+      line('产品是否就绪', facts.product_ready ? '就绪' : '未就绪', facts.product_ready ? 'good' : 'attention'),
+    ];
+    const ownerRows = (nine.next_owner || []).map(o => `<li>${escapeHtml(o.who)}：${escapeHtml(o.what)}</li>`).join('');
+    const needRows = (nine.needs_user || []).map(x => `<li>${escapeHtml(x)}</li>`).join('');
+    const reasons = (facts.product_ready_reasons || []).map(x => `<li>${escapeHtml(x)}</li>`).join('');
+    return `<section class='panel' aria-label='Hardware Studio'><div class='panel-heading'><h2>Hardware Studio · Space Buddy R1</h2><span class='badge ${facts.product_ready ? 'ready' : 'hold'}'>${facts.product_ready ? '产品就绪' : '产品未就绪'}</span></div><div class='status-list'>${rows.join('')}</div><div class='panel-body'><p class='note-storage'>未就绪原因（证据计算）</p><ul class='open-items'>${reasons}</ul><p class='note-storage'>下一步分工</p><ul class='open-items'>${ownerRows}</ul><p class='note-storage'>需要本人确认</p><ul class='open-items'>${needRows}</ul></div></section>`;
+  }
+  function checks_or(key, facts) {
+    return facts[key] !== undefined ? String(facts[key]) : '未开始';
+  }
+
   function renderOverview() {
-    return `${previewNotice()}<div class='page-heading'><div><div class='eyebrow'><span class='eyebrow-line'></span>Maker Lab</div><h1>把想法做成可用的硬件</h1><p class='overview-intro'>${escapeHtml(state.data.objective)}</p></div></div><div class='section-heading'><h2>我的项目</h2><span class='section-caption'>${state.data.projects.length} 个项目 · 真实进度</span></div><div class='overview-list'>${state.data.projects.map((project) => `<button class='overview-row' type='button' data-project='${escapeHtml(project.id)}'><span class='project-symbol'>${icon(projectIcon(project.id))}</span><span><span class='overview-name'>${escapeHtml(project.name)}</span><span class='overview-tagline'>${escapeHtml(project.tagline)}</span></span><span class='overview-next'>${escapeHtml(project.next_step)}</span><span class='overview-status'><span class='badge ${project.stages?.some((stage) => stage.status === 'hold') ? 'hold' : 'neutral'}'>${escapeHtml(project.stage_label)}</span></span></button>`).join('')}</div><div class='overview-bottom'><section><div class='section-heading'><h2>工作区文档</h2></div>${renderDocuments()}</section><section><div class='section-heading'><h2>常用入口</h2></div>${renderResources((state.data.resources || []).filter((resource) => !resource.name.includes('自动化')).slice(0, 4))}</section></div>`;
+    return `${previewNotice()}${renderHardwareStudio()}<div class='page-heading'><div><div class='eyebrow'><span class='eyebrow-line'></span>Maker Lab</div><h1>把想法做成可用的硬件</h1><p class='overview-intro'>${escapeHtml(state.data.objective)}</p></div></div><div class='section-heading'><h2>我的项目</h2><span class='section-caption'>${state.data.projects.length} 个项目 · 真实进度</span></div><div class='overview-list'>${state.data.projects.map((project) => `<button class='overview-row' type='button' data-project='${escapeHtml(project.id)}'><span class='project-symbol'>${icon(projectIcon(project.id))}</span><span><span class='overview-name'>${escapeHtml(project.name)}</span><span class='overview-tagline'>${escapeHtml(project.tagline)}</span></span><span class='overview-next'>${escapeHtml(project.next_step)}</span><span class='overview-status'><span class='badge ${project.stages?.some((stage) => stage.status === 'hold') ? 'hold' : 'neutral'}'>${escapeHtml(project.stage_label)}</span></span></button>`).join('')}</div><div class='overview-bottom'><section><div class='section-heading'><h2>工作区文档</h2></div>${renderDocuments()}</section><section><div class='section-heading'><h2>常用入口</h2></div>${renderResources((state.data.resources || []).filter((resource) => !resource.name.includes('自动化')).slice(0, 4))}</section></div>`;
   }
 
   function liveChecks() {

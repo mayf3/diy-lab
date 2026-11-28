@@ -1,0 +1,49 @@
+{
+ "compiled_at": "2026-11-28",
+ "tool": {
+  "arduino_cli": "arduino-cli  Version: 1.6.0 Commit: 50a0e80da Date: 2026-11-10T15:30:56Z",
+  "arduino_cli_path": "~/.local/bin/arduino-cli",
+  "core": "esp32:esp32 4.0.0（已锁定版本安装）",
+  "index_url": "https://espressif.github.io/arduino-esp32/package_esp32_index.json"
+ },
+ "fqbn": "esp32:esp32:esp32s3:USBMode=default,CDCOnBoot=default,FlashSize=8M,PSRAM=opi",
+ "fqbn_note": "USBMode=default = USB-OTG (TinyUSB)——USBHIDKeyboard 必需；FlashSize=8M/PSRAM=opi 对应 N8R8（到货实测复核）",
+ "source": {
+  "file": "source-data/agent-button-deck/pcba-v1/firmware-hid/AgentButtonDeckHID.ino",
+  "sha256": "69abc5454401e635a28667896aa0c04f8340dc0dd592c82253d5fb5adc08e0aa",
+  "bytes": 2819
+ },
+ "log": {
+  "file": "source-data/agent-button-deck/pcba-v1/firmware-hid/compile-2026-11-28.txt",
+  "sha256": "8210180749dfa1c40fee28cae72ed20a4bf983007be96770da1f06ca36c6dde1",
+  "bytes": 5717
+ },
+ "result": {
+  "program_bytes": 371961,
+  "program_max": 1310720,
+  "program_pct": 28,
+  "global_bytes": 56108,
+  "global_pct": 17,
+  "warnings": "见编译日志"
+ },
+ "artifacts": {
+  "AgentButtonDeckHID.ino.bin": {
+   "sha256": "66c55a3996f5b9f5393a2380e683d3febe027953460b7c3253c32af2b8f40ee5",
+   "bytes": 372112
+  },
+  "AgentButtonDeckHID.ino.bootloader.bin": {
+   "sha256": "1e854abeb0d88ba8a5a26a13444a4b9bb3d2bdec478cd3401aec878bef4c19bc",
+   "bytes": 20096
+  },
+  "AgentButtonDeckHID.ino.partitions.bin": {
+   "sha256": "148b959cbff1c38aa8e1d5c0ba9d612c54997b945e56a63f41223eef650653a1",
+   "bytes": 3072
+  },
+  "AgentButtonDeckHID.ino.merged.bin": {
+   "sha256": "7575df053ac53bed7b5fe54de226d1992116647061a000c4179e1e5db4e3ff04",
+   "bytes": 8388608
+  }
+ },
+ "status": "已真实编译；未烧录、未实测（本轮边界：只编译）",
+ "function_note": "GPIO4–7 INPUT_PULLUP，35ms 去抖，按下沿发 F13–F16；USB.begin() 已按 TinyUSB 规范补齐；枚举/按键行为待到货实测验收"
+}
