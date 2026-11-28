@@ -34,3 +34,20 @@
 | Release 合同 | A0 + Lean 对真实候选 | A12 手工 APPROVED+漂移仍 FAIL | A13 Lean 数据核验 | 对抗矩阵 v2 |
 
 原则执行：测试 PASS 必须意味着目标规则确实执行并拒绝了目标错误；每案独立干净基线+单一注入+精确诊断断言；禁用目标检查器后断言必须失效（A11-FI 模式，可复制到其他检查器）。
+
+## Batch4.2 发布合同收口（PR #36 两条 Review Finding + 批准注册表）
+
+| 检查器 | 正向 | 负向 | 故障注入 | 证据 |
+|---|---|---|---|---|
+| canonical 规范化（唯一实现） | A14 嵌套符号链接 basename序≠完整路径序：build→check PASS 两轮、哈希稳定 | 修复前反例复现：同一树 build 后立即 canonical hash 不一致 FAIL（PR#36 Review #4727196824） | —（排序统一由 canonical_payload 单点实现） | 对抗矩阵 v3 A14 |
+| 批准人身份精确匹配 | Lean thm_registered_exact_approval_manufacturable + reg_caseA | thm_approver_identity_mismatch / reg_caseB（GATE-test vs OTHER）/ reg_caseC（空串） | — | Version.lean + ReleaseCurrent.lean |
+| 注册表成员资格 | reg_caseA（记录在表 → 可制造） | reg_case3 哈希不符 / reg_case4 release 不符 / reg_case5 未登记 / reg_case6 空注册表，全部不可制造 | — | ReleaseCurrent.lean（by decide） |
+| 批准治理（Python 层） | 真实候选 UNAPPROVED+空注册表 → check PASS | A15 APPROVED 无精确记录 / A16 UNAPPROVED 带记录 → 精确诊断 | **A15-FI 禁用 approval_consistency 后诊断消失** | 对抗矩阵 v3 |
+| gen_lean 真实数据映射 | A 真实 Manifest→不可制造断言编译通过；B 隔离 APPROVED Manifest→可制造断言编译通过 | C 批准人不同 / D 记录未登记 / E 四元组变更 → R1 断言 false≠true → **编译失败（Lean 拒绝矛盾数据）** | FI 禁用治理规则后 C/D/E 诊断消失 | manifest_lean_gen_tests 7 案 |
+
+外部信任边界（明确声明）：Lean 证明的是「批准记录在受信任注册表中且字段精确一致」这一结构事实；
+现实中批准人的身份与授权真实性由工作台 GATE 门禁与受控批准记录流程负责。任何文档不得宣称
+Lean/脚本验证了「现实中的人」的身份。
+
+生产注册表现状：`release_candidate.approval_records = []`（保持为空），真实候选 UNAPPROVED；
+测试只使用隔离注册表（isolatedTestRegistry / 临时 Manifest），不写真实文件。

@@ -5,6 +5,7 @@
 import ChristmasBuddy.StateMachine
 import ChristmasBuddy.Power
 import ChristmasBuddy.Version
+import ChristmasBuddy.ReleaseCurrent
 
 #print axioms ChristmasBuddy.thm_sleep_priority
 #print axioms ChristmasBuddy.thm_goodnight_silent
@@ -36,3 +37,17 @@ import ChristmasBuddy.Version
 #print axioms ChristmasBuddy.Version.thm_dir_manifest_pure
 #print axioms ChristmasBuddy.Version.thm_approval_hash_mismatch_not_manufacturable
 #print axioms ChristmasBuddy.Version.thm_approval_release_mismatch_not_manufacturable
+#print axioms ChristmasBuddy.Version.thm_approver_identity_mismatch_not_manufacturable
+#print axioms ChristmasBuddy.Version.thm_empty_approver_not_manufacturable
+#print axioms ChristmasBuddy.Version.thm_unregistered_record_not_manufacturable
+#print axioms ChristmasBuddy.Version.thm_empty_registry_not_manufacturable
+#print axioms ChristmasBuddy.Version.thm_registered_exact_approval_manufacturable
+#print axioms ChristmasBuddy.r1_real_candidate_matches_approval_state
+#print axioms ChristmasBuddy.r2_isolated_registry_cannot_approve_real_candidate
+#print axioms ChristmasBuddy.reg_caseA_approver_exact_match
+#print axioms ChristmasBuddy.reg_caseB_approver_identity_mismatch
+#print axioms ChristmasBuddy.reg_caseC_empty_approver
+#print axioms ChristmasBuddy.reg_case3_hash_mismatch
+#print axioms ChristmasBuddy.reg_case4_release_mismatch
+#print axioms ChristmasBuddy.reg_case5_record_unregistered
+#print axioms ChristmasBuddy.reg_case6_empty_registry

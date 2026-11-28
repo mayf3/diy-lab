@@ -1,8 +1,8 @@
 {
-  "schema": "m5-release-manifest/2.0",
+  "schema": "m5-release-manifest/2.1",
   "product": "christmas-buddy-v1",
   "date": "2026-11-28",
-  "generated_at": "2026-11-28T13:25:58Z",
+  "generated_at": "2026-11-28T14:27:07Z",
   "release_candidate": {
     "product": "christmas-buddy-v1",
     "tuple": {
@@ -12,11 +12,13 @@
       "bom": null
     },
     "tuple_state": "preresearch（四段未冻结——冻结须 GATE 门禁人工批准）",
-    "source_commit": "dc9b893459f5f8dbdc3a04c5db9fd6e0df3f3286",
-    "manifest_hash": "019e7535647b7165ad40e7734855d2b99ad61323dd6014c4e21cc0e3f5639e13",
+    "source_commit": "c89585d6f24dbbb140196dc7b1f1d09c7135fc86",
+    "manifest_hash": "663f135f81575e6e6774c5cbe9ee55a7392278feba594e031a1f0dea2941db7d",
     "approval_state": "UNAPPROVED",
-    "hash_basis": "canonical v4：path/kind/sha/bytes/slot/tool/files/symlinks + release 元数据；排除时间戳与自身哈希（不稳定/循环字段）",
-    "rule": "任一工件或元数据变化 → canonical hash 变化 → 新候选；旧 approval_state 不继承"
+    "approver": null,
+    "approval_records": [],
+    "hash_basis": "canonical v5：path/kind/sha/bytes/slot/tool/files/symlinks + release 元数据（含 approver/approval_records）；全部数组按完整相对路径规范化；build/check 共用 canonical_payload 唯一实现；排除时间戳与自身哈希",
+    "rule": "任一工件或批准元数据变化 → canonical hash 变化 → 新候选；旧批准不继承"
   },
   "artifacts": [
     {
@@ -102,8 +104,8 @@
     {
       "path": "m5_manifest.py",
       "logical_name": "Manifest 检查器源码",
-      "sha256": "972dcfbd61a3185d65f8476a5f27f62b858aa5a4024e6a584c736e67be72b893",
-      "bytes": 18937,
+      "sha256": "2d3432dc308fdaff75ec00b0cec378936cfe5c6732fe7bff991fdcf4ab3949e5",
+      "bytes": 28488,
       "version_slot": "bom",
       "tool": "python3",
       "tool_version": "python3",
@@ -212,8 +214,8 @@
     {
       "path": "proof/src/ChristmasBuddy/Version.lean",
       "logical_name": "M5 发布合同证明",
-      "sha256": "a60b78027dae2db07dc8c0281c85cc34a53e7415382c1e9573d8091707a1912d",
-      "bytes": 7187,
+      "sha256": "4b4eb3695ba59c9c4f5077875160be7366f4c91c6469c549a59b43ddf80c2692",
+      "bytes": 10950,
       "version_slot": "fw",
       "tool": "lean 4.19.0",
       "tool_version": "leanprover/lean4:v4.19.0",
@@ -222,8 +224,8 @@
     {
       "path": "proof/verification.json",
       "logical_name": "Lean 验证回执",
-      "sha256": "9229abbc981d65a85e2909ebb41eddb60208303b075bc2a8da73143aa320ce80",
-      "bytes": 2413,
+      "sha256": "cc578bec44ef9b4e77255a83df9978092712284d34c45b8e9e7ddfff9c132262",
+      "bytes": 3406,
       "version_slot": "fw",
       "tool": "verify_proof.py",
       "tool_version": "verify_proof.py",

@@ -27,6 +27,7 @@ STEPS = [
     ("M5 重建候选2（收敛）", [sys.executable, str(B/"m5_manifest.py"), "build"]),
     ("M5 manifest check", [sys.executable, str(B/"m5_manifest.py"), "check"]),
     ("M5 对抗矩阵", [sys.executable, str(B/"manifest_adversarial_tests.py")]),
+    ("M5→Lean 生成+批准治理", [sys.executable, str(B/"manifest_lean_gen_tests.py")]),
     ("站点 check.py", [sys.executable, str(ROOT/"scripts/check.py")]),
 ]
 rc = 0

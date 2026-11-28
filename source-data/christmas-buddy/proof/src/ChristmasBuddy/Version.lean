@@ -12,6 +12,10 @@
 - `thm_incomplete_never_manufacturable`：四段不齐的发布永不可制造（安全门禁）。
 - `thm_frozen_manufacturable`：frozen 发布都可进入制造流程。
 - `thm_complete_sound`：complete 判定与逐段 isSome 合取等价。
+- v5（Batch4.2）：制造资格 = 完整 + 冻结 + 批准人身份精确一致（r.approver = some
+  rec.approver）+ 记录批准人非空 + release/manifest_hash 精确一致 + 注册表成员
+  （`manufacturingReleaseIn`，注册表为显式输入）；身份不符 / 空批准人 / 未登记 /
+  空注册表均不可制造，精确登记则可制造。
 
 实现对应（MAP）：`m5_manifest.py` 计算 design-to-artifact 的 sha256 追溯；
 本文件只证结构规则；哈希一致性由脚本检查并登记为 TESTED 证据，
@@ -92,7 +96,7 @@ theorem thm_complete_sound :
       simp [complete]
 
 
-/-! ### v2/v4 扩展：批准记录绑定（release + manifest_hash + approver 三元组） -/
+/-! ### v2/v4/v5 扩展：批准记录绑定（release + manifest_hash + approver 身份 + 注册表成员） -/
 
 /-- 候选 + 批准人（Option String：none=未批准）。 -/
 structure ApprovedRelease where
@@ -107,42 +111,94 @@ structure ApprovalRecord where
   approver : String
   deriving DecidableEq, Repr
 
-/-- 制造许可 = 完整 + 冻结 + 批准记录与当前候选**完全一致**
-    （Batch4.1：不允许仅凭 approver.isSome 取得制造资格）。 -/
-def manufacturingRelease (r : ApprovedRelease) (rec : ApprovalRecord) (currentHash : String) : Bool :=
-  complete r.release && isFrozen r.release
-    && r.approver.isSome && decide (rec.release = r.release) && decide (rec.manifestHash = currentHash)
-
-/-- 未批准（approver 为空串）不可制造。 -/
-theorem thm_unapproved_not_manufacturable :
-    ∀ r : ApprovedRelease, ∀ rec : ApprovalRecord, ∀ h : String,
-      r.approver.isSome = false → manufacturingRelease r rec h = false := by
-  intro r rec h happro
-  simp [manufacturingRelease, happro]
-
-/-- 批准记录的 manifest_hash 与当前候选不一致 → 不可制造（旧批准不越哈希）。 -/
-theorem thm_approval_hash_mismatch_not_manufacturable :
-    ∀ r : ApprovedRelease, ∀ rec : ApprovalRecord, ∀ h : String,
-      rec.manifestHash ≠ h → manufacturingRelease r rec h = false := by
-  intro r rec h hne
-  by_cases hpx : rec.manifestHash = h
-  · exact absurd hpx hne
-  · simp [manufacturingRelease, hpx]
-
-/-- 批准记录绑定不同 release → 不可制造。 -/
-theorem thm_approval_release_mismatch_not_manufacturable :
-    ∀ r : ApprovedRelease, ∀ rec : ApprovalRecord, ∀ h : String,
-      rec.release ≠ r.release → manufacturingRelease r rec h = false := by
-  intro r rec h hne
-  by_cases hpx : rec.release = r.release
-  · exact absurd hpx hne
-  · simp [manufacturingRelease, hpx]
-
-/-- 注册表（保留 v2 语义：登记即批准人非空）。 -/
+/-- 受信任批准注册表：制造资格要求批准记录**精确登记于此**（Batch4.2 P1-1）。
+    真实生产注册表当前阶段保持为空；测试使用隔离注册表——或经参数显式传入
+    （manufacturingReleaseIn），或由 m5_manifest.gen_lean 从 manifest approval_records
+    受控生成（ReleaseCurrent.lean 的 currentRegistry / isolatedTestRegistry）。
+    外部信任边界：Lean 只证明「记录在注册表中」这一结构事实；现实中批准人的
+    身份与授权真实性由工作台 GATE 门禁与受控批准记录流程负责。 -/
 def approvedRegistry : List ApprovalRecord := []
 
 def isApproved (r : ApprovalRecord) : Bool :=
   approvedRegistry.any (fun x => decide (x = r))
+
+/-- 制造许可（Batch4.2 全判定，注册表为**显式输入**）：
+    完整 + 冻结 + 候选批准人非空 + **批准人身份精确一致**（r.approver = some rec.approver，
+    P0-1 #4727196821）+ 记录批准人非空串 + release 精确一致 + manifest_hash 精确一致
+    + 批准记录属于受信任注册表（P1-1）。 -/
+def manufacturingReleaseIn (registry : List ApprovalRecord)
+    (r : ApprovedRelease) (rec : ApprovalRecord) (currentHash : String) : Bool :=
+  complete r.release && isFrozen r.release
+    && r.approver.isSome && decide (r.approver = some rec.approver)
+    && decide (rec.approver.isEmpty = false)
+    && decide (rec.release = r.release) && decide (rec.manifestHash = currentHash)
+    && registry.any (fun x => decide (x = rec))
+
+/-- 默认制造许可 = 受控生产注册表（当前为空）上的判定。 -/
+def manufacturingRelease (r : ApprovedRelease) (rec : ApprovalRecord) (currentHash : String) : Bool :=
+  manufacturingReleaseIn approvedRegistry r rec currentHash
+
+/-- 未批准（approver 为空）不可制造。 -/
+theorem thm_unapproved_not_manufacturable :
+    ∀ registry : List ApprovalRecord, ∀ r : ApprovedRelease, ∀ rec : ApprovalRecord, ∀ h : String,
+      r.approver.isSome = false → manufacturingReleaseIn registry r rec h = false := by
+  intro registry r rec h happro
+  simp [manufacturingReleaseIn, happro]
+
+/-- 批准记录的 manifest_hash 与当前候选不一致 → 不可制造（旧批准不越哈希）。 -/
+theorem thm_approval_hash_mismatch_not_manufacturable :
+    ∀ registry : List ApprovalRecord, ∀ r : ApprovedRelease, ∀ rec : ApprovalRecord, ∀ h : String,
+      rec.manifestHash ≠ h → manufacturingReleaseIn registry r rec h = false := by
+  intro registry r rec h hne
+  by_cases hpx : rec.manifestHash = h
+  · exact absurd hpx hne
+  · simp [manufacturingReleaseIn, hpx]
+
+/-- 批准记录绑定不同 release → 不可制造。 -/
+theorem thm_approval_release_mismatch_not_manufacturable :
+    ∀ registry : List ApprovalRecord, ∀ r : ApprovedRelease, ∀ rec : ApprovalRecord, ∀ h : String,
+      rec.release ≠ r.release → manufacturingReleaseIn registry r rec h = false := by
+  intro registry r rec h hne
+  by_cases hpx : rec.release = r.release
+  · exact absurd hpx hne
+  · simp [manufacturingReleaseIn, hpx]
+
+/-- P0-1：候选批准人与记录批准人身份不一致 → 不可制造（其余字段再精确也不行）。 -/
+theorem thm_approver_identity_mismatch_not_manufacturable :
+    ∀ registry : List ApprovalRecord, ∀ r : ApprovedRelease, ∀ rec : ApprovalRecord, ∀ h : String,
+      r.approver ≠ some rec.approver → manufacturingReleaseIn registry r rec h = false := by
+  intro registry r rec h hne
+  by_cases hpx : r.approver = some rec.approver
+  · exact absurd hpx hne
+  · simp [manufacturingReleaseIn, hpx]
+
+/-- 空字符串批准人不可制造（身份一致也不行：空标识不是有效批准人）。 -/
+theorem thm_empty_approver_not_manufacturable :
+    ∀ registry : List ApprovalRecord, ∀ r : ApprovedRelease, ∀ rec : ApprovalRecord, ∀ h : String,
+      rec.approver.isEmpty = true → manufacturingReleaseIn registry r rec h = false := by
+  intro registry r rec h hempty
+  have hd : decide (rec.approver.isEmpty = false) = false := by simp [hempty]
+  simp [manufacturingReleaseIn, hd]
+
+/-- P1-1：字段全部正确但批准记录未登记于注册表 → 不可制造。 -/
+theorem thm_unregistered_record_not_manufacturable :
+    ∀ registry : List ApprovalRecord, ∀ r : ApprovedRelease, ∀ rec : ApprovalRecord, ∀ h : String,
+      registry.any (fun x => decide (x = rec)) = false →
+      manufacturingReleaseIn registry r rec h = false := by
+  intro registry r rec h hnot
+  simp [manufacturingReleaseIn, hnot]
+
+/-- P1-1：空注册表（生产现状）下任何候选都不可制造。 -/
+theorem thm_empty_registry_not_manufacturable :
+    ∀ r : ApprovedRelease, ∀ rec : ApprovalRecord, ∀ h : String,
+      manufacturingReleaseIn [] r rec h = false := by
+  intro r rec h
+  simp [manufacturingReleaseIn, List.any]
+
+/-- P1-1 正向：完整 + 冻结 + 批准人精确一致 + 已注册 → 可制造（合同不是恒假开关）。 -/
+theorem thm_registered_exact_approval_manufacturable :
+    manufacturingReleaseIn [⟨v1, "h", "GATE"⟩] ⟨v1, some "GATE"⟩ ⟨v1, "h", "GATE"⟩ "h" = true := by
+  rfl
 
 theorem thm_registry_membership_implies_approved :
     ∀ r, isApproved r = true → r.approver.isEmpty = false := by
