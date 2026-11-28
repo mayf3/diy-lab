@@ -50,10 +50,16 @@ def build() -> dict:
             [sys.executable, 'hardware/check_project.py',
              '--project', 'hardware/space-buddy-r1/project.json'],
             capture_output=True, text=True, timeout=30, cwd=str(ROOT))
-        if proc.returncode == 0 and proc.stdout.strip():
-            hardware = json.loads(proc.stdout)
+        # 校验器失败（exit 2）时同样输出结构化 JSON——必须保留 facts（stale 状态可见），
+        # 只有解析失败/超时才退化为错误文本
+        if proc.stdout.strip():
+            try:
+                hardware = json.loads(proc.stdout)
+                hardware['exit_code'] = proc.returncode
+            except json.JSONDecodeError:
+                hardware = {'ok': False, 'error': '校验器输出不可解析：' + proc.stdout[:200]}
         else:
-            hardware = {'ok': False, 'error': (proc.stderr or proc.stdout or 'unknown')[:400]}
+            hardware = {'ok': False, 'error': (proc.stderr or '校验器无输出')[:400]}
     except Exception as exc:  # 校验器故障必须可见，不得静默吞掉
         hardware = {'ok': False, 'error': str(exc)[:400]}
     return {
@@ -71,7 +77,7 @@ def build() -> dict:
         },
         'projects': projects,
         'hardware': hardware,
-        'hardware_next': (json.loads(Path('hardware/space-buddy-r1/project.json').read_text()).get('workbench_nine', {})
+        'hardware_next': (json.loads((ROOT / 'hardware/space-buddy-r1/project.json').read_text()).get('workbench_nine', {})
                           if (ROOT / 'hardware/space-buddy-r1/project.json').is_file() else {}),
         'documents': catalog['documents'],
         'resources': catalog['resources'],

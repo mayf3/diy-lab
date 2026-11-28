@@ -1,97 +1,211 @@
 #!/usr/bin/env python3
-"""Hardware Project 校验器（PR-A）。
+"""Hardware Project 校验器（PR-A/整改轮）。
 
 用法：
   python3 hardware/check_project.py --project hardware/space-buddy-r1/project.json
-      校验四元组完整性、产物文件存在性、CAD 检查新鲜度、EDA≠产品 ready 守卫；
-      输出 JSON 摘要（供 8135 build_data 使用），失败退出码 2。
-  python3 hardware/check_project.py --project ... --changed dims.usb_ports
-      模拟变更：打印依赖图下游需要重新验证的产物清单（失效传播），退出码 0。
+      常规校验：四元组完整性、产物存在性、CAD 证据回执比对（stale/unknown 撤销完成态）、
+      证据计算 product_ready（人工声明与证据冲突即报错）、失效传播预览（--changed）。
+      输出 JSON 摘要（供 8135 build_data 消费），校验失败退出码 2。
+  --changed dims.keys,dims.usb_ports
+      仅作为"影响预览"：列出依赖图下游将被失效的产物；不是失效机制本体。
 
-纪律：本脚本只读真实文件与 project.json，不生成任何"模拟通过"。
+失效机制（整改 A）：CAD 证据由 check_case.py 写 receipt.json 绑定输入（建模脚本/检查器/dims）
+与产物（6 个 STEP）的内容哈希；本脚本每次运行重算当前哈希并逐项比对——
+不匹配/缺回执 → cad_status=stale/unknown，撤销「CAD 完成」，重建工作台后仍保持，
+只有重跑真实建模+检查生成新回执后恢复。
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-STALE_MARKER = "STALE-需重新验证"
+CAD_DIR = ROOT / "source-data/agent-button-deck/pcba-v1/cad"
+RENDERS = CAD_DIR / "renders/case-r1"
+CLEAR = 0.05
+
+
+def sha256_file(p: Path) -> str:
+    h = hashlib.sha256()
+    with open(p, "rb") as fh:
+        for chunk in iter(lambda: fh.read(65536), b""):
+            h.update(chunk)
+    return h.hexdigest()
 
 
 def load(p):
     return json.loads(Path(p).read_text(encoding="utf-8"))
 
 
+def cad_evidence_state() -> tuple[str, list[str], dict | None]:
+    """返回 (valid|stale|unknown, 差异原因列表, receipt)。"""
+    receipt_path = RENDERS / "receipt.json"
+    if not receipt_path.is_file():
+        return "unknown", ["receipt.json 缺失（未跑过真实几何检查）"], None
+    receipt = load(receipt_path)
+    diffs: list[str] = []
+    pairs = [
+        ("model_script_sha256", CAD_DIR / "g2-case-r1.py"),
+        ("checker_sha256", CAD_DIR / "check_case.py"),
+        ("dims_sha256", RENDERS / "dims.json"),
+    ]
+    for key, path in pairs:
+        current = sha256_file(path)
+        recorded = receipt.get("inputs", {}).get(key)
+        if recorded != current:
+            diffs.append(f"{key} 与回执不符（{path.name} 已变化）")
+    for name in ("body", "base", "cap-a", "cap-b", "cap-c", "cap-d"):
+        p = RENDERS / f"case-r1-{name}.step"
+        current = sha256_file(p)
+        recorded = receipt.get("outputs", {}).get(f"step_sha256::{name}")
+        if recorded != current:
+            diffs.append(f"step_sha256::{name} 与回执不符（{p.name} 已变化）")
+    return ("stale" if diffs else "valid"), diffs, receipt
+
+
 def validate(project_path: Path, changed: list[str] | None = None) -> dict:
     proj = load(project_path)
     failures: list[str] = []
-    result: dict = {"project": proj["product"], "failures": failures, "checks": {}}
+    checks: dict[str, object] = {}
+    facts: dict[str, object] = {}
+    reasons: list[str] = []
 
-    # 1) 四元组完整性：pcb/cad/fw/bom 四段必须全部存在（null=明确未开始，允许；缺 key=违规）
     revs = proj["version_contract"]["revisions"]
+
+    # 1) 四元组完整性（null/draft 等允许——只要求字段存在且为成套声明）
     for seg in ("pcb", "cad", "fw", "bom"):
         if seg not in revs:
             failures.append(f"version_contract.revisions 缺少段：{seg}")
-    result["checks"]["quad_complete"] = all(seg in revs for seg in ("pcb", "cad", "fw", "bom"))
-    result["checks"]["quad_values"] = {k: revs.get(k) for k in ("pcb", "cad", "fw", "bom")}
+    checks["quad_complete"] = all(seg in revs for seg in ("pcb", "cad", "fw", "bom"))
+    facts["quad"] = {k: revs.get(k) for k in ("pcb", "cad", "fw", "bom")}
 
-    # 2) 产物文件存在性
+    # 2) 产物文件存在性（登记了的就必须在）
     missing = []
     for rel in proj["domains"]["cad"].get("outputs", []):
         if not (ROOT / rel).is_file():
             missing.append(rel)
-    fw = proj["domains"]["firmware"].get("entry")
-    if fw and not (ROOT / fw).is_file():
-        missing.append(fw)
-    bom = proj["domains"]["bom"].get("entry")
-    if bom and not (ROOT / bom).is_file():
-        missing.append(bom)
-    checks = proj["domains"].get("manufacturing", {}).get("package_present", [])
-    for rel in checks:
+    for key in ("firmware", "bom"):
+        rel = proj["domains"][key].get("entry")
+        if rel and not (ROOT / rel).is_file():
+            missing.append(rel)
+    for rel in proj["domains"]["manufacturing"].get("package_present", []):
         if not (ROOT / rel).is_file():
             missing.append(rel)
     if missing:
         failures.append(f"登记产物文件缺失：{missing}")
-    result["checks"]["artifacts_present"] = not missing
-    result["missing_files"] = missing
+    checks["artifacts_present"] = not missing
+    facts["missing_files"] = missing
 
-    # 3) CAD 检查新鲜度：checks.json 必须存在且 ok（真实几何检查器产物）
-    checks_file = ROOT / "source-data/agent-button-deck/pcba-v1/cad/renders/case-r1/checks.json"
-    if checks_file.is_file():
-        cj = load(checks_file)
-        result["checks"]["cad_geometry_green"] = bool(cj.get("ok"))
+    # 3) CAD 证据：回执比对（不匹配/缺回执 → stale/unknown，撤销完成态）
+    cad_state, diffs, _ = cad_evidence_state()
+    checks["cad_evidence_state"] = cad_state
+    facts["cad_evidence_state"] = cad_state
+    facts["cad_evidence_diffs"] = diffs
+    if cad_state != "valid":
+        failures.append(f"CAD 证据 {cad_state}：" + "；".join(diffs or ["无回执"]))
+        checks["cad_geometry_green"] = False
+    else:
+        cj = load(RENDERS / "checks.json")
+        checks["cad_geometry_green"] = bool(cj.get("ok"))
         if not cj.get("ok"):
             failures.append(f"CAD 几何检查未全绿：{cj.get('failed')}")
-        if "check_case.py" not in cj.get("note", ""):
-            failures.append("checks.json 缺少 STEP 重算来源声明")
-    else:
-        failures.append("checks.json 不存在（CAD 检查未跑）")
-        result["checks"]["cad_geometry_green"] = False
 
-    # 4) EDA ≠ 产品 ready 守卫
+    # 4) 尺寸确认状态（冻结判定，独立于检查有效性）
+    dims = load(RENDERS / "dims.json") if (RENDERS / "dims.json").is_file() else {"sources": {}}
+    unconfirmed = [k for k, v in dims.get("sources", {}).items() if v.get("status") != "confirmed-official"]
+    facts["dims_confirmed"] = not unconfirmed
+    facts["dims_unconfirmed"] = unconfirmed
+
+    # 5) EDA 原生工程与 PCB（真实证据：工程文件/产物存在）
+    eda_project = proj["domains"]["eda"].get("project")
+    eda_outputs = proj["domains"]["eda"].get("outputs_present", [])
+    pcb_frozen = isinstance(revs.get("pcb"), int)
+    pcb_evidence = bool(eda_project) and len(eda_outputs) >= 3
+    facts["pcb_status"] = ("已冻结（rev %s）" % revs["pcb"]) if pcb_frozen and pcb_evidence else (
+        "进行中（原生工程已建立，产物未齐）" if eda_project else "未开始（无 R1 原生 EDA 工程）")
+    facts["pcb_frozen"] = pcb_frozen and pcb_evidence
+
+    # 6) 联合验证 / 制造包 / 授权 / 验收（区分表达，不互相混入）
+    joint = proj.get("joint_check", {})
+    joint_evidence = joint.get("evidence")
+    facts["joint_status"] = ("已验证（%s）" % joint_evidence) if joint_evidence else (
+        joint.get("status") or "未开始")
+    checks["joint_verified"] = bool(joint_evidence)
+
+    mfg = proj["domains"]["manufacturing"]
+    required = mfg.get("package_required", [])
+    present = mfg.get("package_present", [])
+    missing_pkg = [x for x in required if x not in present]
+    facts["package_complete"] = not missing_pkg
+    facts["package_missing"] = missing_pkg
+    checks["package_complete"] = facts["package_complete"]
+
+    order_authorized = bool(mfg.get("order_authorized"))
+    facts["order_authorized"] = order_authorized
+    acceptance = proj["domains"].get("acceptance", {})
+    acceptance_evidence = acceptance.get("evidence")
+    facts["acceptance_done"] = bool(acceptance_evidence)
+    checks["acceptance_done"] = bool(acceptance_evidence)
+
+    # 7) 证据计算 product_ready（人工声明不透传）
+    #    首次打样放行 = 设计检查有效 + 尺寸全部确认 + 联合验证 + 制造包齐全 + 下单授权；
+    #    实物验收完成是最终验收项，不是首次打样前置条件。
+    dims_ready = facts["dims_confirmed"]
+    design_ok = (cad_state == "valid") and checks["cad_geometry_green"] and dims_ready
+    product_ready_computed = bool(
+        design_ok and pcb_frozen and pcb_evidence and checks["joint_verified"]
+        and facts["package_complete"] and order_authorized and facts["acceptance_done"])
+    if not design_ok:
+        reasons.append("CAD 设计检查未有效通过" + ("（尺寸存在占位/待实测项：%s）" % ",".join(unconfirmed) if unconfirmed else ""))
+    if not pcb_frozen:
+        reasons.append("PCB 版本未冻结")
+    if not pcb_evidence:
+        reasons.append("EDA 原生工程产物不足（原理图/DRC/BOM/CPL/Gerber 等）")
+    if not checks["joint_verified"]:
+        reasons.append("板壳联合验证未完成")
+    if not facts["package_complete"]:
+        reasons.append("制造包缺件：%s" % "、".join(missing_pkg))
+    if not order_authorized:
+        reasons.append("制造下单未获授权（正常状态，非设计错误）")
+    if not facts["acceptance_done"]:
+        reasons.append("实物验收未完成（最终验收项，非首次打样前置）")
+    facts["product_ready_computed"] = product_ready_computed
+    facts["product_ready_reasons"] = reasons
+
+    # 8) 人工声明与证据冲突检查
     guard = proj.get("guard", {})
-    if guard.get("product_ready") is True and revs.get("pcb") in (None, "", "draft"):
-        failures.append("守卫违规：PCB 无冻结版本却声明 product_ready")
-    result["checks"]["eda_not_product_guard"] = True
-    result["product_ready"] = guard.get("product_ready", False)
+    manual_ready = guard.get("product_ready")
+    if manual_ready is True and not product_ready_computed:
+        failures.append("人工声明与证据冲突：guard.product_ready=true 但证据计算为未就绪（原因：%s）"
+                        % "；".join(reasons))
+    checks["manual_vs_evidence_consistent"] = not (
+        manual_ready is True and not product_ready_computed)
+    facts["product_ready"] = product_ready_computed
 
-    # 5) 失效传播：--changed 触发依赖图下游标记
+    # 9) EDA≠产品守卫：真实判断（非恒真）
+    checks["eda_not_product_guard"] = not (product_ready_computed and not eda_project)
+    facts["eda_environment_note"] = proj["domains"]["eda"].get("editor_note", "")
+
+    # 10) 失效传播预览（--changed 仅预览；失效本体由回执比对承担）
     graph = proj.get("dependency_graph", {})
-    stale: list[str] = []
+    stale_preview: list[str] = []
     for changed_key in changed or []:
         if changed_key in graph:
             for down in graph[changed_key]["downstream"]:
-                item = f"{down} ← {changed_key} 变更 → {STALE_MARKER}"
-                stale.append(item)
+                stale_preview.append(f"{down} ← {changed_key} 变更 → STALE-需重新验证")
         else:
-            # 严格模式：依赖图没有登记的变更键一律报错（登记是纪律，不做静默保守传播）
             failures.append(f"未知变更键：{changed_key}（dependency_graph 无此条目，须先登记）")
-    result["stale_downstream"] = stale
-    result["checks"]["invalidation_propagated"] = (changed is None) or bool(stale)
-
-    result["ok"] = not failures
+    result = {
+        "project": proj["product"],
+        "ok": not failures,
+        "failures": failures,
+        "checks": checks,
+        "facts": facts,
+        "stale_preview": stale_preview,
+        "note": "全部状态由本脚本从真实文件与回执计算；--changed 仅为影响预览",
+    }
     return result
 
 
