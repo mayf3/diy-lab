@@ -172,6 +172,7 @@
       <div class='status-row'><span class='status-row-label'>负责人</span><div class='status-value'>${escapeHtml(sb.owner || '')}</div></div>
       <div class='status-row'><span class='status-row-label'>最近完成</span><div><div class='status-value'>${escapeHtml(sb.last_completed || '')}</div></div></div>
       <div class='status-row'><span class='status-row-label'>下一项工作</span><div><div class='status-value'>${escapeHtml(sb.next_work || '')}</div></div></div>
+      ${(sb.status_lines || []).length ? `<div class='status-row'><span class='status-row-label'>阶段状态</span><div class='status-value'>${(sb.status_lines || []).map(s => `<span class='${s.class === 'ok' ? 'good' : s.class === 'hold' ? 'hold' : 'attention'}' style='margin-right:10px'>${s.item}：${s.state}</span>`).join('')}</div></div>` : ''}
       ${(sb.blockers || []).length ? `<div class='status-row'><span class='status-row-label'>阻断</span><div><div class='status-value attention'>${sb.blockers.map(b => escapeHtml(b)).join('；')}</div></div></div>` : ''}
       ${sb.needs_user_decision && decisions ? `<div class='status-row'><span class='status-row-label'>待你决策</span><div><ul class='open-items' style='margin:0'>${decisions}</ul></div></div>` : ''}
       ${domains}

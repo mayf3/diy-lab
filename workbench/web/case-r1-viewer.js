@@ -103,6 +103,20 @@ for(const k in DATA){
     `<table><caption>哪些尺寸已确定、哪些在等实物（G2-1）</caption>${rows}</table>`+
     `<table><caption>几何检查（每次修改自动重跑）</caption>${checkRows}</table>`;
 })();
+// 爆炸视图：键帽上移、主体微升、底座不动（G2-3 五视图之一）
+const EXPLODE={ 'case-r1-cap-a':22,'case-r1-cap-b':22,'case-r1-cap-c':22,'case-r1-cap-d':22,'case-r1-body':9,'case-r1-base':0 };
+const ORIG={}; for(const k in DATA){ ORIG[k]=DATA[k].tris.map(r=>r.slice()); }
+let exploded=false;
+const xb=document.createElement('button'); xb.textContent='爆炸视图';
+xb.onclick=()=>{
+  exploded=!exploded;
+  for(const k in EXPLODE) if(DATA[k]){
+    const off=exploded?EXPLODE[k]:0;
+    DATA[k].tris=ORIG[k].map(t2=>[t2[0],t2[1],t2[2]+off,t2[3],t2[4],t2[5]+off,t2[6],t2[7],t2[8]+off]);
+  }
+  norm(DATA); render();
+};
+panel.appendChild(xb);
 let drag=null;
 cv.addEventListener('pointerdown',e=>{drag={x:e.clientX,y:e.clientY};cv.setPointerCapture(e.pointerId);});
 cv.addEventListener('pointermove',e=>{if(!drag)return;
