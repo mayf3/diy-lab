@@ -1,7 +1,7 @@
 PROTEL NETLIST 2.0
 [
 DESIGNATOR
-U1
+K1
 FOOTPRINT
 SW-SMD_C9900017374
 PARTTYPE
@@ -21,43 +21,43 @@ Default
 Symbol
 轻触开关_C9900017374
 Designator
-U1
+K1
+Channel ID
+
+Group ID
+
+Reuse Block
+
+Description
+
+Name
+通用两脚常开开关
+Supplier
+LCSC
+Datasheet
+
+Manufacturer
+
 Unique ID
 gge3
-LCSC Part Name
-轻触开关
 Supplier Part
-C9900017374
-Manufacturer
-
-Manufacturer Part
-轻触开关
+TBD-MECH-AXIS
 Supplier Footprint
-4.5*4.5 前插后贴片 -20~55°C PPA 铜镀银
-JLCPCB Part Class
-Extended Part
-Datasheet
-
-Supplier
-LCSC
+TBD-MECH-AXIS（样轴确认后绑定 Boba U4 或实际 SKU 准确封装）
+LCSC Part Name
+通用两脚常开开关（MX 机械轴电气符号）
+Manufacturer Part
+通用两脚常开开关
 3D Model Title
-SW-SMD_C9900017374
-Name
-轻触开关
-Description
-
-Reuse Block
-
-Group ID
-
-Channel ID
-
+TBD-MECH-AXIS
+JLCPCB Part Class
+TBD-MECH-AXIS
 
 *
 ]
 [
 DESIGNATOR
-U2
+K2
 FOOTPRINT
 SW-SMD_C9900017374
 PARTTYPE
@@ -77,43 +77,43 @@ Default
 Symbol
 轻触开关_C9900017374
 Designator
-U2
+K2
+Channel ID
+
+Group ID
+
+Reuse Block
+
+Description
+
+Name
+通用两脚常开开关
+Supplier
+LCSC
+Datasheet
+
+Manufacturer
+
 Unique ID
 gge4
-LCSC Part Name
-轻触开关
 Supplier Part
-C9900017374
-Manufacturer
-
-Manufacturer Part
-轻触开关
+TBD-MECH-AXIS
 Supplier Footprint
-4.5*4.5 前插后贴片 -20~55°C PPA 铜镀银
-JLCPCB Part Class
-Extended Part
-Datasheet
-
-Supplier
-LCSC
+TBD-MECH-AXIS（样轴确认后绑定 Boba U4 或实际 SKU 准确封装）
+LCSC Part Name
+通用两脚常开开关（MX 机械轴电气符号）
+Manufacturer Part
+通用两脚常开开关
 3D Model Title
-SW-SMD_C9900017374
-Name
-轻触开关
-Description
-
-Reuse Block
-
-Group ID
-
-Channel ID
-
+TBD-MECH-AXIS
+JLCPCB Part Class
+TBD-MECH-AXIS
 
 *
 ]
 [
 DESIGNATOR
-U3
+K3
 FOOTPRINT
 SW-SMD_C9900017374
 PARTTYPE
@@ -133,43 +133,43 @@ Default
 Symbol
 轻触开关_C9900017374
 Designator
-U3
+K3
+Channel ID
+
+Group ID
+
+Reuse Block
+
+Description
+
+Name
+通用两脚常开开关
+Supplier
+LCSC
+Datasheet
+
+Manufacturer
+
 Unique ID
 gge5
-LCSC Part Name
-轻触开关
 Supplier Part
-C9900017374
-Manufacturer
-
-Manufacturer Part
-轻触开关
+TBD-MECH-AXIS
 Supplier Footprint
-4.5*4.5 前插后贴片 -20~55°C PPA 铜镀银
-JLCPCB Part Class
-Extended Part
-Datasheet
-
-Supplier
-LCSC
+TBD-MECH-AXIS（样轴确认后绑定 Boba U4 或实际 SKU 准确封装）
+LCSC Part Name
+通用两脚常开开关（MX 机械轴电气符号）
+Manufacturer Part
+通用两脚常开开关
 3D Model Title
-SW-SMD_C9900017374
-Name
-轻触开关
-Description
-
-Reuse Block
-
-Group ID
-
-Channel ID
-
+TBD-MECH-AXIS
+JLCPCB Part Class
+TBD-MECH-AXIS
 
 *
 ]
 [
 DESIGNATOR
-U4
+K4
 FOOTPRINT
 SW-SMD_C9900017374
 PARTTYPE
@@ -189,43 +189,43 @@ Default
 Symbol
 轻触开关_C9900017374
 Designator
-U4
+K4
+Channel ID
+
+Group ID
+
+Reuse Block
+
+Description
+
+Name
+通用两脚常开开关
+Supplier
+LCSC
+Datasheet
+
+Manufacturer
+
 Unique ID
 gge6
-LCSC Part Name
-轻触开关
 Supplier Part
-C9900017374
-Manufacturer
-
-Manufacturer Part
-轻触开关
+TBD-MECH-AXIS
 Supplier Footprint
-4.5*4.5 前插后贴片 -20~55°C PPA 铜镀银
-JLCPCB Part Class
-Extended Part
-Datasheet
-
-Supplier
-LCSC
+TBD-MECH-AXIS（样轴确认后绑定 Boba U4 或实际 SKU 准确封装）
+LCSC Part Name
+通用两脚常开开关（MX 机械轴电气符号）
+Manufacturer Part
+通用两脚常开开关
 3D Model Title
-SW-SMD_C9900017374
-Name
-轻触开关
-Description
-
-Reuse Block
-
-Group ID
-
-Channel ID
-
+TBD-MECH-AXIS
+JLCPCB Part Class
+TBD-MECH-AXIS
 
 *
 ]
 [
 DESIGNATOR
-H1
+J1
 FOOTPRINT
 HDR-TH_22P-P2.54-V-F
 PARTTYPE
@@ -245,73 +245,73 @@ Default
 Symbol
 BX-PM2.54-1-22PY
 Designator
-H1
+J1
+Channel ID
+
+Group ID
+
+Reuse Block
+
+Description
+插孔结构:1x22P;间距:2.54mm;行距:-;圆孔/方孔:方孔;安装方式:直插;排数:单排;总孔位数:22P;额定电流:3A;额定电压:-;插孔方向:顶部;塑高:8.5mm;触头材质:黄铜;触头镀层:金;工作温度:-40℃~+105℃;
+Name
+BX-PM2.54-1-22PY
+PIN Length
+3.2mm
+Operating Temperature
+-40℃~+105℃
+Contact Plating
+金
+Contact Material
+黄铜
+Insulation Height
+8.5mm
+Holes Direction
+顶部
+Voltage Rating (Max)
+-
+Current Rating
+3A
+Number of Positions
+22P
+Number of Rows
+单排
+Mounting Type
+直插
+Circular Hole / Square Hole
+方孔
+Row Spacing
+-
+Pitch
+2.54mm
+Holes Structure
+1x22P
+3D Model Title
+HDR-TH_22P-P2.54-V-F
+Supplier
+LCSC
+Datasheet
+https://item.szlcsc.com/datasheet/BX-PM2.54-1-22PY/19218541.html
+JLCPCB Part Class
+Extended Part
+Supplier Footprint
+插件,P=2.54mm
+Manufacturer Part
+BX-PM2.54-1-22PY
+Manufacturer
+Bossie(博锡)
+Supplier Part
+C18078140
+LCSC Part Name
+1x22P 间距:2.54mm 直插
 Unique ID
 gge7
-LCSC Part Name
-1x22P 间距:2.54mm 直插
-Supplier Part
-C18078140
-Manufacturer
-Bossie(博锡)
-Manufacturer Part
-BX-PM2.54-1-22PY
-Supplier Footprint
-插件,P=2.54mm
-JLCPCB Part Class
-Extended Part
-Datasheet
-https://item.szlcsc.com/datasheet/BX-PM2.54-1-22PY/19218541.html
-Supplier
-LCSC
-3D Model Title
-HDR-TH_22P-P2.54-V-F
-Holes Structure
-1x22P
-Pitch
-2.54mm
-Row Spacing
--
-Circular Hole / Square Hole
-方孔
-Mounting Type
-直插
-Number of Rows
-单排
-Number of Positions
-22P
-Current Rating
-3A
-Voltage Rating (Max)
--
-Holes Direction
-顶部
-Insulation Height
-8.5mm
-Contact Material
-黄铜
-Contact Plating
-金
-Operating Temperature
--40℃~+105℃
-PIN Length
-3.2mm
-Name
-BX-PM2.54-1-22PY
-Description
-插孔结构:1x22P;间距:2.54mm;行距:-;圆孔/方孔:方孔;安装方式:直插;排数:单排;总孔位数:22P;额定电流:3A;额定电压:-;插孔方向:顶部;塑高:8.5mm;触头材质:黄铜;触头镀层:金;工作温度:-40℃~+105℃;
-Reuse Block
-
-Group ID
-
-Channel ID
-
 
 *
 ]
 [
 DESIGNATOR
-H2
+J3
 FOOTPRINT
 HDR-TH_22P-P2.54-V-F
 PARTTYPE
@@ -331,90 +331,98 @@ Default
 Symbol
 BX-PM2.54-1-22PY
 Designator
-H2
-Unique ID
-gge8
-LCSC Part Name
-1x22P 间距:2.54mm 直插
-Supplier Part
-C18078140
-Manufacturer
-Bossie(博锡)
-Manufacturer Part
-BX-PM2.54-1-22PY
-Supplier Footprint
-插件,P=2.54mm
-JLCPCB Part Class
-Extended Part
-Datasheet
-https://item.szlcsc.com/datasheet/BX-PM2.54-1-22PY/19218541.html
-Supplier
-LCSC
-3D Model Title
-HDR-TH_22P-P2.54-V-F
-Holes Structure
-1x22P
-Pitch
-2.54mm
-Row Spacing
--
-Circular Hole / Square Hole
-方孔
-Mounting Type
-直插
-Number of Rows
-单排
-Number of Positions
-22P
-Current Rating
-3A
-Voltage Rating (Max)
--
-Holes Direction
-顶部
-Insulation Height
-8.5mm
-Contact Material
-黄铜
-Contact Plating
-金
-Operating Temperature
--40℃~+105℃
-PIN Length
-3.2mm
-Name
-BX-PM2.54-1-22PY
-Description
-插孔结构:1x22P;间距:2.54mm;行距:-;圆孔/方孔:方孔;安装方式:直插;排数:单排;总孔位数:22P;额定电流:3A;额定电压:-;插孔方向:顶部;塑高:8.5mm;触头材质:黄铜;触头镀层:金;工作温度:-40℃~+105℃;
-Reuse Block
+J3
+Channel ID
 
 Group ID
 
-Channel ID
+Reuse Block
 
+Description
+插孔结构:1x22P;间距:2.54mm;行距:-;圆孔/方孔:方孔;安装方式:直插;排数:单排;总孔位数:22P;额定电流:3A;额定电压:-;插孔方向:顶部;塑高:8.5mm;触头材质:黄铜;触头镀层:金;工作温度:-40℃~+105℃;
+Name
+BX-PM2.54-1-22PY
+PIN Length
+3.2mm
+Operating Temperature
+-40℃~+105℃
+Contact Plating
+金
+Contact Material
+黄铜
+Insulation Height
+8.5mm
+Holes Direction
+顶部
+Voltage Rating (Max)
+-
+Current Rating
+3A
+Number of Positions
+22P
+Number of Rows
+单排
+Mounting Type
+直插
+Circular Hole / Square Hole
+方孔
+Row Spacing
+-
+Pitch
+2.54mm
+Holes Structure
+1x22P
+3D Model Title
+HDR-TH_22P-P2.54-V-F
+Supplier
+LCSC
+Datasheet
+https://item.szlcsc.com/datasheet/BX-PM2.54-1-22PY/19218541.html
+JLCPCB Part Class
+Extended Part
+Supplier Footprint
+插件,P=2.54mm
+Manufacturer Part
+BX-PM2.54-1-22PY
+Manufacturer
+Bossie(博锡)
+Supplier Part
+C18078140
+LCSC Part Name
+1x22P 间距:2.54mm 直插
+Unique ID
+gge8
 
 *
 ]
 (
 GPIO4 
-U1-1 轻触开关-1 Passive 
+K1-1 轻触开关-1 Passive 
+J1-4 BX-PM2.54-1-22PY-4 Passive 
 )
 (
 GND 
-U1-2 轻触开关-2 Passive 
-U2-2 轻触开关-2 Passive 
-U3-2 轻触开关-2 Passive 
-U4-2 轻触开关-2 Passive 
+K1-2 轻触开关-2 Passive 
+K2-2 轻触开关-2 Passive 
+K3-2 轻触开关-2 Passive 
+K4-2 轻触开关-2 Passive 
+J1-22 BX-PM2.54-1-22PY-22 Passive 
+J3-1 BX-PM2.54-1-22PY-1 Passive 
+J3-21 BX-PM2.54-1-22PY-21 Passive 
+J3-22 BX-PM2.54-1-22PY-22 Passive 
 )
 (
 GPIO5 
-U2-1 轻触开关-1 Passive 
+K2-1 轻触开关-1 Passive 
+J1-5 BX-PM2.54-1-22PY-5 Passive 
 )
 (
 GPIO6 
-U3-1 轻触开关-1 Passive 
+K3-1 轻触开关-1 Passive 
+J1-6 BX-PM2.54-1-22PY-6 Passive 
 )
 (
 GPIO7 
-U4-1 轻触开关-1 Passive 
+K4-1 轻触开关-1 Passive 
+J1-7 BX-PM2.54-1-22PY-7 Passive 
 )

@@ -10,6 +10,7 @@
 
 合成夹具用于状态逻辑；真实 FreeCAD 运行用于真实几何；两类结果分别报告。
 """
+import hashlib
 import json
 import os
 import shutil
@@ -415,6 +416,94 @@ class EdaTypeContractTests(unittest.TestCase):
                         "设计验证未完成")
         self.assertFalse(facts.get("pcb_frozen"),
                         "PCB 未冻结")
+
+
+class NetlistClosureTests(unittest.TestCase):
+    """2026-11-28 原理图真正闭环整改：真实排针/按键 GPIO/GND 网表断言与占位隔离。"""
+
+    NET = ROOT / "hardware/space-buddy-r1/netlist-evidence.net"
+    EVIDENCE = ROOT / "hardware/space-buddy-r1/netlist-evidence.json"
+    ASSERT = ROOT / "hardware/space-buddy-r1/eda-assert-netlist.py"
+    READBACK = ROOT / "hardware/space-buddy-r1/eda-readback.json"
+
+    def _netlist_text(self):
+        return self.NET.read_text(encoding="utf-8")
+
+    def test_netlist_assertions_pass_on_committed_evidence(self):
+        # 提交的 .net 必须通过全部机器断言（--check 只断言不写文件）
+        proc = subprocess.run([sys.executable, str(self.ASSERT), "--check"],
+                              capture_output=True, text=True, timeout=30, cwd=str(ROOT))
+        out = json.loads(proc.stdout) if proc.stdout.strip() else {}
+        self.assertEqual(proc.returncode, 0, f"断言失败: {out.get('failed')}")
+        self.assertTrue(out.get("ok"))
+
+    def test_gpio_nets_contain_real_header_pins(self):
+        # 假完成检测：GPIO 网络必须同时含排母引脚与按键引脚（只有标签不算）
+        text = self._netlist_text()
+        for net, jpin, kpin in (("GPIO4", "J1-4", "K1-1"), ("GPIO5", "J1-5", "K2-1"),
+                                ("GPIO6", "J1-6", "K3-1"), ("GPIO7", "J1-7", "K4-1")):
+            self.assertIn(f"(\n{net} ", text, f"{net} 网络缺失")
+            block = text.split(f"(\n{net} ", 1)[1].split("\n)", 1)[0]
+            self.assertIn(jpin, block, f"{net} 缺排母引脚 {jpin}")
+            self.assertIn(kpin, block, f"{net} 缺按键引脚 {kpin}")
+
+    def test_gnd_includes_switch_grounds_and_real_board_gnd(self):
+        text = self._netlist_text()
+        block = text.split("(\nGND ", 1)[1].split("\n)", 1)[0]
+        for pin in ("K1-2", "K2-2", "K3-2", "K4-2",
+                    "J1-22", "J3-1", "J3-21", "J3-22"):
+            self.assertIn(pin, block, f"GND 缺真实引脚 {pin}")
+
+    def test_evidence_json_is_machine_generated_and_hash_bound(self):
+        ev = json.loads(self.EVIDENCE.read_text(encoding="utf-8"))
+        actual = hashlib.sha256(self.NET.read_bytes()).hexdigest()
+        self.assertEqual(ev.get("sha256"), actual, "证据哈希与 .net 实际内容不符")
+        self.assertEqual(ev.get("size"), self.NET.stat().st_size)
+        self.assertIn("自动生成", ev.get("note", ""))
+        self.assertTrue(ev.get("persistence", {}).get("stable"))
+
+    def test_switch_supplier_part_is_tbd_not_lcsc(self):
+        # C9900017374 不得作为 Supplier Part 声明（仅允许 FOOTPRINT 结构占位）
+        ev = json.loads(self.EVIDENCE.read_text(encoding="utf-8"))
+        for des, rec in ev.get("components", {}).items():
+            if des.startswith("K"):
+                self.assertNotIn("C9900017374", rec.get("supplier_part", ""),
+                                 f"{des} Supplier Part 仍含 C9900017374")
+        self.assertIn("TBD", ev.get("switch_footprint", ""))
+        self.assertIn("禁止用于制造", ev.get("switch_footprint", ""))
+
+    def test_designators_unified_in_project_records(self):
+        p = json.loads(PROJECT.read_text(encoding="utf-8"))
+        des = p["domains"]["eda"]["schematic_progress"]["component_designators"]
+        self.assertEqual(des, {"header_left": "J1", "header_right": "J3",
+                               "switch_1": "K1", "switch_2": "K2",
+                               "switch_3": "K3", "switch_4": "K4"})
+        rb = json.loads(self.READBACK.read_text(encoding="utf-8"))
+        # 读回一致性：位号修改后 API 读回同值
+        self.assertEqual(rb["designator_readback"]["K1"], "K1")
+        self.assertEqual(rb["designator_readback"]["J3"], "J3")
+
+    def test_official_pinout_basis_and_erc_classification_recorded(self):
+        p = json.loads(PROJECT.read_text(encoding="utf-8"))
+        sp = p["domains"]["eda"]["schematic_progress"]
+        self.assertIn("ESP32-S3-DevKitC-1 v1.1", sp.get("official_pinout_basis", ""))
+        erc = sp["erc"]
+        self.assertEqual(erc["error"], 0)
+        # Warning 必须有引脚级分类，不允许笼统"均预期"
+        self.assertIn("预期未使用引脚", erc["detail"])
+        self.assertIn("USB", erc["detail"])
+        rb = json.loads(self.READBACK.read_text(encoding="utf-8"))
+        groups = rb["erc"]["groups"]
+        self.assertEqual(sum(g["count"] for g in groups), 40,
+                         "ERC 浮动引脚计数应逐组记录")
+
+    def test_footprint_placeholder_is_quarantined_not_final(self):
+        p = json.loads(PROJECT.read_text(encoding="utf-8"))
+        sp = p["domains"]["eda"]["schematic_progress"]
+        ph = sp.get("switch_footprint_placeholder", "")
+        self.assertIn("SW-SMD_C9900017374", ph)
+        self.assertIn("禁止用于制造", ph)
+        self.assertIn("TBD", sp.get("switch_symbol", ""))
 
 
 if __name__ == "__main__":

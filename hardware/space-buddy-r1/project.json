@@ -34,15 +34,15 @@
       "evidence": "checks.json ok=true 且负向自检通过（check_case.py 每次建模后必跑）"
     },
     "eda": {
-      "status": "进行中（原理图 J1/J3/K1–K4 放置+GPIO4–7/GND 网络全部连通；ERC 0 error/6 warn；位号 U1–U4 待改 K1–K4）",
+      "status": "进行中（原理图真实闭环：J1/J3 排母 GPIO4–7/GND 引脚全部入网；位号 K1–K4/J1/J3；C9900017374 仅剩隔离占位；45 项网表断言全过；ERC 0 error/2 组预期浮动引脚；保存→关闭→重开→再导出逐字节一致）",
       "editor_note": "EDA 环境已激活且读写往返验收（2026-11-26，MakerLab-EDA-Check-20261126.eprj3）——环境可用 ≠ 产品 PCB 存在",
       "project": {
         "kind": "cloud-workspace + 本地会话",
         "project_uuid": "4ab9e52666a4fc7fe9b1d0c7c4c4263444d972eb139973d04478d976200a78b8",
         "schematic_uuid": "7415725566084bd0",
-        "local_session_path": "/Users/yanfenma/Documents/LCEDA-Pro/projects/SpaceBuddy-R1/SpaceBuddy-R1.eprj3（首次落盘待保存）",
+        "local_session_path": "/Users/yanfenma/Documents/LCEDA-Pro/projects/Space Buddy Deck R1/Space Buddy Deck R1.eprj3（本地实例 uuid 4a7cbe80…，Schematic/P1 uuid 不变）",
         "readback_file": "hardware/space-buddy-r1/eda-readback.json",
-        "session": "headless a9a1f285",
+        "session": "9b2df7cb（可见会话，保存→关闭→重开后读回）",
         "created_at": "2026-11-28"
       },
       "expected_outputs": [
@@ -56,7 +56,7 @@
       ],
       "outputs_present": [
         {
-          "name": "原理图 Schematic1/P1（含 6 元件+8 导线+8 网络标签）",
+          "name": "原理图 Schematic1/P1（6 元件 22 导线 + 12 网络标签 + 1 GND 符号；K1–K4/J1/J3）",
           "type": "schematic",
           "uuid": "7415725566084bd0",
           "evidence": "hardware/space-buddy-r1/eda-readback.json"
@@ -68,53 +68,76 @@
           "evidence": "hardware/space-buddy-r1/eda-readback.json"
         },
         {
-          "name": "网表导出（PROTEL 5856B）",
+          "name": "网表导出（PROTEL，重开会话稳定导出 ee4f7ea0…）",
           "type": "netlist",
           "uuid": "7415725566084bd0",
           "evidence": "hardware/space-buddy-r1/netlist-evidence.json",
           "path": "hardware/space-buddy-r1/netlist-evidence.net",
-          "digest": "5651b0a2edf5446cd9f994857bfb9718595d1c84cbce2c831e5538c4d9c2cf3b"
+          "digest": "ee4f7ea008d8672c124fcf6f0343062a2ab9f4e3dc5eea6d15f2b2417ea04b17"
         }
       ],
       "schematic_progress": {
         "components_placed": true,
         "component_designators": {
-          "header_left": "H1",
-          "header_right": "H2",
-          "switch_1": "U1",
-          "switch_2": "U2",
-          "switch_3": "U3",
-          "switch_4": "U4"
+          "header_left": "J1",
+          "header_right": "J3",
+          "switch_1": "K1",
+          "switch_2": "K2",
+          "switch_3": "K3",
+          "switch_4": "K4"
         },
-        "designator_issue": "updateAttribute Designator 未生效（OK 但读回仍旧值）；网表电气正确，仅命名待改",
+        "designator_method": "sch_SourcePrimitiveComponent.update({designator})——2026-11-28 修改后 get 读回一致（此前误用 updateAttribute：仅属性显示/位置，不改值）",
+        "connector": "J1/J3 = BX-PM2.54-1-22PY（C18078140，1×22P 2.54mm 母排）；间距/插入深度/塑高待实物验证（G4）",
+        "switch_symbol": "通用两脚常开（第 1/2 脚电气有效）；Supplier Part=TBD-MECH-AXIS；机械轴封装 TBD（样轴确认后绑定 Boba U4 或实际 SKU）",
+        "switch_footprint_placeholder": "EDA 器件库结构绑定 SW-SMD_C9900017374 无法经 properties 修改（API 明确拒绝），登记为隔离占位：非最终声明、禁止用于制造、最终 BOM 不得含 C9900017374",
+        "official_pinout_basis": "Espressif ESP32-S3-DevKitC-1 v1.1 用户指南 Header Block J1/J3 表（2026-11-28 查证）：J1.4=GPIO4、J1.5=GPIO5、J1.6=GPIO6、J1.7=GPIO7；GND=J1.22/J3.1/J3.21/J3.22；USB_D±=J3.19/J3.20 载板不引入",
         "nets": {
           "GPIO4": [
-            "U1-1"
+            "J1-4",
+            "K1-1"
           ],
           "GPIO5": [
-            "U2-1"
+            "J1-5",
+            "K2-1"
           ],
           "GPIO6": [
-            "U3-1"
+            "J1-6",
+            "K3-1"
           ],
           "GPIO7": [
-            "U4-1"
+            "J1-7",
+            "K4-1"
           ],
           "GND": [
-            "U1-2",
-            "U2-2",
-            "U3-2",
-            "U4-2"
+            "J1-22",
+            "J3-1",
+            "J3-21",
+            "J3-22",
+            "K1-2",
+            "K2-2",
+            "K3-2",
+            "K4-2"
           ]
         },
-        "connector": "BX-PM2.54-1-22PY（替换 KH-2.54PH90 公排针）",
+        "wiring": "J1.4–J1.7 竖直导线+GPIO 标签；J1.22/J3.1/J3.21/J3.22 竖直导线+公共 GND 导轨+GROUND 网络符号；网表断言证明排母引脚真实入网",
         "erc": {
           "error": 0,
-          "warning": 6,
-          "detail": "SHOWDANDLING×4 + CHECKFLOATPIN×2（均预期）"
+          "warning": 2,
+          "detail": "CHECKFLOATPIN×2 组（40 引脚，全部=预期未使用引脚）：K1–K4 符号第3脚×4；J1 未用 17 脚；J3 未用 19 脚（含 USB_D± 不引入载板）。SHOWDANDLING=0。逐条分类见 eda-readback.json erc.groups"
+        },
+        "netlist_assertions": {
+          "script": "hardware/space-buddy-r1/eda-assert-netlist.py",
+          "ok": true,
+          "failed": [],
+          "coverage": "GPIO 精确映射×4 / GND 精确集合 / 无互短 / 无电源短路 / 开关引脚完整 / 排母真实入网 / C9900017374 隔离"
+        },
+        "persistence": {
+          "cycle": "编辑→异步落盘（.esch2）→会话关闭→工程重开→导出→再导出",
+          "result": "重开导出两次逐字节一致（ee4f7ea0…）",
+          "caveat": "关闭前导出曾捕获属性异步落盘中间态（0e413db3…）——以重开后稳定导出为唯一源"
         },
         "netlist_exported": true,
-        "netlist_sha256": "1c9eb168300594db7c8f1d8b6be1dce1794383820ace96eca2cbb76c9acae601"
+        "netlist_sha256_note": "哈希一律以 netlist-evidence.json 的 sha256 字段为准（自动生成，不手抄）"
       }
     },
     "firmware": {

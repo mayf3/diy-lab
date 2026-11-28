@@ -1,30 +1,136 @@
 {
  "format": "PROTEL NETLIST 2.0",
  "exported_at": "2026-11-28",
- "session": "6307c7d0 (headless)",
- "size": 4944,
- "sha256": "a6eef8ef3a15b8e11aba4db0b02da4a7e03192b147136ec517716563e94b914f",
+ "source": "eda.sch_ManufactureData.getNetlistFile('space-buddy-r1','Protel2') 真实导出（非手写）",
+ "session": "9b2df7cb (可见会话，保存→关闭→重开后导出)",
+ "project_uuid": "4ab9e52666a4fc7fe9b1d0c7c4c4263444d972eb139973d04478d976200a78b8",
+ "local_reopen_instance_uuid": "4a7cbe805de29ce4d5cfb6358445cb4cb5e28fd1d92edfb453c18245a8d1483b",
+ "schematic_uuid": "7415725566084bd0",
+ "size": 6554,
+ "sha256": "ee4f7ea008d8672c124fcf6f0343062a2ab9f4e3dc5eea6d15f2b2417ea04b17",
  "nets": {
   "GPIO4": [
-   "U1-1"
-  ],
-  "GPIO5": [
-   "U2-1"
-  ],
-  "GPIO6": [
-   "U3-1"
-  ],
-  "GPIO7": [
-   "U4-1"
+   "J1-4",
+   "K1-1"
   ],
   "GND": [
-   "U1-2",
-   "U2-2",
-   "U3-2",
-   "U4-2"
+   "J1-22",
+   "J3-1",
+   "J3-21",
+   "J3-22",
+   "K1-2",
+   "K2-2",
+   "K3-2",
+   "K4-2"
+  ],
+  "GPIO5": [
+   "J1-5",
+   "K2-1"
+  ],
+  "GPIO6": [
+   "J1-6",
+   "K3-1"
+  ],
+  "GPIO7": [
+   "J1-7",
+   "K4-1"
   ]
  },
- "note": "由 eda.sch_ManufactureData.getNetlistFile 真实导出（非手写）；GPIO↔开关映射经机器断言验证",
- "project_uuid": "4ab9e52666a4fc7fe9b1d0c7c4c4263444d972eb139973d04478d976200a78b8",
- "schematic_uuid": "7415725566084bd0"
+ "components": {
+  "J1": {
+   "footprint_declared": "HDR-TH_22P-P2.54-V-F",
+   "supplier_part": "C18078140",
+   "partname": "BX-PM2.54-1-22PY"
+  },
+  "J3": {
+   "footprint_declared": "HDR-TH_22P-P2.54-V-F",
+   "supplier_part": "C18078140",
+   "partname": "BX-PM2.54-1-22PY"
+  },
+  "K1": {
+   "footprint_declared": "SW-SMD_C9900017374",
+   "supplier_part": "TBD-MECH-AXIS",
+   "partname": "轻触开关"
+  },
+  "K2": {
+   "footprint_declared": "SW-SMD_C9900017374",
+   "supplier_part": "TBD-MECH-AXIS",
+   "partname": "轻触开关"
+  },
+  "K3": {
+   "footprint_declared": "SW-SMD_C9900017374",
+   "supplier_part": "TBD-MECH-AXIS",
+   "partname": "轻触开关"
+  },
+  "K4": {
+   "footprint_declared": "SW-SMD_C9900017374",
+   "supplier_part": "TBD-MECH-AXIS",
+   "partname": "轻触开关"
+  }
+ },
+ "switch_footprint": "TBD（样轴确认后绑定 Boba U4 或实际 SKU；EDA 内 FOOTPRINT 占位 SW-SMD_C9900017374 仅为器件库结构绑定，非最终声明，禁止用于制造）",
+ "erc": {
+  "error": 0,
+  "warning": 2,
+  "detail": "CHECKFLOATPIN×2 组（40 引脚）：K1–K4 符号第3脚×4（电气未用，预期）；J1 未用 17 脚（3V3×2/RST/GPIO15-18/8/3/46/9-14/5V，预期未使用）；J3 未用 19 脚（TX/RX/GPIO1/2/42-35/0/45/48/47/21 及 USB_D±/GPIO19-20，USB 属开发板自身通道，载板不引入，预期）",
+  "classification": "全部为预期未使用引脚；无悬空网络警告（SHOWDANDLING=0）；无真实设计错误"
+ },
+ "persistence": {
+  "cycle": "编辑→异步落盘(.esch2 22:38)→会话关闭(6307c7d0)→工程重开(9b2df7cb)→导出→再导出",
+  "stable": true,
+  "sha256": "ee4f7ea008d8672c124fcf6f0343062a2ab9f4e3dc5eea6d15f2b2417ea04b17"
+ },
+ "assertions": {
+  "ok": true,
+  "failed": [],
+  "checks": {
+   "GPIO4={J1-4，K1-1}": "PASS",
+   "GPIO5={J1-5，K2-1}": "PASS",
+   "GPIO6={J1-6，K3-1}": "PASS",
+   "GPIO7={J1-7，K4-1}": "PASS",
+   "GND={J1-22，J3-1，J3-21，J3-22，K1-2，K2-2，K3-2，K4-2}": "PASS",
+   "无引脚跨网络互短": "PASS",
+   "不存在电源网络 VIN": "PASS",
+   "不存在电源网络 3V3": "PASS",
+   "不存在电源网络 3V3_1": "PASS",
+   "不存在电源网络 5V": "PASS",
+   "不存在电源网络 VCC": "PASS",
+   "GPIO4 不含电源引脚 K1-1": "PASS",
+   "GPIO4 不含电源引脚 J1-4": "PASS",
+   "GPIO5 不含电源引脚 K2-1": "PASS",
+   "GPIO5 不含电源引脚 J1-5": "PASS",
+   "GPIO6 不含电源引脚 K3-1": "PASS",
+   "GPIO6 不含电源引脚 J1-6": "PASS",
+   "GPIO7 不含电源引脚 K4-1": "PASS",
+   "GPIO7 不含电源引脚 J1-7": "PASS",
+   "GND 不含电源引脚 K1-2": "PASS",
+   "GND 不含电源引脚 K2-2": "PASS",
+   "GND 不含电源引脚 K3-2": "PASS",
+   "GND 不含电源引脚 K4-2": "PASS",
+   "GND 不含电源引脚 J1-22": "PASS",
+   "GND 不含电源引脚 J3-1": "PASS",
+   "GND 不含电源引脚 J3-21": "PASS",
+   "GND 不含电源引脚 J3-22": "PASS",
+   "K1 pin1/pin2 均入网": "PASS",
+   "K2 pin1/pin2 均入网": "PASS",
+   "K3 pin1/pin2 均入网": "PASS",
+   "K4 pin1/pin2 均入网": "PASS",
+   "GPIO4 排母引脚真实入网（非仅标签）": "PASS",
+   "GPIO5 排母引脚真实入网（非仅标签）": "PASS",
+   "GPIO6 排母引脚真实入网（非仅标签）": "PASS",
+   "GPIO7 排母引脚真实入网（非仅标签）": "PASS",
+   "K1 Supplier Part 不含 C9900017374": "PASS",
+   "K1 FOOTPRINT 占位(非最终)": "QUARANTINED",
+   "K2 Supplier Part 不含 C9900017374": "PASS",
+   "K2 FOOTPRINT 占位(非最终)": "QUARANTINED",
+   "K3 Supplier Part 不含 C9900017374": "PASS",
+   "K3 FOOTPRINT 占位(非最终)": "QUARANTINED",
+   "K4 Supplier Part 不含 C9900017374": "PASS",
+   "K4 FOOTPRINT 占位(非最终)": "QUARANTINED",
+   "J1 Supplier Part 不含 C9900017374": "PASS",
+   "J3 Supplier Part 不含 C9900017374": "PASS",
+   "连接器 J1/J3 在网表器件表中": "PASS"
+  }
+ },
+ "note": "本 JSON 由 eda-assert-netlist.py 自动生成；禁止手改哈希或大小"
 }
