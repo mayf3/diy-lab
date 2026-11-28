@@ -30,10 +30,13 @@ def main() -> None:
     cases = [
         ("C1 槽移出边界 → R2 FAIL", GC.coupon_c1, "outside", CV.verify_c1, "R2 槽位存在 x=-21"),
         ("C1 槽切穿底板 → R3 FAIL", GC.coupon_c1, "through", CV.verify_c1, "R3 底板完整"),
+        ("C1 最宽槽底板半切（审查反例 107.1/45.9）→ R3 FAIL", GC.coupon_c1, "partial-floor", CV.verify_c1, "R3 底板完整"),
         ("C2 盲孔 → R4 FAIL", GC.coupon_c2, "blind", CV.verify_c2, "R4 孔贯穿 x=-15"),
         ("C2 孔径缩小 → R4 FAIL", GC.coupon_c2, "shrunk", CV.verify_c2, "R4 孔贯穿 x=-15"),
-        ("C2 删除一孔 → R4 FAIL（量规不受阻即无孔）", GC.coupon_c2, "missing", CV.verify_c2, "R4 孔贯穿 x=15"),
+        ("C2 删除一孔 → R4 FAIL", GC.coupon_c2, "missing", CV.verify_c2, "R4 孔贯穿 x=15"),
         ("C3 开孔缩窄 → R6 FAIL", GC.coupon_c3, "shrunk", CV.verify_c3, "R6 插头包络"),
+        ("C3 顶部缺口（审查反例）→ R7 FAIL", GC.coupon_c3, "top-notch", CV.verify_c3, "R7"),
+        ("C3 开孔偏移 → R6 FAIL", GC.coupon_c3, "offset", CV.verify_c3, "R6 插头包络"),
     ]
     for name, builder, variant, verifier, key in cases:
         passed, detail = run(builder, variant, verifier, key)

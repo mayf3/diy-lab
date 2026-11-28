@@ -22,7 +22,10 @@ STEPS = [
     ("视觉约束", [sys.executable, str(B/"visual/visual_specs.py")]),
     ("任务书", [sys.executable, str(ROOT/"scripts/gen_eng_tasks.py"), SLUG, "v1"]),
     ("Lean+公理审计", [sys.executable, str(B/"proof/verify_proof.py")]),
-    ("M5 manifest", [sys.executable, str(B/"m5_manifest.py"), "check"]),
+    ("M5 重建候选1", [sys.executable, str(B/"m5_manifest.py"), "build"]),
+    ("Lean 复验", [sys.executable, str(B/"proof/verify_proof.py")]),
+    ("M5 重建候选2（收敛）", [sys.executable, str(B/"m5_manifest.py"), "build"]),
+    ("M5 manifest check", [sys.executable, str(B/"m5_manifest.py"), "check"]),
     ("M5 对抗矩阵", [sys.executable, str(B/"manifest_adversarial_tests.py")]),
     ("站点 check.py", [sys.executable, str(ROOT/"scripts/check.py")]),
 ]

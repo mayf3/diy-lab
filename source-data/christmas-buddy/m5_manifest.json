@@ -2,7 +2,7 @@
   "schema": "m5-release-manifest/2.0",
   "product": "christmas-buddy-v1",
   "date": "2026-11-28",
-  "generated_at": "2026-11-28T03:51:24Z",
+  "generated_at": "2026-11-28T09:20:38Z",
   "release_candidate": {
     "product": "christmas-buddy-v1",
     "tuple": {
@@ -12,8 +12,8 @@
       "bom": null
     },
     "tuple_state": "preresearch（四段未冻结——冻结须 GATE 门禁人工批准）",
-    "source_commit": "726776872b3b5d268b1453b4c44bbe02ab811971",
-    "manifest_hash": "c7462c9370427cb9741a5311ded5a23dce599ee3b7dc930807f1e7b78c3469ae",
+    "source_commit": "85e04525d46fc2e6aed194a3c1d4284582187cd9",
+    "manifest_hash": "4079fc05b286095e94ecb69f5a34dd0a34afa6fefeeff97dfdbf12270fdd41d7",
     "approval_state": "UNAPPROVED",
     "rule": "任一工件变化 → manifest_hash 变化 → 产生新候选；旧 approval_state 不继承"
   },
@@ -131,8 +131,8 @@
     {
       "path": "mech/coupon_tests.py",
       "logical_name": "测件负向测试源码",
-      "sha256": "c1d79213d8ac31da59b901e817117402c0f6aff0ed94dbba7a2029d583d377f0",
-      "bytes": 1996,
+      "sha256": "3207f8f0cac0939cde63f6b80d5104a29e96f50f7edb9c5dda8d98dd0938ff7a",
+      "bytes": 2311,
       "version_slot": "cad",
       "tool": "python3",
       "tool_version": "python3",
@@ -141,8 +141,8 @@
     {
       "path": "mech/coupon_verify.py",
       "logical_name": "测件验证器源码",
-      "sha256": "9c499bbf30614ee2c1f16480417242ceeb73ab4d2beebf07a5be4fd30233f88e",
-      "bytes": 5824,
+      "sha256": "30bc5e147aad23e3f0f18ed01ce4f6e479dace96467b50b72a564ca1e0197198",
+      "bytes": 6699,
       "version_slot": "cad",
       "tool": "python3",
       "tool_version": "python3",

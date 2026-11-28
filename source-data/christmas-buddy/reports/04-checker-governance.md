@@ -21,3 +21,16 @@
 2. UNKNOWN 不自动升级（assembly_check.json unknowns 单列）。
 3. 六层证据严格分级：参数 → CAD 构造 → STEP 几何 → STL → 切片 → 实物；当前 STL/切片/实物三层为 NOT_YET（试打印待人工执行）。
 4. CAD 修改后 `python3 scripts/verify_all.py` 一键重跑全链（依赖序，含 STEP 重导入）。
+
+## Batch4 检查器覆盖表（§四：正向/负向/故障注入）
+
+| 检查器 | 正向 | 负向 | 故障注入 | 证据 |
+|---|---|---|---|---|
+| C1 几何（槽位/底板逐槽体积） | coupon_verify R1-R3 全 PASS | coupon_tests 出界/切穿/半切（审查反例 53.6 vs 期望 107.1 → FAIL） | partial-floor 变体 | 本轮输出 |
+| C2 几何（贯穿/量规/连通） | R1/R4/R5 全 PASS | 盲孔/缩孔/删孔 FAIL | blind/shrunk/missing 变体 | 本轮输出 |
+| C3 几何（封闭孔/包络/实体保留） | R1/R6/R7 全 PASS | 缩窄/顶部缺口/偏移 FAIL | top-notch/offset/shrunk 变体 | 本轮输出 |
+| BOM 一致性 | 基线 PASS | A11 缺行诊断 | **A11-FI 禁用检查器后诊断消失（敏感度自检）** | 对抗矩阵 v2 |
+| Gerber Manifest | A0 基线 PASS | A5-A8 内容/删/增/重命名各自精确诊断 | 目录规则从 check 中剔除的敏感度分析（A6 注释） | 对抗矩阵 v2 |
+| Release 合同 | A0 + Lean 对真实候选 | A12 手工 APPROVED+漂移仍 FAIL | A13 Lean 数据核验 | 对抗矩阵 v2 |
+
+原则执行：测试 PASS 必须意味着目标规则确实执行并拒绝了目标错误；每案独立干净基线+单一注入+精确诊断断言；禁用目标检查器后断言必须失效（A11-FI 模式，可复制到其他检查器）。

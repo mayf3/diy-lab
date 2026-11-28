@@ -41,6 +41,9 @@ def coupon_c1(mode: str = "full") -> cq.Workplane:
         length = C1["slot_len"] if mode != "oversize_len" else bd + 20
         slot = cq.Workplane("XY").box(w, length, depth).translate(
             (xx, 0, bh - depth / 2))                                   # 顶部开槽 depth=6，底板 4mm 完整
+        if mode == "partial-floor" and i == 3:                         # 反例：最宽槽底板切去一半厚度
+            slot2 = cq.Workplane("XY").box(w, length, 2.0).translate((xx, 0, bh - depth - 1.0))
+            wp = wp.cut(slot2)
         wp = wp.cut(slot)
     return wp
 
@@ -58,16 +61,21 @@ def coupon_c2(mode: str = "full") -> cq.Workplane:
     return wp
 
 def coupon_c3(mode: str = "full") -> cq.Workplane:
-    """USB-C 开孔试件：13.4×7.4 径向通孔（壁 2.8mm）。"""
+    """USB-C 开孔试件：13.4×7.4 封闭孔（墙体 z −8..8，开孔 z ±3.7 完全在壁内，
+    上下保留实体——Batch4 审查修复：原开孔贴顶形成开放缺口）。"""
     bw, bt, bh = C3["block"]
     ow, oh = C3["opening"]
+    hole_z = 0.0                                   # 孔中心=墙中心 → 封闭孔
     wall = cq.Workplane("XY").box(bw, bt, bh)
-    hole = cq.Workplane("XY").box(ow, 40, oh).translate((0, 0, bh / 2))
-    wp = wall.cut(hole)
-    if mode == "shrunk":
-        hole2 = cq.Workplane("XY").box(ow - 4, 40, oh - 2).translate((0, 0, bh / 2))
-        wp = cq.Workplane("XY").box(bw, bt, bh).cut(hole2)
-    return wp
+    if mode == "top-notch":                        # 负向：顶部缺口（审查反例）
+        hole = cq.Workplane("XY").box(ow, 40, oh).translate((0, 0, bh / 2))
+    elif mode == "shrunk":
+        hole = cq.Workplane("XY").box(ow - 6, 40, oh - 3).translate((0, 0, hole_z))
+    elif mode == "offset":                         # 负向：开孔位置偏移
+        hole = cq.Workplane("XY").box(ow, 40, oh).translate((5.0, 0, hole_z + 2.0))
+    else:
+        hole = cq.Workplane("XY").box(ow, 40, oh).translate((0, 0, hole_z))
+    return wall.cut(hole)
 
 def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
