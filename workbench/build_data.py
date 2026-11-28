@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import json
+import subprocess
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -41,6 +43,19 @@ def build() -> dict:
             **presentation,
         })
     checks = environment_checks(env)
+    # Hardware Studio（PR-A）：统一项目模型校验器作为唯一真源（子进程，失败如实呈现）
+    hardware = None
+    try:
+        proc = subprocess.run(
+            [sys.executable, 'hardware/check_project.py',
+             '--project', 'hardware/space-buddy-r1/project.json'],
+            capture_output=True, text=True, timeout=30, cwd=str(ROOT))
+        if proc.returncode == 0 and proc.stdout.strip():
+            hardware = json.loads(proc.stdout)
+        else:
+            hardware = {'ok': False, 'error': (proc.stderr or proc.stdout or 'unknown')[:400]}
+    except Exception as exc:  # 校验器故障必须可见，不得静默吞掉
+        hardware = {'ok': False, 'error': str(exc)[:400]}
     return {
         'schema_version': 1,
         'title': '硬件工作台',
@@ -55,6 +70,9 @@ def build() -> dict:
             'ready': all(check['status'] == 'passed' for check in checks),
         },
         'projects': projects,
+        'hardware': hardware,
+        'hardware_next': (json.loads(Path('hardware/space-buddy-r1/project.json').read_text()).get('workbench_nine', {})
+                          if (ROOT / 'hardware/space-buddy-r1/project.json').is_file() else {}),
         'documents': catalog['documents'],
         'resources': catalog['resources'],
     }

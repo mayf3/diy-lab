@@ -548,6 +548,54 @@
       ]
     }
   ],
+  "hardware": {
+    "project": "Space Buddy Deck R1",
+    "failures": [],
+    "checks": {
+      "quad_complete": true,
+      "quad_values": {
+        "pcb": null,
+        "cad": 3,
+        "fw": "draft",
+        "bom": "batch1-v3"
+      },
+      "artifacts_present": true,
+      "cad_geometry_green": true,
+      "eda_not_product_guard": true,
+      "invalidation_propagated": true
+    },
+    "missing_files": [],
+    "product_ready": false,
+    "stale_downstream": [],
+    "ok": true
+  },
+  "hardware_next": {
+    "looks_like": "/case-r1-viewer.html",
+    "cad_done": "checks.json 全绿 + 外观冻结",
+    "pcb_done": "未开始（无 R1 原生 EDA 工程）",
+    "joint_verified": "未开始",
+    "factory_can": "待 DFM 答复（话术已备，等轴体 SKU 定档）",
+    "package_complete": false,
+    "blockers": [
+      "样轴与 DevKitC 未到货（第一批采购由负责人执行）",
+      "PCB 未开始（等 G4 输入）"
+    ],
+    "next_owner": [
+      {
+        "who": "负责人",
+        "what": "第一批下单（清单已终版）"
+      },
+      {
+        "who": "Agent",
+        "what": "到货实测回填+冻结+DFM 发询+EDA 原理图（PR-B）"
+      }
+    ],
+    "needs_user": [
+      "四键用途与 F13–F16 绑定",
+      "键帽四色打印路线（G2 前）",
+      "第一批付款授权"
+    ]
+  },
   "documents": [
     {
       "id": "button-brief",

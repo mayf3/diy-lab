@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "product": "Space Buddy Deck R1",
+  "version_contract": {
+    "format": "R1.<pcb>.<cad>.<fw>.<bom>",
+    "revisions": { "pcb": null, "cad": 3, "fw": "draft", "bom": "batch1-v3" },
+    "rule": "任一影响接口或尺寸的变更：递增对应段与整体版本，并按 dependency_graph 将下游证据标记 stale（需重新验证）。禁止只声明部分段的版本。"
+  },
+  "domains": {
+    "cad": {
+      "status": "原型完成（外观冻结 G2-3 版）",
+      "entry": "source-data/agent-button-deck/pcba-v1/cad/g2-case-r1.py",
+      "checker": "source-data/agent-button-deck/pcba-v1/cad/check_case.py",
+      "outputs": [
+        "source-data/agent-button-deck/pcba-v1/cad/renders/case-r1/case-r1-body.step",
+        "source-data/agent-button-deck/pcba-v1/cad/renders/case-r1/case-r1-base.step",
+        "source-data/agent-button-deck/pcba-v1/cad/renders/case-r1/case-r1-cap-a.step",
+        "source-data/agent-button-deck/pcba-v1/cad/renders/case-r1/case-r1-cap-b.step",
+        "source-data/agent-button-deck/pcba-v1/cad/renders/case-r1/case-r1-cap-c.step",
+        "source-data/agent-button-deck/pcba-v1/cad/renders/case-r1/case-r1-cap-d.step",
+        "source-data/agent-button-deck/pcba-v1/cad/renders/case-r1/dims.json",
+        "source-data/agent-button-deck/pcba-v1/cad/renders/case-r1/checks.json",
+        "source-data/agent-button-deck/pcba-v1/cad/renders/case-r1/views/view-front.png",
+        "source-data/agent-button-deck/pcba-v1/cad/renders/case-r1/views/view-iso45.png",
+        "source-data/agent-button-deck/pcba-v1/cad/renders/case-r1/views/view-side.png",
+        "source-data/agent-button-deck/pcba-v1/cad/renders/case-r1/views/view-back.png",
+        "source-data/agent-button-deck/pcba-v1/cad/renders/case-r1/views/view-exploded.png"
+      ],
+      "evidence": "checks.json ok=true 且负向自检通过（check_case.py 每次建模后必跑）"
+    },
+    "eda": {
+      "status": "未开始（R1 无原生工程）",
+      "editor_note": "EDA 环境已激活且读写往返验收（2026-11-26，MakerLab-EDA-Check-20261126.eprj3）——环境可用 ≠ 产品 PCB 存在",
+      "project": null,
+      "expected_outputs": ["原理图", "PCB", "DRC 报告", "BOM", "CPL", "Gerber", "PCB STEP"]
+    },
+    "firmware": {
+      "status": "draft（未编译烧录）",
+      "entry": "source-data/agent-button-deck/pcba-v1/firmware-hid/AgentButtonDeckHID.ino"
+    },
+    "bom": {
+      "status": "batch1 采购清单（UNKNOWN 项待用户核对）",
+      "entry": "source-data/agent-button-deck/pcba-v1/bom-batch1-user.md"
+    },
+    "manufacturing": {
+      "status": "未授权（未冻结不下单）",
+      "package_required": [
+        "EDA 原生工程", "Gerber", "BOM（LCSC 编号）", "CPL", "PCB STEP",
+        "外壳 STEP", "分件 STL", "外壳 3MF", "装配说明", "零件清单", "版本清单"
+      ],
+      "package_present": [],
+      "dfm": {
+        "usb_switch_wave": "待厂家确认（塑料轴体过波峰/手插后焊）",
+        "template": "source-data/agent-button-deck/pcba-v1/jlc-dfm-checklist.md"
+      }
+    },
+    "acceptance": {
+      "status": "未开始",
+      "criteria": "factory-delivery-plan §6 七条（免焊接为否决项）"
+    }
+  },
+  "dependency_graph": {
+    "dims.usb_ports": { "downstream": ["cad.case", "cad.checks", "joint-checks", "pcb.usb-footprint"] },
+    "dims.keys": { "downstream": ["cad.case", "cad.caps", "cad.checks", "pcb.switch-footprint"] },
+    "dims.boss": { "downstream": ["cad.base", "pcb.mount-holes"] },
+    "dims.skirt": { "downstream": ["cad.base", "cad.checks"] },
+    "pcb.rev": { "downstream": ["joint-checks", "eda.gerber", "eda.cpl", "bom", "manufacturing.package"] },
+    "cad.rev": { "downstream": ["shell-step", "shell-stl", "shell-3mf", "joint-checks", "manufacturing.package"] },
+    "firmware.rev": { "downstream": ["acceptance.flash-test"] }
+  },
+  "joint_check": {
+    "status": "未开始（等：轴体实测→键帽冻结；DevKitC 实测→USB 校核；G4 板框→螺柱）",
+    "contract": "PCB 板框/安装孔/排母高度/开关高度/USB 连接器位置 × 外壳开孔/螺柱/键帽行程/维修空间，共同机械坐标原点=底座地板上表面"
+  },
+  "workbench_nine": {
+    "looks_like": "/case-r1-viewer.html",
+    "cad_done": "checks.json 全绿 + 外观冻结",
+    "pcb_done": "未开始（无 R1 原生 EDA 工程）",
+    "joint_verified": "未开始",
+    "factory_can": "待 DFM 答复（话术已备，等轴体 SKU 定档）",
+    "package_complete": false,
+    "blockers": ["样轴与 DevKitC 未到货（第一批采购由负责人执行）", "PCB 未开始（等 G4 输入）"],
+    "next_owner": [
+      { "who": "负责人", "what": "第一批下单（清单已终版）" },
+      { "who": "Agent", "what": "到货实测回填+冻结+DFM 发询+EDA 原理图（PR-B）" }
+    ],
+    "needs_user": ["四键用途与 F13–F16 绑定", "键帽四色打印路线（G2 前）", "第一批付款授权"]
+  },
+  "guard": {
+    "product_ready": false,
+    "product_ready_note": "EDA 环境可用、CAD 原型完成 ≠ 产品就绪：PCB 未开始、实物未适配、制造未授权"
+  }
+}
