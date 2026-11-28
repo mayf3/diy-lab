@@ -58,7 +58,7 @@ CONNECTORS = [
         Pin("P35", "I2S_PCM_FS", "3.3V", "-", "OUT", "BCM19 → 麦 LRCLK"),
         Pin("P38", "I2S_PCM_DIN", "3.3V", "-", "IN", "BCM20 ← 麦 SD"),
         Pin("P40", "I2S_PCM_DOUT", "3.3V", "-", "OUT", "BCM21 → 功放 DIN"),
-        Pin("P19", "LED_EYE_DIN", "3.3V", "-", "OUT", "BCM10（方案A：由 ESP32 经缓冲驱动同名网；见 J3）"),
+        Pin("P19", "LED_PI", "3.3V", "-", "OUT", "BCM10（方案B：焊桥 S2 选中后经 U6 缓冲进灯链）"),
         Pin("P22", "AMP_SD", "3.3V", "-", "OUT", "BCM25，上拉默认静音（安全态）"),
         Pin("P16", "BTN_K1", "3.3V", "-", "IN", "BCM23，内部上拉，按下到 GND"),
         Pin("P18", "BTN_K2", "3.3V", "-", "IN", "BCM24"),
@@ -97,36 +97,40 @@ CONNECTORS = [
         Pin("IO12", "JTAG_TP4", "3.3V", "-", "IN", ""),
         Pin("IO13", "JTAG_TP5", "3.3V", "-", "IN", ""),
         Pin("IO14", "JTAG_TP6", "3.3V", "-", "IN", ""),
-    ], note="方案 B 时 U3 不贴（DNP），LED_EYE_DIN 由 Pi BCM10 直驱（经缓冲），安全静音由 Pi GPIO 承担"),
+    ], note="方案 B 时 U3 不贴（DNP），LED_PI 经焊桥 S2 由 Pi BCM10 直驱（经缓冲），安全静音由 Pi GPIO 承担"),
 
     Connector("J4", "扬声器输出", "PH2.0-2P 卧贴（额定 2A）", [
         Pin("1", "SPK_P", "5V(音频)", "400mA峰值", "OUT", "MAX98357A 输出+，4Ω 3W 额定"),
         Pin("2", "SPK_N", "5V(音频)", "400mA峰值", "OUT", "Class-D 差分对，等长就近回流"),
     ], note="外置 28mm 8Ω/2W 或 4Ω/3W 腔体喇叭（采购轮定，接口按 4Ω/3W 设计）"),
 
-    Connector("J5", "眼睛左（3×3 SK6812 模组）", "PH2.0-3P 卧贴", [
+    Connector("J5", "PH2.0-4P 左眼模组（链级1）", "PH2.0 卧贴", [
         Pin("1", "P5V_LED", "5V", "540mA", "PWR", "LED 轨（PTC 后）"),
-        Pin("2", "LED_EYE_DIN", "5V", "-", "IN", "5V 电平数据（74LVC1T45 缓冲后）"),
-        Pin("3", "GND", "GND", "540mA", "PWR", ""),
-    ], note="模组端自带下一级 DOUT；左眼 DOUT → 右眼 DIN（模组内飞线，不在板上）"),
+        Pin("2", "GND", "GND", "540mA", "PWR", ""),
+        Pin("3", "LED_DIN", "5V", "-", "IN", "U6.B 驱动；模组 LED0–8"),
+        Pin("4", "LED_CHAIN1", "5V", "-", "OUT", "模组 DOUT 返回板内 → 链级2"),
+    ], note="4 线模组规格（DIN+DOUT 引出）"),
 
-    Connector("J6", "眼睛右（3×3 SK6812 模组）", "PH2.0-3P 卧贴", [
+    Connector("J6", "PH2.0-4P 右眼模组（链级2）", "PH2.0 卧贴", [
         Pin("1", "P5V_LED", "5V", "540mA", "PWR", ""),
-        Pin("2", "LED_EYE_DIN", "5V", "-", "IN", "菊花链第二级"),
-        Pin("3", "GND", "GND", "540mA", "PWR", ""),
+        Pin("2", "GND", "GND", "540mA", "PWR", ""),
+        Pin("3", "LED_CHAIN1", "5V", "-", "IN", "左眼 DOUT 进本级 DIN；LED9–17"),
+        Pin("4", "LED_CHAIN2", "5V", "-", "OUT", "本级 DOUT → 链级3"),
     ], note=""),
 
-    Connector("J7", "胸前星星灯（4 颗 SK6812）", "PH2.0-3P 卧贴", [
+    Connector("J7", "PH2.0-4P 星星灯（链级3）", "PH2.0 卧贴", [
         Pin("1", "P5V_LED", "5V", "240mA", "PWR", ""),
-        Pin("2", "LED_EYE_DIN", "5V", "-", "IN", "菊花链第三级"),
-        Pin("3", "GND", "GND", "240mA", "PWR", ""),
+        Pin("2", "GND", "GND", "240mA", "PWR", ""),
+        Pin("3", "LED_CHAIN2", "5V", "-", "IN", "右眼 DOUT 进本级 DIN；LED18–21"),
+        Pin("4", "LED_CHAIN3", "5V", "-", "OUT", "本级 DOUT → 链级4"),
     ], note=""),
 
-    Connector("J8", "圣诞树灯光扩展（预留，V1 不装配）", "PH2.0-3P 卧贴", [
+    Connector("J8", "PH2.0-4P 树灯扩展（链级4，V1 不装配）", "PH2.0 卧贴", [
         Pin("1", "P5V_LED_EXT", "5V", "600mA", "PWR", "LED 轨延伸，独立 PTC 0.75A"),
-        Pin("2", "LED_EYE_DIN", "5V", "-", "IN", "菊花链第 4 级 DIN（树灯模块级联在星星灯之后）"),
-        Pin("3", "GND", "GND", "600mA", "PWR", ""),
-    ], note="外接上限 10 颗 SK6812；不使用时盲盖"),
+        Pin("2", "GND", "GND", "600mA", "PWR", ""),
+        Pin("3", "LED_CHAIN3", "5V", "-", "IN", "星灯 DOUT 进本级 DIN；LED22–31（上限 10 颗）"),
+        Pin("4", "LED_CHAIN_END", "5V", "-", "OUT", "末级 DOUT，V1 悬空盲盖"),
+    ], note="菊花链：SK6812 逐级 DOUT→DIN，禁止 DIN 并联；刷新 32 颗≈1.01ms@800kHz"),
 
     Connector("J9", "调试 UART", "SH1.0-4P 卧贴", [
         Pin("1", "P3V3_MCU", "3.3V", "100mA", "PWR", "调试时给逻辑笔/串口桥供电上限"),

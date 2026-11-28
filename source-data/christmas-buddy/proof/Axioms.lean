@@ -29,3 +29,6 @@ import ChristmasBuddy.Version
 #print axioms ChristmasBuddy.Version.thm_incomplete_never_manufacturable
 #print axioms ChristmasBuddy.Version.thm_frozen_manufacturable
 #print axioms ChristmasBuddy.Version.thm_complete_sound
+#print axioms ChristmasBuddy.Version.thm_unapproved_not_manufacturable
+#print axioms ChristmasBuddy.Version.thm_registry_membership_implies_approved
+#print axioms ChristmasBuddy.Version.thm_release_ext

@@ -1,0 +1,26 @@
+{
+  "schema": "render-provenance/1.0",
+  "date": "2026-11-28",
+  "tool": "blender 5.2 headless Cycles CPU",
+  "script": "source-data/christmas-buddy/visual/render_blender.py",
+  "params_sha256_at_render": "514bcb96c73e2174d8f64b8c5042bab8c79e18db43628ec77dfd7e3c79583af5",
+  "rule": "mech/params.py 任何变更后必须重跑渲染；media 图与 renders_local 同步替换",
+  "renders": [
+    "a_v1_back.png",
+    "a_v1_base_scene.png",
+    "a_v1_case_open.png",
+    "a_v1_deg45.png",
+    "a_v1_exploded.png",
+    "a_v1_front.png",
+    "a_v1_pcb_assembly.png",
+    "a_v1_side.png",
+    "b_v2_back.png",
+    "b_v2_base_scene.png",
+    "b_v2_case_open.png",
+    "b_v2_deg45.png",
+    "b_v2_exploded.png",
+    "b_v2_front.png",
+    "b_v2_pcb_assembly.png",
+    "b_v2_side.png"
+  ]
+}

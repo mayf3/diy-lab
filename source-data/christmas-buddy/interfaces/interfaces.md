@@ -39,7 +39,7 @@
 | P35 | `I2S_PCM_FS` | 3.3V | - | OUT | BCM19 → 麦 LRCLK |
 | P38 | `I2S_PCM_DIN` | 3.3V | - | IN | BCM20 ← 麦 SD |
 | P40 | `I2S_PCM_DOUT` | 3.3V | - | OUT | BCM21 → 功放 DIN |
-| P19 | `LED_EYE_DIN` | 3.3V | - | OUT | BCM10（方案A：由 ESP32 经缓冲驱动同名网；见 J3） |
+| P19 | `LED_PI` | 3.3V | - | OUT | BCM10（方案B：焊桥 S2 选中后经 U6 缓冲进灯链） |
 | P22 | `AMP_SD` | 3.3V | - | OUT | BCM25，上拉默认静音（安全态） |
 | P16 | `BTN_K1` | 3.3V | - | IN | BCM23，内部上拉，按下到 GND |
 | P18 | `BTN_K2` | 3.3V | - | IN | BCM24 |
@@ -57,7 +57,7 @@
 ## U3 — ESP32-S3-WROOM-1-N8R2（方案 A，板载贴片模块）
 
 - 候选型号：ESP32-S3-WROOM-1-N8R2（嘉立创 SMT 扩展库，选型轮锁定 C 编号）
-- 备注：方案 B 时 U3 不贴（DNP），LED_EYE_DIN 由 Pi BCM10 直驱（经缓冲），安全静音由 Pi GPIO 承担
+- 备注：方案 B 时 U3 不贴（DNP），LED_PI 经焊桥 S2 由 Pi BCM10 直驱（经缓冲），安全静音由 Pi GPIO 承担
 
 | 脚 | 信号 | 电压域 | 额定 | 方向 | 说明 |
 |---|---|---|---|---|---|
@@ -94,47 +94,51 @@
 | 1 | `SPK_P` | 5V(音频) | 400mA峰值 | OUT | MAX98357A 输出+，4Ω 3W 额定 |
 | 2 | `SPK_N` | 5V(音频) | 400mA峰值 | OUT | Class-D 差分对，等长就近回流 |
 
-## J5 — 眼睛左（3×3 SK6812 模组）
+## J5 — PH2.0-4P 左眼模组（链级1）
 
-- 候选型号：PH2.0-3P 卧贴
-- 备注：模组端自带下一级 DOUT；左眼 DOUT → 右眼 DIN（模组内飞线，不在板上）
+- 候选型号：PH2.0 卧贴
+- 备注：4 线模组规格（DIN+DOUT 引出）
 
 | 脚 | 信号 | 电压域 | 额定 | 方向 | 说明 |
 |---|---|---|---|---|---|
 | 1 | `P5V_LED` | 5V | 540mA | PWR | LED 轨（PTC 后） |
-| 2 | `LED_EYE_DIN` | 5V | - | IN | 5V 电平数据（74LVC1T45 缓冲后） |
-| 3 | `GND` | GND | 540mA | PWR |  |
+| 2 | `GND` | GND | 540mA | PWR |  |
+| 3 | `LED_DIN` | 5V | - | IN | U6.B 驱动；模组 LED0–8 |
+| 4 | `LED_CHAIN1` | 5V | - | OUT | 模组 DOUT 返回板内 → 链级2 |
 
-## J6 — 眼睛右（3×3 SK6812 模组）
+## J6 — PH2.0-4P 右眼模组（链级2）
 
-- 候选型号：PH2.0-3P 卧贴
+- 候选型号：PH2.0 卧贴
 
 | 脚 | 信号 | 电压域 | 额定 | 方向 | 说明 |
 |---|---|---|---|---|---|
 | 1 | `P5V_LED` | 5V | 540mA | PWR |  |
-| 2 | `LED_EYE_DIN` | 5V | - | IN | 菊花链第二级 |
-| 3 | `GND` | GND | 540mA | PWR |  |
+| 2 | `GND` | GND | 540mA | PWR |  |
+| 3 | `LED_CHAIN1` | 5V | - | IN | 左眼 DOUT 进本级 DIN；LED9–17 |
+| 4 | `LED_CHAIN2` | 5V | - | OUT | 本级 DOUT → 链级3 |
 
-## J7 — 胸前星星灯（4 颗 SK6812）
+## J7 — PH2.0-4P 星星灯（链级3）
 
-- 候选型号：PH2.0-3P 卧贴
+- 候选型号：PH2.0 卧贴
 
 | 脚 | 信号 | 电压域 | 额定 | 方向 | 说明 |
 |---|---|---|---|---|---|
 | 1 | `P5V_LED` | 5V | 240mA | PWR |  |
-| 2 | `LED_EYE_DIN` | 5V | - | IN | 菊花链第三级 |
-| 3 | `GND` | GND | 240mA | PWR |  |
+| 2 | `GND` | GND | 240mA | PWR |  |
+| 3 | `LED_CHAIN2` | 5V | - | IN | 右眼 DOUT 进本级 DIN；LED18–21 |
+| 4 | `LED_CHAIN3` | 5V | - | OUT | 本级 DOUT → 链级4 |
 
-## J8 — 圣诞树灯光扩展（预留，V1 不装配）
+## J8 — PH2.0-4P 树灯扩展（链级4，V1 不装配）
 
-- 候选型号：PH2.0-3P 卧贴
-- 备注：外接上限 10 颗 SK6812；不使用时盲盖
+- 候选型号：PH2.0 卧贴
+- 备注：菊花链：SK6812 逐级 DOUT→DIN，禁止 DIN 并联；刷新 32 颗≈1.01ms@800kHz
 
 | 脚 | 信号 | 电压域 | 额定 | 方向 | 说明 |
 |---|---|---|---|---|---|
 | 1 | `P5V_LED_EXT` | 5V | 600mA | PWR | LED 轨延伸，独立 PTC 0.75A |
-| 2 | `LED_EYE_DIN` | 5V | - | IN | 菊花链第 4 级 DIN（树灯模块级联在星星灯之后） |
-| 3 | `GND` | GND | 600mA | PWR |  |
+| 2 | `GND` | GND | 600mA | PWR |  |
+| 3 | `LED_CHAIN3` | 5V | - | IN | 星灯 DOUT 进本级 DIN；LED22–31（上限 10 颗） |
+| 4 | `LED_CHAIN_END` | 5V | - | OUT | 末级 DOUT，V1 悬空盲盖 |
 
 ## J9 — 调试 UART
 

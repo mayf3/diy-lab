@@ -90,7 +90,7 @@ def build_common_core() -> dict[str, cq.Workplane]:
     parts["mic"] = box_(4.0, 1.8, 3.4, m["x"], 0.9, m["z"])
     return parts
 
-def build_scheme_a() -> dict[str, cq.Workplane]:
+def build_scheme_a(mode: str = "full") -> dict[str, cq.Workplane]:
     sa = PARAMS["scheme_a"]
     wall = PARAMS["wall"]
     prof = sa["body_profile"]
@@ -113,11 +113,13 @@ def build_scheme_a() -> dict[str, cq.Workplane]:
     ring_in = cylinder_z(sc["ring_r"] - sc["tube_r"] * 2, sc["z"] - sc["tube_r"] - 0.1, sc["z"] + sc["tube_r"] + 0.1)
     scarf = ring_out.cut(ring_in)
 
-    return {"base": base, "body_front": half(body, 1), "body_rear": half(body, -1),
-            "head": head, "brim": brim, "hat": hat.union(hat_tip), "scarf": scarf,
-            "cavity": cavity}
+    from openings import apply_openings
+    parts = {"base": base, "body_front": half(body, 1), "body_rear": half(body, -1),
+             "head": head, "brim": brim, "hat": hat.union(hat_tip), "scarf": scarf,
+             "cavity": cavity}
+    return apply_openings(parts, mode)
 
-def build_scheme_b() -> dict[str, cq.Workplane]:
+def build_scheme_b(mode: str = "full") -> dict[str, cq.Workplane]:
     sb = PARAMS["scheme_b"]
     wall = PARAMS["wall"]
     prof = sb["body_profile"]
@@ -140,9 +142,11 @@ def build_scheme_b() -> dict[str, cq.Workplane]:
     stub = cq.Workplane(obj=cq.Solid.makeCylinder(2.5, sb["hat"]["stub_h"],
                                                   Vector(6, 0, hd["center_z"] + hd["d"] * 0.28 + sb["hat"]["d"] / 2 - 6),
                                                   Vector(0.35, 0, 1).normalized()))
-    return {"base": base, "body_front": half(body, 1), "body_rear": half(body, -1),
-            "head": head, "face_plate": face_plate, "hat": hat.union(stub), "neck_ring": ring,
-            "cavity": cavity}
+    from openings import apply_openings
+    parts = {"base": base, "body_front": half(body, 1), "body_rear": half(body, -1),
+             "head": head, "face_plate": face_plate, "hat": hat.union(stub), "neck_ring": ring,
+             "cavity": cavity}
+    return apply_openings(parts, mode)
 
 # ---------------------------------------------------------------------------
 # 检查
@@ -198,18 +202,7 @@ def run_checks(scheme: str, solids: dict, core: dict) -> list[dict]:
     hhat = comp.intersect(solids["hat"]).val().Volume()
     add("功能内核 ∩ 帽 ≈ ∅", hhat < 1.0, f"干涉体积 {hhat:.3f}mm³")
 
-    # 5) USB-C 插头可达（凹深 = 壁厚 + 插座悬出）
-    recess = PARAMS["wall"] + 2.5
-    add("USB-C 插头凹深 ≤ 15mm", recess <= PARAMS["usb_c"]["recess_max"],
-        f"凹深 {recess:.1f}mm（壁 {PARAMS['wall']} + 悬出 2.5）")
-
-    # 6) 扬声器开孔面积
-    spk = PARAMS["speaker"]
-    slots = spk["grille_slots"]
-    diaphragm = math.pi * (spk["d"] / 2) ** 2
-    grille = slots["count"] * slots["w"] * slots["l"]
-    add("扬声器开孔 ≥ 60% 振膜", grille >= spk["grille_ratio_min"] * diaphragm,
-        f"{slots['count']} 条 {slots['w']}×{slots['l']}mm = {grille:.0f}mm² ≥ 需要 {0.6 * diaphragm:.0f}mm²")
+    # 5/6) 开孔类检查已迁移到 geometry_checks（在导出 STEP 重导入后验证）——见 openings.py
 
     # 7) Pi 迭放弦长净空（纯数学逐高度校核）
     pi = PARAMS["pi"]
@@ -261,21 +254,27 @@ def main() -> None:
         core = build_common_core()
         checks = run_checks(scheme, solids, core)
         export(solids, OUT / f"scheme_{scheme}")
+        from openings import geometry_checks
+        geo, unknowns = geometry_checks(scheme, OUT / f"scheme_{scheme}")
+        checks.extend(geo)
         export(core, OUT / f"scheme_{scheme}" / "core")
-        results["schemes"][scheme] = {"checks": checks}
+        results["schemes"][scheme] = {"checks": checks, "unknowns": unknowns}
         fails = [c for c in checks if c["result"] == "FAIL"]
         if fails:
             rc = 1
     (Path(__file__).parent / "assembly_check.json").write_text(
         json.dumps(results, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
-    md = ["# Christmas Buddy V1 装配验证（真实布尔求交）", "",
-          f"查看日期：{VIEW_DATE}｜工具：CadQuery 2.8 / OCCT 布尔运算（几何事实，非目测）", "",
-          "说明：头部内腔与眼睛模组舱在下一 CAD 轮细化（本轮头部按实心评估外部轮廓与总高）。", ""]
+    md = ["# Christmas Buddy V1 装配验证（真实布尔求交 + 导出 STEP 几何复核）", "",
+          f"查看日期：{VIEW_DATE}｜工具：CadQuery 2.8 / OCCT（开孔检查在重导入的最终 STEP 上以探针求交验证）", "",
+          "说明：头部内腔与眼睛模组舱在下一 CAD 轮细化；未建模功能一律登记 UNKNOWN，不冒充 PASS。", ""]
     for scheme, data in results["schemes"].items():
         md.append(f"## 方案 {scheme.upper()}")
         for c in data["checks"]:
-            md.append(f"- **{c['result']}** — {c['check']}：{c['detail']}")
+            basis = c.get("basis", "parametric/boolean（建模实体）")
+            md.append(f"- **{c['result']}** — {c['check']}：{c['detail']}〔{basis}〕")
+        for u in data.get("unknowns", []):
+            md.append(f"- **UNKNOWN** — {u['item']}：{u['why']}（{u['stage']}）")
         md.append("")
     (Path(__file__).parent / "assembly_check.md").write_text("\n".join(md) + "\n", encoding="utf-8")
 

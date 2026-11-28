@@ -51,6 +51,15 @@
     ],
     "ChristmasBuddy.Version.thm_complete_sound": [
       "propext"
+    ],
+    "ChristmasBuddy.Version.thm_unapproved_not_manufacturable": [
+      "propext"
+    ],
+    "ChristmasBuddy.Version.thm_registry_membership_implies_approved": [
+      "propext"
+    ],
+    "ChristmasBuddy.Version.thm_release_ext": [
+      "propext"
     ]
   },
   "axiom_whitelist": [
