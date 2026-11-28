@@ -36,7 +36,7 @@ def coupon_c1(mode: str = "full") -> cq.Workplane:
     for i, (x, w) in enumerate(C1_SLOTS):
         xx = x
         if mode == "outside":            # 负向：第一槽移出边界
-            xx = x + (bw / 2 + 10 if i == 0 else 0)
+            xx = x + (60.0 if i == 0 else 0)   # x=-21 → 39：真正出界
         depth = C1["slot_depth"] if mode != "through" else bh + 2   # 负向：切穿
         length = C1["slot_len"] if mode != "oversize_len" else bd + 20
         slot = cq.Workplane("XY").box(w, length, depth).translate(
@@ -67,14 +67,25 @@ def coupon_c3(mode: str = "full") -> cq.Workplane:
     ow, oh = C3["opening"]
     hole_z = 0.0                                   # 孔中心=墙中心 → 封闭孔
     wall = cq.Workplane("XY").box(bw, bt, bh)
-    if mode == "top-notch":                        # 负向：顶部缺口（审查反例）
-        hole = cq.Workplane("XY").box(ow, 40, oh).translate((0, 0, bh / 2))
-    elif mode == "shrunk":
+    notch_dx, notch_dz = 0.0, 0.0
+    # 上下缺口：从孔缘贯通到墙缘（缺口必须与开孔连通才构成真实反例）
+    if mode in ("top-notch", "notch-top"):
+        notch_dz = (oh / 2 + bh / 2) / 2
+    elif mode == "notch-bottom":
+        notch_dz = -(oh / 2 + bh / 2) / 2
+    elif mode == "notch-left":
+        notch_dx = -(ow / 2 + 1.0)
+    elif mode == "notch-right":
+        notch_dx = ow / 2 + 1.0
+    if mode == "shrunk":
         hole = cq.Workplane("XY").box(ow - 6, 40, oh - 3).translate((0, 0, hole_z))
     elif mode == "offset":                         # 负向：开孔位置偏移
         hole = cq.Workplane("XY").box(ow, 40, oh).translate((5.0, 0, hole_z + 2.0))
     else:
-        hole = cq.Workplane("XY").box(ow, 40, oh).translate((0, 0, hole_z))
+        notch_h = 6.3 if notch_dz else 4.0
+        notch_w = 4.0 if notch_dz else 6.0
+        notch = cq.Workplane("XY").box(notch_w, 40, notch_h).translate((notch_dx, 0, hole_z + notch_dz))
+        hole = cq.Workplane("XY").box(ow, 40, oh).translate((0, 0, hole_z)).union(notch)
     return wall.cut(hole)
 
 def main() -> None:

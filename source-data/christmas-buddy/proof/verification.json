@@ -60,10 +60,13 @@
     "ChristmasBuddy.Version.thm_registry_membership_implies_approved": [
       "propext"
     ],
-    "ChristmasBuddy.Version.thm_release_ext": [
+    "ChristmasBuddy.Version.thm_bom_complete_cons": [
       "propext"
     ],
-    "ChristmasBuddy.Version.thm_bom_complete_cons": [
+    "ChristmasBuddy.Version.thm_approval_hash_mismatch_not_manufacturable": [
+      "propext"
+    ],
+    "ChristmasBuddy.Version.thm_approval_release_mismatch_not_manufacturable": [
       "propext"
     ]
   },

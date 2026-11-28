@@ -116,6 +116,33 @@ def tool_version(tool: str) -> str:
         return "leanprover/lean4:v4.19.0"
     return tool  # 工具版本随工件自身登记；未实测版本如实保留工具名
 
+CANONICAL_EXCLUDE = {"generated_at", "date", "manifest_hash", "hash_basis", "rule", "note",
+                     "tuple_state", "schema"}
+
+def canonical_payload(m: dict) -> dict:
+    """从 manifest 提取稳定字段的规范视图（确定性：sort_keys）。
+    排除时间戳/自身哈希等不稳定或循环字段。"""
+    arts = []
+    for a in m.get("artifacts", []):
+        e = {k: a.get(k) for k in ("path", "logical_name", "kind", "sha256", "bytes",
+                                   "version_slot", "tool", "tool_version", "status")
+             if k in a}
+        if "files" in a:
+            e["files"] = sorted(a["files"], key=lambda f: f["path"])
+        if "skipped_symlinks" in a:
+            e["skipped_symlinks"] = sorted(a["skipped_symlinks"])
+        arts.append(e)
+    rc = m.get("release_candidate", {})
+    meta = {k: rc.get(k) for k in ("product", "tuple", "source_commit", "approval_state")}
+    return {"artifacts": arts, "release": meta,
+            "not_yet": sorted(m.get("not_yet", []), key=lambda e: e.get("path", ""))}
+
+def canonical_hash(artifacts: list, not_yet: list, release_meta: dict) -> str:
+    payload = {"artifacts": sorted(artifacts, key=lambda a: a["path"]),
+               "not_yet": sorted(not_yet, key=lambda e: e.get("path", "")),
+               "release": release_meta}
+    return hashlib.sha256(json.dumps(payload, sort_keys=True, ensure_ascii=False).encode()).hexdigest()
+
 def build(base: Path = BASE) -> dict:
     now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     artifacts, not_yet = [], []
@@ -150,21 +177,28 @@ def build(base: Path = BASE) -> dict:
                         "version_slot": "bom", "status": "FAIL",
                         "errors": consistency})
     artifacts.sort(key=lambda a: a["path"])
-    manifest_hash_src = json.dumps([a["sha256"] for a in artifacts], sort_keys=True)
-    manifest_hash = hashlib.sha256(manifest_hash_src.encode()).hexdigest()
+    release_meta = {
+        "product": "christmas-buddy-v1",
+        "tuple": {"pcb": None, "cad": None, "fw": None, "bom": None},
+        "source_commit": git_commit(),
+        "approval_state": "UNAPPROVED",
+    }
+    manifest_hash = canonical_hash(artifacts, not_yet, release_meta)
     manifest = {
         "schema": "m5-release-manifest/2.0",
         "product": "christmas-buddy-v1",
         "date": date.today().isoformat(),
         "generated_at": now,
         "release_candidate": {
-            "product": "christmas-buddy-v1",
-            "tuple": {"pcb": None, "cad": None, "fw": None, "bom": None},
+            "product": release_meta["product"],
+            "tuple": release_meta["tuple"],
             "tuple_state": "preresearch（四段未冻结——冻结须 GATE 门禁人工批准）",
-            "source_commit": git_commit(),
+            "source_commit": release_meta["source_commit"],
             "manifest_hash": manifest_hash,
             "approval_state": "UNAPPROVED",
-            "rule": "任一工件变化 → manifest_hash 变化 → 产生新候选；旧 approval_state 不继承",
+            "hash_basis": "canonical v4：path/kind/sha/bytes/slot/tool/files/symlinks + release 元数据；"
+                          "排除时间戳与自身哈希（不稳定/循环字段）",
+            "rule": "任一工件或元数据变化 → canonical hash 变化 → 新候选；旧 approval_state 不继承",
         },
         "artifacts": artifacts,
         "not_yet": not_yet,
@@ -224,8 +258,28 @@ def currentTuple : ChristmasBuddy.Version.Release := ⟨none, none, none, none�
 /-- 当前候选批准状态：UNAPPROVED（未走 GATE 门禁）。 -/
 def currentApproved : Bool := false
 
-/-- 生成即验证：当前候选（未冻结、未批准）不可制造——由合同定理直接给出。 -/
+/-- 生成即验证 A：当前真实候选（未冻结、未批准）不可制造。 -/
 example : ChristmasBuddy.Version.manufacturable currentTuple = false := by rfl
+
+example : ChristmasBuddy.Version.manufacturingRelease
+    (⟨currentTuple, none⟩ : ChristmasBuddy.Version.ApprovedRelease)
+    ⟨currentTuple, currentManifestHash, "GATE"⟩ currentManifestHash = false := by rfl
+
+/-- 生成即验证 B（隔离测试候选，非真实批准）：完整+冻结+精确批准的候选**能**通过制造资格
+    判断——证明合同不是恒假开关；批准记录绑定精确 release 与 manifest_hash。 -/
+def isolatedTestCandidate : ChristmasBuddy.Version.ApprovedRelease :=
+  ⟨ChristmasBuddy.Version.v1, some "GATE-test"⟩
+
+def isolatedTestRecord : ChristmasBuddy.Version.ApprovalRecord :=
+  ⟨ChristmasBuddy.Version.v1, currentManifestHash, "GATE-test"⟩
+
+example : ChristmasBuddy.Version.manufacturingRelease
+    isolatedTestCandidate isolatedTestRecord currentManifestHash = true := by decide
+
+/-- 真实候选 UNAPPROVED 不受隔离测试影响（批准记录绑定精确 release）。 -/
+example : ChristmasBuddy.Version.manufacturingRelease
+    (⟨currentTuple, none⟩ : ChristmasBuddy.Version.ApprovedRelease)
+    isolatedTestRecord currentManifestHash = false := by decide
 """
     out = base / "proof/src/ChristmasBuddy/ReleaseCurrent.lean"
     out.parent.mkdir(parents=True, exist_ok=True)
@@ -256,10 +310,16 @@ def check(base: Path = BASE, manifest_path: Path | None = None) -> None:
     appeared = [it["path"] for it in m["not_yet"] if (base / it["path"]).exists()]
     if appeared:
         bad.append(f"NOT_YET 工件已出现（须重跑 build 升级为 BOUND）: {appeared[:3]}")
+    canonical = canonical_payload(m)
+    stored = m.get("release_candidate", {}).get("manifest_hash")
+    rehash = hashlib.sha256(json.dumps(canonical, sort_keys=True, ensure_ascii=False).encode()).hexdigest()
+    if stored != rehash:
+        bad.append(f"canonical hash 不一致：manifest 登记 {stored[:12]}… ≠ 独立重算 {rehash[:12]}…"
+                   "（候选被篡改或 hash_basis 字段漂移）")
     lean_out = base / "proof/src/ChristmasBuddy/ReleaseCurrent.lean"
     if lean_out.exists():
         lean = lean_out.read_text(encoding="utf-8")
-        want = m["release_candidate"]["manifest_hash"]
+        want = rehash
         if f'"{want}"' not in lean:
             bad.append("ReleaseCurrent.lean 与 manifest_hash 不一致（须重新 gen-lean）")
         if m["release_candidate"]["approval_state"] != "UNAPPROVED" and "currentApproved : Bool := false" in lean:

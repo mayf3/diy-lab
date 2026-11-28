@@ -43,6 +43,11 @@ def verify_c1(wp: cq.Workplane) -> list[dict]:
                        "basis": "STEP-geometry(coupon)"})
     n = solid_count(wp)
     add("R1 连通性（1 solid）", n == 1, f"solids={n}")
+    bb = wp.val().BoundingBox()
+    bw, bd, bh = GC.C1["block"]
+    bbox_ok = (abs(bb.xlen - bw) < 0.05 and abs(bb.ylen - bd) < 0.05 and abs(bb.zlen - bh) < 0.05)
+    add("R2b 块轮廓守恒（切割不得改变块外形）", bbox_ok,
+        f"STEP 实测 {bb.xlen:.2f}×{bb.ylen:.2f}×{bb.zlen:.2f} vs 标称 {bw}×{bd}×{bh}")
     bh = GC.C1["block"][2]
     for (x, w) in GC.C1_SLOTS:
         pin = cq.Solid.makeBox(w - 0.3, GC.C1["slot_len"] - 1, GC.C1["slot_depth"] + 3,
@@ -97,13 +102,18 @@ def verify_c3(wp: cq.Workplane) -> list[dict]:
     plug = cq.Solid.makeBox(12.0, 20.0, 6.0, Vector(-6.0, -10.0, -3.0))
     v = reimport_volume(wp, plug)
     add("R6 插头包络贯穿（12×6 通过封闭孔）", v <= 1e-6, f"包络干涉 {v:.3f}mm³")
-    # R7 孔四周实体保留：孔中心上下各偏移 ±(oh/2+1.5) 的探针必须撞到材料
-    oh = GC.C3["opening"][1]
-    for tag, dz in (("孔上方", oh / 2 + 1.5), ("孔下方", -(oh / 2 + 1.5))):
-        guard = cq.Solid.makeBox(12.0, 20.0, 1.0, Vector(-6.0, -10.0, dz - 0.5))
+    # R7（Batch4.1）四边保护：探针覆盖完整开孔宽/高 + 1.5mm 保留带，上/下/左/右独立检查
+    ow, oh = GC.C3["opening"]
+    bt = GC.C3["block"][1]
+    guards = [
+        ("上边缘", cq.Solid.makeBox(ow, 20.0, 1.0, Vector(-ow / 2, -10.0, oh / 2 + 1.0)), ow * bt * 1.0),
+        ("下边缘", cq.Solid.makeBox(ow, 20.0, 1.0, Vector(-ow / 2, -10.0, -oh / 2 - 2.0)), ow * bt * 1.0),
+        ("左边缘", cq.Solid.makeBox(1.0, 20.0, oh, Vector(-ow / 2 - 2.0, -10.0, -oh / 2)), 1.0 * bt * oh),
+        ("右边缘", cq.Solid.makeBox(1.0, 20.0, oh, Vector(ow / 2 + 1.0, -10.0, -oh / 2)), 1.0 * bt * oh),
+    ]
+    for tag, guard, nominal in guards:
         v2 = reimport_volume(wp, guard)
-        nominal = 12.0 * GC.C3["block"][1] * 1.0      # 12×壁厚×1mm 探针全实心
-        add(f"R7 孔{tag}实体保留（封闭孔，非缺口）", v2 >= nominal * 0.9,
+        add(f"R7 {tag}实体保留（覆盖开孔全宽/高+保留带）", v2 >= nominal * 0.9,
             f"实体 {v2:.1f}mm³ ≥ 期望 {nominal:.1f}mm³")
     return checks
 

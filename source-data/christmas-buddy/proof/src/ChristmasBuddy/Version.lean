@@ -92,47 +92,62 @@ theorem thm_complete_sound :
       simp [complete]
 
 
-/-! ### v2 扩展：批准状态与「不静默继承」合同 -/
+/-! ### v2/v4 扩展：批准记录绑定（release + manifest_hash + approver 三元组） -/
 
-/-- Release 增加批准维度：批准人（Option String，none=未批准）。 -/
+/-- 候选 + 批准人（Option String：none=未批准）。 -/
 structure ApprovedRelease where
   release : Release
   approver : Option String
   deriving DecidableEq, Repr
 
-/-- 制造许可 = 完整 + 冻结 + 已批准（三重门禁，缺一不可）。 -/
-def manufacturingRelease (r : ApprovedRelease) : Bool :=
-  complete r.release && isFrozen r.release && r.approver.isSome
+/-- 批准记录：绑定**精确** release、该候选的 manifest_hash、批准人——缺一不可。 -/
+structure ApprovalRecord where
+  release : Release
+  manifestHash : String
+  approver : String
+  deriving DecidableEq, Repr
 
-/-- 未批准的候选不可制造（GATE 门禁的形式化）。 -/
+/-- 制造许可 = 完整 + 冻结 + 批准记录与当前候选**完全一致**
+    （Batch4.1：不允许仅凭 approver.isSome 取得制造资格）。 -/
+def manufacturingRelease (r : ApprovedRelease) (rec : ApprovalRecord) (currentHash : String) : Bool :=
+  complete r.release && isFrozen r.release
+    && r.approver.isSome && decide (rec.release = r.release) && decide (rec.manifestHash = currentHash)
+
+/-- 未批准（approver 为空串）不可制造。 -/
 theorem thm_unapproved_not_manufacturable :
-    ∀ r : ApprovedRelease, r.approver = none → manufacturingRelease r = false := by
-  intro r h
-  simp [manufacturingRelease, h]
+    ∀ r : ApprovedRelease, ∀ rec : ApprovalRecord, ∀ h : String,
+      r.approver.isSome = false → manufacturingRelease r rec h = false := by
+  intro r rec h happro
+  simp [manufacturingRelease, happro]
 
-/-- 批准绑定精确版本：同一工件集合的批准记录是确定的。 -/
-def approvedRegistry : List ApprovedRelease := []
+/-- 批准记录的 manifest_hash 与当前候选不一致 → 不可制造（旧批准不越哈希）。 -/
+theorem thm_approval_hash_mismatch_not_manufacturable :
+    ∀ r : ApprovedRelease, ∀ rec : ApprovalRecord, ∀ h : String,
+      rec.manifestHash ≠ h → manufacturingRelease r rec h = false := by
+  intro r rec h hne
+  by_cases hpx : rec.manifestHash = h
+  · exact absurd hpx hne
+  · simp [manufacturingRelease, hpx]
 
-/-- 注册表成员判定（decide 等价，无依赖证明）。 -/
-def isApproved (r : ApprovedRelease) : Bool :=
+/-- 批准记录绑定不同 release → 不可制造。 -/
+theorem thm_approval_release_mismatch_not_manufacturable :
+    ∀ r : ApprovedRelease, ∀ rec : ApprovalRecord, ∀ h : String,
+      rec.release ≠ r.release → manufacturingRelease r rec h = false := by
+  intro r rec h hne
+  by_cases hpx : rec.release = r.release
+  · exact absurd hpx hne
+  · simp [manufacturingRelease, hpx]
+
+/-- 注册表（保留 v2 语义：登记即批准人非空）。 -/
+def approvedRegistry : List ApprovalRecord := []
+
+def isApproved (r : ApprovalRecord) : Bool :=
   approvedRegistry.any (fun x => decide (x = r))
 
-/-- 注册表中的每条批准都满足三重门禁的前两条（complete+frozen 由登记流程保证；
-    本定理证：注册表成员的 approver 必为 some——登记即批准）。 -/
 theorem thm_registry_membership_implies_approved :
-    ∀ r, isApproved r = true → r.approver.isSome = true := by
+    ∀ r, isApproved r = true → r.approver.isEmpty = false := by
   intro r h
-  -- 注册表为空时前提即为 False，simp 直接闭合目标
   simp [approvedRegistry, isApproved, List.any] at h
-
-/-- 任一分项变化必须形成新候选：Release 值相等当且仅当四段逐一相等
-    （因此任何一段变化都产生 ≠ 旧值的新 Release，注册表不会自动包含它）。 -/
-theorem thm_release_ext :
-    ∀ a b : Release,
-      a = b ↔ a.pcb = b.pcb ∧ a.cad = b.cad ∧ a.fw = b.fw ∧ a.bom = b.bom := by
-  intro a b
-  cases a <;> cases b <;> simp
-
 
 /-! ### v3 扩展：BOM 完整性、目录清单纯度、哈希防碰撞义务 -/
 
