@@ -1,0 +1,46 @@
+{
+ "ok": true,
+ "failed": [],
+ "checks": {
+  "body_valid": true,
+  "base_valid": true,
+  "caps_valid": true,
+  "rear_wall_two_openings": true,
+  "usb_center_distance": true,
+  "usb_two_openings_geometric": true,
+  "usb_opening_width_ok": true,
+  "usb_holes_through_wall": true,
+  "usb_plug_envelope_passes": true,
+  "usb_envelope_vs_base_clear": true,
+  "pocket_opening_found": true,
+  "assembly_body_in_base": true,
+  "body_seat_clearance": true,
+  "body_base_interference_vol": 0.0,
+  "body_caps_interference_vol": 0.0,
+  "base_caps_interference_vol": 0.0,
+  "caps_on_key_positions": true
+ },
+ "measured": {
+  "usb_opening_centers_x": [
+   -6.25,
+   6.25
+  ],
+  "usb_center_distance": 12.5,
+  "usb_opening_widths": [
+   11.2,
+   11.2
+  ],
+  "usb_envelope_through_volumes": [
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "base_pocket_opening": [
+   89.4,
+   80.19
+  ],
+  "body_seat_gap": 0.12
+ },
+ "note": "全部数值从 STEP 实际几何重算（check_case.py），参数仅作期望值对比"
+}
