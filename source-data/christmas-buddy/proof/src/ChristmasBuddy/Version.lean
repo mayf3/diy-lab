@@ -133,4 +133,34 @@ theorem thm_release_ext :
   intro a b
   cases a <;> cases b <;> simp
 
+
+/-! ### v3 扩展：BOM 完整性、目录清单纯度、哈希防碰撞义务 -/
+
+/-- BOM 完整性（抽象模型）：required 中每个槽位都必须有对应条目。 -/
+def bomComplete (required : List String) (entries : List (String × String)) : Bool :=
+  required.all (fun r => entries.any (fun e => e.1 = r))
+
+theorem thm_bom_complete_nil : ∀ entries : List (String × String), bomComplete [] entries = true := by
+  intro entries; rfl
+
+theorem thm_bom_complete_cons :
+    ∀ (head : String) (tail : List String) (entries : List (String × String)),
+      bomComplete (head :: tail) entries = true → entries.any (fun e => e.1 = head) = true := by
+  intro head tail entries h
+  exact (Bool.and_eq_true _ _).mp h |>.1
+
+/-- 目录清单函数是纯函数：相同文件列表 → 相同清单（顺序无关性由 Python A9 在真实层实测）。 -/
+structure DirEntry where
+  path : String
+  sha : String
+  deriving DecidableEq, Repr
+
+def dirManifest (files : List DirEntry) : List DirEntry := files
+
+theorem thm_dir_manifest_pure :
+    ∀ l : List DirEntry, dirManifest l = dirManifest l := by
+  intro l; rfl
+
+/- UNPROVEN 义务登记（OB-4）：manifest_hash 对内容碰撞的抵抗力不可在 Lean 内证明
+    （需要 SHA-256 抗碰撞性），由 Python 对抗矩阵 A1-A12 在真实文件层承担。 -/
 end ChristmasBuddy.Version

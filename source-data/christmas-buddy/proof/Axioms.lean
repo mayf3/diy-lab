@@ -32,3 +32,6 @@ import ChristmasBuddy.Version
 #print axioms ChristmasBuddy.Version.thm_unapproved_not_manufacturable
 #print axioms ChristmasBuddy.Version.thm_registry_membership_implies_approved
 #print axioms ChristmasBuddy.Version.thm_release_ext
+#print axioms ChristmasBuddy.Version.thm_bom_complete_nil
+#print axioms ChristmasBuddy.Version.thm_bom_complete_cons
+#print axioms ChristmasBuddy.Version.thm_dir_manifest_pure

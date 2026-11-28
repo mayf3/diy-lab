@@ -2,7 +2,7 @@
   "schema": "m5-release-manifest/2.0",
   "product": "christmas-buddy-v1",
   "date": "2026-11-28",
-  "generated_at": "2026-11-28T03:31:12Z",
+  "generated_at": "2026-11-28T03:51:24Z",
   "release_candidate": {
     "product": "christmas-buddy-v1",
     "tuple": {
@@ -12,8 +12,8 @@
       "bom": null
     },
     "tuple_state": "preresearch（四段未冻结——冻结须 GATE 门禁人工批准）",
-    "source_commit": "56e6c1c6e73c006e93c65f6f236ee0f2ef53c00f",
-    "manifest_hash": "a799916e94c502d833feba56b3fdeaaaab747ed842ebeba8954a6201d1231400",
+    "source_commit": "726776872b3b5d268b1453b4c44bbe02ab811971",
+    "manifest_hash": "c7462c9370427cb9741a5311ded5a23dce599ee3b7dc930807f1e7b78c3469ae",
     "approval_state": "UNAPPROVED",
     "rule": "任一工件变化 → manifest_hash 变化 → 产生新候选；旧 approval_state 不继承"
   },
@@ -26,6 +26,16 @@
       "version_slot": "design",
       "tool": "architecture.py",
       "tool_version": "architecture.py",
+      "status": "BOUND"
+    },
+    {
+      "path": "bom.csv",
+      "logical_name": "采购 BOM",
+      "sha256": "622642d452eddd3a193b1e54a3009bdcf040dafddea2fe7c401aea6c52711cb3",
+      "bytes": 3933,
+      "version_slot": "bom",
+      "tool": "采购执行轮",
+      "tool_version": "采购执行轮",
       "status": "BOUND"
     },
     {
@@ -59,6 +69,26 @@
       "status": "BOUND"
     },
     {
+      "path": "eda/netlist.py",
+      "logical_name": "网表检查器源码",
+      "sha256": "198cdcafccea5ab423ebabbeeb35e1341a7195f4843e4ee82c8fc147a3139d7a",
+      "bytes": 29314,
+      "version_slot": "pcb",
+      "tool": "python3",
+      "tool_version": "python3",
+      "status": "BOUND"
+    },
+    {
+      "path": "eda/netlist_tests.py",
+      "logical_name": "网表负向测试源码",
+      "sha256": "44f0a0efedc762360b2b6469ff687ed5feea786769dfbe60beba4ceda4dcd84a",
+      "bytes": 4179,
+      "version_slot": "pcb",
+      "tool": "python3",
+      "tool_version": "python3",
+      "status": "BOUND"
+    },
+    {
       "path": "interfaces/interfaces.json",
       "logical_name": "接口定义",
       "sha256": "90fe2540312c5e474da9dce7f77c11bbf39a50463bdca0b26259c1cbef58696f",
@@ -66,6 +96,16 @@
       "version_slot": "design",
       "tool": "interfaces.py",
       "tool_version": "interfaces.py",
+      "status": "BOUND"
+    },
+    {
+      "path": "m5_manifest.py",
+      "logical_name": "Manifest 检查器源码",
+      "sha256": "3d6452bc69f754a1b2492776b65d8aea530345d699b55dfee07b9add74236956",
+      "bytes": 15683,
+      "version_slot": "bom",
+      "tool": "python3",
+      "tool_version": "python3",
       "status": "BOUND"
     },
     {
@@ -79,6 +119,36 @@
       "status": "BOUND"
     },
     {
+      "path": "mech/build_mech.py",
+      "logical_name": "机械检查器源码",
+      "sha256": "57533666ef71c5a8938e53dcb516fbf0c3aa34734c9e793befec0231f7249cc3",
+      "bytes": 13386,
+      "version_slot": "cad",
+      "tool": "python3",
+      "tool_version": "python3",
+      "status": "BOUND"
+    },
+    {
+      "path": "mech/coupon_tests.py",
+      "logical_name": "测件负向测试源码",
+      "sha256": "c1d79213d8ac31da59b901e817117402c0f6aff0ed94dbba7a2029d583d377f0",
+      "bytes": 1996,
+      "version_slot": "cad",
+      "tool": "python3",
+      "tool_version": "python3",
+      "status": "BOUND"
+    },
+    {
+      "path": "mech/coupon_verify.py",
+      "logical_name": "测件验证器源码",
+      "sha256": "9c499bbf30614ee2c1f16480417242ceeb73ab4d2beebf07a5be4fd30233f88e",
+      "bytes": 5824,
+      "version_slot": "cad",
+      "tool": "python3",
+      "tool_version": "python3",
+      "status": "BOUND"
+    },
+    {
       "path": "mech/mech_params.json",
       "logical_name": "机械参数",
       "sha256": "23ecafab65d27d572d5938b3226447cb49f47ce7340a9d2552138bab2cbadafb",
@@ -86,6 +156,26 @@
       "version_slot": "cad",
       "tool": "params.py",
       "tool_version": "params.py",
+      "status": "BOUND"
+    },
+    {
+      "path": "mech/mech_tests.py",
+      "logical_name": "机械负向测试源码",
+      "sha256": "28cb7c9abeb4f01a18e3033ff1ac5acd9fdc0bbcc9b588d0c07dfbca87697604",
+      "bytes": 2817,
+      "version_slot": "cad",
+      "tool": "python3",
+      "tool_version": "python3",
+      "status": "BOUND"
+    },
+    {
+      "path": "mech/openings.py",
+      "logical_name": "开孔几何检查源码",
+      "sha256": "3a5c0332cbad9cdae11f38a47a92a25490f06ddaef394faccfa2fc8118646778",
+      "bytes": 8880,
+      "version_slot": "cad",
+      "tool": "python3",
+      "tool_version": "python3",
       "status": "BOUND"
     },
     {
@@ -121,8 +211,8 @@
     {
       "path": "proof/src/ChristmasBuddy/Version.lean",
       "logical_name": "M5 发布合同证明",
-      "sha256": "7b9134512603472f8201b4cbdaea2eddd1e645c59cac2f7dc71cfc446eab91ca",
-      "bytes": 5247,
+      "sha256": "61092c62091862bcd51908e8bac4e170a47904aedfaa77d79c306f730a72069b",
+      "bytes": 6580,
       "version_slot": "fw",
       "tool": "lean 4.19.0",
       "tool_version": "leanprover/lean4:v4.19.0",
@@ -131,8 +221,8 @@
     {
       "path": "proof/verification.json",
       "logical_name": "Lean 验证回执",
-      "sha256": "63dffd1c22c67bfb9a4e904ae00dc114f2ec102366457e955266f3d6f3ff9fdc",
-      "bytes": 2091,
+      "sha256": "72907dd4c918b8bc676b9f179ccf9668b0385520870dce1afd897eec1c58a5be",
+      "bytes": 2279,
       "version_slot": "fw",
       "tool": "verify_proof.py",
       "tool_version": "verify_proof.py",
